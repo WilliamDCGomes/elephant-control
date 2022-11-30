@@ -92,25 +92,25 @@ flavorizr:
   flavors:
     dev:
       app:
-        name: "PCE DEV"
+        name: "Elephant Control DEV"
       android:
-        applicationId: "com.prototipo_controle_educacional"
+        applicationId: "com.black.entertainment.elephant_control_dev"
       ios:
-        bundleId: "com.prototipo_controle_educacional"
+        bundleId: "com.black.entertainment.elephant_control_dev"
     hmlg:
       app:
-        name: "PCE HMLG"
+        name: "Elephant Control HMLG"
       android:
-        applicationId: "com.prototipo_controle_educacional"
+        applicationId: "com.black.entertainment.elephant_control_hmlg"
       ios:
-        bundleId: "com.prototipo_controle_educacional"
+        bundleId: "com.prototipo_controle_educacional_hmlg"
     prod:
       app:
-        name: "PCE"
+        name: "Elephant Control"
       android:
-        applicationId: "com.prototipo_controle_educacional"
+        applicationId: "com.black.entertainment.elephant_control"
       ios:
-        bundleId: "com.prototipo_controle_educacional"
+        bundleId: "com.black.entertainment.elephant_control"
 
   flutter_lints: ^2.0.1
 
