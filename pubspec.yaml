@@ -1,0 +1,123 @@
+name: elephant_control
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  dio: ^4.0.6
+  get: ^4.6.5
+  uuid: ^3.0.7
+  intl: ^0.17.0
+  lottie: ^2.0.0
+  pinput: ^2.2.16
+  shimmer: ^2.0.0
+  timezone: ^0.9.0
+  provider: ^6.0.4
+  flip_card: ^0.6.0
+  sqflite: ^2.2.0+3
+  local_auth: ^2.1.2
+  flutter_svg: ^1.1.6
+  image_picker: ^0.8.6
+  im_stepper: ^1.0.1+1
+  reorderables: ^0.5.1
+  firebase_auth: ^4.1.3
+  age_calculator: ^1.0.0
+  firebase_core: ^2.3.0
+  carousel_slider: ^4.1.1
+  cloud_firestore: ^4.1.0
+  cupertino_icons: ^1.0.5
+  qr_code_scanner: ^1.0.1
+  email_validator: ^2.1.17
+  responsive_sizer: ^3.1.1
+  easy_image_viewer: ^1.2.0
+  firebase_storage: ^11.0.6
+  flutter_flavorizr: ^2.1.5
+  firebase_messaging: ^14.1.1
+  shared_preferences: ^2.0.15
+  font_awesome_flutter: ^10.2.1
+  flutter_native_timezone: ^2.0.0
+  credit_card_type_detector: ^2.0.0
+  mask_text_input_formatter: ^2.4.0
+  syncfusion_flutter_calendar: ^20.3.57
+  flutter_local_notifications: ^12.0.3+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_native_splash: ^2.2.9
+  flutter_launcher_icons: ^0.10.0
+
+# Rodar sempre que quiser atualizar a splashscreen
+# flutter clean
+# flutter pub get
+# flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  background_image: lib/app/assets/images/icons/background.png
+  background_image_dark: lib/app/assets/images/icons/background.png
+  image: lib/app/assets/images/icons/logo_pce.png
+  image_dark: lib/app/assets/images/icons/logo_pce.png
+
+  android_12:
+    background_image: lib/app/assets/images/icons/background.png
+    background_image_dark: lib/app/assets/images/icons/background.png
+    image: lib/app/assets/images/icons/logo_pce.png
+    image_dark: lib/app/assets/images/icons/logo_pce.png
+
+  web: false
+
+# Rodar sempre que quiser atualizar o icone
+# flutter clean
+# flutter pub get
+# flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/app/assets/images/icons/logo_pce_icone.png"
+  adaptive_icon_background: "#603D7B"
+  adaptive_icon_foreground: "lib/app/assets/images/icons/logo_pce_icone.png"
+
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+  flavors:
+    dev:
+      app:
+        name: "PCE DEV"
+      android:
+        applicationId: "com.prototipo_controle_educacional"
+      ios:
+        bundleId: "com.prototipo_controle_educacional"
+    hmlg:
+      app:
+        name: "PCE HMLG"
+      android:
+        applicationId: "com.prototipo_controle_educacional"
+      ios:
+        bundleId: "com.prototipo_controle_educacional"
+    prod:
+      app:
+        name: "PCE"
+      android:
+        applicationId: "com.prototipo_controle_educacional"
+      ios:
+        bundleId: "com.prototipo_controle_educacional"
+
+  flutter_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/app/assets/images/
+    - lib/app/assets/svgs/
+    - lib/app/assets/json/
