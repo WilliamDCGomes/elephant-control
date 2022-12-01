@@ -2,7 +2,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widge
 import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../stylePages/app_colors.dart';
 
 class SwitchWidget extends StatelessWidget {
@@ -57,8 +56,8 @@ class SwitchWidget extends StatelessWidget {
                     ignoring: true,
                     child: Switch(
                       value: checked,
-                      inactiveThumbColor: (justRead ?? false) ? AppColors.grayTextColor : AppColors.purpleDefaultColorWithOpacity,
-                      activeColor: (justRead ?? false) ? AppColors.grayTextColor : (switchColor ?? AppColors.purpleDefaultColor),
+                      inactiveThumbColor: (justRead ?? false) ? AppColors.grayTextColor : AppColors.purpleColorWithOpacity,
+                      activeColor: (justRead ?? false) ? AppColors.grayTextColor : (switchColor ?? AppColors.defaultColor),
                       onChanged: (bool value) {},
                     ),
                   ),

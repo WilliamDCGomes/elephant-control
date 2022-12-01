@@ -31,39 +31,34 @@ class _InitialPageState extends State<InitialPage> {
       },
       child: SafeArea(
         child: Material(
-          child: Stack(
-            children: [
-              Image.asset(
-                Paths.background,
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
-                cacheHeight: 700,
-                cacheWidth: 700,
-              ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 7.h),
-                      child: Image.asset(
-                        Paths.logo_pce,
-                        height: PlatformType.isPhone(context) ? 18.h : 12.h,
+          child: Container(
+            color: AppColors.blackColor,
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7.h),
+                        child: Image.asset(
+                          Paths.Logo,
+                          height: PlatformType.isPhone(context) ? 18.h : 12.h,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                      width: 6.h,
-                      child: CircularProgressIndicator(
-                        color: AppColors.whiteColor,
+                      SizedBox(
+                        height: 6.h,
+                        width: 6.h,
+                        child: CircularProgressIndicator(
+                          color: AppColors.whiteColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              controller.loadingWithSuccessOrErrorTabletPhoneWidget,
-            ],
+                controller.loadingWithSuccessOrErrorWidget,
+              ],
+            ),
           ),
         ),
       ),

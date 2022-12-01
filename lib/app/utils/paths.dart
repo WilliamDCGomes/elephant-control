@@ -3,6 +3,9 @@ class Paths{
   static final String svgsPath = "lib/app/assets/svgs/";
   static final String imagesPath = "lib/app/assets/images/";
 
+  static final String Logo = "${imagesPath}Logo.png";
+  static final String Icone_Exibicao_Esqueci_Senha = "${imagesPath}Icone_Exibicao_Esqueci_Senha.png";
+
   static final String Error = "${jsonPath}error.json";
   static final String Loading = "${jsonPath}loading.json";
   static final String Loading2 = "${jsonPath}loading2.json";

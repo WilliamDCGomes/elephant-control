@@ -36,7 +36,7 @@ class DropdownButtonWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: AppColors.purpleDefaultColor,
+            color: AppColors.defaultColor,
             width: .25.h,
           ),
         ),
@@ -51,13 +51,13 @@ class DropdownButtonWidget extends StatelessWidget {
               hint: TextWidget(
                 hintText ?? "",
                 fontSize: 16.sp,
-                textColor: AppColors.purpleDefaultColor,
+                textColor: AppColors.defaultColor,
               ),
               icon: RotationTransition(
                 turns: AlwaysStoppedAnimation(3 / 4),
                 child: Icon(
                   Icons.arrow_back_ios_outlined,
-                  color: AppColors.purpleDefaultColor,
+                  color: AppColors.defaultColor,
                   size: 2.5.h,
                 ),
               ),
@@ -75,7 +75,7 @@ class DropdownButtonWidget extends StatelessWidget {
                             item,
                             fontSize: 16.sp,
                             textAlign: TextAlign.start,
-                            textColor: AppColors.purpleDefaultColor,
+                            textColor: AppColors.defaultColor,
                             textOverflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),

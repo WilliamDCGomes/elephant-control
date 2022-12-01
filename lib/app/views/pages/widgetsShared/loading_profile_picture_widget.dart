@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../utils/paths.dart';
-import '../../../widgetsShared/lottie_asset_widget.dart';
+import '../../../utils/paths.dart';
+import 'lottie_asset_widget.dart';
 
 class LoadingProfilePictureWidget extends StatefulWidget {
   late final RxBool loadingAnimation;

@@ -79,7 +79,7 @@ class TextFieldWidget extends StatelessWidget {
       labelText: hintText,
       labelStyle: TextStyle(
         fontSize: 16.sp,
-        color: hasError != null && hasError! ? AppColors.redColor : hintTextColor ?? AppColors.purpleDefaultColor,
+        color: hasError != null && hasError! ? AppColors.redColor : hintTextColor ?? AppColors.defaultColor,
       ),
       suffixIcon: iconTextField,
       enabledBorder: _getBorderLayout(),
@@ -96,7 +96,7 @@ class TextFieldWidget extends StatelessWidget {
 
   TextStyle standardTextStyle(){
     return TextStyle(
-      color: textColor ?? AppColors.purpleDefaultColor,
+      color: textColor ?? AppColors.defaultColor,
       fontSize: fontSize ?? 16.sp,
     );
   }
@@ -105,7 +105,7 @@ class TextFieldWidget extends StatelessWidget {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
-        color: hasError != null && hasError! ? AppColors.redColor : borderColor ?? AppColors.purpleDefaultColor,
+        color: hasError != null && hasError! ? AppColors.redColor : borderColor ?? AppColors.defaultColor,
         width: .25.h,
       ),
     );
@@ -139,7 +139,7 @@ class TextFieldWidget extends StatelessWidget {
           textAlign: textAlign ?? TextAlign.start,
           textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
           focusNode: focusNode,
-          cursorColor: AppColors.purpleDefaultColor,
+          cursorColor: AppColors.defaultColor,
           keyboardType: keyboardType ?? TextInputType.text,
           decoration: decoration ?? standardDecoration(),
           inputFormatters: maskTextInputFormatter != null ? [maskTextInputFormatter!] : null,

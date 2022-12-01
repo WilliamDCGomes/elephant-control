@@ -60,16 +60,16 @@ dev_dependencies:
 # flutter pub get
 # flutter pub run flutter_native_splash:create
 flutter_native_splash:
-  background_image: lib/app/assets/images/icons/background.png
-  background_image_dark: lib/app/assets/images/icons/background.png
-  image: lib/app/assets/images/icons/logo_pce.png
-  image_dark: lib/app/assets/images/icons/logo_pce.png
+  background_image: lib/app/assets/images/Background.png
+  background_image_dark: lib/app/assets/images/Background.png
+  image: lib/app/assets/images/Icon.png
+  image_dark: lib/app/assets/images/Icon.png
 
   android_12:
-    background_image: lib/app/assets/images/icons/background.png
-    background_image_dark: lib/app/assets/images/icons/background.png
-    image: lib/app/assets/images/icons/logo_pce.png
-    image_dark: lib/app/assets/images/icons/logo_pce.png
+    background_image: lib/app/assets/images/Background.png
+    background_image_dark: lib/app/assets/images/Background.png
+    image: lib/app/assets/images/Icon.png
+    image_dark: lib/app/assets/images/Icon.png
 
   web: false
 
@@ -80,9 +80,9 @@ flutter_native_splash:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/app/assets/images/icons/logo_pce_icone.png"
-  adaptive_icon_background: "#603D7B"
-  adaptive_icon_foreground: "lib/app/assets/images/icons/logo_pce_icone.png"
+  image_path: "lib/app/assets/images/Icon.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "lib/app/assets/images/Icon.png"
 
 flavorizr:
   app:
