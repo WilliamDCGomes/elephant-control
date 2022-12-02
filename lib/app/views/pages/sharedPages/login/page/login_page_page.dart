@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                             onEditingComplete: (){
                                               controller.passwordInputFocusNode.requestFocus();
                                             },
-                                            keyboardType: TextInputType.number,
+                                            keyboardType: TextInputType.name,
                                           ),
                                         ),
                                       ],

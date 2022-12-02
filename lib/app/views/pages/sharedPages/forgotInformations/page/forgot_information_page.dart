@@ -42,7 +42,7 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: AppColors.backgroundGradientColor,
+                colors: AppColors.backgroundFirstScreenColor,
               ),
             ),
             child: Stack(

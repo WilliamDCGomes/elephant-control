@@ -20,7 +20,7 @@ void main() {
     800: AppColors.defaultColor,
     900: AppColors.defaultColor,
   };
-  MaterialColor colorCustom = MaterialColor(0XFF62407E, color);
+  MaterialColor colorCustom = MaterialColor(0XFF1E4767, color);
   F.appFlavor = Flavor.HMLG;
   runApp(
     MultiProvider(
