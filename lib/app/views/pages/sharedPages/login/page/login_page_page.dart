@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
@@ -27,11 +26,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late LoginTabletPhoneController controller;
+  late LoginPageController controller;
 
   @override
   void initState() {
-    controller = Get.put(LoginTabletPhoneController(widget.cancelFingerPrint));
+    controller = Get.put(LoginPageController(widget.cancelFingerPrint));
     super.initState();
   }
 
@@ -48,11 +47,19 @@ class _LoginPageState extends State<LoginPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: AppColors.backgroundGradientColor,
+                colors: AppColors.backgroundFirstScreenColor,
               ),
             ),
             child: Stack(
               children: [
+                Container(
+                  height: 30.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.h)),
+                    color: AppColors.defaultColor,
+                  ),
+                ),
                 Scaffold(
                   backgroundColor: AppColors.transparentColor,
                   body: GestureDetector(
@@ -64,10 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 12.h),
-                            child: SvgPicture.asset(
-                              Paths.Logo,
-                              width: 45.w,
+                            padding: EdgeInsets.only(top: 8.h, bottom: 4.h),
+                            child: Image.asset(
+                              Paths.Logo_Branca,
+                              width: 70.w,
                             ),
                           ),
                           Expanded(
@@ -79,10 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.w, top: 5.h, right: 5.w),
                                     child: TextWidget(
-                                      "O aplicativo oficial para os estudantes terem acesso a todos os conteúdos acadêmico.",
+                                      "FAÇA LOGIN",
                                       textColor: AppColors.defaultColor,
-                                      fontSize: 17.sp,
+                                      fontSize: 26.sp,
                                       textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.bold,
                                       maxLines: 4,
                                     ),
                                   ),
@@ -93,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                                         Obx(
                                           () => TextFieldWidget(
                                             controller: controller.raInputController,
-                                            hintText: "RA",
+                                            hintText: "Usuário",
                                             height: PlatformType.isTablet(context) ? 7.h : 9.h,
                                             width: double.infinity,
                                             hasError: controller.raInputHasError.value,
@@ -125,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                                           () => TextFieldWidget(
                                             controller: controller.passwordInputController,
                                             focusNode: controller.passwordInputFocusNode,
-                                            hintText: "Digite sua senha",
+                                            hintText: "Senha",
                                             height: PlatformType.isTablet(context) ? 7.h : 9.h,
                                             width: double.infinity,
                                             isPassword: controller.passwordFieldEnabled.value,

@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/services/user_service.dart';
-import '../../../operatorPages/login/page/login_page_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../login/page/login_page_page.dart';
 
 class ForgotInformationController extends GetxController {
   late TextEditingController emailInputController;

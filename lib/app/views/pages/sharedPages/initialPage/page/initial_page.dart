@@ -32,7 +32,14 @@ class _InitialPageState extends State<InitialPage> {
       child: SafeArea(
         child: Material(
           child: Container(
-            color: AppColors.whiteColor,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  Paths.Background_Azul
+                ),
+                fit: BoxFit.fill,
+              ),
+            ),
             child: Stack(
               children: [
                 Center(
@@ -42,7 +49,7 @@ class _InitialPageState extends State<InitialPage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 7.h),
                         child: Image.asset(
-                          Paths.Logo,
+                          Paths.Logo_Branca,
                           height: PlatformType.isPhone(context) ? 18.h : 12.h,
                         ),
                       ),
@@ -50,7 +57,7 @@ class _InitialPageState extends State<InitialPage> {
                         height: 6.h,
                         width: 6.h,
                         child: CircularProgressIndicator(
-                          color: AppColors.defaultColor,
+                          color: AppColors.whiteColor,
                         ),
                       ),
                     ],

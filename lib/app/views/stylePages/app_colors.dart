@@ -16,4 +16,5 @@ class AppColors {
   //static final Color defaultColor = const Color(0XFFED028C);
   static final Color purpleColorWithOpacity = const Color(0XFFED028C).withOpacity(.65);
   static final List<Color> backgroundGradientColor = const [Color(0XFF303134), Color(0XFF202124)];
+  static final List<Color> backgroundFirstScreenColor = const [Color(0XFFE7E3E3), Color(0XFFFFFFFF)];
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app/enums/enums.dart';
-import 'app/views/pages/operatorPages/initialPage/page/initial_page.dart';
+import 'app/views/pages/sharedPages/initialPage/page/initial_page.dart';
 
 class F {
   static Flavor? appFlavor;

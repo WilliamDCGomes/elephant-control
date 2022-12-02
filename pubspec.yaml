@@ -62,14 +62,14 @@ dev_dependencies:
 flutter_native_splash:
   background_image: lib/app/assets/images/Background_Azul.jpg
   background_image_dark: lib/app/assets/images/Background_Azul.jpg
-  image: lib/app/assets/images/Icon_Branco.png
-  image_dark: lib/app/assets/images/Icon_Branco.png
+  image: lib/app/assets/images/Icon_App.png
+  image_dark: lib/app/assets/images/Icon_App.png
 
   android_12:
     background_image: lib/app/assets/images/Background_Azul.jpg
     background_image_dark: lib/app/assets/images/Background_Azul.jpg
-    image: lib/app/assets/images/Icon_Branco.png
-    image_dark: lib/app/assets/images/Icon_Branco.png
+    image: lib/app/assets/images/Icon_App.png
+    image_dark: lib/app/assets/images/Icon_App.png
 
   web: false
 
@@ -80,9 +80,9 @@ flutter_native_splash:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/app/assets/images/Icon_Branco.png"
+  image_path: "lib/app/assets/images/Icon_App.png"
   adaptive_icon_background: "#0B74AC"
-  adaptive_icon_foreground: "lib/app/assets/images/Icon_Branco.png"
+  adaptive_icon_foreground: "lib/app/assets/images/Icon_App.png"
 
 flavorizr:
   app:

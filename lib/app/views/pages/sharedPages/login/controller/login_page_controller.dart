@@ -3,15 +3,13 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../../base/services/interfaces/iuser_service.dart';
-import '../../../../../../base/services/user_service.dart';
 import '../../../../../utils/internet_connection.dart';
+import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
-import '../../mainMenu/page/main_menu_page.dart';
 
-class LoginTabletPhoneController extends GetxController {
+class LoginPageController extends GetxController {
   late bool _cancelFingerPrint;
   late RxBool raInputHasError;
   late RxBool passwordInputHasError;
@@ -28,9 +26,8 @@ class LoginTabletPhoneController extends GetxController {
   late final LocalAuthentication fingerPrintAuth;
   late final GlobalKey<FormState> formKey;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late IUserService _userService;
 
-  LoginTabletPhoneController(this._cancelFingerPrint){
+  LoginPageController(this._cancelFingerPrint){
     _initializeVariables();
   }
 
@@ -38,7 +35,6 @@ class LoginTabletPhoneController extends GetxController {
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
     await _getKeepConnected();
-    await _getRaId();
     if(!_cancelFingerPrint){
       await _checkBiometricSensor();
     }
@@ -47,13 +43,6 @@ class LoginTabletPhoneController extends GetxController {
 
   _getKeepConnected() async {
     keepConected.value = await sharedPreferences.getBool("keep-connected") ?? false;
-  }
-
-  _getRaId() async {
-    var ra = await sharedPreferences.getInt("ra_student_logged");
-    if(ra != null) {
-      raInputController.text = ra.toString();
-    }
   }
 
   _initializeVariables(){
@@ -71,13 +60,12 @@ class LoginTabletPhoneController extends GetxController {
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
     if (kDebugMode){
-      raInputController.text = "1000";
-      passwordInputController.text = "47122223";
+      raInputController.text = "";
+      passwordInputController.text = "";
     }
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimationSuccess,
     );
-    _userService = UserService();
   }
 
   _checkBiometricSensor() async {
@@ -90,8 +78,6 @@ class LoginTabletPhoneController extends GetxController {
 
         if (authenticate) {
           loadingAnimationSuccess.value = true;
-          await _saveOptions();
-
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
           Get.offAll(() => MainMenuPage());
         }
@@ -122,20 +108,11 @@ class LoginTabletPhoneController extends GetxController {
           return;
         }
 
-        String userCpf = await _userService.getCpf(int.parse(raInputController.text));
 
-        String userEmail = await _userService.getEmail(userCpf);
-
-        bool logged = await _userService.loginUser(
-          userEmail,
-          passwordInputController.text,
-        );
 
         await loadingWidget.stopAnimation(justLoading: true);
 
-        if(logged){
-          await _saveOptions();
-
+        if(true){
           Get.offAll(() => MainMenuPage());
         }
         else{
@@ -144,7 +121,7 @@ class LoginTabletPhoneController extends GetxController {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return InformationPopup(
-                warningMessage: "O Ra ou a Senha estão incorreto.",
+                warningMessage: "Usuário ou a Senha estão incorreto.",
               );
             },
           );
@@ -162,20 +139,6 @@ class LoginTabletPhoneController extends GetxController {
         },
       );
     }
-  }
-
-  _saveOptions() async {
-    int? oldRa = await sharedPreferences.getInt("ra_student_logged");
-    if(oldRa == null){
-      await sharedPreferences.setInt("ra_student_logged", int.parse(raInputController.text));
-    }
-    else if(oldRa != int.parse(raInputController.text)){
-      await sharedPreferences.clear();
-      await sharedPreferences.setBool("show-welcome-page-key", false);
-      await sharedPreferences.setInt("ra_student_logged", int.parse(raInputController.text));
-    }
-
-    await sharedPreferences.setBool("keep-connected", keepConected.value);
   }
 }
 

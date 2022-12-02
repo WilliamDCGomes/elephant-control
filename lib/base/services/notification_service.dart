@@ -26,7 +26,7 @@ class NotificationService{
   }
 
   Future<void> initializeNotifications() async {
-    const android = AndroidInitializationSettings('@mipmap/icone_pce_redondo');
+    const android = AndroidInitializationSettings('@mipmap/icon_app');
     await localNotificationsPlugin.initialize(
       const InitializationSettings(
         android: android,

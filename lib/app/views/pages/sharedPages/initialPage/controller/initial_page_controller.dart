@@ -1,11 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/platform_type.dart';
+import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../login/page/login_page_page.dart';
-import '../../mainMenu/page/main_menu_page.dart';
 
 class InitialPageController extends GetxController {
   late RxBool loadingAnimationSuccess;
@@ -20,7 +19,6 @@ class InitialPageController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    await Firebase.initializeApp();
     await _loadFirstScreen();
     super.onInit();
   }
