@@ -12,7 +12,8 @@ class AppColors {
   static final Color orangeColor = const Color(0XFFEA6F55);
   static final Color redColor = const Color(0XFFC81B1B);
   static final Color grayTextColor = const Color(0XFFA9A9A9);
-  static final Color defaultColor = const Color(0XFFED028C);
+  static final Color defaultColor = const Color(0XFF1E4767);
+  //static final Color defaultColor = const Color(0XFFED028C);
   static final Color purpleColorWithOpacity = const Color(0XFFED028C).withOpacity(.65);
   static final List<Color> backgroundGradientColor = const [Color(0XFF303134), Color(0XFF202124)];
 }

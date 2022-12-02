@@ -32,7 +32,7 @@ class _InitialPageState extends State<InitialPage> {
       child: SafeArea(
         child: Material(
           child: Container(
-            color: AppColors.blackColor,
+            color: AppColors.whiteColor,
             child: Stack(
               children: [
                 Center(
@@ -50,7 +50,7 @@ class _InitialPageState extends State<InitialPage> {
                         height: 6.h,
                         width: 6.h,
                         child: CircularProgressIndicator(
-                          color: AppColors.whiteColor,
+                          color: AppColors.defaultColor,
                         ),
                       ),
                     ],
