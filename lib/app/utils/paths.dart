@@ -14,6 +14,8 @@ class Paths{
   static final String Icon_Rosa = "${imagesPath}Icon_Rosa.png";
   static final String Logo = "${imagesPath}Logo.png";
   static final String Logo_Branca = "${imagesPath}Logo_Branca.png";
+  static final String Malote = "${imagesPath}Malote.png";
+  static final String Pelucia = "${imagesPath}Pelucia.png";
   static final String Logo_Colorida = "${imagesPath}Logo_Colorida.png";
   static final String Icone_Exibicao_Esqueci_Senha = "${imagesPath}Icone_Exibicao_Esqueci_Senha.png";
 

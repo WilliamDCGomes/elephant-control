@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                                             hasError: controller.raInputHasError.value,
                                             textInputAction: TextInputAction.next,
                                             validator: (String? value) {
-                                              String? validation = TextFieldValidators.standardValidation(value, "Informe o RA");
+                                              String? validation = TextFieldValidators.standardValidation(value, "Informe o Usuário");
                                               if(validation != null && validation != ""){
                                                 controller.raInputHasError.value = true;
                                               }

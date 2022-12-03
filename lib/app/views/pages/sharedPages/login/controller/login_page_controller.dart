@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../utils/internet_connection.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -94,21 +93,6 @@ class LoginPageController extends GetxController {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
         loginButtonFocusNode.requestFocus();
-        if(!await InternetConnection.checkConnection()){
-          await loadingWidget.stopAnimation(justLoading: true);
-          await showDialog(
-            context: Get.context!,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return InformationPopup(
-                warningMessage: "É necessário uma conexão com a internet para fazer o login",
-              );
-            },
-          );
-          return;
-        }
-
-
 
         await loadingWidget.stopAnimation(justLoading: true);
 
