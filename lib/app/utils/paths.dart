@@ -4,7 +4,7 @@ class Paths{
   static final String imagesPath = "lib/app/assets/images/";
 
   static final String Background = "${imagesPath}Background.png";
-  static final String Background_Azul = "${imagesPath}Background_Azul.jpg";
+  static final String Background_Azul = "${imagesPath}Background_Azul.png";
   static final String Icon = "${imagesPath}Icon.png";
   static final String Icon_App = "${imagesPath}Icon_App.png";
   static final String Icon_Amarelo = "${imagesPath}Icon_Amarelo.png";

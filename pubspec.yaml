@@ -60,14 +60,14 @@ dev_dependencies:
 # flutter pub get
 # flutter pub run flutter_native_splash:create
 flutter_native_splash:
-  background_image: lib/app/assets/images/Background_Azul.jpg
-  background_image_dark: lib/app/assets/images/Background_Azul.jpg
+  background_image: lib/app/assets/images/Background_Azul.png
+  background_image_dark: lib/app/assets/images/Background_Azul.png
   image: lib/app/assets/images/Icon_App.png
   image_dark: lib/app/assets/images/Icon_App.png
 
   android_12:
-    background_image: lib/app/assets/images/Background_Azul.jpg
-    background_image_dark: lib/app/assets/images/Background_Azul.jpg
+    background_image: lib/app/assets/images/Background_Azul.png
+    background_image_dark: lib/app/assets/images/Background_Azul.png
     image: lib/app/assets/images/Icon_App.png
     image_dark: lib/app/assets/images/Icon_App.png
 

@@ -32,14 +32,7 @@ class _InitialPageState extends State<InitialPage> {
       child: SafeArea(
         child: Material(
           child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  Paths.Background_Azul
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
+            color: AppColors.defaultColor,
             child: Stack(
               children: [
                 Center(
