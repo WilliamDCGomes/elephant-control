@@ -10,7 +10,7 @@ class AppCloseController {
       SnackbarWidget(
         warningText: "Aviso",
         informationText: "Pressione novamente para sair",
-        backgrondColor: AppColors.purpleColorWithOpacity,
+        backgrondColor: AppColors.defaultColor,
       );
       return false;
     }

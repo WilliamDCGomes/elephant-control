@@ -12,6 +12,7 @@ class InformationContainerWidget extends StatelessWidget {
   final String informationText;
   final Color textColor;
   final Color backgroundColor;
+  final bool? iconInLeft;
 
   const InformationContainerWidget(
       { Key? key,
@@ -19,6 +20,7 @@ class InformationContainerWidget extends StatelessWidget {
         this.marginContainer,
         this.marginIcon,
         this.padding,
+        this.iconInLeft,
         required this.iconPath,
         required this.informationText,
         required this.textColor,
@@ -52,12 +54,13 @@ class InformationContainerWidget extends StatelessWidget {
           ),
         ),
         Align(
-          alignment: Alignment.topRight,
+          alignment: iconInLeft ?? false ? Alignment.topLeft : Alignment.topRight,
           child: Container(
             padding: EdgeInsets.all(2.h),
             margin: marginIcon ?? EdgeInsets.only(
               top: PlatformType.isTablet(context) ? 4.h : 2.h,
-              right: 1.w,
+              right: iconInLeft ?? false ? 0 : 1.w,
+              left: iconInLeft ?? false ? 1.w : 0,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.5.h),

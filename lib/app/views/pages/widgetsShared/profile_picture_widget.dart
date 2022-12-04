@@ -2,7 +2,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../utils/logged_user.dart';
 import '../../stylePages/app_colors.dart';
 
@@ -32,7 +31,9 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
       SizedBox(
         height: 20.h,
         width: 20.h,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: AppColors.backgroundColor,
+        ),
       ) :
       widget.hasPicture.value ?
       Container(
@@ -54,12 +55,12 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
         width: 20.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.h),
-          color: AppColors.defaultColor,
+          color: AppColors.backgroundColor,
         ),
         child: Center(
           child: TextWidget(
             LoggedUser.nameInitials,
-            textColor: AppColors.backgroundColor,
+            textColor: AppColors.defaultColor,
             fontWeight: FontWeight.bold,
             fontSize: widget.fontSize ?? 30.sp,
             textAlign: TextAlign.start,

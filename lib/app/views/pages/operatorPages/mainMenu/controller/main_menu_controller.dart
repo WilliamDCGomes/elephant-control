@@ -17,13 +17,14 @@ class MainMenuController extends GetxController {
 
   _initializeVariables(){
     hasPicture = false.obs;
-    loadingPicture = true.obs;
+    loadingPicture = false.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
   }
 
   _getNameUser(){
+    LoggedUser.name = "José Paulo";
     var names = LoggedUser.name.trim().split(" ");
 
     if(names.isNotEmpty && names.first != ""){
