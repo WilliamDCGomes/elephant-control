@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                                       children: [
                                         Obx(
                                           () => TextFieldWidget(
-                                            controller: controller.raInputController,
+                                            controller: controller.userInputController,
                                             hintText: "Usuário",
                                             height: PlatformType.isTablet(context) ? 7.h : 9.h,
                                             width: double.infinity,

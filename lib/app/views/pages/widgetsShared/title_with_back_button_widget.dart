@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../stylePages/app_colors.dart';
 
-class TitleWithBackButtonTabletPhoneWidget extends StatelessWidget {
+class TitleWithBackButtonWidget extends StatelessWidget {
   final String title;
   final Color? titleColor;
   final Function()? backButtonPressedFuctionOverride;
 
-  const TitleWithBackButtonTabletPhoneWidget(
+  const TitleWithBackButtonWidget(
       { Key? key,
         required this.title,
         this.titleColor,
@@ -31,7 +31,7 @@ class TitleWithBackButtonTabletPhoneWidget extends StatelessWidget {
               padding: EdgeInsets.only(right: 2.w),
               child: Icon(
                 Icons.arrow_back_ios,
-                color: AppColors.defaultColor,
+                color: titleColor ?? AppColors.defaultColor,
                 size: 3.h,
               ),
             ),

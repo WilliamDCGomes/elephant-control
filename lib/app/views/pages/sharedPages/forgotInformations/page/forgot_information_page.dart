@@ -56,7 +56,7 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2.h,),
-                          child: TitleWithBackButtonTabletPhoneWidget(
+                          child: TitleWithBackButtonWidget(
                             title: "Esqueceu a Senha",
                           ),
                         ),

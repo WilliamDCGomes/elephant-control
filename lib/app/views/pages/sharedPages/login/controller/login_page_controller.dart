@@ -17,7 +17,7 @@ class LoginPageController extends GetxController {
   late RxBool loadingAnimationSuccess;
   late RxBool keepConected;
   late LoadingWidget loadingWidget;
-  late TextEditingController raInputController;
+  late TextEditingController userInputController;
   late TextEditingController passwordInputController;
   late FocusNode passwordInputFocusNode;
   late FocusNode loginButtonFocusNode;
@@ -53,14 +53,14 @@ class LoginPageController extends GetxController {
     keepConected = false.obs;
     formKey = GlobalKey<FormState>();
     loadingWidget= LoadingWidget(loadingAnimation: loadingAnimation);
-    raInputController = TextEditingController();
+    userInputController = TextEditingController();
     passwordInputController = TextEditingController();
     passwordInputFocusNode = FocusNode();
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
     if (kDebugMode){
-      raInputController.text = "";
-      passwordInputController.text = "";
+      userInputController.text = "teste";
+      passwordInputController.text = "123456";
     }
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimationSuccess,

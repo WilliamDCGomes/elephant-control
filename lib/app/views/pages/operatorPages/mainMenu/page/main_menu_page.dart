@@ -8,6 +8,7 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
+import '../../maintenance/page/maintenance_page.dart';
 import '../controller/main_menu_controller.dart';
 
 class MainMenuPage extends StatefulWidget {
@@ -155,7 +156,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         TextWidget(
-                                          "Saldo do Malote(s):",
+                                          "Quantidade de Malote(s):",
                                           textColor: AppColors.whiteColor,
                                           fontSize: 18.sp,
                                           textAlign: TextAlign.start,
@@ -243,14 +244,6 @@ class _MainMenuPageState extends State<MainMenuPage> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 2.h, top: 2.h, right: 2.h),
-                            child: Container(
-
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -258,8 +251,28 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   floatingActionButton: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      FloatingActionButton.extended(
+                        heroTag: "secondFloatingActionButton",
+                        backgroundColor: AppColors.defaultColor,
+                        foregroundColor: AppColors.backgroundColor,
+                        elevation: 3,
+                        icon: Icon(
+                          Icons.history,
+                          size: 4.h,
+                          color: AppColors.backgroundColor,
+                        ),
+                        label: TextWidget(
+                          "Atendimentos",
+                          maxLines: 1,
+                          textColor: AppColors.whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {},
+                      ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 2.h),
+                        padding: EdgeInsets.only(top: 2.h),
                         child: FloatingActionButton.extended(
                           heroTag: "firstFloatingActionButton",
                           backgroundColor: AppColors.defaultColor,
@@ -278,28 +291,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () {},
+                          onPressed: () => Get.to(() => MaintenancePage()),
                         ),
-                      ),
-                      FloatingActionButton.extended(
-                        heroTag: "secondFloatingActionButton",
-                        backgroundColor: AppColors.defaultColor,
-                        foregroundColor: AppColors.backgroundColor,
-                        elevation: 3,
-                        icon: Icon(
-                          Icons.history,
-                          size: 4.h,
-                          color: AppColors.backgroundColor,
-                        ),
-                        label: TextWidget(
-                          "Histórico de  atendimentos",
-                          maxLines: 1,
-                          textColor: AppColors.whiteColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          textAlign: TextAlign.center,
-                        ),
-                        onPressed: () {},
                       ),
                     ],
                   ),
