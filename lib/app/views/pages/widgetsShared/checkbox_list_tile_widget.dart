@@ -8,6 +8,8 @@ class CheckboxListTileWidget extends StatefulWidget {
   final String radioText;
   final bool checked;
   final bool? justRead;
+  final double? size;
+  final double? spaceBetween;
   final Color? checkedColor;
   final Color? titleColor;
   final Function()? onChanged;
@@ -16,6 +18,8 @@ class CheckboxListTileWidget extends StatefulWidget {
     Key? key,
     required this.radioText,
     this.justRead,
+    this.size,
+    this.spaceBetween,
     this.checkedColor,
     this.titleColor,
     required this.checked,
@@ -39,8 +43,8 @@ class _CheckboxListTileWidgetState extends State<CheckboxListTileWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 2.h,
-              width: 2.h,
+              height: widget.size ?? 2.h,
+              width: widget.size ?? 2.h,
               child: Transform.scale(
                 scale: .1.h,
                 child: Checkbox(
@@ -60,7 +64,7 @@ class _CheckboxListTileWidgetState extends State<CheckboxListTileWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 2.w),
+              padding: EdgeInsets.only(left: widget.spaceBetween ?? 2.w),
               child: TextWidget(
                 widget.radioText,
                 textColor: widget.titleColor ?? AppColors.defaultColor,

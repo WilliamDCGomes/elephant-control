@@ -6,6 +6,7 @@ import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../../stylePages/masks_for_text_fields.dart';
 import '../../../widgetsShared/button_widget.dart';
+import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
@@ -56,7 +57,6 @@ class _MaintenancePageState extends State<MaintenancePage> {
                       titleColor: AppColors.backgroundColor,
                     ),
                   ),
-
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,23 +111,21 @@ class _MaintenancePageState extends State<MaintenancePage> {
                         Expanded(
                           child: ListView(
                             shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(horizontal: 2.h),
                             children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.h,),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: TextWidget(
-                                    "Preencha os dados",
-                                    textColor: AppColors.blackColor,
-                                    fontSize: 18.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextWidget(
+                                  "Preencha os dados",
+                                  textColor: AppColors.blackColor,
+                                  fontSize: 18.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 3.h, right: 2.h),
+                                padding: EdgeInsets.only(top: 3.h,),
                                 child: TextFieldWidget(
                                   controller: controller.operatorName,
                                   hintText: "Nome Operador",
@@ -138,7 +136,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 1.5.h, right: 2.h),
+                                padding: EdgeInsets.only(top: 1.5.h,),
                                 child: TextFieldWidget(
                                   controller: controller.maintenanceDate,
                                   hintText: "Data do Atendimento",
@@ -149,7 +147,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: .5.h, right: 2.h, bottom: 1.h),
+                                padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextWidget(
@@ -161,21 +159,18 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.h,),
-                                child: Obx(
-                                  () => DropdownButtonWidget(
-                                    itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
-                                    hintText: "Máquina Atendida",
-                                    height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                    width: 85.w,
-                                    rxListItems: controller.machinesPlaces,
-                                    onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
-                                  ),
+                              Obx(
+                                () => DropdownButtonWidget(
+                                  itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
+                                  hintText: "Máquina Atendida",
+                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                  width: 85.w,
+                                  rxListItems: controller.machinesPlaces,
+                                  onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 3.h, right: 2.h),
+                                padding: EdgeInsets.only(top: 3.h,),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -202,7 +197,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: .5.h, right: 2.h),
+                                padding: EdgeInsets.only(top: .5.h,),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -223,11 +218,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            height: 40.w,
-                                            width: 45.w,
-                                            color: AppColors.defaultColor,
-                                          ),
+                                          controller.firstImageClock,
                                         ],
                                       ),
                                     ),
@@ -251,11 +242,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            height: 40.w,
-                                            width: 45.w,
-                                            color: AppColors.defaultColor,
-                                          ),
+                                          controller.secondImageClock,
                                         ],
                                       ),
                                     ),
@@ -263,7 +250,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 3.5.h, right: 2.h),
+                                padding: EdgeInsets.only(top: 3.5.h,),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -284,11 +271,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            height: 40.w,
-                                            width: 45.w,
-                                            color: AppColors.defaultColor,
-                                          ),
+                                          controller.beforeMaintenanceImageClock,
                                         ],
                                       ),
                                     ),
@@ -312,11 +295,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            height: 40.w,
-                                            width: 45.w,
-                                            color: AppColors.defaultColor,
-                                          ),
+                                          controller.afterMaintenanceImageClock,
                                         ],
                                       ),
                                     ),
@@ -324,7 +303,66 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 4.h, right: 2.h, bottom: 3.h,),
+                                padding: EdgeInsets.only(top: 4.h,),
+                                child: TextFieldWidget(
+                                  controller: controller.clock2,
+                                  hintText: "Pelúcias Recolocadas na Máquina",
+                                  height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextWidget(
+                                          "Malote Retirado da Máquina?",
+                                          textColor: AppColors.defaultColor,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Obx(
+                                          () => CheckboxListTileWidget(
+                                            radioText: "Sim",
+                                            size: 4.h,
+                                            checked: controller.yes.value,
+                                            onChanged: (){
+                                              controller.yes.value = !controller.yes.value;
+                                              controller.no.value = !controller.yes.value;
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 1.w,
+                                      ),
+                                      Expanded(
+                                        child: Obx(
+                                          () => CheckboxListTileWidget(
+                                            radioText: "Não",
+                                            size: 4.h,
+                                            spaceBetween: 1.w,
+                                            checked: controller.no.value,
+                                            onChanged: (){
+                                              controller.no.value = !controller.no.value;
+                                              controller.yes.value = !controller.no.value;
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 2.h, bottom: 3.h,),
                                 child: TextFieldWidget(
                                   controller: controller.observations,
                                   height: PlatformType.isTablet(context) ? 18.h : 19.h,
