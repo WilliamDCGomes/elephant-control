@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../stylePages/app_colors.dart';
 
@@ -25,7 +25,8 @@ class TextFieldWidget extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final InputDecoration? decoration;
-  final MaskTextInputFormatter? maskTextInputFormatter;
+  final List<TextInputFormatter>? maskTextInputFormatter;
+  final FilteringTextInputFormatter? filteringTextInputFormatter;
   final TextInputAction? textInputAction;
   final Function()? onTap;
   final Function()? onEditingComplete;
@@ -59,6 +60,7 @@ class TextFieldWidget extends StatelessWidget {
         this.keyboardType,
         this.decoration,
         this.maskTextInputFormatter,
+        this.filteringTextInputFormatter,
         this.textInputAction,
         this.onTap,
         this.onEditingComplete,
@@ -142,7 +144,7 @@ class TextFieldWidget extends StatelessWidget {
           cursorColor: AppColors.defaultColor,
           keyboardType: keyboardType ?? TextInputType.text,
           decoration: decoration ?? standardDecoration(),
-          inputFormatters: maskTextInputFormatter != null ? [maskTextInputFormatter!] : null,
+          inputFormatters: maskTextInputFormatter,
           enabled: ableField ?? true,
           textInputAction: textInputAction,
           onTap: onTap,

@@ -25,8 +25,6 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
   _getImage() async {
     try{
-      _picker = ImagePicker();
-
       widget.profilePicture = await _picker.pickImage(
         source: ImageSource.camera
       );
@@ -46,6 +44,12 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
         },
       );
     }
+  }
+
+  @override
+  void initState() {
+    _picker = ImagePicker();
+    super.initState();
   }
 
   @override
@@ -91,7 +95,7 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
                 Radius.circular(5.w),
               ),
             ),
-          )
+          ),
         ),
       ),
     );

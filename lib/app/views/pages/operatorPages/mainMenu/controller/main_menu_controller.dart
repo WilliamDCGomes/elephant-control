@@ -8,6 +8,10 @@ class MainMenuController extends GetxController {
   late RxString nameProfile;
   late RxString nameInitials;
   late RxString welcomePhrase;
+  late RxInt amountPouch;
+  late RxInt amountTeddy;
+  late DateTime pouchLastChange;
+  late DateTime teddyLastChange;
 
   MainMenuController(){
     _initializeVariables();
@@ -21,6 +25,10 @@ class MainMenuController extends GetxController {
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
+    amountPouch = 6.obs;
+    amountTeddy = 250.obs;
+    pouchLastChange = DateTime.now();
+    teddyLastChange = DateTime.now();
   }
 
   _getNameUser(){

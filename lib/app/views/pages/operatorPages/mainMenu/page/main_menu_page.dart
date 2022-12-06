@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
+import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
@@ -23,7 +24,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
 
   @override
   void initState() {
-    controller = Get.put(MainMenuController());
+    controller = Get.put(MainMenuController(), tag: "main_menu_controller");
     super.initState();
   }
 
@@ -164,13 +165,15 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(left: 1.w),
-                                          child: TextWidget(
-                                            "6",
-                                            fontWeight: FontWeight.bold,
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontSize: 20.sp,
-                                            textAlign: TextAlign.start,
+                                          child: Obx(
+                                            () => TextWidget(
+                                              controller.amountPouch.value.toString(),
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 1,
+                                              textColor: AppColors.whiteColor,
+                                              fontSize: 20.sp,
+                                              textAlign: TextAlign.start,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -179,7 +182,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                   SizedBox(
                                     width: 73.w,
                                     child: TextWidget(
-                                      "Última Atualização: 03/12/2022",
+                                      "Última Atualização: ${DateFormatToBrazil.formatDate(controller.pouchLastChange)}",
                                       maxLines: 1,
                                       textColor: AppColors.whiteColor,
                                       fontWeight: FontWeight.bold,
@@ -217,13 +220,15 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(left: 1.w),
-                                        child: TextWidget(
-                                          "250",
-                                          fontWeight: FontWeight.bold,
-                                          maxLines: 1,
-                                          textColor: AppColors.whiteColor,
-                                          fontSize: 20.sp,
-                                          textAlign: TextAlign.start,
+                                        child: Obx(
+                                          () => TextWidget(
+                                            controller.amountTeddy.value.toString(),
+                                            fontWeight: FontWeight.bold,
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontSize: 20.sp,
+                                            textAlign: TextAlign.start,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -232,7 +237,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                 SizedBox(
                                   width: 73.w,
                                   child: TextWidget(
-                                    "Última Atualização: 03/12/2022",
+                                    "Última Atualização: ${DateFormatToBrazil.formatDate(controller.teddyLastChange)}",
                                     maxLines: 1,
                                     textColor: AppColors.whiteColor,
                                     fontWeight: FontWeight.bold,
