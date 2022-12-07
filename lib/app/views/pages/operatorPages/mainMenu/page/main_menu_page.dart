@@ -10,7 +10,7 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../maintenance/page/maintenance_page.dart';
-import '../../maintenanceHistory/page/maintenance_history_page.dart';
+import '../../maintenanceHistory/pages/maintenance_history_page.dart';
 import '../controller/main_menu_controller.dart';
 
 class MainMenuPage extends StatefulWidget {

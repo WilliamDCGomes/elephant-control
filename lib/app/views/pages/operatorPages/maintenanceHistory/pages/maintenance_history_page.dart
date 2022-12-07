@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
@@ -59,7 +60,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                       ),
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InformationContainerWidget(
                               iconPath: Paths.Pelucia,
@@ -82,41 +83,51 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                               ),
                             ),
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: controller.maintenanceCardWidgetList.length,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                itemBuilder: (context, index){
-                                  return controller.maintenanceCardWidgetList[index];
-                                },
+                              child: Obx(
+                                () => ListView.builder(
+                                  itemCount: controller.maintenanceCardWidgetList.length,
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                  itemBuilder: (context, index){
+                                    return Stack(
+                                      children: [
+                                        controller.maintenanceCardWidgetList[index],
+                                        Visibility(
+                                          visible: controller.maintenanceCardWidgetList[index].status == "Pendente",
+                                          child: Padding(
+                                            padding: EdgeInsets.all(1.h),
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: InkWell(
+                                                onTap: () => controller.removeItemList(index),
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: AppColors.backgroundColor,
+                                                  size: 3.h,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(2.h),
+                              child: ButtonWidget(
+                                hintText: "Montar nova lista de atendimento",
+                                fontWeight: FontWeight.bold,
+                                widthButton: double.infinity,
+                                onPressed: () async => controller.newItem(),
                               ),
                             ),
                           ],
                         ),
                       ),
                     ],
-                  ),
-                  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-                  floatingActionButton: FloatingActionButton.extended(
-                    backgroundColor: AppColors.defaultColor,
-                    foregroundColor: AppColors.backgroundColor,
-                    elevation: 3,
-                    icon: Icon(
-                      Icons.add,
-                      size: 4.5.h,
-                      color: AppColors.backgroundColor,
-                    ),
-                    label: TextWidget(
-                      "Montar nova lista de atendimento",
-                      maxLines: 1,
-                      textColor: AppColors.whiteColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.sp,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () {
-
-                    },
                   ),
                 ),
                 controller.loadingWithSuccessOrErrorWidget,
