@@ -79,18 +79,10 @@ class _LoadingWidgetState extends State<LoadingWidget> with TickerProviderStateM
               width: 100.w,
               color: AppColors.blackTransparentColor,
               child: Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.defaultColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12.h),
-                    ),
-                  ),
-                  padding: EdgeInsets.all(1.h),
-                  child: LottieAssetWidget(
-                    animationPath: Paths.Loading,
-                    animationController: widget.animationController,
-                  ),
+                child: LottieAssetWidget(
+                  animationPath: Paths.Loading,
+                  animationController: widget.animationController,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

@@ -158,7 +158,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: TextWidget(
-                                        "Tipo de Solicitação",
+                                        "Máquina visitada",
                                         textColor: AppColors.defaultColor,
                                         fontSize: 16.sp,
                                         textAlign: TextAlign.center,

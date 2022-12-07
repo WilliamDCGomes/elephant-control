@@ -92,6 +92,7 @@ class LoginPageController extends GetxController {
       if(formKey.currentState!.validate()){
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
+        await Future.delayed(Duration(seconds: 5));
         loginButtonFocusNode.requestFocus();
 
         await loadingWidget.stopAnimation(justLoading: true);

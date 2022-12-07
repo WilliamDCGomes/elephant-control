@@ -10,6 +10,7 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../maintenance/page/maintenance_page.dart';
+import '../../maintenanceHistory/page/maintenance_history_page.dart';
 import '../controller/main_menu_controller.dart';
 
 class MainMenuPage extends StatefulWidget {
@@ -274,7 +275,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () {},
+                        onPressed: () => Get.to(() => MaintenanceHistoryPage()),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),

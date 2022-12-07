@@ -114,6 +114,17 @@ class MaintenanceController extends GetxController {
         _mainMenuController.amountPouch.value++;
       _mainMenuController.amountTeddy.value -= teddy;
 
+      if(int.parse(clock2.text) < 2000)
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "A média dessa máquina está fora do programado!",
+            );
+          },
+        );
+
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(
         context: Get.context!,
