@@ -12,6 +12,7 @@ class AppColors {
   static final Color orangeColor = const Color(0XFFEA6F55);
   static final Color redColor = const Color(0XFFC81B1B);
   static final Color grayTextColor = const Color(0XFFA9A9A9);
+  static final Color yellowDarkColor = const Color(0XFFE2CE1C);
   static final Color defaultColor = const Color(0XFF1E4767);
   static final Color backgroundColor = const Color(0XFFE7E3E3);
   static final Color grayBackgroundPictureColor = Color(0XFFB2B1B2);

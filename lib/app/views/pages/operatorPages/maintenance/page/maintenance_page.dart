@@ -93,8 +93,8 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                         firstTextColor: AppColors.whiteColor,
                                         firstTextFontWeight: FontWeight.normal,
                                         firstTextSize: 16.sp,
-                                        secondText: "ALTA",
-                                        secondTextColor: AppColors.redColor,
+                                        secondText: controller.priority.value,
+                                        secondTextColor: Color(controller.priorityColor.value),
                                         secondTextFontWeight: FontWeight.bold,
                                         secondTextSize: 16.sp,
                                         secondTextDecoration: TextDecoration.none,
@@ -105,7 +105,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       firstTextColor: AppColors.whiteColor,
                                       firstTextFontWeight: FontWeight.normal,
                                       firstTextSize: 16.sp,
-                                      secondText: "25/11/2022",
+                                      secondText: controller.lastMaintenance.value,
                                       secondTextColor: AppColors.whiteColor,
                                       secondTextFontWeight: FontWeight.bold,
                                       secondTextSize: 16.sp,
@@ -177,88 +177,6 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.clock1,
-                                            hintText: "Relógio 1",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.clock2,
-                                            hintText: "Relógio 2",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: .5.h,),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Relógio 1",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.firstImageClock,
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Relógio 1",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.secondImageClock,
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
                                     padding: EdgeInsets.only(top: 3.5.h,),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,62 +230,139 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 4.h,),
+                                    padding: EdgeInsets.only(top: 3.h,),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 1.h),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: TextWidget(
+                                                    "Foto Relógio 1",
+                                                    textColor: AppColors.defaultColor,
+                                                    fontSize: 16.sp,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller.firstImageClock,
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 1.h),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: TextWidget(
+                                                    "Foto Relógio 1",
+                                                    textColor: AppColors.defaultColor,
+                                                    fontSize: 16.sp,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller.secondImageClock,
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.h,),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.clock1,
+                                            hintText: "Relógio 1",
+                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.clock2,
+                                            hintText: "Relógio 2",
+                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.clock2,
+                                      controller: controller.teddyAddMachine,
                                       hintText: "Pelúcias Recolocadas na Máquina",
                                       height: PlatformType.isTablet(context) ? 7.h : 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                     ),
                                   ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: TextWidget(
-                                              "Malote Retirado da Máquina?",
-                                              textColor: AppColors.defaultColor,
-                                              fontSize: 16.sp,
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                            ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextWidget(
+                                          "Malote Retirado da Máquina?",
+                                          textColor: AppColors.defaultColor,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Obx(
+                                          () => CheckboxListTileWidget(
+                                            radioText: "Sim",
+                                            size: 4.h,
+                                            checked: controller.yes.value,
+                                            onChanged: (){
+                                              controller.yes.value = !controller.yes.value;
+                                              controller.no.value = !controller.yes.value;
+                                            },
                                           ),
-                                          Expanded(
-                                            child: Obx(
-                                              () => CheckboxListTileWidget(
-                                                radioText: "Sim",
-                                                size: 4.h,
-                                                checked: controller.yes.value,
-                                                onChanged: (){
-                                                  controller.yes.value = !controller.yes.value;
-                                                  controller.no.value = !controller.yes.value;
-                                                },
-                                              ),
-                                            ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 1.w,
+                                      ),
+                                      Expanded(
+                                        child: Obx(
+                                          () => CheckboxListTileWidget(
+                                            radioText: "Não",
+                                            size: 4.h,
+                                            spaceBetween: 1.w,
+                                            checked: controller.no.value,
+                                            onChanged: (){
+                                              controller.no.value = !controller.no.value;
+                                              controller.yes.value = !controller.no.value;
+                                            },
                                           ),
-                                          SizedBox(
-                                            width: 1.w,
-                                          ),
-                                          Expanded(
-                                            child: Obx(
-                                                  () => CheckboxListTileWidget(
-                                                radioText: "Não",
-                                                size: 4.h,
-                                                spaceBetween: 1.w,
-                                                checked: controller.no.value,
-                                                onChanged: (){
-                                                  controller.no.value = !controller.no.value;
-                                                  controller.yes.value = !controller.no.value;
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   ),

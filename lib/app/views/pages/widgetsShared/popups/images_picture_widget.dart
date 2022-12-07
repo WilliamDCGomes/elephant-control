@@ -9,12 +9,12 @@ import '../../../stylePages/app_colors.dart';
 import 'information_popup.dart';
 
 class ImagesPictureWidget extends StatefulWidget {
-  late XFile? profilePicture;
+  late XFile? picture;
 
   ImagesPictureWidget({
     Key? key,
   }) : super(key: key){
-    profilePicture = null;
+    picture = null;
   }
 
   @override
@@ -25,12 +25,12 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
   _getImage() async {
     try{
-      widget.profilePicture = await _picker.pickImage(
+      widget.picture = await _picker.pickImage(
         source: ImageSource.camera
       );
 
       setState(() {
-        widget.profilePicture;
+        widget.picture;
       });
     }
     catch(e){
@@ -66,7 +66,7 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
           ),
           color: AppColors.defaultColor,
         ),
-        child: widget.profilePicture == null ? Container(
+        child: widget.picture == null ? Container(
           padding: EdgeInsets.all(3.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
@@ -88,7 +88,7 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: MemoryImage(File(widget.profilePicture!.path).readAsBytesSync()),
+                image: MemoryImage(File(widget.picture!.path).readAsBytesSync()),
                 fit: BoxFit.fill,
               ),
               borderRadius: BorderRadius.all(
