@@ -3,3 +3,8 @@ enum Flavor {
   HMLG,
   PROD,
 }
+
+enum imageOrigin {
+  camera,
+  gallery,
+}

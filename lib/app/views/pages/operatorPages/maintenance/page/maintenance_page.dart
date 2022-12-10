@@ -61,7 +61,6 @@ class _MaintenancePageState extends State<MaintenancePage> {
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
                           title: "Novo Atendimento",
-                          titleColor: AppColors.backgroundColor,
                         ),
                       ),
                       Expanded(

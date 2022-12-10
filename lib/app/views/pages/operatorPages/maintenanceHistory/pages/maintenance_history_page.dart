@@ -55,7 +55,6 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
                           title: "Atendimentos",
-                          titleColor: AppColors.backgroundColor,
                         ),
                       ),
                       Expanded(

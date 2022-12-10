@@ -5,6 +5,7 @@ import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
@@ -69,9 +70,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButtonWidget(
-                                onTap: () {
-
-                                },
+                                onTap: () => Get.to(() => UserProfilePage(mainMenuController: controller,)),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -96,7 +95,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       ),
                                     ),
                                     Obx(
-                                          () => Column(
+                                      () => Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [

@@ -56,4 +56,9 @@ class MainMenuController extends GetxController {
     else
       welcomePhrase = "Boa noite!".obs;
   }
+
+  refreshProfilePicture() async {
+    await Future.delayed(Duration(seconds: 2));
+
+  }
 }
