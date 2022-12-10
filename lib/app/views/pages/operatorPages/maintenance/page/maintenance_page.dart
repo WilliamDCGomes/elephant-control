@@ -136,7 +136,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     child: TextFieldWidget(
                                       controller: controller.operatorName,
                                       hintText: "Nome Operador",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.name,
                                       enableSuggestions: true,
                                       justRead: true,
@@ -147,7 +147,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     child: TextFieldWidget(
                                       controller: controller.maintenanceDate,
                                       hintText: "Data do Atendimento",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [MasksForTextFields.birthDateMask],
                                       justRead: true,
@@ -170,7 +170,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     () => DropdownButtonWidget(
                                       itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
                                       hintText: "Máquina Atendida",
-                                      height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                      height: 6.5.h,
                                       width: 85.w,
                                       rxListItems: controller.machinesPlaces,
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
@@ -291,7 +291,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                           child: TextFieldWidget(
                                             controller: controller.clock1,
                                             hintText: "Relógio 1",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                           ),
@@ -303,7 +303,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                           child: TextFieldWidget(
                                             controller: controller.clock2,
                                             hintText: "Relógio 2",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                           ),
@@ -316,7 +316,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     child: TextFieldWidget(
                                       controller: controller.teddyAddMachine,
                                       hintText: "Pelúcias Recolocadas na Máquina",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                     ),
@@ -370,7 +370,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     padding: EdgeInsets.only(top: 2.h, bottom: 3.h,),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
-                                      height: PlatformType.isTablet(context) ? 18.h : 19.h,
+                                      height: 19.h,
                                       keyboardType: TextInputType.text,
                                       textCapitalization: TextCapitalization.sentences,
                                       textAlignVertical: TextAlignVertical.top,

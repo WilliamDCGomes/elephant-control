@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.only(top: 8.h, bottom: 4.h),
                             child: Image.asset(
                               Paths.Logo_Branca,
-                              width: 70.w,
+                              width: 40.h,
                             ),
                           ),
                           Expanded(
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                                           () => TextFieldWidget(
                                             controller: controller.userInputController,
                                             hintText: "Usuário",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             width: double.infinity,
                                             hasError: controller.raInputHasError.value,
                                             textInputAction: TextInputAction.next,
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                                             controller: controller.passwordInputController,
                                             focusNode: controller.passwordInputFocusNode,
                                             hintText: "Senha",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             width: double.infinity,
                                             isPassword: controller.passwordFieldEnabled.value,
                                             hasError: controller.passwordInputHasError.value,

@@ -113,7 +113,7 @@ class MaintenanceHistoryController extends GetxController {
         pouchCollected: false,
         teddy: "0",
       ),
-    ];
+    ]; 
   }
 
   removeItemList(int index) async {
