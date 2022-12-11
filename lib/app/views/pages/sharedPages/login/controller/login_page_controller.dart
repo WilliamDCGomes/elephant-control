@@ -113,14 +113,7 @@ class LoginPageController extends GetxController {
 
         await loadingWidget.stopAnimation(justLoading: true);
 
-        userLogged = AuthenticateResponse(
-          id: Uuid().v4(),
-          expirationDate: DateTime.now().add(Duration(hours: 3)),
-          name: 'hugo',
-          login: 'hugo',
-          token: '',
-          userType: UserType.operator
-        );
+        
 
         if (userLogged != null) {
           sharedPreferences.setString("Token", userLogged.token);
