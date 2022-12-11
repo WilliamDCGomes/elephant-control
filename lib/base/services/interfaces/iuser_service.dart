@@ -2,15 +2,15 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/user.dart';
 
 abstract class IUserService {
-  Future<bool> sendNewUser(Users newUser);
+  Future<bool> sendNewUser(User newUser);
 
-  Future<bool> updateUser(Users user);
+  Future<bool> updateUser(User user);
 
   Future<bool> updatePassword(String newPassword);
 
   Future<bool> resetPassword(String email);
 
-  Future<Users?> getUser(String cpf);
+  Future<User?> getUser(String cpf);
 
   Future<String> getCpf(int studentRa);
 

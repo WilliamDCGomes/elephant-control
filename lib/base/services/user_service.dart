@@ -1,29 +1,55 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
+import '../viewControllers/authenticate_response.dart';
+import 'base/base_service.dart';
 import 'interfaces/iuser_service.dart';
 
-class UserService implements IUserService {
-  Future<bool> sendNewUser(Users newUser) async {
+class UserService extends BaseService implements IUserService {
+  Future<AuthenticateResponse?> authenticate({String? username, String? password}) async {
     try {
+      final sharedPreferences = await SharedPreferences.getInstance();
+      username ??= sharedPreferences.getString('Login');
+      password ??= sharedPreferences.getString('Senha');
+      if (username == null || password == null) throw Exception();
+      final url = baseUrlApi + 'User/Authenticate';
+      final response = await super.post(url, null, query: {"username": username, "password": password});
+      if (hasErrorResponse(response)) throw Exception();
+      return AuthenticateResponse.fromJson(response.body);
+    } catch (_) {
+      return null;
+    }
+  }
 
+  Future<User?> getUserInformation() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetUserInformation';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      return User.fromJson(response.body);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<bool> sendNewUser(User newUser) async {
+    try {
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  Future<bool> updateUser(Users user) async {
+  Future<bool> updateUser(User user) async {
     try {
-
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  Future<Users?> getUser(String cpf) async {
+  Future<User?> getUser(String cpf) async {
     try {
-
       return null;
     } catch (_) {
       return null;
@@ -32,7 +58,6 @@ class UserService implements IUserService {
 
   Future<String> getCpf(int studentRa) async {
     try {
-
       return "";
     } catch (_) {
       return "";
@@ -41,7 +66,6 @@ class UserService implements IUserService {
 
   Future<String> getEmail(String userCpf) async {
     try {
-
       return "";
     } catch (_) {
       return "";
@@ -50,7 +74,6 @@ class UserService implements IUserService {
 
   Future<String> getName(String userCpf) async {
     try {
-
       return "";
     } catch (_) {
       return "";
@@ -58,91 +81,73 @@ class UserService implements IUserService {
   }
 
   Future<bool> registerNewUser(String email, String password) async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> updatePassword(String newPassword) async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> resetPassword(String email) async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> loggedUser() async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> loginUser(String email, String password) async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> logoutUser() async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<bool> sendUserProfilePicture(XFile image, Function progress) async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
 
   Future<String> getUserProfilePicture() async {
-    try{
-
+    try {
       return "";
-    }
-    catch(_){
+    } catch (_) {
       return "";
     }
   }
 
   Future<bool> deleteProfilePicture() async {
-    try{
-
+    try {
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }

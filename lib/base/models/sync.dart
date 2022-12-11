@@ -1,6 +1,6 @@
-import 'base/coreEntity.dart';
+import 'package:elephant_control/base/models/base/elephant_core.dart';
 
-class Sync extends CoreEntity {
+class Sync extends ElephantCore {
   String? service;
   String? method;
   bool? success;
@@ -16,19 +16,5 @@ class Sync extends CoreEntity {
     required this.start,
     this.fullTime,
     DateTime? change,
-  }) : super (lastChange: change);
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['active'] = active;
-    data['lastChange'] = lastChange;
-    data['service'] = service;
-    data['method'] = method;
-    data['success'] = success;
-    data['message'] = message;
-    data['start'] = start;
-    data['fullTime'] = fullTime;
-    return data;
-  }
+  });
 }

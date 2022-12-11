@@ -78,13 +78,13 @@ class UserProfileController extends GetxController {
   late RxList<String> ufsList;
   late XFile? profilePicture;
   late final ImagePicker _picker;
-  late Users _user;
+  late User _user;
   late LoadingProfilePictureWidget loadingProfilePicture;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late MainMenuController mainMenuController;
   late IConsultCepService _consultCepService;
 
-  UserProfileController(this.mainMenuController){
+  UserProfileController(this.mainMenuController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -96,7 +96,7 @@ class UserProfileController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     imageChanged = false;
     nameInitials = LoggedUser.nameInitials.obs;
     userName = LoggedUser.nameAndLastName.obs;
@@ -152,19 +152,19 @@ class UserProfileController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
-    _user = Users();
+    _user = User.emptyConstructor();
     _consultCepService = ConsultCepService();
   }
 
   _getUfsNames() async {
     ufsList.clear();
     List<String> states = await BrazilAddressInformations.getUfsNames();
-    for(var uf in states) {
+    for (var uf in states) {
       ufsList.add(uf);
     }
   }
 
-  _initializeLists(){
+  _initializeLists() {
     genderList = [
       "Masculino",
       "Feminino",
@@ -174,7 +174,7 @@ class UserProfileController extends GetxController {
     tabsList = UserProfileTabsWidget.getList(this);
   }
 
-  _getUserInformation(){
+  _getUserInformation() {
     nameTextController.text = LoggedUser.name;
     birthDateTextController.text = LoggedUser.birthdate;
     genderSelected.value = LoggedUser.gender;
@@ -193,7 +193,7 @@ class UserProfileController extends GetxController {
   }
 
   bool _validPersonalInformationAndAdvanceNextStep() {
-    if(genderSelected.value == ""){
+    if (genderSelected.value == "") {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -208,7 +208,7 @@ class UserProfileController extends GetxController {
     return true;
   }
 
-  phoneTextFieldEdited(String cellPhoneTyped){
+  phoneTextFieldEdited(String cellPhoneTyped) {
     cellPhoneTextController.value = ValidCellPhoneMask.updateCellPhoneMask(
       cellPhoneTyped,
       maskCellPhoneFormatter,
@@ -217,19 +217,18 @@ class UserProfileController extends GetxController {
 
   searchAddressInformation() async {
     int trys = 1;
-    while(true){
-      try{
-        if(cepTextController.text.length == 9){
+    while (true) {
+      try {
+        if (cepTextController.text.length == 9) {
           AddressInformation? addressInformation = await _consultCepService.searchCep(cepTextController.text);
-          if(addressInformation != null){
+          if (addressInformation != null) {
             ufSelected.value = addressInformation.uf;
             cityTextController.text = addressInformation.city;
             streetTextController.text = addressInformation.street;
             neighborhoodTextController.text = addressInformation.neighborhood;
             complementTextController.text = addressInformation.complement;
             break;
-          }
-          else{
+          } else {
             ufSelected.value = "";
             cityTextController.text = "";
             streetTextController.text = "";
@@ -237,92 +236,87 @@ class UserProfileController extends GetxController {
             complementTextController.text = "";
           }
         }
-      }
-      catch(_){
+      } catch (_) {
         ufSelected.value = "";
         cityTextController.text = "";
         streetTextController.text = "";
         neighborhoodTextController.text = "";
         complementTextController.text = "";
-      }
-      finally{
+      } finally {
         trys++;
-        if(trys > 3){
+        if (trys > 3) {
           break;
-        }
-        else {
+        } else {
           continue;
         }
       }
     }
   }
 
-  _setUserToUpdate(){
+  _setUserToUpdate() {
     _user.name = nameTextController.text;
-    _user.birthdate = birthDateTextController.text;
-    _user.gender = genderSelected.value;
-    _user.cep = cepTextController.text;
-    _user.uf = ufSelected.value;
-    _user.city = cityTextController.text;
-    _user.street = streetTextController.text;
-    _user.houseNumber = houseNumberTextController.text;
-    _user.neighborhood = neighborhoodTextController.text;
-    _user.complement = complementTextController.text;
-    _user.phone = phoneTextController.text;
-    _user.cellPhone = cellPhoneTextController.text;
-    _user.email = emailTextController.text;
+    // _user.birthdate = birthDateTextController.text;
+    // _user.gender = genderSelected.value;
+    // _user.cep = cepTextController.text;
+    // _user.uf = ufSelected.value;
+    // _user.city = cityTextController.text;
+    // _user.street = streetTextController.text;
+    // _user.houseNumber = houseNumberTextController.text;
+    // _user.neighborhood = neighborhoodTextController.text;
+    // _user.complement = complementTextController.text;
+    // _user.phone = phoneTextController.text;
+    // _user.cellPhone = cellPhoneTextController.text;
+    // _user.email = emailTextController.text;
     _user.id = LoggedUser.id;
-    _user.cpf = LoggedUser.cpf;
-    _user.includeDate = LoggedUser.includeDate;
-    _user.lastChange = DateTime.now();
+    // _user.cpf = LoggedUser.cpf;
+    // _user.includeDate = LoggedUser.includeDate;
+    // _user.lastChange = DateTime.now();
   }
 
-  _updateLocaleUser(){
-    nameTextController.text = _user.name;
-    birthDateTextController.text = _user.birthdate;
-    genderSelected.value = _user.gender;
-    cepTextController.text = _user.cep;
-    ufSelected.value = _user.uf;
-    cityTextController.text = _user.city;
-    streetTextController.text = _user.street;
-    houseNumberTextController.text = _user.houseNumber ?? "";
-    neighborhoodTextController.text = _user.neighborhood;
-    complementTextController.text = _user.complement;
-    phoneTextController.text = _user.phone ?? "";
-    cellPhoneTextController.text = _user.cellPhone ?? "";
-    emailTextController.text = _user.email;
-    LoggedUser.id = _user.id;
-    LoggedUser.cpf = _user.cpf;
-    LoggedUser.includeDate = _user.includeDate;
+  _updateLocaleUser() {
+    // nameTextController.text = _user.name;
+    // birthDateTextController.text = _user.birthdate;
+    // genderSelected.value = _user.gender;
+    // cepTextController.text = _user.cep;
+    // ufSelected.value = _user.uf;
+    // cityTextController.text = _user.city;
+    // streetTextController.text = _user.street;
+    // houseNumberTextController.text = _user.houseNumber ?? "";
+    // neighborhoodTextController.text = _user.neighborhood;
+    // complementTextController.text = _user.complement;
+    // phoneTextController.text = _user.phone ?? "";
+    // cellPhoneTextController.text = _user.cellPhone ?? "";
+    // emailTextController.text = _user.email;
+    // LoggedUser.id = _user.id;
+    // LoggedUser.cpf = _user.cpf;
+    // LoggedUser.includeDate = _user.includeDate;
   }
 
   editButtonPressed() async {
     FocusScope.of(Get.context!).requestFocus(FocusNode());
-    if(profileIsDisabled.value){
+    if (profileIsDisabled.value) {
       buttonText.value = "SALVAR";
       profileIsDisabled.value = false;
-    }
-    else{
+    } else {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
       await Future.delayed(Duration(seconds: 1));
 
-      if(!await InternetConnection.validInternet(
+      if (!await InternetConnection.validInternet(
         "É necessário uma conexão com a internet para fazer o cadastro",
         loadingAnimation,
         loadingWithSuccessOrErrorWidget,
-      )){
+      )) {
         return;
       }
 
-      if(!_validProfile()){
+      if (!_validProfile()) {
         return;
-      }
-      else if(_validPersonalInformationAndAdvanceNextStep()){
+      } else if (_validPersonalInformationAndAdvanceNextStep()) {
         _setUserToUpdate();
 
-        if(await _saveUser()){
+        if (await _saveUser()) {
           await loadingWithSuccessOrErrorWidget.stopAnimation();
           await showDialog(
             context: Get.context!,
@@ -342,24 +336,22 @@ class UserProfileController extends GetxController {
     }
   }
 
-  bool _validProfile(){
-    try{
-      if(nameTextController.text == ""){
+  bool _validProfile() {
+    try {
+      if (nameTextController.text == "") {
         nameInputHasError.value = true;
         tabController.index = 0;
         throw "Informe o seu Nome";
-      }
-      else{
+      } else {
         nameInputHasError.value = false;
       }
 
       String? birthDateValidation = TextFieldValidators.birthDayValidation(birthDateTextController.text, "de Nascimento");
-      if(birthDateValidation != null && birthDateValidation != ""){
+      if (birthDateValidation != null && birthDateValidation != "") {
         birthdayInputHasError.value = true;
         tabController.index = 0;
         throw birthDateValidation;
-      }
-      else{
+      } else {
         birthdayInputHasError.value = false;
       }
 
@@ -368,72 +360,65 @@ class UserProfileController extends GetxController {
         9,
         "Cep",
       );
-      if(cepValidation != null && cepValidation != ""){
+      if (cepValidation != null && cepValidation != "") {
         cepInputHasError.value = true;
         tabController.index = 1;
         throw cepValidation;
-      }
-      else{
+      } else {
         cepInputHasError.value = false;
       }
 
       String? cityValidation = TextFieldValidators.standardValidation(cityTextController.text, "Informe a Cidade");
-      if(cityValidation != null && cityValidation != ""){
+      if (cityValidation != null && cityValidation != "") {
         cityInputHasError.value = true;
         tabController.index = 1;
         throw cityValidation;
-      }
-      else{
+      } else {
         cityInputHasError.value = false;
       }
 
       String? streetValidation = TextFieldValidators.standardValidation(streetTextController.text, "Informe o Logradouro");
-      if(streetValidation != null && streetValidation != ""){
+      if (streetValidation != null && streetValidation != "") {
         streetInputHasError.value = true;
         tabController.index = 1;
         throw streetValidation;
-      }
-      else{
+      } else {
         streetInputHasError.value = false;
       }
 
       String? neighborhoodValidation = TextFieldValidators.standardValidation(neighborhoodTextController.text, "Informe o Bairro");
-      if(neighborhoodValidation != null && neighborhoodValidation != ""){
+      if (neighborhoodValidation != null && neighborhoodValidation != "") {
         neighborhoodInputHasError.value = true;
         tabController.index = 1;
         throw neighborhoodValidation;
-      }
-      else{
+      } else {
         neighborhoodInputHasError.value = false;
       }
 
       String? phoneValidation = TextFieldValidators.phoneValidation(phoneTextController.text);
-      if(phoneValidation != null && phoneValidation != ""){
+      if (phoneValidation != null && phoneValidation != "") {
         phoneInputHasError.value = true;
         tabController.index = 2;
         throw phoneValidation;
-      }
-      else{
+      } else {
         phoneInputHasError.value = false;
       }
 
       String? cellPhoneValidation = TextFieldValidators.cellPhoneValidation(cellPhoneTextController.text);
-      if(cellPhoneValidation != null && cellPhoneValidation != ""){
+      if (cellPhoneValidation != null && cellPhoneValidation != "") {
         cellPhoneInputHasError.value = true;
         tabController.index = 2;
         throw cellPhoneValidation;
-      }
-      else{
+      } else {
         cellPhoneInputHasError.value = false;
       }
 
       String? emailValidation = TextFieldValidators.emailValidation(emailTextController.text);
-      if(emailValidation != null && emailValidation != ""){
+      if (emailValidation != null && emailValidation != "") {
         emailInputHasError.value = true;
         tabController.index = 2;
         throw emailValidation;
-      }
-      else{
+      } else {
         emailInputHasError.value = false;
       }
 
@@ -441,17 +426,15 @@ class UserProfileController extends GetxController {
         emailTextController.text,
         confirmEmailTextController.text,
       );
-      if(confirmEmailvalidation != null && confirmEmailvalidation != ""){
+      if (confirmEmailvalidation != null && confirmEmailvalidation != "") {
         confirmEmailInputHasError.value = true;
         tabController.index = 2;
         throw confirmEmailvalidation;
-      }
-      else{
+      } else {
         confirmEmailInputHasError.value = false;
       }
       return true;
-    }
-    catch(e){
+    } catch (e) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -466,14 +449,11 @@ class UserProfileController extends GetxController {
   }
 
   getProfileImage(imageOrigin origin) async {
-    try{
+    try {
       mainMenuController.loadingPicture.value = true;
-      profilePicture = await _picker.pickImage(
-          source: origin == imageOrigin.camera ?
-          ImageSource.camera : ImageSource.gallery
-      );
-      if(profilePicture != null){
-        if(await _saveProfilePicture()){
+      profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
+      if (profilePicture != null) {
+        if (await _saveProfilePicture()) {
           imageChanged = true;
           SnackbarWidget(
             warningText: "Aviso",
@@ -482,8 +462,7 @@ class UserProfileController extends GetxController {
           );
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -493,20 +472,18 @@ class UserProfileController extends GetxController {
           );
         },
       );
-    }
-    finally{
+    } finally {
       mainMenuController.loadingPicture.value = false;
     }
   }
 
   Future<bool> _saveProfilePicture() async {
-    if(profilePicture != null && profilePicture!.path.isNotEmpty) {
+    if (profilePicture != null && profilePicture!.path.isNotEmpty) {
       mainMenuController.profileImagePath.value = profilePicture!.path;
       return await mainMenuController.sharedPreferences.setString(
         "profile_picture",
         profilePicture!.path,
       );
-
     }
     return false;
   }
@@ -514,18 +491,16 @@ class UserProfileController extends GetxController {
   Future<bool> _saveUser() async {
     int trys = 0;
 
-    while(true){
-      try{
+    while (true) {
+      try {
         //if(await _userService.updateUser(user)) {
-        if(true) {
+        if (true) {
           return true;
-        }
-        else{
+        } else {
           throw Exception();
         }
-      }
-      catch(_){
-        if(trys < 2){
+      } catch (_) {
+        if (trys < 2) {
           trys++;
           continue;
         }
@@ -560,7 +535,7 @@ class UserProfileController extends GetxController {
   }
 
   _deleteProfilePicture() async {
-    try{
+    try {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       imageChanged = await mainMenuController.sharedPreferences.remove(
@@ -582,8 +557,7 @@ class UserProfileController extends GetxController {
         mainMenuController.profileImagePath,
         mainMenuController.sharedPreferences,
       );
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
