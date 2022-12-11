@@ -52,7 +52,6 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
                           title: "Atendimentos Pendentes",
-                          titleColor: AppColors.backgroundColor,
                         ),
                       ),
                       Expanded(

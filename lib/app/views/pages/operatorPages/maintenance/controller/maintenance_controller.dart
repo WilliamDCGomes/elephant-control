@@ -1,11 +1,13 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/text_widget.dart';
 import '../../mainMenu/controller/main_menu_controller.dart';
 
 class MaintenanceController extends GetxController {
@@ -24,8 +26,7 @@ class MaintenanceController extends GetxController {
   late TextEditingController clock2;
   late TextEditingController observations;
   late TextEditingController teddyAddMachine;
-  late ImagesPictureWidget firstImageClock;
-  late ImagesPictureWidget secondImageClock;
+  late ImagesPictureWidget imageClock;
   late ImagesPictureWidget beforeMaintenanceImageClock;
   late ImagesPictureWidget afterMaintenanceImageClock;
   late MainMenuController _mainMenuController;
@@ -50,12 +51,12 @@ class MaintenanceController extends GetxController {
           lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5)));
           break;
         case "Supermercado Central":
-          priority.value = "MÉDIA";
-          priorityColor.value = AppColors.yellowDarkColor.value;
+          priority.value = "NORMAL";
+          priorityColor.value = AppColors.greenColor.value;
           lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -3)));
           break;
         case "Cinema Alameda":
-          priority.value = "BAIXA";
+          priority.value = "NORMAL";
           priorityColor.value = AppColors.greenColor.value;
           lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -1)));
           break;
@@ -76,8 +77,7 @@ class MaintenanceController extends GetxController {
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
 
-    firstImageClock = ImagesPictureWidget();
-    secondImageClock = ImagesPictureWidget();
+    imageClock = ImagesPictureWidget();
     beforeMaintenanceImageClock = ImagesPictureWidget();
     afterMaintenanceImageClock = ImagesPictureWidget();
 
@@ -114,16 +114,47 @@ class MaintenanceController extends GetxController {
         _mainMenuController.amountPouch.value++;
       _mainMenuController.amountTeddy.value -= teddy;
 
-      if(int.parse(clock2.text) < 2000)
+      double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
+      if(averageValue < 25 || averageValue > 40) {
         await showDialog(
           context: Get.context!,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return InformationPopup(
-              warningMessage: "A média dessa máquina está fora do programado!",
+              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
+              popupColor: AppColors.redColor,
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 3.h,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  TextWidget(
+                    "AVISO",
+                    textColor: AppColors.whiteColor,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 3.h,
+                  ),
+                ],
+              ),
             );
           },
         );
+      }
 
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(
@@ -164,37 +195,13 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty){
+    if(imageClock.picture == null || imageClock.picture!.path.isEmpty){
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return InformationPopup(
-            warningMessage: "Tire a foto da máquina pós atendimento",
-          );
-        },
-      );
-      return false;
-    }
-    if(firstImageClock.picture == null || firstImageClock.picture!.path.isEmpty){
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return InformationPopup(
-            warningMessage: "Tire a foto do primeiro relógio",
-          );
-        },
-      );
-      return false;
-    }
-    if(secondImageClock.picture == null || secondImageClock.picture!.path.isEmpty){
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return InformationPopup(
-            warningMessage: "Tire a foto do segundo relógio",
+            warningMessage: "Tire a foto dos relógios",
           );
         },
       );
@@ -231,6 +238,18 @@ class MaintenanceController extends GetxController {
         builder: (BuildContext context) {
           return InformationPopup(
             warningMessage: "Informe a quantidade de pelúcias recolocadas na máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if(afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty){
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Tire a foto da máquina pós atendimento",
           );
         },
       );

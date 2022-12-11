@@ -55,7 +55,6 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
                           title: "Atendimentos",
-                          titleColor: AppColors.backgroundColor,
                         ),
                       ),
                       Expanded(
@@ -116,7 +115,18 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(2.h),
+                              padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 1.h),
+                              child: ButtonWidget(
+                                hintText: "Adicionar Ocorrência",
+                                fontWeight: FontWeight.bold,
+                                widthButton: double.infinity,
+                                onPressed: () {
+
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(2.h, 1.h, 2.h, 2.h),
                               child: ButtonWidget(
                                 hintText: "Montar nova lista de atendimento",
                                 fontWeight: FontWeight.bold,

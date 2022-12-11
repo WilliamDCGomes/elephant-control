@@ -1,5 +1,6 @@
 class LoggedUser {
   static String id = "";
+  static String userType = "";
   static String name = "";
   static String nameInitials = "";
   static String nameAndLastName = "";

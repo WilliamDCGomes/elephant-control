@@ -43,8 +43,8 @@ class MaintenanceHistoryController extends GetxController {
       MaintenanceCardWidget(
         machineName: "Supermercado Central",
         status: "Pendente",
-        workPriority: "MÉDIA",
-        priorityColor: AppColors.yellowDarkColor.value,
+        workPriority: "NORMAL",
+        priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
         pouchCollected: false,
@@ -53,7 +53,7 @@ class MaintenanceHistoryController extends GetxController {
       MaintenanceCardWidget(
         machineName: "Cinema Alameda",
         status: "Pendente",
-        workPriority: "BAIXA",
+        workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
@@ -66,8 +66,8 @@ class MaintenanceHistoryController extends GetxController {
       MaintenanceCardWidget(
         machineName: "Shopping Oeste",
         status: "Pendente",
-        workPriority: "MÉDIA",
-        priorityColor: AppColors.yellowDarkColor.value,
+        workPriority: "NORMAL",
+        priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
         pouchCollected: false,
@@ -86,7 +86,7 @@ class MaintenanceHistoryController extends GetxController {
       MaintenanceCardWidget(
         machineName: "Cinepólis",
         status: "Pendente",
-        workPriority: "BAIXA",
+        workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
@@ -106,14 +106,14 @@ class MaintenanceHistoryController extends GetxController {
       MaintenanceCardWidget(
         machineName: "Parque de Diversão",
         status: "Pendente",
-        workPriority: "BAIXA",
+        workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
         pouchCollected: false,
         teddy: "0",
       ),
-    ];
+    ]; 
   }
 
   removeItemList(int index) async {

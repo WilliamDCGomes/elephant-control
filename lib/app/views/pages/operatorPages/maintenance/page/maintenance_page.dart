@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../../stylePages/masks_for_text_fields.dart';
 import '../../../widgetsShared/button_widget.dart';
@@ -61,7 +60,6 @@ class _MaintenancePageState extends State<MaintenancePage> {
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
                           title: "Novo Atendimento",
-                          titleColor: AppColors.backgroundColor,
                         ),
                       ),
                       Expanded(
@@ -132,26 +130,22 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.h,
-                                    ),
+                                    padding: EdgeInsets.only(top: 3.h,),
                                     child: TextFieldWidget(
                                       controller: controller.operatorName,
                                       hintText: "Nome Operador",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.name,
                                       enableSuggestions: true,
                                       justRead: true,
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 1.5.h,
-                                    ),
+                                    padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
                                       controller: controller.maintenanceDate,
                                       hintText: "Data do Atendimento",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [MasksForTextFields.birthDateMask],
                                       justRead: true,
@@ -174,126 +168,58 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     () => DropdownButtonWidget(
                                       itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
                                       hintText: "Máquina Atendida",
-                                      height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                      height: 6.5.h,
                                       width: 85.w,
                                       rxListItems: controller.machinesPlaces,
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.5.h,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Pré Atendimento",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.beforeMaintenanceImageClock,
-                                            ],
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 1.h),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextWidget(
+                                              "Foto Pré Atendimento",
+                                              textColor: AppColors.defaultColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Pós Atendimento",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.afterMaintenanceImageClock,
-                                            ],
-                                          ),
-                                        ),
+                                        controller.beforeMaintenanceImageClock,
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.h,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: EdgeInsets.only(top: 3.h,),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Relógio 1",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.firstImageClock,
-                                            ],
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 1.h),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextWidget(
+                                              "Foto dos Relógios",
+                                              textColor: AppColors.defaultColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(bottom: 1.h),
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: TextWidget(
-                                                    "Foto Relógio 1",
-                                                    textColor: AppColors.defaultColor,
-                                                    fontSize: 16.sp,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                              controller.secondImageClock,
-                                            ],
-                                          ),
-                                        ),
+                                        controller.imageClock,
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.h,
-                                    ),
+                                    padding: EdgeInsets.only(top: 3.h,),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -301,7 +227,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                           child: TextFieldWidget(
                                             controller: controller.clock1,
                                             hintText: "Relógio 1",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                           ),
@@ -313,7 +239,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                           child: TextFieldWidget(
                                             controller: controller.clock2,
                                             hintText: "Relógio 2",
-                                            height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                            height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                           ),
@@ -322,13 +248,11 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 1.5.h,
-                                    ),
+                                    padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
                                       controller: controller.teddyAddMachine,
                                       hintText: "Pelúcias Recolocadas na Máquina",
-                                      height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                      height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                     ),
@@ -352,7 +276,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             radioText: "Sim",
                                             size: 4.h,
                                             checked: controller.yes.value,
-                                            onChanged: () {
+                                            onChanged: (){
                                               controller.yes.value = !controller.yes.value;
                                               controller.no.value = !controller.yes.value;
                                             },
@@ -369,7 +293,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             size: 4.h,
                                             spaceBetween: 1.w,
                                             checked: controller.no.value,
-                                            onChanged: () {
+                                            onChanged: (){
                                               controller.no.value = !controller.no.value;
                                               controller.yes.value = !controller.no.value;
                                             },
@@ -379,13 +303,32 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 2.h,
-                                      bottom: 3.h,
+                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 1.h),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextWidget(
+                                              "Foto Pós Atendimento",
+                                              textColor: AppColors.defaultColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        controller.afterMaintenanceImageClock,
+                                      ],
                                     ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.5.h, bottom: 3.h,),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
-                                      height: PlatformType.isTablet(context) ? 18.h : 19.h,
+                                      height: 19.h,
                                       keyboardType: TextInputType.text,
                                       textCapitalization: TextCapitalization.sentences,
                                       textAlignVertical: TextAlignVertical.top,

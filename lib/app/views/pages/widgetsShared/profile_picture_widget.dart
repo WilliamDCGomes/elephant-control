@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,14 +37,14 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
           color: AppColors.backgroundColor,
         ),
       ) :
-      widget.hasPicture.value ?
+      widget.profileImagePath.value.isNotEmpty ?
       Container(
         height: 20.h,
         width: 20.h,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(
-              widget.profileImagePath.value,
+            image: MemoryImage(
+              File(widget.profileImagePath.value).readAsBytesSync(),
             ),
             fit: BoxFit.contain,
           ),

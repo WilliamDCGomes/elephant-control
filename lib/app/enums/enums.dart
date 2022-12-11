@@ -3,3 +3,15 @@ enum Flavor {
   HMLG,
   PROD,
 }
+
+enum imageOrigin {
+  camera,
+  gallery,
+}
+
+enum destinationsPages {
+  settings,
+  fingerPrintSetting,
+  resetPassword,
+  logout,
+}

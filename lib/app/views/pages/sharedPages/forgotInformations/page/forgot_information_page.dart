@@ -78,7 +78,7 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                                       () => TextFieldWidget(
                                         controller: controller.emailInputController,
                                         hintText: "Informe o E-mail",
-                                        height: PlatformType.isTablet(context) ? 7.h : 9.h,
+                                        height: 9.h,
                                         width: double.infinity,
                                         keyboardType: TextInputType.emailAddress,
                                         enableSuggestions: true,
@@ -103,7 +103,7 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                                 child: ButtonWidget(
                                   hintText: "ENVIAR",
                                   fontWeight: FontWeight.bold,
-                                  widthButton: 90.w,
+                                  widthButton: double.infinity,
                                   onPressed: () {
                                     FocusScope.of(context).requestFocus(FocusNode());
                                     controller.sendButtonPressed();

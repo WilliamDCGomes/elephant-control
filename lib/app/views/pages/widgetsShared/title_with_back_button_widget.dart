@@ -31,14 +31,14 @@ class TitleWithBackButtonWidget extends StatelessWidget {
               padding: EdgeInsets.only(right: 2.w),
               child: Icon(
                 Icons.arrow_back_ios,
-                color: titleColor ?? AppColors.defaultColor,
+                color: titleColor ?? AppColors.backgroundColor,
                 size: 3.h,
               ),
             ),
             Expanded(
               child: TextWidget(
                 title,
-                textColor: titleColor ?? AppColors.blackColor,
+                textColor: titleColor ?? AppColors.backgroundColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 textAlign: TextAlign.start,
