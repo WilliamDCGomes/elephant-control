@@ -1,12 +1,35 @@
-import 'package:get/get_connect.dart';
+import 'package:elephant_control/base/services/user_service.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../flavors.dart';
 
 class BaseService extends GetConnect {
   SharedPreferences? sharedPreferences;
+  final String baseUrlApi = F.baseURL;
 
   BaseService() {
     httpClient.timeout = const Duration(seconds: 30);
     allowAutoSignedCert = true;
+  }
+  Future<String> getToken({bool getTokenForcado = false}) async {
+    try {
+      sharedPreferences ??= sharedPreferences = await SharedPreferences.getInstance();
+      String? token = sharedPreferences!.getString('Token');
+      final String? expiracaoToken = sharedPreferences!.getString('ExpiracaoToken');
+      if ((expiracaoToken != null && DateTime.now().compareTo(DateTime.parse(expiracaoToken)) >= 0) || getTokenForcado) {
+        token = (await UserService().authenticate())?.token;
+        if (token == null) throw Exception();
+        sharedPreferences!.setString('Token', token);
+      }
+      return token!;
+    } catch (_) {
+      throw Exception();
+    }
+  }
+
+  bool hasErrorResponse(Response response) {
+    return response.unauthorized || response.status.hasError || response.body == null;
   }
 
   @override
@@ -18,15 +41,35 @@ class BaseService extends GetConnect {
       query: query,
       decoder: decoder,
     );
-
-    if (!response.unauthorized) {
-      return response;
-    }
-
+    if (!response.unauthorized) return response;
+    final token = await getToken(getTokenForcado: true);
     return httpClient.get<T>(
       url,
       contentType: contentType,
       query: query,
+      headers: {"Authorization": 'Bearer ' + token},
+      decoder: decoder,
+    );
+  }
+
+  @override
+  Future<Response<T>> post<T>(String? url, dynamic body, {String? contentType, Map<String, String>? headers, Map<String, dynamic>? query, Decoder<T>? decoder, Progress? uploadProgress}) async {
+    final response = await httpClient.post<T>(
+      url,
+      body: body,
+      headers: headers,
+      contentType: contentType,
+      query: query,
+      decoder: decoder,
+    );
+    if (!response.unauthorized) return response;
+    final token = await getToken(getTokenForcado: true);
+    return httpClient.post<T>(
+      url,
+      body: body,
+      contentType: contentType,
+      query: query,
+      headers: {"Authorization": 'Bearer ' + token},
       decoder: decoder,
     );
   }

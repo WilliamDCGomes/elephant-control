@@ -12,13 +12,13 @@ class ForgotInformationController extends GetxController {
   late RxBool emailInputHasError;
   late final GlobalKey<FormState> formKey;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late IUserService _userService;
+  late UserService _userService;
 
-  ForgotInformationController(){
+  ForgotInformationController() {
     _inicializeVariables();
   }
 
-  _inicializeVariables(){
+  _inicializeVariables() {
     emailInputController = TextEditingController();
     loadingAnimation = false.obs;
     emailInputHasError = false.obs;
@@ -30,27 +30,26 @@ class ForgotInformationController extends GetxController {
   }
 
   sendButtonPressed() async {
-    try{
-      if(formKey.currentState!.validate()){
-        loadingAnimation.value = true;
-        await loadingWithSuccessOrErrorWidget.startAnimation();
-        if(await _userService.resetPassword(emailInputController.text)){
-          await loadingWithSuccessOrErrorWidget.stopAnimation();
-          await showDialog(
-            context: Get.context!,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return InformationPopup(
-                warningMessage: "Enviamos em seu E-mail as instruções para recuperar sua conta.",
-              );
-            },
-          );
-          await Get.offAll(() => LoginPage());
-        }
-        throw Exception();
-      }
-    }
-    catch(_){
+    try {
+      // if(formKey.currentState!.validate()){
+      //   loadingAnimation.value = true;
+      //   await loadingWithSuccessOrErrorWidget.startAnimation();
+      //   if(await _userService.resetPassword(emailInputController.text)){
+      //     await loadingWithSuccessOrErrorWidget.stopAnimation();
+      //     await showDialog(
+      //       context: Get.context!,
+      //       barrierDismissible: false,
+      //       builder: (BuildContext context) {
+      //         return InformationPopup(
+      //           warningMessage: "Enviamos em seu E-mail as instruções para recuperar sua conta.",
+      //         );
+      //       },
+      //     );
+      //     await Get.offAll(() => LoginPage());
+      //   }
+      //   throw Exception();
+      // }
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,

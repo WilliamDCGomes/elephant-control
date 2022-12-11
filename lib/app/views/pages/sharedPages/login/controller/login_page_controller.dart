@@ -1,3 +1,5 @@
+import 'package:elephant_control/base/models/user.dart';
+import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
@@ -26,7 +28,7 @@ class LoginPageController extends GetxController {
   late final GlobalKey<FormState> formKey;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  LoginPageController(this._cancelFingerPrint){
+  LoginPageController(this._cancelFingerPrint) {
     _initializeVariables();
   }
 
@@ -34,7 +36,7 @@ class LoginPageController extends GetxController {
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
     await _getKeepConnected();
-    if(!_cancelFingerPrint){
+    if (!_cancelFingerPrint) {
       await _checkBiometricSensor();
     }
     super.onInit();
@@ -44,7 +46,7 @@ class LoginPageController extends GetxController {
     keepConected.value = await sharedPreferences.getBool("keep-connected") ?? false;
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     raInputHasError = false.obs;
     passwordInputHasError = false.obs;
     passwordFieldEnabled = true.obs;
@@ -52,15 +54,15 @@ class LoginPageController extends GetxController {
     loadingAnimationSuccess = false.obs;
     keepConected = false.obs;
     formKey = GlobalKey<FormState>();
-    loadingWidget= LoadingWidget(loadingAnimation: loadingAnimation);
+    loadingWidget = LoadingWidget(loadingAnimation: loadingAnimation);
     userInputController = TextEditingController();
     passwordInputController = TextEditingController();
     passwordInputFocusNode = FocusNode();
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
-    if (kDebugMode){
-      userInputController.text = "teste";
-      passwordInputController.text = "123456";
+    if (kDebugMode) {
+      userInputController.text = "hugo";
+      passwordInputController.text = "12345678";
     }
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimationSuccess,
@@ -70,7 +72,7 @@ class LoginPageController extends GetxController {
   _checkBiometricSensor() async {
     try {
       bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
-      if(await fingerPrintAuth.canCheckBiometrics && (useFingerPrint ?? false)){
+      if (await fingerPrintAuth.canCheckBiometrics && (useFingerPrint ?? false)) {
         var authenticate = await fingerPrintAuth.authenticate(
           localizedReason: "Utilize a sua digital para fazer o login.",
         );
@@ -81,26 +83,37 @@ class LoginPageController extends GetxController {
           Get.offAll(() => MainMenuPage());
         }
       }
-    }
-    catch(e){
-
-    }
+    } catch (e) {}
   }
 
   loginPressed() async {
-    try{
-      if(formKey.currentState!.validate()){
+    try {
+      if (formKey.currentState!.validate()) {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
-        await Future.delayed(Duration(seconds: 5));
+        final userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
         loginButtonFocusNode.requestFocus();
 
         await loadingWidget.stopAnimation(justLoading: true);
 
-        if(true){
-          Get.offAll(() => MainMenuPage());
-        }
-        else{
+        if (userLogged != null) {
+          sharedPreferences.setString("Token", userLogged.token);
+          sharedPreferences.setString("ExpiracaoToken", userLogged.expirationDate.toIso8601String());
+          sharedPreferences.setString("Login", userInputController.text);
+          sharedPreferences.setString("Senha", passwordInputController.text);
+          if (keepConected.value) {
+            await sharedPreferences.setBool("keep-connected", true);
+          } else {
+            await sharedPreferences.setBool("keep-connected", false);
+          }
+          if (userLogged.userType == UserType.operator) {
+            Get.offAll(() => MainMenuPage());
+          } else if (userLogged.userType == UserType.admin) {
+            Get.offAll(() => MainMenuPage());
+          } else {
+            Get.offAll(() => MainMenuPage());
+          }
+        } else {
           await showDialog(
             context: Get.context!,
             barrierDismissible: false,
@@ -112,8 +125,7 @@ class LoginPageController extends GetxController {
           );
         }
       }
-    }
-    catch(_){
+    } catch (_) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -126,4 +138,3 @@ class LoginPageController extends GetxController {
     }
   }
 }
-

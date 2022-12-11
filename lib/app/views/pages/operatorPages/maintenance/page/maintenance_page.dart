@@ -132,7 +132,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.operatorName,
                                       hintText: "Nome Operador",
@@ -143,7 +145,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.maintenanceDate,
                                       hintText: "Data do Atendimento",
@@ -177,7 +181,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -230,7 +236,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -283,7 +291,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -312,7 +322,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.teddyAddMachine,
                                       hintText: "Pelúcias Recolocadas na Máquina",
@@ -340,7 +352,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             radioText: "Sim",
                                             size: 4.h,
                                             checked: controller.yes.value,
-                                            onChanged: (){
+                                            onChanged: () {
                                               controller.yes.value = !controller.yes.value;
                                               controller.no.value = !controller.yes.value;
                                             },
@@ -357,7 +369,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             size: 4.h,
                                             spaceBetween: 1.w,
                                             checked: controller.no.value,
-                                            onChanged: (){
+                                            onChanged: () {
                                               controller.no.value = !controller.no.value;
                                               controller.yes.value = !controller.no.value;
                                             },
@@ -367,7 +379,10 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 2.h, bottom: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 2.h,
+                                      bottom: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: PlatformType.isTablet(context) ? 18.h : 19.h,

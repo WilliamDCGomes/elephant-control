@@ -18,13 +18,13 @@ class SincEngine {
           await item.postMethod();
           sync.success = true;
           sync.message = "Sincronizado com sucesso";
-          sync.lastChange = DateTime.now();
+          sync.alteration = DateTime.now();
         } catch (e) {
           sync.success = false;
           sync.message = e.toString();
-          sync.lastChange = DateTime.now();
+          sync.alteration = DateTime.now();
         }
-        sync.fullTime = (sync.lastChange?.difference(sync.start).inSeconds ?? -1);
+        sync.fullTime = (sync.alteration?.difference(sync.start).inSeconds ?? -1);
         syncList.add(sync);
       }
     }
@@ -41,13 +41,13 @@ class SincEngine {
           await item.getAll();
           sync.success = true;
           sync.message = "Sincronizado com sucesso";
-          sync.lastChange = DateTime.now();
+          sync.alteration = DateTime.now();
         } catch (e) {
           sync.success = false;
           sync.message = e.toString();
-          sync.lastChange = DateTime.now();
+          sync.alteration = DateTime.now();
         }
-        sync.fullTime = (sync.lastChange?.difference(sync.start).inSeconds ?? -1);
+        sync.fullTime = (sync.alteration?.difference(sync.start).inSeconds ?? -1);
         syncList.add(sync);
       }
     }
