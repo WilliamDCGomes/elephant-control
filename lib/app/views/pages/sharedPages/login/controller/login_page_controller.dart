@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -79,6 +81,8 @@ class LoginPageController extends GetxController {
 
         if (authenticate) {
           loadingAnimationSuccess.value = true;
+          await _saveOptions();
+
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
           Get.offAll(() => MainMenuPage());
         }
@@ -86,21 +90,46 @@ class LoginPageController extends GetxController {
     } catch (e) {}
   }
 
+  _saveOptions() async {
+    String? oldUser = await sharedPreferences.getString("user_logged");
+    if(oldUser == null){
+      await sharedPreferences.setString("user_logged", userInputController.text);
+    }
+    else if(oldUser != userInputController.text){
+      await sharedPreferences.clear();
+      await sharedPreferences.setString("user_logged", userInputController.text);
+    }
+
+    await sharedPreferences.setBool("keep-connected", keepConected.value);
+  }
+
   loginPressed() async {
     try {
       if (formKey.currentState!.validate()) {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
-        final userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
+        var userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
         loginButtonFocusNode.requestFocus();
 
         await loadingWidget.stopAnimation(justLoading: true);
+
+        userLogged = AuthenticateResponse(
+          id: Uuid().v4(),
+          expirationDate: DateTime.now().add(Duration(hours: 3)),
+          name: 'hugo',
+          login: 'hugo',
+          token: '',
+          userType: UserType.operator
+        );
 
         if (userLogged != null) {
           sharedPreferences.setString("Token", userLogged.token);
           sharedPreferences.setString("ExpiracaoToken", userLogged.expirationDate.toIso8601String());
           sharedPreferences.setString("Login", userInputController.text);
           sharedPreferences.setString("Senha", passwordInputController.text);
+
+          await _saveOptions();
+
           if (keepConected.value) {
             await sharedPreferences.setBool("keep-connected", true);
           } else {
@@ -108,12 +137,15 @@ class LoginPageController extends GetxController {
           }
           if (userLogged.userType == UserType.operator) {
             Get.offAll(() => MainMenuPage());
-          } else if (userLogged.userType == UserType.admin) {
-            Get.offAll(() => MainMenuPage());
-          } else {
+          }
+          else if (userLogged.userType == UserType.admin) {
             Get.offAll(() => MainMenuPage());
           }
-        } else {
+          else {
+            Get.offAll(() => MainMenuPage());
+          }
+        }
+        else {
           await showDialog(
             context: Get.context!,
             barrierDismissible: false,

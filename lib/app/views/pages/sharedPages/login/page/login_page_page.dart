@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/paths.dart';
-import '../../../../../utils/platform_type.dart';
 import '../../../../../utils/text_field_validators.dart';
 import '../../../sharedPages/forgotInformations/page/forgot_information_page.dart';
 import '../../../widgetsShared/button_widget.dart';

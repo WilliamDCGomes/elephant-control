@@ -92,8 +92,8 @@ class _LogoutPopupState extends State<LogoutPopup> {
                               widthButton: 32.w,
                               fontWeight: FontWeight.bold,
                               backgroundColor: AppColors.whiteColor,
-                              borderColor: AppColors.orangeColor,
-                              textColor: AppColors.orangeColor,
+                              borderColor: AppColors.defaultColor,
+                              textColor: AppColors.defaultColor,
                               onPressed: () => Get.back(),
                             ),
                             ButtonWidget(

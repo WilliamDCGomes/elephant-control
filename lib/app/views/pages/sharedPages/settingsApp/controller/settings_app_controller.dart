@@ -56,5 +56,17 @@ class SettingsAppController extends GetxController {
         page: destinationsPages.resetPassword,
       ),
     );
+    cardSettingsList.add(
+      CardProfileTabListWidget(
+        iconCard: Image.asset(
+          Paths.Icone_Sair,
+          height: 4.5.h,
+          width: 4.5.h,
+          color: AppColors.defaultColor,
+        ),
+        titleIconPath: "Sair",
+        page: destinationsPages.logout,
+      ),
+    );
   }
 }

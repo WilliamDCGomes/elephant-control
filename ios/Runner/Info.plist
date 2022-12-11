@@ -49,5 +49,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+        <string>É necessário a permissão para autenticação com o Touch ID ou Face ID</string>
 	</dict>
 </plist>

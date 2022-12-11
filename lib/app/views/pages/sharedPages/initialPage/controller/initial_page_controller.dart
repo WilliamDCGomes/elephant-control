@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../utils/platform_type.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../login/page/login_page_page.dart';
@@ -33,30 +32,28 @@ class InitialPageController extends GetxController {
 
   _loadFirstScreen() async {
     await Future.delayed(Duration(seconds: 2));
-    if(PlatformType.isPhone(Get.context!) || PlatformType.isTablet(Get.context!)) {
-      if(await sharedPreferences.getBool("keep-connected") ?? false){
-        if(await fingerPrintAuth.canCheckBiometrics && (await sharedPreferences.getBool("always_request_finger_print") ?? false)){
-          var authenticate = await fingerPrintAuth.authenticate(
-            localizedReason: "Utilize a sua digital para fazer o login.",
-          );
+    if(await sharedPreferences.getBool("keep-connected") ?? false){
+      if(await fingerPrintAuth.canCheckBiometrics && (await sharedPreferences.getBool("always_request_finger_print") ?? false)){
+        var authenticate = await fingerPrintAuth.authenticate(
+          localizedReason: "Utilize a sua digital para fazer o login.",
+        );
 
-          if (authenticate) {
-            loadingAnimationSuccess.value = true;
+        if (authenticate) {
+          loadingAnimationSuccess.value = true;
 
-            await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
-            Get.offAll(() => MainMenuPage());
-          }
-          else{
-            Get.offAll(() => LoginPage());
-          }
+          await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
+          Get.offAll(() => MainMenuPage());
         }
         else{
-          Get.offAll(() => MainMenuPage());
+          Get.offAll(() => LoginPage());
         }
       }
       else{
-        Get.offAll(() => LoginPage());
+        Get.offAll(() => MainMenuPage());
       }
+    }
+    else{
+      Get.offAll(() => LoginPage());
     }
   }
 }

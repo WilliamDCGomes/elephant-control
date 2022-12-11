@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
+import '../../../widgetsShared/popups/confirmation_popup.dart';
 
 class MainMenuController extends GetxController {
   late RxBool hasPicture;
@@ -31,6 +34,7 @@ class MainMenuController extends GetxController {
       profileImagePath,
       sharedPreferences,
     );
+    await _checkFingerPrintUser();
     super.onInit();
   }
 
@@ -71,5 +75,23 @@ class MainMenuController extends GetxController {
       welcomePhrase = "Boa tarde!".obs;
     else
       welcomePhrase = "Boa noite!".obs;
+  }
+
+  _checkFingerPrintUser() async {
+    bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
+    if(useFingerPrint == null && await LocalAuthentication().canCheckBiometrics){
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ConfirmationPopup(
+            title: "Aviso",
+            subTitle: "Deseja habilitar o login por digital?",
+            firstButton: () => sharedPreferences.setBool("user_finger_print", false),
+            secondButton: () => sharedPreferences.setBool("user_finger_print", true),
+          );
+        },
+      );
+    }
   }
 }
