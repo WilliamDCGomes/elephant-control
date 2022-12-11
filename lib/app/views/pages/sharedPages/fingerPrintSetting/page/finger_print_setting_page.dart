@@ -41,132 +41,131 @@ class _FingerPrintSettingPageState extends State<FingerPrintSettingPage> {
           ),
           child: Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: 2.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 2.h),
-                      child: TitleWithBackButtonWidget(
-                        title: "Configuração da Digital",
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: 8.h,
+                    color: AppColors.defaultColor,
+                    padding: EdgeInsets.symmetric(horizontal: 2.h),
+                    child: TitleWithBackButtonWidget(
+                      title: "Configuração da Digital",
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          InformationContainerWidget(
-                            iconPath: Paths.Icone_Configuracao_Biometria,
-                            textColor: AppColors.whiteColor,
-                            backgroundColor: AppColors.defaultColor,
-                            informationText: "Configure o acesso do aplicativo pela sua digital!",
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2.h),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1.h),
-                                      ),
-                                      child: Obx(
-                                        () => SwitchWidget(
-                                          text: "Habilitar o login por digital?",
-                                          checked: controller.fingerPrintLoginChecked.value,
-                                          onClicked: () => controller.fingerPrintLoginPressed(),
-                                        ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InformationContainerWidget(
+                          iconPath: Paths.Icone_Configuracao_Biometria,
+                          textColor: AppColors.whiteColor,
+                          backgroundColor: AppColors.defaultColor,
+                          informationText: "Configure a digital no aplicativo!",
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2.h),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(1.h),
+                                    ),
+                                    child: Obx(
+                                      () => SwitchWidget(
+                                        text: "Habilitar o login por digital?",
+                                        checked: controller.fingerPrintLoginChecked.value,
+                                        onClicked: () => controller.fingerPrintLoginPressed(),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1.h),
-                                      ),
-                                      child: Obx(
-                                        () => SwitchWidget(
-                                          text: "Sempre solicitar a digital quando entrar no aplicativo?",
-                                          checked: controller.alwaysRequestFingerPrintChecked.value,
-                                          justRead: controller.enableAlwaysRequestFingerPrint.value,
-                                          onClicked: () => controller.alwaysRequestFingerPrintPressed(),
-                                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(1.h),
+                                    ),
+                                    child: Obx(
+                                      () => SwitchWidget(
+                                        text: "Sempre solicitar a digital quando entrar no aplicativo?",
+                                        checked: controller.alwaysRequestFingerPrintChecked.value,
+                                        justRead: controller.enableAlwaysRequestFingerPrint.value,
+                                        onClicked: () => controller.alwaysRequestFingerPrintPressed(),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1.h),
-                                      ),
-                                      child: Obx(
-                                        () => SwitchWidget(
-                                          text: "Habilitar a digital para pagamentos no aplicativo?",
-                                          checked: controller.fingerPrintPaymentChecked.value,
-                                          onClicked: () => controller.fingerPrintPaymentPressed(),
-                                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(1.h),
+                                    ),
+                                    child: Obx(
+                                      () => SwitchWidget(
+                                        text: "Habilitar a digital para redefinir a senha?",
+                                        checked: controller.fingerPrintChangePasswordChecked.value,
+                                        onClicked: () => controller.fingerPrintChangePasswordPressed(),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1.h),
-                                      ),
-                                      child: Obx(
-                                        () => SwitchWidget(
-                                          text: "Habilitar a digital para solicitar cancelamento de matrícula?",
-                                          checked: controller.fingerPrintRegistrationCancellationChecked.value,
-                                          onClicked: () => controller.fingerPrintRegistrationCancellationPressed(),
-                                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(1.h),
+                                    ),
+                                    child: Obx(
+                                      () => SwitchWidget(
+                                        text: "Habilitar a digital para gerar código de entrega de malotes?",
+                                        checked: controller.fingerPrintToGeneratePouchCode.value,
+                                        onClicked: () => controller.fingerPrintToGeneratePouchCodePressed(),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1.h),
-                                      ),
-                                      child: Obx(
-                                        () => SwitchWidget(
-                                          text: "Habilitar a digital para redefinir a senha?",
-                                          checked: controller.fingerPrintChangePasswordChecked.value,
-                                          onClicked: () => controller.fingerPrintChangePasswordPressed(),
-                                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(1.h),
+                                    ),
+                                    child: Obx(
+                                      () => SwitchWidget(
+                                        text: "Habilitar a digital para recebimentos de malotes?",
+                                        checked: controller.fingerPrintToReceivePouch.value,
+                                        onClicked: () => controller.fingerPrintToReceivePouchPressed(),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(2.h),
-                            child: ButtonWidget(
-                              hintText: "SALVAR",
-                              focusNode: controller.saveButtonFocusNode,
-                              fontWeight: FontWeight.bold,
-                              widthButton: double.infinity,
-                              onPressed: () => controller.saveButtonPressed(),
-                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2.h),
+                          child: ButtonWidget(
+                            hintText: "SALVAR",
+                            focusNode: controller.saveButtonFocusNode,
+                            fontWeight: FontWeight.bold,
+                            widthButton: double.infinity,
+                            onPressed: () => controller.saveButtonPressed(),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               controller.loadingWithSuccessOrErrorWidget,
             ],

@@ -8,10 +8,14 @@ import '../text_widget.dart';
 
 class InformationPopup extends StatefulWidget {
   final String warningMessage;
+  final Widget? title;
+  final Color? popupColor;
 
   const InformationPopup({
     Key? key,
     required this.warningMessage,
+    this.title,
+    this.popupColor,
   }) : super(key: key);
 
   @override
@@ -56,13 +60,13 @@ class _InformationPopupState extends State<InformationPopup> {
                   width: 90.w,
                   padding: EdgeInsets.all(1.h),
                   decoration: BoxDecoration(
-                    color: AppColors.defaultColor,
+                    color: widget.popupColor ?? AppColors.defaultColor,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(1.h),
                       topLeft: Radius.circular(1.h),
                     ),
                   ),
-                  child: TextWidget(
+                  child: widget.title ?? TextWidget(
                     "AVISO",
                     textColor: AppColors.whiteColor,
                     fontSize: 16.sp,
@@ -91,6 +95,8 @@ class _InformationPopupState extends State<InformationPopup> {
                             heightButton: 5.h,
                             widthButton: 32.w,
                             fontWeight: FontWeight.bold,
+                            backgroundColor: widget.popupColor,
+                            borderColor:  widget.popupColor,
                             onPressed: () => Get.back(),
                           ),
                         ),

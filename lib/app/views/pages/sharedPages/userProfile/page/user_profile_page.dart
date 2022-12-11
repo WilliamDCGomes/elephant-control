@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import '../../../../../utils/logged_user.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../operatorPages/mainMenu/controller/main_menu_controller.dart';
@@ -193,16 +194,19 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                         Padding(
                           padding: EdgeInsets.only(bottom: 3.h),
                           child: TextWidget(
-                            "Operador",
+                            LoggedUser.userType,
                             textColor: AppColors.backgroundColor,
                             fontSize: 17.sp,
                             textAlign: TextAlign.center,
                           ),
                         ),
                         Expanded(
-                          child: TabBarView(
-                            controller: controller.tabController,
-                            children: controller.tabsList,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 2.h),
+                            child: TabBarView(
+                              controller: controller.tabController,
+                              children: controller.tabsList,
+                            ),
                           ),
                         ),
                         Padding(

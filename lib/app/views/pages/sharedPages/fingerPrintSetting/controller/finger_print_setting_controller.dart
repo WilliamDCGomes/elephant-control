@@ -9,9 +9,9 @@ class FingerPrintSettingController extends GetxController {
   late RxBool fingerPrintLoginChecked;
   late RxBool alwaysRequestFingerPrintChecked;
   late RxBool enableAlwaysRequestFingerPrint;
-  late RxBool fingerPrintPaymentChecked;
-  late RxBool fingerPrintRegistrationCancellationChecked;
   late RxBool fingerPrintChangePasswordChecked;
+  late RxBool fingerPrintToGeneratePouchCode;
+  late RxBool fingerPrintToReceivePouch;
   late FocusNode saveButtonFocusNode;
   late SharedPreferences sharedPreferences;
   late final LocalAuthentication fingerPrintAuth;
@@ -32,9 +32,9 @@ class FingerPrintSettingController extends GetxController {
     fingerPrintLoginChecked = false.obs;
     alwaysRequestFingerPrintChecked = false.obs;
     enableAlwaysRequestFingerPrint = true.obs;
-    fingerPrintPaymentChecked = false.obs;
-    fingerPrintRegistrationCancellationChecked = false.obs;
     fingerPrintChangePasswordChecked = false.obs;
+    fingerPrintToGeneratePouchCode = false.obs;
+    fingerPrintToReceivePouch = false.obs;
     loadingAnimation = false.obs;
     saveButtonFocusNode = FocusNode();
 
@@ -47,8 +47,8 @@ class FingerPrintSettingController extends GetxController {
   _getSettingsFingerPrint() async {
     fingerPrintLoginChecked.value = await sharedPreferences.getBool("user_finger_print") ?? false;
     alwaysRequestFingerPrintChecked.value = await sharedPreferences.getBool("always_request_finger_print") ?? false;
-    fingerPrintPaymentChecked.value = await sharedPreferences.getBool("finger_print_available_payment") ?? false;
-    fingerPrintRegistrationCancellationChecked.value = await sharedPreferences.getBool("finger_print_for_registration_cancellation") ?? false;
+    fingerPrintToGeneratePouchCode.value = await sharedPreferences.getBool("finger_print_to_generate_pouch_code") ?? false;
+    fingerPrintToReceivePouch.value = await sharedPreferences.getBool("finger_print_to_receive_pouch") ?? false;
     fingerPrintChangePasswordChecked.value = await sharedPreferences.getBool("finger_print_change_password") ?? false;
 
     enableAlwaysRequestFingerPrint.value = !fingerPrintLoginChecked.value;
@@ -69,16 +69,16 @@ class FingerPrintSettingController extends GetxController {
     alwaysRequestFingerPrintChecked.value = !alwaysRequestFingerPrintChecked.value;
   }
 
-  fingerPrintPaymentPressed(){
-    fingerPrintPaymentChecked.value = !fingerPrintPaymentChecked.value;
-  }
-
-  fingerPrintRegistrationCancellationPressed(){
-    fingerPrintRegistrationCancellationChecked.value = !fingerPrintRegistrationCancellationChecked.value;
-  }
-
   fingerPrintChangePasswordPressed(){
     fingerPrintChangePasswordChecked.value = !fingerPrintChangePasswordChecked.value;
+  }
+
+  fingerPrintToGeneratePouchCodePressed(){
+    fingerPrintToGeneratePouchCode.value = !fingerPrintToGeneratePouchCode.value;
+  }
+
+  fingerPrintToReceivePouchPressed(){
+    fingerPrintToReceivePouch.value = !fingerPrintToReceivePouch.value;
   }
 
   _checkFingerPrint() async {
@@ -102,9 +102,9 @@ class FingerPrintSettingController extends GetxController {
         await loadingWithSuccessOrErrorWidget.startAnimation();
         await sharedPreferences.setBool("user_finger_print", fingerPrintLoginChecked.value);
         await sharedPreferences.setBool("always_request_finger_print", alwaysRequestFingerPrintChecked.value);
-        await sharedPreferences.setBool("finger_print_available_payment", fingerPrintPaymentChecked.value);
-        await sharedPreferences.setBool("finger_print_for_registration_cancellation", fingerPrintRegistrationCancellationChecked.value);
         await sharedPreferences.setBool("finger_print_change_password", fingerPrintChangePasswordChecked.value);
+        await sharedPreferences.setBool("finger_print_to_generate_pouch_code", fingerPrintToGeneratePouchCode.value);
+        await sharedPreferences.setBool("finger_print_to_receive_pouch", fingerPrintToReceivePouch.value);
 
         await loadingWithSuccessOrErrorWidget.stopAnimation();
         Get.back();

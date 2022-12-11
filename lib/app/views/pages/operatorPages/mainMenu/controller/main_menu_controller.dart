@@ -48,6 +48,7 @@ class MainMenuController extends GetxController {
 
   _getNameUser(){
     LoggedUser.name = "José Paulo";
+    LoggedUser.userType = "Operador";
     var names = LoggedUser.name.trim().split(" ");
 
     if(names.isNotEmpty && names.first != ""){

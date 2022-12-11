@@ -182,7 +182,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                   SizedBox(
                                     width: 73.w,
                                     child: TextWidget(
-                                      "Última Atualização: ${DateFormatToBrazil.formatDate(controller.pouchLastChange)}",
+                                      "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
                                       maxLines: 1,
                                       textColor: AppColors.whiteColor,
                                       fontWeight: FontWeight.bold,
@@ -237,7 +237,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                 SizedBox(
                                   width: 73.w,
                                   child: TextWidget(
-                                    "Última Atualização: ${DateFormatToBrazil.formatDate(controller.teddyLastChange)}",
+                                    "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
                                     maxLines: 1,
                                     textColor: AppColors.whiteColor,
                                     fontWeight: FontWeight.bold,

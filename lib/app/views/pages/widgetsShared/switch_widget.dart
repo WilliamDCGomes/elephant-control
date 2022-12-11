@@ -56,7 +56,7 @@ class SwitchWidget extends StatelessWidget {
                     ignoring: true,
                     child: Switch(
                       value: checked,
-                      inactiveThumbColor: (justRead ?? false) ? AppColors.grayTextColor : AppColors.purpleColorWithOpacity,
+                      inactiveThumbColor: (justRead ?? false) ? AppColors.grayTextColor : AppColors.defaultColor,
                       activeColor: (justRead ?? false) ? AppColors.grayTextColor : (switchColor ?? AppColors.defaultColor),
                       onChanged: (bool value) {},
                     ),
