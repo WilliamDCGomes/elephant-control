@@ -12,6 +12,7 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../../settingsApp/page/settings_app_page.dart';
 import '../controller/user_profile_controller.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -75,7 +76,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                 Scaffold(
                   backgroundColor: AppColors.transparentColor,
                   body: Padding(
-                    padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
+                    padding: EdgeInsets.symmetric(horizontal: 2.h,),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -89,9 +90,13 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                   title: "Perfil",
                                 ),
                               ),
-                              Image.asset(
-                                Paths.Logo_Branca,
-                                width: 30.w,
+                              InkWell(
+                                onTap: () => Get.to(() => SettingsAppPage()),
+                                child: Icon(
+                                  Icons.settings,
+                                  color: AppColors.backgroundColor,
+                                  size: 4.h,
+                                ),
                               ),
                             ],
                           ),

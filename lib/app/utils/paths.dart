@@ -22,7 +22,10 @@ class Paths{
   static final String Logo_Colorida = "${imagesPath}Logo_Colorida.png";
   static final String Icone_Endereco = "${imagesPath}Icone_Endereco.png";
   static final String Background_Azul = "${imagesPath}Background_Azul.png";
+  static final String Icone_Configuracao = "${imagesPath}Icone_Configuracao.png";
   static final String Logo_Cor_Background = "${imagesPath}Logo_Cor_Background.png";
+  static final String Icone_Redefinir_Senha = "${imagesPath}Icone_Redefinir_Senha.png";
+  static final String Icone_Configuracao_Biometria = "${imagesPath}Icone_Configuracao_Biometria.png";
   static final String Icone_Exibicao_Esqueci_Senha = "${imagesPath}Icone_Exibicao_Esqueci_Senha.png";
 
   static final String Error = "${jsonPath}error.json";
