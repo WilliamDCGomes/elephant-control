@@ -6,7 +6,9 @@ part of 'authenticate_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthenticateResponse _$AuthenticateResponseFromJson(Map<String, dynamic> json) => AuthenticateResponse(
+AuthenticateResponse _$AuthenticateResponseFromJson(
+        Map<String, dynamic> json) =>
+    AuthenticateResponse(
       id: json['id'] as String,
       name: json['name'] as String,
       login: json['login'] as String,
@@ -15,7 +17,9 @@ AuthenticateResponse _$AuthenticateResponseFromJson(Map<String, dynamic> json) =
       userType: $enumDecode(_$UserTypeEnumMap, json['userType']),
     );
 
-Map<String, dynamic> _$AuthenticateResponseToJson(AuthenticateResponse instance) => <String, dynamic>{
+Map<String, dynamic> _$AuthenticateResponseToJson(
+        AuthenticateResponse instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'login': instance.login,

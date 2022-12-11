@@ -22,7 +22,7 @@ class User extends ElephantCore {
     required this.type,
   });
 
-  User._();
+  User.emptyConstructor();
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
