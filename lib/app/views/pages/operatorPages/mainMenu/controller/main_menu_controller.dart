@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
 
 class MainMenuController extends GetxController {
@@ -12,6 +14,7 @@ class MainMenuController extends GetxController {
   late RxInt amountTeddy;
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
+  late SharedPreferences sharedPreferences;
 
   MainMenuController(){
     _initializeVariables();
@@ -19,9 +22,21 @@ class MainMenuController extends GetxController {
     _getWelcomePhrase();
   }
 
+  @override
+  void onInit() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    await GetProfilePictureController.loadProfilePicture(
+      loadingPicture,
+      hasPicture,
+      profileImagePath,
+      sharedPreferences,
+    );
+    super.onInit();
+  }
+
   _initializeVariables(){
     hasPicture = false.obs;
-    loadingPicture = false.obs;
+    loadingPicture = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
@@ -55,10 +70,5 @@ class MainMenuController extends GetxController {
       welcomePhrase = "Boa tarde!".obs;
     else
       welcomePhrase = "Boa noite!".obs;
-  }
-
-  refreshProfilePicture() async {
-    await Future.delayed(Duration(seconds: 2));
-
   }
 }

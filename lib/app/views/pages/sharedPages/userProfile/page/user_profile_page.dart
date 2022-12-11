@@ -1,17 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../../stylePages/masks_for_text_fields.dart';
 import '../../../operatorPages/mainMenu/controller/main_menu_controller.dart';
 import '../../../widgetsShared/button_widget.dart';
-import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
-import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/user_profile_controller.dart';
@@ -33,20 +31,18 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
 
   @override
   void initState() {
-    controller = Get.put(UserProfileController(), tag: 'user_profile_controller');
+    controller = Get.put(
+      UserProfileController(
+        widget.mainMenuController,
+      ),
+      tag: 'user_profile_controller',
+    );
+
     controller.tabController = TabController(
-      length: 4,
+      length: 3,
       vsync: this,
     );
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    if(controller.imageChanged) {
-      widget.mainMenuController.refreshProfilePicture();
-    }
-    super.dispose();
   }
 
   @override
@@ -107,26 +103,26 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                             children: [
                               TextButtonWidget(
                                 onTap: () {
-                                  if(controller.profileImagePath.value.isNotEmpty){
+                                  if(widget.mainMenuController.profileImagePath.value.isNotEmpty){
                                     showImageViewer(
                                       context,
-                                      Image.network(controller.profileImagePath.value).image,
+                                      Image.memory(File(widget.mainMenuController.profileImagePath.value).readAsBytesSync()).image,
                                     );
                                   }
                                 },
                                 componentPadding: EdgeInsets.zero,
                                 borderRadius: 6.h,
                                 widgetCustom: ProfilePictureWidget(
-                                  hasPicture: controller.hasPicture,
-                                  loadingPicture: controller.loadingPicture,
-                                  profileImagePath: controller.profileImagePath,
+                                  hasPicture: widget.mainMenuController.hasPicture,
+                                  loadingPicture: widget.mainMenuController.loadingPicture,
+                                  profileImagePath: widget.mainMenuController.profileImagePath,
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
                                 child: Obx(
                                   () => Visibility(
-                                    visible: !controller.loadingPicture.value,
+                                    visible: !widget.mainMenuController.loadingPicture.value,
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 1.h),
                                       child: TextButtonWidget(
@@ -136,7 +132,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                             return ConfirmationPopup(
                                               title: "Escolha uma das opções",
                                               subTitle: "Deseja alterar ou apagar a foto de perfil?",
-                                              showSecondButton: controller.profileImagePath.value.isNotEmpty,
+                                              showSecondButton: widget.mainMenuController.profileImagePath.value.isNotEmpty,
                                               firstButtonText: "APAGAR",
                                               secondButtonText: "ALTERAR",
                                               firstButton: () {
@@ -199,79 +195,9 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                           ),
                         ),
                         Expanded(
-                          child: Obx(
-                            () => Padding(
-                              padding: EdgeInsets.symmetric(horizontal: .5.w),
-                              child: ListView(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.h),
-                                    child: TextFieldWidget(
-                                      controller: controller.nameTextController,
-                                      hintText: "Nome",
-                                      textCapitalization: TextCapitalization.words,
-                                      height: 9.h,
-                                      width: double.infinity,
-                                      keyboardType: TextInputType.name,
-                                      enableSuggestions: true,
-                                      justRead: controller.profileIsDisabled.value,
-                                      textInputAction: TextInputAction.next,
-                                      hasError: controller.nameInputHasError.value,
-                                      onEditingComplete: (){
-                                        controller.birthDateFocusNode.requestFocus();
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h),
-                                    child: TextFieldWidget(
-                                      focusNode: controller.birthDateFocusNode,
-                                      controller: controller.birthDateTextController,
-                                      hintText: "Data de Nascimento",
-                                      height: 9.h,
-                                      width: double.infinity,
-                                      justRead: controller.profileIsDisabled.value,
-                                      keyboardType: TextInputType.number,
-                                      textInputAction: TextInputAction.next,
-                                      maskTextInputFormatter: [MasksForTextFields.birthDateMask],
-                                      hasError: controller.birthdayInputHasError.value,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h, bottom: 1.5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: DropdownButtonWidget(
-                                            itemSelected: controller.genderSelected.value == "" ? null : controller.genderSelected.value,
-                                            hintText: "Sexo",
-                                            justRead: controller.profileIsDisabled.value,
-                                            height:  6.5.h,
-                                            width: 90.w,
-                                            listItems: controller.genderList,
-                                            onChanged: (selectedState) {
-                                              controller.genderSelected.value = selectedState ?? "";
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 3.h),
-                                    child: TextFieldWidget(
-                                      controller: controller.cpfTextController,
-                                      hintText: "CPF",
-                                      height: 9.h,
-                                      width: double.infinity,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [MasksForTextFields.cpfMask],
-                                      justRead: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          child: TabBarView(
+                            controller: controller.tabController,
+                            children: controller.tabsList,
                           ),
                         ),
                         Padding(
@@ -286,6 +212,55 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                               onPressed: () => controller.editButtonPressed(),
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  bottomNavigationBar: Container(
+                    height: 9.h,
+                    padding: EdgeInsets.fromLTRB(.5.h, 0, .5.h, .5.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(4.5.h),
+                        topLeft: Radius.circular(4.5.h),
+                      ),
+                      color: AppColors.backgroundColor,
+                    ),
+                    child: TabBar(
+                      controller: controller.tabController,
+                      indicatorColor: AppColors.defaultColor,
+                      indicatorWeight: .3.h,
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13.5.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      labelColor: AppColors.defaultColor,
+                      unselectedLabelColor: AppColors.grayTextColor,
+                      tabs: [
+                        Tab(
+                          text: "Perfil",
+                          icon: ImageIcon(
+                            AssetImage(Paths.Icone_Perfil),
+                            size: 4.h,
+                          ),
+                          height: 9.h,
+                        ),
+                        Tab(
+                          text: "Endereço",
+                          icon: ImageIcon(
+                            AssetImage(Paths.Icone_Endereco),
+                            size: 4.h,
+                          ),
+                          height: 9.h,
+                        ),
+                        Tab(
+                          text: "Contato",
+                          icon: ImageIcon(
+                            AssetImage(Paths.Icone_Contato),
+                            size: 4.h,
+                          ),
+                          height: 9.h,
                         ),
                       ],
                     ),

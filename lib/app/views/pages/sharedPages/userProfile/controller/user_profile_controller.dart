@@ -1,6 +1,5 @@
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/base/services/consult_cep_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,12 +15,14 @@ import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../../stylePages/masks_for_text_fields.dart';
+import '../../../operatorPages/mainMenu/controller/main_menu_controller.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/snackbar_widget.dart';
+import '../widget/user_profile_tabs_widget.dart';
 
 class UserProfileController extends GetxController {
   late bool imageChanged;
@@ -30,9 +31,6 @@ class UserProfileController extends GetxController {
   late RxString ufSelected;
   late RxString buttonText;
   late RxString genderSelected;
-  late RxString profileImagePath;
-  late RxBool hasPicture;
-  late RxBool loadingPicture;
   late RxBool currentPasswordFieldEnabled;
   late RxBool newPasswordFieldEnabled;
   late RxBool confirmNewPasswordFieldEnabled;
@@ -76,29 +74,25 @@ class UserProfileController extends GetxController {
   late FocusNode confirmPasswordFocusNode;
   late MaskTextInputFormatter maskCellPhoneFormatter;
   late List<String> genderList;
+  late List<Widget> tabsList;
   late RxList<String> ufsList;
   late XFile? profilePicture;
   late final ImagePicker _picker;
   late Users _user;
   late LoadingProfilePictureWidget loadingProfilePicture;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late MainMenuController mainMenuController;
   late IConsultCepService _consultCepService;
 
-
-  UserProfileController(){
+  UserProfileController(this.mainMenuController){
     _initializeVariables();
-    _getUfsNames();
     _initializeLists();
-    _getUserInformation();
   }
 
   @override
   void onInit() async {
-    await GetProfilePictureController.loadProfilePicture(
-      loadingPicture,
-      hasPicture,
-      profileImagePath,
-    );
+    await _getUfsNames();
+    _getUserInformation();
     super.onInit();
   }
 
@@ -109,9 +103,6 @@ class UserProfileController extends GetxController {
     ufSelected = "".obs;
     buttonText = "EDITAR".obs;
     genderSelected = "".obs;
-    profileImagePath = "".obs;
-    hasPicture = false.obs;
-    loadingPicture = true.obs;
     profileIsDisabled = true.obs;
     loadingAnimation = false.obs;
     currentPasswordFieldEnabled = true.obs;
@@ -156,7 +147,7 @@ class UserProfileController extends GetxController {
     _picker = ImagePicker();
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
-      loadingAnimation: loadingPicture,
+      loadingAnimation: mainMenuController.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
@@ -179,6 +170,8 @@ class UserProfileController extends GetxController {
       "Feminino",
       "Prefiro não dizer",
     ];
+
+    tabsList = UserProfileTabsWidget.getList(this);
   }
 
   _getUserInformation(){
@@ -474,6 +467,7 @@ class UserProfileController extends GetxController {
 
   getProfileImage(imageOrigin origin) async {
     try{
+      mainMenuController.loadingPicture.value = true;
       profilePicture = await _picker.pickImage(
           source: origin == imageOrigin.camera ?
           ImageSource.camera : ImageSource.gallery
@@ -500,28 +494,21 @@ class UserProfileController extends GetxController {
         },
       );
     }
+    finally{
+      mainMenuController.loadingPicture.value = false;
+    }
   }
 
   Future<bool> _saveProfilePicture() async {
-    //return await _userService.sendUserProfilePicture(profilePicture!, _progressImage);
-    return true;
-  }
-
-  _progressImage(TaskSnapshot storageEvent) async {
-    if(storageEvent.state == TaskState.running){
-      loadingPicture.value = true;
-    }
-    else if(storageEvent.state == TaskState.success){
-      await GetProfilePictureController.loadProfilePicture(
-        loadingPicture,
-        hasPicture,
-        profileImagePath,
+    if(profilePicture != null && profilePicture!.path.isNotEmpty) {
+      mainMenuController.profileImagePath.value = profilePicture!.path;
+      return await mainMenuController.sharedPreferences.setString(
+        "profile_picture",
+        profilePicture!.path,
       );
+
     }
-    else if(storageEvent.state == TaskState.error){
-      loadingPicture.value = false;
-      hasPicture.value = false;
-    }
+    return false;
   }
 
   Future<bool> _saveUser() async {
@@ -576,9 +563,10 @@ class UserProfileController extends GetxController {
     try{
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      //await _userService.deleteProfilePicture();
+      imageChanged = await mainMenuController.sharedPreferences.remove(
+        "profile_picture",
+      );
       await loadingWithSuccessOrErrorWidget.stopAnimation();
-      imageChanged = true;
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -589,9 +577,10 @@ class UserProfileController extends GetxController {
         },
       );
       await GetProfilePictureController.loadProfilePicture(
-        loadingPicture,
-        hasPicture,
-        profileImagePath,
+        mainMenuController.loadingPicture,
+        mainMenuController.hasPicture,
+        mainMenuController.profileImagePath,
+        mainMenuController.sharedPreferences,
       );
     }
     catch(_){

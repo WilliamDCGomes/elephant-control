@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../views/pages/widgetsShared/popups/information_popup.dart';
 
 class GetProfilePictureController {
-  static loadProfilePicture(RxBool loadingPicture, RxBool hasPicture, RxString profileImagePath) async {
+  static loadProfilePicture(RxBool loadingPicture, RxBool hasPicture, RxString profileImagePath, SharedPreferences sharedPreferences) async {
     try{
       loadingPicture.value = true;
-      profileImagePath.value = "";// await _userService.getUserProfilePicture();
+      await Future.delayed(Duration(milliseconds: 200));
+      profileImagePath.value = sharedPreferences.getString("profile_picture") ?? "";
       loadingPicture.value = false;
       hasPicture.value = profileImagePath.value.isNotEmpty;
     }
