@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,6 +7,7 @@ import '../../../../utils/paths.dart';
 import '../../../stylePages/app_colors.dart';
 import 'information_popup.dart';
 
+//ignore: must_be_immutable
 class ImagesPictureWidget extends StatefulWidget {
   late XFile? picture;
 
@@ -26,7 +26,8 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   _getImage() async {
     try{
       widget.picture = await _picker.pickImage(
-        source: ImageSource.camera
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.rear,
       );
 
       setState(() {

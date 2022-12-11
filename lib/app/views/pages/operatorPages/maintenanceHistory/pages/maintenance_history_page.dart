@@ -8,6 +8,7 @@ import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../../occurrence/page/occurrence_page.dart';
 import '../controller/maintenance_history_controller.dart';
 
 class MaintenanceHistoryPage extends StatefulWidget {
@@ -66,19 +67,13 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                               textColor: AppColors.whiteColor,
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
-                              customContainer: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  TextWidget(
-                                    "Atendimentos do dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
-                                    textColor: AppColors.whiteColor,
-                                    fontSize: 18.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ],
+                              customContainer: TextWidget(
+                                "Atendimentos do dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
+                                textColor: AppColors.whiteColor,
+                                fontSize: 18.sp,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             Expanded(
@@ -120,9 +115,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                 hintText: "Adicionar Ocorrência",
                                 fontWeight: FontWeight.bold,
                                 widthButton: double.infinity,
-                                onPressed: () {
-
-                                },
+                                onPressed: () => Get.to(() => OccurrencePage()),
                               ),
                             ),
                             Padding(

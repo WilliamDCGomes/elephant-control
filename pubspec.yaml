@@ -29,8 +29,8 @@ dependencies:
   im_stepper: ^1.0.1+1
   reorderables: ^0.5.1
   firebase_auth: ^4.1.3
-  age_calculator: ^1.0.0
   firebase_core: ^2.3.0
+  age_calculator: ^1.0.0
   carousel_slider: ^4.1.1
   cloud_firestore: ^4.1.0
   cupertino_icons: ^1.0.5
