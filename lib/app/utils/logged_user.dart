@@ -1,6 +1,9 @@
+import '../../base/models/user.dart';
+
 class LoggedUser {
   static String id = "";
-  static String userType = "";
+  static UserType userType = UserType.none;
+  static String userTypeName = "";
   static String name = "";
   static String nameInitials = "";
   static String nameAndLastName = "";

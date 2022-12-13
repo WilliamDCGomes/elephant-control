@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -129,11 +130,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
                           padding: EdgeInsets.only(top: 6.h),
                           child: Center(
                             child: TextWidget(
-                              "CENTRAL OPERADOR",
+                              "CENTRAL ${LoggedUser.userTypeName.toUpperCase()}",
                               textColor: AppColors.backgroundColor,
-                              fontSize: 24.sp,
+                              fontSize: 22.sp,
                               textAlign: TextAlign.center,
                               fontWeight: FontWeight.bold,
+                              maxLines: 2,
                             ),
                           ),
                         ),

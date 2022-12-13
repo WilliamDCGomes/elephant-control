@@ -1,3 +1,4 @@
+import 'package:elephant_control/base/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
@@ -52,7 +53,23 @@ class MainMenuController extends GetxController {
 
   _getNameUser(){
     LoggedUser.name = "José Paulo";
-    LoggedUser.userType = "Operador";
+    print("dsjijidjidjsidsjids " + LoggedUser.userType.toString());
+    switch(LoggedUser.userType){
+      case UserType.admin:
+        LoggedUser.userTypeName = "ADMINISTRATIVO";
+        break;
+      case UserType.operator:
+        LoggedUser.userTypeName = "OPERADOR";
+        break;
+      case UserType.treasury:
+        LoggedUser.userTypeName = "TESOURARIA";
+        break;
+      case UserType.stockist:
+        LoggedUser.userTypeName = "ESTOQUISTA";
+        break;
+      case UserType.none:
+        break;
+    }
     var names = LoggedUser.name.trim().split(" ");
 
     if(names.isNotEmpty && names.first != ""){

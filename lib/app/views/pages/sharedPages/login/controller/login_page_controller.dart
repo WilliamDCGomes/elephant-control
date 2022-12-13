@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/base/models/user.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
-import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -81,13 +80,40 @@ class LoginPageController extends GetxController {
 
         if (authenticate) {
           loadingAnimationSuccess.value = true;
-          await _saveOptions();
+          await loadingWithSuccessOrErrorWidget.startAnimation();
 
-          await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
-          Get.offAll(() => MainMenuPage());
+          String? username = await sharedPreferences.getString("Login");
+          String? password = await sharedPreferences.getString("Senha");
+
+          if(username == null || password == null)
+            throw Exception();
+
+          var userLogged = await UserService().authenticate(
+            username: username,
+            password: password,
+          );
+
+          if(userLogged != null){
+            LoggedUser.userType = userLogged.userType;
+            await _saveOptions();
+
+            await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
+            Get.offAll(() => MainMenuPage());
+          }
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao fazer Login!\nTente novamente mais tarde.",
+          );
+        },
+      );
+    }
   }
 
   _saveOptions() async {
@@ -106,20 +132,18 @@ class LoginPageController extends GetxController {
   loginPressed() async {
     try {
       if (formKey.currentState!.validate()) {
-        loadingAnimation.value = true;
-        await loadingWidget.startAnimation();
+        loadingAnimationSuccess.value = true;
+        await loadingWithSuccessOrErrorWidget.startAnimation();
         var userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
         loginButtonFocusNode.requestFocus();
-
-        await loadingWidget.stopAnimation(justLoading: true);
-
-        
 
         if (userLogged != null) {
           sharedPreferences.setString("Token", userLogged.token);
           sharedPreferences.setString("ExpiracaoToken", userLogged.expirationDate.toIso8601String());
           sharedPreferences.setString("Login", userInputController.text);
           sharedPreferences.setString("Senha", passwordInputController.text);
+
+          LoggedUser.userType = userLogged.userType;
 
           await _saveOptions();
 
@@ -128,6 +152,9 @@ class LoginPageController extends GetxController {
           } else {
             await sharedPreferences.setBool("keep-connected", false);
           }
+
+          await loadingWithSuccessOrErrorWidget.stopAnimation();
+
           if (userLogged.userType == UserType.operator) {
             Get.offAll(() => MainMenuPage());
           }
@@ -139,6 +166,7 @@ class LoginPageController extends GetxController {
           }
         }
         else {
+          await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
           await showDialog(
             context: Get.context!,
             barrierDismissible: false,
@@ -151,6 +179,7 @@ class LoginPageController extends GetxController {
         }
       }
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

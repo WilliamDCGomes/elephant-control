@@ -194,7 +194,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                         Padding(
                           padding: EdgeInsets.only(bottom: 3.h),
                           child: TextWidget(
-                            LoggedUser.userType,
+                            LoggedUser.userTypeName,
                             textColor: AppColors.backgroundColor,
                             fontSize: 17.sp,
                             textAlign: TextAlign.center,

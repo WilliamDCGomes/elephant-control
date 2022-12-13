@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'user.g.dart';
 
 @JsonSerializable()
@@ -35,5 +33,9 @@ enum UserType {
   @JsonValue(1)
   treasury,
   @JsonValue(2)
+  stockist,
+  @JsonValue(3)
   admin,
+  @JsonValue(4)
+  none,
 }
