@@ -269,7 +269,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                           color: AppColors.backgroundColor,
                         ),
                         label: TextWidget(
-                          "Atendimentos",
+                          "Visitas",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,

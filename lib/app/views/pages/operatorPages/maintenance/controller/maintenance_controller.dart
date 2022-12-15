@@ -64,7 +64,7 @@ class MaintenanceController extends GetxController {
     });
 
     yes = false.obs;
-    no = true.obs;
+    no = false.obs;
     loadingAnimation = false.obs;
 
     operatorName = TextEditingController();
@@ -122,6 +122,7 @@ class MaintenanceController extends GetxController {
           builder: (BuildContext context) {
             return InformationPopup(
               warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
+              fontSize: 18.sp,
               popupColor: AppColors.redColor,
               title: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -130,7 +131,7 @@ class MaintenanceController extends GetxController {
                   Icon(
                     Icons.warning,
                     color: AppColors.yellowDarkColor,
-                    size: 3.h,
+                    size: 4.h,
                   ),
                   SizedBox(
                     width: 2.w,
@@ -138,7 +139,7 @@ class MaintenanceController extends GetxController {
                   TextWidget(
                     "AVISO",
                     textColor: AppColors.whiteColor,
-                    fontSize: 16.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                   SizedBox(
@@ -147,7 +148,7 @@ class MaintenanceController extends GetxController {
                   Icon(
                     Icons.warning,
                     color: AppColors.yellowDarkColor,
-                    size: 3.h,
+                    size: 4.h,
                   ),
                 ],
               ),
@@ -238,6 +239,18 @@ class MaintenanceController extends GetxController {
         builder: (BuildContext context) {
           return InformationPopup(
             warningMessage: "Informe a quantidade de pelúcias recolocadas na máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if(!yes.value && !no.value){
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe se o malote foi retirado da máquina!",
           );
         },
       );

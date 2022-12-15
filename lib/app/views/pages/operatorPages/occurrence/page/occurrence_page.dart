@@ -83,28 +83,6 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                 padding: EdgeInsets.symmetric(horizontal: 2.h),
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.operatorName,
-                                      hintText: "Nome Operador",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.name,
-                                      enableSuggestions: true,
-                                      justRead: true,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.maintenanceDate,
-                                      hintText: "Data do Ocorrência",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [MasksForTextFields.birthDateMask],
-                                      justRead: true,
-                                    ),
-                                  ),
-                                  Padding(
                                     padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
                                     child: Align(
                                       alignment: Alignment.centerLeft,

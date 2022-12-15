@@ -9,12 +9,14 @@ import '../text_widget.dart';
 class InformationPopup extends StatefulWidget {
   final String warningMessage;
   final Widget? title;
+  final double? fontSize;
   final Color? popupColor;
 
   const InformationPopup({
     Key? key,
     required this.warningMessage,
     this.title,
+    this.fontSize,
     this.popupColor,
   }) : super(key: key);
 
@@ -83,7 +85,7 @@ class _InformationPopupState extends State<InformationPopup> {
                       TextWidget(
                         widget.warningMessage,
                         textColor: AppColors.blackColor,
-                        fontSize: 16.sp,
+                        fontSize: widget.fontSize ?? 16.sp,
                         fontWeight: FontWeight.bold,
                         maxLines: 10,
                       ),

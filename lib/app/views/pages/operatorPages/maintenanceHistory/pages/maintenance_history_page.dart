@@ -55,7 +55,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Atendimentos",
+                          title: "Visitas",
                         ),
                       ),
                       Expanded(
@@ -68,7 +68,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
                               customContainer: TextWidget(
-                                "Atendimentos do dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
+                                "Visitas do dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
                                 textColor: AppColors.whiteColor,
                                 fontSize: 18.sp,
                                 textAlign: TextAlign.center,

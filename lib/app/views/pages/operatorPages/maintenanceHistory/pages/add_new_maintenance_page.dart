@@ -51,7 +51,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Atendimentos Pendentes",
+                          title: "Visitas Pendentes",
                         ),
                       ),
                       Expanded(
@@ -68,7 +68,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    "Selecione um dos atendimentos para adicionar a sua lista",
+                                    "Selecione uma das máquinas para adicionar a sua lista",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,

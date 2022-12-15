@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../../stylePages/masks_for_text_fields.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/dropdown_button_widget.dart';
@@ -127,28 +126,6 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.operatorName,
-                                      hintText: "Nome Operador",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.name,
-                                      enableSuggestions: true,
-                                      justRead: true,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.maintenanceDate,
-                                      hintText: "Data do Atendimento",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [MasksForTextFields.birthDateMask],
-                                      justRead: true,
                                     ),
                                   ),
                                   Padding(
@@ -278,13 +255,14 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             checked: controller.yes.value,
                                             onChanged: (){
                                               controller.yes.value = !controller.yes.value;
-                                              controller.no.value = !controller.yes.value;
+                                              if(controller.yes.value)
+                                                controller.no.value = !controller.yes.value;
                                             },
                                           ),
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 1.w,
+                                        width: .5.w,
                                       ),
                                       Expanded(
                                         child: Obx(
@@ -295,7 +273,8 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                             checked: controller.no.value,
                                             onChanged: (){
                                               controller.no.value = !controller.no.value;
-                                              controller.yes.value = !controller.no.value;
+                                              if(controller.no.value)
+                                                controller.yes.value = !controller.no.value;
                                             },
                                           ),
                                         ),

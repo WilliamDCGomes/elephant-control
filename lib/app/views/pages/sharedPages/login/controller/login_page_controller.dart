@@ -79,8 +79,8 @@ class LoginPageController extends GetxController {
         );
 
         if (authenticate) {
-          loadingAnimationSuccess.value = true;
-          await loadingWithSuccessOrErrorWidget.startAnimation();
+          loadingAnimation.value = true;
+          await loadingWidget.startAnimation();
 
           String? username = await sharedPreferences.getString("Login");
           String? password = await sharedPreferences.getString("Senha");
@@ -97,12 +97,14 @@ class LoginPageController extends GetxController {
             LoggedUser.userType = userLogged.userType;
             await _saveOptions();
 
-            await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
+            await loadingWidget.stopAnimation();
             Get.offAll(() => MainMenuPage());
           }
         }
       }
     } catch (e) {
+      await loadingWidget.stopAnimation();
+      loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -132,8 +134,8 @@ class LoginPageController extends GetxController {
   loginPressed() async {
     try {
       if (formKey.currentState!.validate()) {
-        loadingAnimationSuccess.value = true;
-        await loadingWithSuccessOrErrorWidget.startAnimation();
+        loadingAnimation.value = true;
+        await loadingWidget.startAnimation();
         var userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
         loginButtonFocusNode.requestFocus();
 
@@ -153,7 +155,7 @@ class LoginPageController extends GetxController {
             await sharedPreferences.setBool("keep-connected", false);
           }
 
-          await loadingWithSuccessOrErrorWidget.stopAnimation();
+          await loadingWidget.stopAnimation();
 
           if (userLogged.userType == UserType.operator) {
             Get.offAll(() => MainMenuPage());
@@ -166,6 +168,8 @@ class LoginPageController extends GetxController {
           }
         }
         else {
+          await loadingWidget.stopAnimation();
+          loadingAnimationSuccess.value = true;
           await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
           await showDialog(
             context: Get.context!,
@@ -179,6 +183,8 @@ class LoginPageController extends GetxController {
         }
       }
     } catch (_) {
+      await loadingWidget.stopAnimation();
+      loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
