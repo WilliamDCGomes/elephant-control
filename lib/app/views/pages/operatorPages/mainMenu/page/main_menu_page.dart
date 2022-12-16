@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -183,13 +184,32 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                   ),
                                   SizedBox(
                                     width: 73.w,
-                                    child: TextWidget(
-                                      "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
-                                      maxLines: 1,
-                                      textColor: AppColors.whiteColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                      textAlign: TextAlign.center,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextWidget(
+                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
+                                          maxLines: 1,
+                                          textColor: AppColors.whiteColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        InkWell(
+                                          onTap: () => Get.to(() => HistoryPage(title: "Histórico de Malotes")),
+                                          child: TextWidget(
+                                            "Clique aqui para ver o histórico de malotes!",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            textDecoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -238,13 +258,32 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                 ),
                                 SizedBox(
                                   width: 73.w,
-                                  child: TextWidget(
-                                    "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
-                                    maxLines: 1,
-                                    textColor: AppColors.whiteColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
-                                    textAlign: TextAlign.center,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextWidget(
+                                        "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
+                                        maxLines: 1,
+                                        textColor: AppColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(
+                                        height: 2.h,
+                                      ),
+                                      InkWell(
+                                        onTap: () => Get.to(() => HistoryPage(title: "Histórico de Pelúcias")),
+                                        child: TextWidget(
+                                          "Clique aqui para ver as pelúcias!",
+                                          maxLines: 1,
+                                          textColor: AppColors.whiteColor,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                          textDecoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
