@@ -52,8 +52,6 @@ class MainMenuController extends GetxController {
   }
 
   _getNameUser(){
-    LoggedUser.name = "José Paulo";
-    print("dsjijidjidjsidsjids " + LoggedUser.userType.toString());
     switch(LoggedUser.userType){
       case UserType.admin:
         LoggedUser.userTypeName = "ADMINISTRATIVO";

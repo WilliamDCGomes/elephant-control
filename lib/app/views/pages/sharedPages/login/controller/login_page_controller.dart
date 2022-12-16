@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -27,6 +28,7 @@ class LoginPageController extends GetxController {
   late SharedPreferences sharedPreferences;
   late final LocalAuthentication fingerPrintAuth;
   late final GlobalKey<FormState> formKey;
+  late AuthenticateResponse? userLogged;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
   LoginPageController(this._cancelFingerPrint) {
@@ -54,6 +56,7 @@ class LoginPageController extends GetxController {
     loadingAnimation = false.obs;
     loadingAnimationSuccess = false.obs;
     keepConected = false.obs;
+    userLogged = null;
     formKey = GlobalKey<FormState>();
     loadingWidget = LoadingWidget(loadingAnimation: loadingAnimation);
     userInputController = TextEditingController();
@@ -62,7 +65,7 @@ class LoginPageController extends GetxController {
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
     if (kDebugMode) {
-      userInputController.text = "hugo";
+      userInputController.text = "william";
       passwordInputController.text = "12345678";
     }
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
@@ -88,13 +91,13 @@ class LoginPageController extends GetxController {
           if(username == null || password == null)
             throw Exception();
 
-          var userLogged = await UserService().authenticate(
+          userLogged = await UserService().authenticate(
             username: username,
             password: password,
           );
 
           if(userLogged != null){
-            LoggedUser.userType = userLogged.userType;
+            LoggedUser.userType = userLogged!.userType;
             await _saveOptions();
 
             await loadingWidget.stopAnimation();
@@ -129,6 +132,15 @@ class LoginPageController extends GetxController {
     }
 
     await sharedPreferences.setBool("keep-connected", keepConected.value);
+
+    if(userLogged != null){
+      LoggedUser.nameAndLastName = userLogged!.name;
+      LoggedUser.name = userLogged!.name;
+      LoggedUser.name = userLogged!.name.split(' ').first;
+      LoggedUser.userType = userLogged!.userType;
+      LoggedUser.id = userLogged!.id;
+      LoggedUser.password = passwordInputController.text;
+    }
   }
 
   loginPressed() async {
@@ -136,16 +148,16 @@ class LoginPageController extends GetxController {
       if (formKey.currentState!.validate()) {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
-        var userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
+        userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
         loginButtonFocusNode.requestFocus();
 
         if (userLogged != null) {
-          sharedPreferences.setString("Token", userLogged.token);
-          sharedPreferences.setString("ExpiracaoToken", userLogged.expirationDate.toIso8601String());
+          sharedPreferences.setString("Token", userLogged!.token);
+          sharedPreferences.setString("ExpiracaoToken", userLogged!.expirationDate.toIso8601String());
           sharedPreferences.setString("Login", userInputController.text);
           sharedPreferences.setString("Senha", passwordInputController.text);
 
-          LoggedUser.userType = userLogged.userType;
+          LoggedUser.userType = userLogged!.userType;
 
           await _saveOptions();
 
@@ -157,10 +169,10 @@ class LoginPageController extends GetxController {
 
           await loadingWidget.stopAnimation();
 
-          if (userLogged.userType == UserType.operator) {
+          if (userLogged!.userType == UserType.operator) {
             Get.offAll(() => MainMenuPage());
           }
-          else if (userLogged.userType == UserType.admin) {
+          else if (userLogged!.userType == UserType.admin) {
             Get.offAll(() => MainMenuPage());
           }
           else {
