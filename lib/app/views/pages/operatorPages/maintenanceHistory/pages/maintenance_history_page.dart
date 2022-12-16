@@ -23,8 +23,15 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
 
   @override
   void initState() {
-    controller = Get.put(MaintenanceHistoryController());
+    controller = Get.put(MaintenanceHistoryController(this.refreshLists));
     super.initState();
+  }
+
+  refreshLists(){
+    setState(() {
+      controller.maintenanceCardWidgetList;
+      controller.allMaintenanceCardWidgetList;
+    });
   }
 
   @override
@@ -86,18 +93,20 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                     return Stack(
                                       children: [
                                         controller.maintenanceCardWidgetList[index],
-                                        Visibility(
-                                          visible: controller.maintenanceCardWidgetList[index].status == "Pendente",
-                                          child: Padding(
-                                            padding: EdgeInsets.all(1.h),
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: InkWell(
-                                                onTap: () => controller.removeItemList(index),
-                                                child: Icon(
-                                                  Icons.close,
-                                                  color: AppColors.backgroundColor,
-                                                  size: 3.h,
+                                        Obx(
+                                          () => Visibility(
+                                            visible: controller.maintenanceCardWidgetList[index].status == "Pendente" && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(1.h),
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: InkWell(
+                                                  onTap: () => controller.removeItemList(index),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    color: AppColors.backgroundColor,
+                                                    size: 3.h,
+                                                  ),
                                                 ),
                                               ),
                                             ),

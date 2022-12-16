@@ -10,9 +10,10 @@ class MaintenanceHistoryController extends GetxController {
   late RxList<MaintenanceCardWidget> maintenanceCardWidgetList;
   late RxList<MaintenanceCardWidget> allMaintenanceCardWidgetList;
   late RxBool loadingAnimation;
+  late Function refreshList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  MaintenanceHistoryController(){
+  MaintenanceHistoryController(this.refreshList){
     _initializeVariables();
     _inicializeList();
   }
@@ -32,40 +33,43 @@ class MaintenanceHistoryController extends GetxController {
     maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
       MaintenanceCardWidget(
         machineName: "Shopping Boulevard",
-        status: "Finalizado",
+        status: "Finalizado".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
         clock1: "2566321",
         clock2: "1556623",
         pouchCollected: true,
         teddy: "25",
+        showMap: true,
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Central",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
         pouchCollected: false,
         teddy: "0",
+        showMap: true,
       ),
       MaintenanceCardWidget(
         machineName: "Cinema Alameda",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
         clock2: "0",
         pouchCollected: false,
         teddy: "0",
+        showMap: true,
       ),
     ];
 
     allMaintenanceCardWidgetList.value = <MaintenanceCardWidget>[
       MaintenanceCardWidget(
         machineName: "Shopping Oeste",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
@@ -75,7 +79,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Oeste",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
         clock1: "0",
@@ -85,7 +89,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Cinepólis",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
@@ -95,7 +99,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Norte",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
         clock1: "0",
@@ -105,7 +109,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Parque de Diversão",
-        status: "Pendente",
+        status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
         clock1: "0",
@@ -125,8 +129,27 @@ class MaintenanceHistoryController extends GetxController {
           subTitle: "Tem certeza que deseja remover esse atendimento da lista?",
           firstButton: () {},
           secondButton: () {
-            allMaintenanceCardWidgetList.add(maintenanceCardWidgetList[index]);
-            maintenanceCardWidgetList.removeAt(index);
+            maintenanceCardWidgetList[index].showMap = false;
+            allMaintenanceCardWidgetList.add(
+              MaintenanceCardWidget(
+                machineName: maintenanceCardWidgetList[index].machineName,
+                status: maintenanceCardWidgetList[index].status.value.obs,
+                workPriority: maintenanceCardWidgetList[index].workPriority,
+                priorityColor: maintenanceCardWidgetList[index].priorityColor,
+                clock1: maintenanceCardWidgetList[index].clock1,
+                clock2: maintenanceCardWidgetList[index].clock2,
+                pouchCollected: maintenanceCardWidgetList[index].pouchCollected,
+                teddy: maintenanceCardWidgetList[index].teddy,
+              ),
+            );
+            maintenanceCardWidgetList[index].operatorDeletedMachine.value = true;
+            maintenanceCardWidgetList[index].status.value = "Excluido";
+            maintenanceCardWidgetList.sort(
+              (a, b) => a.operatorDeletedMachine.toString().compareTo(
+                b.operatorDeletedMachine.toString(),
+              ),
+            );
+            refreshList();
           },
         );
       },

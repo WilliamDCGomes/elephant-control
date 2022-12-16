@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../../stylePages/masks_for_text_fields.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
@@ -107,6 +106,54 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 3.5.h,),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(bottom: 1.h),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: TextWidget(
+                                                  "Foto da Máquina",
+                                                  textColor: AppColors.defaultColor,
+                                                  fontSize: 16.sp,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ),
+                                            controller.machineOccurrencePicture,
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(bottom: 1.h),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: TextWidget(
+                                                  "Foto Extra",
+                                                  textColor: AppColors.defaultColor,
+                                                  fontSize: 16.sp,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ),
+                                            controller.extraMachineOccurrencePicture,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.5.h,),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -115,7 +162,7 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextWidget(
-                                              "Foto da Máquina",
+                                              "Vídeo",
                                               textColor: AppColors.defaultColor,
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,
@@ -123,7 +170,7 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                             ),
                                           ),
                                         ),
-                                        controller.machineOccurrencePicture,
+                                        controller.machineOccurrenceVideo,
                                       ],
                                     ),
                                   ),

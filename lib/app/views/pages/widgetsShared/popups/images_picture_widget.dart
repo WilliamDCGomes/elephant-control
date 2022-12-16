@@ -25,14 +25,16 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
   _getImage() async {
     try{
-      widget.picture = await _picker.pickImage(
+      XFile? picture = await _picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.rear,
       );
 
-      setState(() {
-        widget.picture;
-      });
+      if(picture != null){
+        setState(() {
+          widget.picture = picture;
+        });
+      }
     }
     catch(e){
       showDialog(

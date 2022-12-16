@@ -5,6 +5,7 @@ import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/popups/videos_picture_widget.dart';
 
 class OccurrenceController extends GetxController {
   late RxBool loadingAnimation;
@@ -14,6 +15,8 @@ class OccurrenceController extends GetxController {
   late TextEditingController maintenanceDate;
   late TextEditingController observations;
   late ImagesPictureWidget machineOccurrencePicture;
+  late ImagesPictureWidget extraMachineOccurrencePicture;
+  late VideosPictureWidget machineOccurrenceVideo;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
   OccurrenceController(){
@@ -37,6 +40,8 @@ class OccurrenceController extends GetxController {
     observations = TextEditingController();
 
     machineOccurrencePicture = ImagesPictureWidget();
+    extraMachineOccurrencePicture = ImagesPictureWidget();
+    machineOccurrenceVideo = VideosPictureWidget();
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,

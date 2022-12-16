@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 
-class MaintenanceBodyCardWidget extends StatelessWidget {
-  final String status;
+class MaintenanceBodyCardWidget extends StatefulWidget {
+  final RxString status;
   final String workPriority;
   final int priorityColor;
 
@@ -15,6 +16,11 @@ class MaintenanceBodyCardWidget extends StatelessWidget {
         required this.priorityColor,
       }) : super(key: key);
 
+  @override
+  State<MaintenanceBodyCardWidget> createState() => _MaintenanceBodyCardWidgetState();
+}
+
+class _MaintenanceBodyCardWidgetState extends State<MaintenanceBodyCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,8 +37,8 @@ class MaintenanceBodyCardWidget extends StatelessWidget {
               firstTextColor: AppColors.blackColor,
               firstTextFontWeight: FontWeight.normal,
               firstTextSize: 14.5.sp,
-              secondText: workPriority,
-              secondTextColor: Color(priorityColor),
+              secondText: widget.workPriority,
+              secondTextColor: Color(widget.priorityColor),
               secondTextFontWeight: FontWeight.bold,
               secondTextSize: 14.5.sp,
               secondTextDecoration: TextDecoration.none,
@@ -49,16 +55,18 @@ class MaintenanceBodyCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Center(
-                  child: RichTextTwoDifferentWidget(
-                    firstText: "Status: ",
-                    firstTextColor: AppColors.blackColor,
-                    firstTextFontWeight: FontWeight.normal,
-                    firstTextSize: 14.5.sp,
-                    secondText: status,
-                    secondTextColor: AppColors.blackColor,
-                    secondTextFontWeight: FontWeight.bold,
-                    secondTextSize: 14.5.sp,
-                    secondTextDecoration: TextDecoration.none,
+                  child: Obx(
+                    () => RichTextTwoDifferentWidget(
+                      firstText: "Status: ",
+                      firstTextColor: AppColors.blackColor,
+                      firstTextFontWeight: FontWeight.normal,
+                      firstTextSize: 14.5.sp,
+                      secondText: widget.status.value,
+                      secondTextColor: AppColors.blackColor,
+                      secondTextFontWeight: FontWeight.bold,
+                      secondTextSize: 14.5.sp,
+                      secondTextDecoration: TextDecoration.none,
+                    ),
                   ),
                 ),
               ),

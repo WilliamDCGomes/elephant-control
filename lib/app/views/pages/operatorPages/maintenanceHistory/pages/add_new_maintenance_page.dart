@@ -4,6 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/maintenance_history_controller.dart';
@@ -87,10 +88,28 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                   padding: EdgeInsets.symmetric(horizontal: 2.h),
                                   itemBuilder: (context, index){
                                     return InkWell(
-                                      onTap: (){
-                                        widget.controller.maintenanceCardWidgetList.add(widget.controller.allMaintenanceCardWidgetList[index]);
-                                        widget.controller.allMaintenanceCardWidgetList.removeAt(index);
-                                        Get.back();
+                                      onTap: () async {
+                                        await showDialog(
+                                          context: Get.context!,
+                                          builder: (BuildContext context) {
+                                            return ConfirmationPopup(
+                                              title: "Aviso",
+                                              subTitle: "Deseja realmente adicionar a máquina ${widget.controller.allMaintenanceCardWidgetList[index].machineName} na sua lista de atendimentos?",
+                                              firstButton: () {},
+                                              secondButton: () {
+                                                widget.controller.allMaintenanceCardWidgetList[index].showMap = true;
+                                                widget.controller.maintenanceCardWidgetList.add(widget.controller.allMaintenanceCardWidgetList[index]);
+                                                widget.controller.allMaintenanceCardWidgetList.removeAt(index);
+                                                widget.controller.maintenanceCardWidgetList.sort(
+                                                  (a, b) => a.operatorDeletedMachine.toString().compareTo(
+                                                    b.operatorDeletedMachine.toString(),
+                                                  ),
+                                                );
+                                                Get.back();
+                                              },
+                                            );
+                                          },
+                                        );
                                       },
                                       child: IgnorePointer(
                                         ignoring: true,

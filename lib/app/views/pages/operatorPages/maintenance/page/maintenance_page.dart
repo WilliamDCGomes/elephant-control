@@ -12,6 +12,7 @@ import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../../occurrence/page/occurrence_page.dart';
 import '../controller/maintenance_controller.dart';
 
 class MaintenancePage extends StatefulWidget {
@@ -57,8 +58,24 @@ class _MaintenancePageState extends State<MaintenancePage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Novo Atendimento",
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TitleWithBackButtonWidget(
+                                title: "Novo Atendimento",
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => Get.to(() => OccurrencePage()),
+                              child: Image.asset(
+                                Paths.Ocorrencia,
+                                color: AppColors.whiteColor,
+                                height: 3.h,
+                                width: 3.h,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
