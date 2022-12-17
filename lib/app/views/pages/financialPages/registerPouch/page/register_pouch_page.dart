@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
@@ -10,21 +9,21 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/receive_pouch_from_operator_controller.dart';
+import '../controller/register_pouch_controller.dart';
 
-class ReceivePouchFromOperator extends StatefulWidget {
-  const ReceivePouchFromOperator({Key? key}) : super(key: key);
+class RegisterPouchPage extends StatefulWidget {
+  const RegisterPouchPage({Key? key}) : super(key: key);
 
   @override
-  State<ReceivePouchFromOperator> createState() => _ReceivePouchFromOperatorState();
+  State<RegisterPouchPage> createState() => _RegisterPouchPageState();
 }
 
-class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
-  late ReceivePouchFromOperatorController controller;
+class _RegisterPouchPageState extends State<RegisterPouchPage> {
+  late RegisterPouchController controller;
 
   @override
   void initState() {
-    controller = Get.put(ReceivePouchFromOperatorController());
+    controller = Get.put(RegisterPouchController());
     super.initState();
   }
 
@@ -56,7 +55,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Receber Malote",
+                          title: "Lançar Malote",
                         ),
                       ),
                       Expanded(
@@ -73,7 +72,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    "Adicionar novo Malote",
+                                    "Adicionar Saldo do Malote",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,
@@ -104,7 +103,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: TextWidget(
-                                        "Selecione o operador",
+                                        "Selecione o malote que deseja lançar",
                                         textColor: AppColors.defaultColor,
                                         fontSize: 16.sp,
                                         textAlign: TextAlign.center,
@@ -114,31 +113,30 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                   ),
                                   Obx(
                                     () => DropdownButtonWidget(
-                                      itemSelected: controller.operatorSelected.value == "" ? null : controller.operatorSelected.value,
-                                      hintText: "Operadores",
+                                      itemSelected: controller.pouchSelected.value == "" ? null : controller.pouchSelected.value,
+                                      hintText: "Malotes",
                                       height: 6.5.h,
                                       width: 85.w,
-                                      rxListItems: controller.operators,
+                                      rxListItems: controller.pouchs,
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(top: 4.5.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.operatorCode,
-                                      hintText: "Código do Operador",
+                                      controller: controller.pouchValue,
+                                      hintText: "Valor do Malote",
                                       height: 9.h,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.number,
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.pouchQuantity,
-                                      hintText: "Quantidade de Malotes Recebidos",
+                                      controller: controller.credCardValue,
+                                      hintText: "Valor do Cartão da Máquina",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                     ),
                                   ),
                                   Padding(

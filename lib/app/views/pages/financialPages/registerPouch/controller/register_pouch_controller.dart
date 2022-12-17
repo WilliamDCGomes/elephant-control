@@ -2,40 +2,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
-class ReceivePouchFromOperatorController extends GetxController {
-  late RxString operatorSelected;
-  late RxList<String> operators;
+class RegisterPouchController extends GetxController {
+  late RxString pouchSelected;
+  late RxList<String> pouchs;
   late RxBool loadingAnimation;
-  late TextEditingController operatorCode;
-  late TextEditingController pouchQuantity;
+  late TextEditingController pouchValue;
+  late TextEditingController credCardValue;
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  ReceivePouchFromOperatorController(){
+  RegisterPouchController(){
     _inicializeList();
     _initializeVariables();
   }
 
   _inicializeList(){
-    operators = [
-      "José Carlos",
-      "Vínicius Moretto",
-      "Vagnar Torres",
+    pouchs = [
+      "Boulevard Shopping",
+      "Shopping Central",
+      "Mercado Central",
     ].obs;
   }
 
   _initializeVariables(){
-    operatorSelected = operators[0].obs;
+    pouchSelected = pouchs[0].obs;
     loadingAnimation = false.obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
-    operatorCode = TextEditingController();
-    pouchQuantity = TextEditingController();
+    pouchValue = TextEditingController();
+    credCardValue = TextEditingController();
     observations = TextEditingController();
   }
 
   onDropdownButtonWidgetChanged(String? selectedState){
-    operatorSelected.value = selectedState ?? "";
+    pouchSelected.value = selectedState ?? "";
   }
 }

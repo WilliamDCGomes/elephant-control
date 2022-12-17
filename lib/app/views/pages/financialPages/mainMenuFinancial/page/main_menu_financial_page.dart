@@ -13,6 +13,8 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../financialHistory/page/financial_history_page.dart';
+import '../../receivePouchFromOperator/page/receive_pouch_from_operator_page.dart';
+import '../../registerPouch/page/register_pouch_page.dart';
 import '../controller/main_menu_financial_controller.dart';
 
 class MainMenuFinancialPage extends StatefulWidget {
@@ -27,7 +29,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
 
   @override
   void initState() {
-    controller = Get.put(MainMenuFinancialController(), tag: "main_menu_controller");
+    controller = Get.put(MainMenuFinancialController(), tag: "main_menu_financial_controller");
     super.initState();
   }
 
@@ -247,9 +249,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () {
-
-                        },
+                        onPressed: () => Get.to(() => ReceivePouchFromOperator()),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -271,9 +271,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () {
-
-                          },
+                          onPressed: () => Get.to(() => RegisterPouchPage()),
                         ),
                       ),
                     ],
