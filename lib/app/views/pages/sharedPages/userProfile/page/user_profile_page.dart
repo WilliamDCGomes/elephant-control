@@ -6,7 +6,7 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../operatorPages/mainMenu/controller/main_menu_controller.dart';
+import '../../../operatorPages/mainMenu/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
@@ -17,7 +17,7 @@ import '../../settingsApp/page/settings_app_page.dart';
 import '../controller/user_profile_controller.dart';
 
 class UserProfilePage extends StatefulWidget {
-  late final MainMenuController mainMenuController;
+  late final MainMenuOperatorController mainMenuController;
 
   UserProfilePage({
     Key? key,

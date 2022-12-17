@@ -8,7 +8,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../mainMenu/controller/main_menu_controller.dart';
+import '../../mainMenu/controller/main_menu_operator_controller.dart';
 
 class MaintenanceController extends GetxController {
   late RxString machineSelected;
@@ -29,7 +29,7 @@ class MaintenanceController extends GetxController {
   late ImagesPictureWidget imageClock;
   late ImagesPictureWidget beforeMaintenanceImageClock;
   late ImagesPictureWidget afterMaintenanceImageClock;
-  late MainMenuController _mainMenuController;
+  late MainMenuOperatorController _mainMenuOperatorController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
   MaintenanceController(){
@@ -108,11 +108,11 @@ class MaintenanceController extends GetxController {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 2));
-      _mainMenuController = Get.find(tag: "main_menu_controller");
+      _mainMenuOperatorController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
       if(yes.value)
-        _mainMenuController.amountPouch.value++;
-      _mainMenuController.amountTeddy.value -= teddy;
+        _mainMenuOperatorController.amountPouch.value++;
+      _mainMenuOperatorController.amountTeddy.value -= teddy;
 
       double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       if(averageValue < 25 || averageValue > 40) {

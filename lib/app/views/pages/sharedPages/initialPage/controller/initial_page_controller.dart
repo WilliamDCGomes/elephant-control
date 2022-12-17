@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
+import '../../../../../../base/models/user.dart';
+import '../../../../../utils/logged_user.dart';
+import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../login/page/login_page_page.dart';
 
@@ -42,18 +44,32 @@ class InitialPageController extends GetxController {
           loadingAnimationSuccess.value = true;
 
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
-          Get.offAll(() => MainMenuPage());
+          await _doLoginServerKeepConnected();
+          Get.offAll(() => MainMenuOperatorPage());
         }
         else{
           Get.offAll(() => LoginPage());
         }
       }
       else{
-        Get.offAll(() => MainMenuPage());
+        await _doLoginServerKeepConnected();
+        Get.offAll(() => MainMenuOperatorPage());
       }
     }
     else{
       Get.offAll(() => LoginPage());
+    }
+  }
+
+  Future<void> _doLoginServerKeepConnected() async {
+    try{
+      LoggedUser.nameAndLastName = await sharedPreferences.getString("user_name_and_last_name") ?? "";
+      LoggedUser.name = await sharedPreferences.getString("user_name",) ?? "";
+      LoggedUser.userType = await UserType.values[sharedPreferences.getInt("user_type") ?? 4];
+      LoggedUser.id = await sharedPreferences.getString("user_id") ?? "";
+    }
+    catch(_){
+
     }
   }
 }

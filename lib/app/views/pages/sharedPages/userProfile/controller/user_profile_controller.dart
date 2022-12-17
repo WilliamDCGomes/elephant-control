@@ -15,8 +15,8 @@ import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../../stylePages/masks_for_text_fields.dart';
-import '../../../operatorPages/mainMenu/controller/main_menu_controller.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
+import '../../../operatorPages/mainMenu/controller/main_menu_operator_controller.dart';
+import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
@@ -81,10 +81,10 @@ class UserProfileController extends GetxController {
   late User _user;
   late LoadingProfilePictureWidget loadingProfilePicture;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late MainMenuController mainMenuController;
+  late MainMenuOperatorController mainMenuOperatorController;
   late IConsultCepService _consultCepService;
 
-  UserProfileController(this.mainMenuController) {
+  UserProfileController(this.mainMenuOperatorController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -147,7 +147,7 @@ class UserProfileController extends GetxController {
     _picker = ImagePicker();
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
-      loadingAnimation: mainMenuController.loadingPicture,
+      loadingAnimation: mainMenuOperatorController.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
@@ -330,7 +330,7 @@ class UserProfileController extends GetxController {
           _updateLocaleUser();
           buttonText.value = "EDITAR";
           profileIsDisabled.value = true;
-          Get.offAll(() => MainMenuPage());
+          Get.offAll(() => MainMenuOperatorPage());
         }
       }
     }
@@ -450,7 +450,7 @@ class UserProfileController extends GetxController {
 
   getProfileImage(imageOrigin origin) async {
     try {
-      mainMenuController.loadingPicture.value = true;
+      mainMenuOperatorController.loadingPicture.value = true;
       profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
       if (profilePicture != null) {
         if (await _saveProfilePicture()) {
@@ -473,14 +473,14 @@ class UserProfileController extends GetxController {
         },
       );
     } finally {
-      mainMenuController.loadingPicture.value = false;
+      mainMenuOperatorController.loadingPicture.value = false;
     }
   }
 
   Future<bool> _saveProfilePicture() async {
     if (profilePicture != null && profilePicture!.path.isNotEmpty) {
-      mainMenuController.profileImagePath.value = profilePicture!.path;
-      return await mainMenuController.sharedPreferences.setString(
+      mainMenuOperatorController.profileImagePath.value = profilePicture!.path;
+      return await mainMenuOperatorController.sharedPreferences.setString(
         "profile_picture",
         profilePicture!.path,
       );
@@ -538,7 +538,7 @@ class UserProfileController extends GetxController {
     try {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      imageChanged = await mainMenuController.sharedPreferences.remove(
+      imageChanged = await mainMenuOperatorController.sharedPreferences.remove(
         "profile_picture",
       );
       await loadingWithSuccessOrErrorWidget.stopAnimation();
@@ -552,10 +552,10 @@ class UserProfileController extends GetxController {
         },
       );
       await GetProfilePictureController.loadProfilePicture(
-        mainMenuController.loadingPicture,
-        mainMenuController.hasPicture,
-        mainMenuController.profileImagePath,
-        mainMenuController.sharedPreferences,
+        mainMenuOperatorController.loadingPicture,
+        mainMenuOperatorController.hasPicture,
+        mainMenuOperatorController.profileImagePath,
+        mainMenuOperatorController.sharedPreferences,
       );
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);

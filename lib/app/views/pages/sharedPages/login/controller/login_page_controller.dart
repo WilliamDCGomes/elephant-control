@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_page.dart';
+import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
@@ -93,7 +93,7 @@ class LoginPageController extends GetxController {
             await _saveOptions();
 
             await loadingWidget.stopAnimation();
-            Get.offAll(() => MainMenuPage());
+            _goToNextPage();
           }
         }
       }
@@ -127,11 +127,15 @@ class LoginPageController extends GetxController {
 
     if(userLogged != null){
       LoggedUser.nameAndLastName = userLogged!.name;
-      LoggedUser.name = userLogged!.name;
       LoggedUser.name = userLogged!.name.split(' ').first;
       LoggedUser.userType = userLogged!.userType;
       LoggedUser.id = userLogged!.id;
       LoggedUser.password = passwordInputController.text;
+
+      await sharedPreferences.setString("user_name_and_last_name", userLogged!.name);
+      await sharedPreferences.setString("user_name", userLogged!.name.split(' ').first);
+      await sharedPreferences.setInt("user_type", LoggedUser.userType.index);
+      await sharedPreferences.setString("user_id", userLogged!.id);
     }
   }
 
@@ -164,16 +168,7 @@ class LoginPageController extends GetxController {
           }
 
           await loadingWidget.stopAnimation();
-
-          if (userLogged!.userType == UserType.operator) {
-            Get.offAll(() => MainMenuPage());
-          }
-          else if (userLogged!.userType == UserType.admin) {
-            Get.offAll(() => MainMenuPage());
-          }
-          else {
-            Get.offAll(() => MainMenuPage());
-          }
+          _goToNextPage();
         }
         else {
           if(loadingWidget.animationController.isAnimating)
@@ -205,6 +200,18 @@ class LoginPageController extends GetxController {
           );
         },
       );
+    }
+  }
+
+  _goToNextPage(){
+    if (userLogged!.userType == UserType.operator) {
+      Get.offAll(() => MainMenuOperatorPage());
+    }
+    else if (userLogged!.userType == UserType.admin) {
+      Get.offAll(() => MainMenuOperatorPage());
+    }
+    else {
+      Get.offAll(() => MainMenuOperatorPage());
     }
   }
 

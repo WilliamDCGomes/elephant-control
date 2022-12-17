@@ -8,7 +8,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../mainMenu/controller/main_menu_controller.dart';
+import '../../mainMenu/controller/main_menu_operator_controller.dart';
 
 class RequestEditVisitController extends GetxController {
   late RxString machineSelected;
@@ -29,7 +29,7 @@ class RequestEditVisitController extends GetxController {
   late ImagesPictureWidget imageClock;
   late ImagesPictureWidget beforeMaintenanceImageClock;
   late ImagesPictureWidget afterMaintenanceImageClock;
-  late MainMenuController _mainMenuController;
+  late MainMenuOperatorController _mainMenuController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
   RequestEditVisitController(){
