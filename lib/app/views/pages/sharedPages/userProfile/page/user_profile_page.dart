@@ -6,7 +6,8 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../operatorPages/mainMenu/controller/main_menu_operator_controller.dart';
+import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
+import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
@@ -17,11 +18,13 @@ import '../../settingsApp/page/settings_app_page.dart';
 import '../controller/user_profile_controller.dart';
 
 class UserProfilePage extends StatefulWidget {
-  late final MainMenuOperatorController mainMenuController;
+  late final MainMenuOperatorController? mainMenuOperatorController;
+  late final MainMenuFinancialController? mainMenuFinancialController;
 
   UserProfilePage({
     Key? key,
-    required this.mainMenuController,
+    this.mainMenuOperatorController,
+    this.mainMenuFinancialController,
   }) : super(key: key);
 
   @override
@@ -35,7 +38,8 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
   void initState() {
     controller = Get.put(
       UserProfileController(
-        widget.mainMenuController,
+        widget.mainMenuOperatorController,
+        widget.mainMenuFinancialController,
       ),
       tag: 'user_profile_controller',
     );
@@ -109,26 +113,39 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                             children: [
                               TextButtonWidget(
                                 onTap: () {
-                                  if(widget.mainMenuController.profileImagePath.value.isNotEmpty){
+                                  if(widget.mainMenuOperatorController != null ?
+                                  widget.mainMenuOperatorController!.profileImagePath.value.isNotEmpty :
+                                  widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty){
                                     showImageViewer(
                                       context,
-                                      Image.memory(File(widget.mainMenuController.profileImagePath.value).readAsBytesSync()).image,
+                                      Image.memory(
+                                        File(widget.mainMenuOperatorController != null ?
+                                             widget.mainMenuOperatorController!.profileImagePath.value :
+                                             widget.mainMenuFinancialController!.profileImagePath.value,
+                                        ).readAsBytesSync()).image,
                                     );
                                   }
                                 },
                                 componentPadding: EdgeInsets.zero,
                                 borderRadius: 6.h,
-                                widgetCustom: ProfilePictureWidget(
-                                  hasPicture: widget.mainMenuController.hasPicture,
-                                  loadingPicture: widget.mainMenuController.loadingPicture,
-                                  profileImagePath: widget.mainMenuController.profileImagePath,
+                                widgetCustom: widget.mainMenuOperatorController != null ?
+                                ProfilePictureWidget(
+                                  hasPicture: widget.mainMenuOperatorController!.hasPicture,
+                                  loadingPicture: widget.mainMenuOperatorController!.loadingPicture,
+                                  profileImagePath: widget.mainMenuOperatorController!.profileImagePath,
+                                ) : ProfilePictureWidget(
+                                  hasPicture: widget.mainMenuFinancialController!.hasPicture,
+                                  loadingPicture: widget.mainMenuFinancialController!.loadingPicture,
+                                  profileImagePath: widget.mainMenuFinancialController!.profileImagePath,
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
                                 child: Obx(
                                   () => Visibility(
-                                    visible: !widget.mainMenuController.loadingPicture.value,
+                                    visible: widget.mainMenuOperatorController != null ?
+                                    widget.mainMenuOperatorController!.loadingPicture.value :
+                                    widget.mainMenuFinancialController!.loadingPicture.value,
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 1.h),
                                       child: TextButtonWidget(
@@ -138,7 +155,9 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                             return ConfirmationPopup(
                                               title: "Escolha uma das opções",
                                               subTitle: "Deseja alterar ou apagar a foto de perfil?",
-                                              showSecondButton: widget.mainMenuController.profileImagePath.value.isNotEmpty,
+                                              showSecondButton: widget.mainMenuOperatorController != null ?
+                                              widget.mainMenuOperatorController!.profileImagePath.value.isNotEmpty :
+                                              widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty,
                                               firstButtonText: "APAGAR",
                                               secondButtonText: "ALTERAR",
                                               firstButton: () {

@@ -8,7 +8,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../mainMenu/controller/main_menu_operator_controller.dart';
+import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 
 class MaintenanceController extends GetxController {
   late RxString machineSelected;

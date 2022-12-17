@@ -3,7 +3,8 @@ import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user.dart';
 import '../../../../../utils/logged_user.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
+import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
+import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../login/page/login_page_page.dart';
 
@@ -45,7 +46,7 @@ class InitialPageController extends GetxController {
 
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
           await _doLoginServerKeepConnected();
-          Get.offAll(() => MainMenuOperatorPage());
+          _goToNextPage();
         }
         else{
           Get.offAll(() => LoginPage());
@@ -53,11 +54,23 @@ class InitialPageController extends GetxController {
       }
       else{
         await _doLoginServerKeepConnected();
-        Get.offAll(() => MainMenuOperatorPage());
+        _goToNextPage();
       }
     }
     else{
       Get.offAll(() => LoginPage());
+    }
+  }
+
+  _goToNextPage(){
+    if (LoggedUser.userType == UserType.operator) {
+      Get.offAll(() => MainMenuOperatorPage());
+    }
+    else if (LoggedUser.userType == UserType.admin) {
+      Get.offAll(() => MainMenuOperatorPage());
+    }
+    else {
+      Get.offAll(() => MainMenuFinancialPage());
     }
   }
 

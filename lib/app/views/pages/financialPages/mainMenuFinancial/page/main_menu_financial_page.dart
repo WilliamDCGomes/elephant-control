@@ -1,5 +1,5 @@
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
-import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -12,23 +12,22 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../maintenance/page/maintenance_page.dart';
-import '../../maintenanceHistory/pages/maintenance_history_page.dart';
-import '../controller/main_menu_operator_controller.dart';
+import '../../financialHistory/page/financial_history_page.dart';
+import '../controller/main_menu_financial_controller.dart';
 
-class MainMenuOperatorPage extends StatefulWidget {
-  const MainMenuOperatorPage({Key? key}) : super(key: key);
+class MainMenuFinancialPage extends StatefulWidget {
+  const MainMenuFinancialPage({Key? key}) : super(key: key);
 
   @override
-  State<MainMenuOperatorPage> createState() => _MainMenuOperatorPageState();
+  State<MainMenuFinancialPage> createState() => _MainMenuFinancialPageState();
 }
 
-class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
-  late MainMenuOperatorController controller;
+class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
+  late MainMenuFinancialController controller;
 
   @override
   void initState() {
-    controller = Get.put(MainMenuOperatorController(), tag: "main_menu_controller");
+    controller = Get.put(MainMenuFinancialController(), tag: "main_menu_controller");
     super.initState();
   }
 
@@ -72,7 +71,9 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButtonWidget(
-                                onTap: () => Get.to(() => UserProfilePage(mainMenuController: controller,)),
+                                onTap: () => Get.to(() => UserProfilePage(
+                                  mainMenuFinancialController: controller,
+                                )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -160,7 +161,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         TextWidget(
-                                          "Quantidade de Malote(s):",
+                                          "Quantidade no Cofre:",
                                           textColor: AppColors.whiteColor,
                                           fontSize: 18.sp,
                                           textAlign: TextAlign.start,
@@ -170,9 +171,9 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                           padding: EdgeInsets.only(left: 1.w),
                                           child: Obx(
                                             () => TextWidget(
-                                              controller.amountPouch.value.toString(),
+                                              "R\$ " + FormatNumbers.numbersToString(controller.safeBoxAmount.value),
                                               fontWeight: FontWeight.bold,
-                                              maxLines: 1,
+                                              maxLines: 2,
                                               textColor: AppColors.whiteColor,
                                               fontSize: 20.sp,
                                               textAlign: TextAlign.start,
@@ -199,9 +200,13 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                           height: 2.h,
                                         ),
                                         InkWell(
-                                          onTap: () => Get.to(() => HistoryPage(title: "Histórico de Malotes")),
+                                          onTap: () => Get.to(() => FinancialHistoryPage(
+                                            title: "Histórico do Cofre",
+                                            pageTitle: "Cofre",
+                                            safeBoxAmount: controller.safeBoxAmount.value,
+                                          )),
                                           child: TextWidget(
-                                            "Clique aqui para ver o histórico de malotes!",
+                                            "Clique aqui para ver o histórico do cofre!",
                                             maxLines: 1,
                                             textColor: AppColors.whiteColor,
                                             fontSize: 16.sp,
@@ -217,79 +222,6 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             ),
                           ),
                         ),
-                        Center(
-                          child: InformationContainerWidget(
-                            iconPath: Paths.Pelucia,
-                            textColor: AppColors.whiteColor,
-                            backgroundColor: AppColors.defaultColor,
-                            informationText: "",
-                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
-                            customContainer: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextWidget(
-                                        "Saldo de Pelúcias:",
-                                        textColor: AppColors.whiteColor,
-                                        fontSize: 18.sp,
-                                        textAlign: TextAlign.start,
-                                        maxLines: 1,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 1.w),
-                                        child: Obx(
-                                          () => TextWidget(
-                                            controller.amountTeddy.value.toString(),
-                                            fontWeight: FontWeight.bold,
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontSize: 20.sp,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 73.w,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      TextWidget(
-                                        "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
-                                        maxLines: 1,
-                                        textColor: AppColors.whiteColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(
-                                        height: 2.h,
-                                      ),
-                                      InkWell(
-                                        onTap: () => Get.to(() => HistoryPage(title: "Histórico de Pelúcias")),
-                                        child: TextWidget(
-                                          "Clique aqui para ver as pelúcias!",
-                                          maxLines: 1,
-                                          textColor: AppColors.whiteColor,
-                                          fontSize: 16.sp,
-                                          textAlign: TextAlign.center,
-                                          textDecoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -298,7 +230,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FloatingActionButton.extended(
-                        heroTag: "secondFloatingActionButton",
+                        heroTag: "firstFloatingActionButton",
                         backgroundColor: AppColors.defaultColor,
                         foregroundColor: AppColors.backgroundColor,
                         elevation: 3,
@@ -308,19 +240,21 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                           color: AppColors.backgroundColor,
                         ),
                         label: TextWidget(
-                          "Visitas",
+                          "Receber Malotes do Operador",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () => Get.to(() => MaintenanceHistoryPage()),
+                        onPressed: () {
+
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
                         child: FloatingActionButton.extended(
-                          heroTag: "firstFloatingActionButton",
+                          heroTag: "secondFloatingActionButton",
                           backgroundColor: AppColors.defaultColor,
                           foregroundColor: AppColors.backgroundColor,
                           elevation: 3,
@@ -330,14 +264,16 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             color: AppColors.backgroundColor,
                           ),
                           label: TextWidget(
-                            "Adicionar novo atendimento",
+                            "Lançar Malotes no Sistema",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () => Get.to(() => MaintenancePage()),
+                          onPressed: () {
+
+                          },
                         ),
                       ),
                     ],

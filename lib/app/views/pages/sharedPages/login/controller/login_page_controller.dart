@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import 'package:elephant_control/app/views/pages/sharedPages/login/page/login_page_page.dart';
 import 'package:elephant_control/base/models/user.dart';
 import 'package:elephant_control/base/services/user_service.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
+import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
@@ -211,7 +212,7 @@ class LoginPageController extends GetxController {
       Get.offAll(() => MainMenuOperatorPage());
     }
     else {
-      Get.offAll(() => MainMenuOperatorPage());
+      Get.offAll(() => MainMenuFinancialPage());
     }
   }
 

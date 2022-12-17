@@ -15,8 +15,9 @@ import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../../stylePages/masks_for_text_fields.dart';
-import '../../../operatorPages/mainMenu/controller/main_menu_operator_controller.dart';
-import '../../../operatorPages/mainMenu/page/main_menu_operator_page.dart';
+import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
+import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
+import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
@@ -81,10 +82,11 @@ class UserProfileController extends GetxController {
   late User _user;
   late LoadingProfilePictureWidget loadingProfilePicture;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late MainMenuOperatorController mainMenuOperatorController;
+  late MainMenuOperatorController? mainMenuOperatorController;
+  late MainMenuFinancialController? mainMenuFinancialController;
   late IConsultCepService _consultCepService;
 
-  UserProfileController(this.mainMenuOperatorController) {
+  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -147,7 +149,8 @@ class UserProfileController extends GetxController {
     _picker = ImagePicker();
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
-      loadingAnimation: mainMenuOperatorController.loadingPicture,
+      loadingAnimation: mainMenuOperatorController != null ?
+      mainMenuOperatorController!.loadingPicture : mainMenuFinancialController!.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
@@ -450,7 +453,12 @@ class UserProfileController extends GetxController {
 
   getProfileImage(imageOrigin origin) async {
     try {
-      mainMenuOperatorController.loadingPicture.value = true;
+      if(mainMenuOperatorController != null){
+        mainMenuOperatorController!.loadingPicture.value = true;
+      }
+      else{
+        mainMenuFinancialController!.loadingPicture.value = true;
+      }
       profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
       if (profilePicture != null) {
         if (await _saveProfilePicture()) {
@@ -473,17 +481,31 @@ class UserProfileController extends GetxController {
         },
       );
     } finally {
-      mainMenuOperatorController.loadingPicture.value = false;
+      if(mainMenuOperatorController != null){
+        mainMenuOperatorController!.loadingPicture.value = false;
+      }
+      else{
+        mainMenuFinancialController!.loadingPicture.value = false;
+      }
     }
   }
 
   Future<bool> _saveProfilePicture() async {
     if (profilePicture != null && profilePicture!.path.isNotEmpty) {
-      mainMenuOperatorController.profileImagePath.value = profilePicture!.path;
-      return await mainMenuOperatorController.sharedPreferences.setString(
-        "profile_picture",
-        profilePicture!.path,
-      );
+      if(mainMenuOperatorController != null){
+        mainMenuOperatorController!.profileImagePath.value = profilePicture!.path;
+        return await mainMenuOperatorController!.sharedPreferences.setString(
+          "profile_picture",
+          profilePicture!.path,
+        );
+      }
+      else{
+        mainMenuFinancialController!.profileImagePath.value = profilePicture!.path;
+        return await mainMenuFinancialController!.sharedPreferences.setString(
+          "profile_picture",
+          profilePicture!.path,
+        );
+      }
     }
     return false;
   }
@@ -538,9 +560,18 @@ class UserProfileController extends GetxController {
     try {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      imageChanged = await mainMenuOperatorController.sharedPreferences.remove(
-        "profile_picture",
-      );
+
+      if(mainMenuOperatorController != null){
+        imageChanged = await mainMenuOperatorController!.sharedPreferences.remove(
+          "profile_picture",
+        );
+      }
+      else{
+        imageChanged = await mainMenuFinancialController!.sharedPreferences.remove(
+          "profile_picture",
+        );
+      }
+
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       showDialog(
         context: Get.context!,
@@ -551,12 +582,23 @@ class UserProfileController extends GetxController {
           );
         },
       );
-      await GetProfilePictureController.loadProfilePicture(
-        mainMenuOperatorController.loadingPicture,
-        mainMenuOperatorController.hasPicture,
-        mainMenuOperatorController.profileImagePath,
-        mainMenuOperatorController.sharedPreferences,
-      );
+
+      if(mainMenuOperatorController != null){
+        await GetProfilePictureController.loadProfilePicture(
+          mainMenuOperatorController!.loadingPicture,
+          mainMenuOperatorController!.hasPicture,
+          mainMenuOperatorController!.profileImagePath,
+          mainMenuOperatorController!.sharedPreferences,
+        );
+      }
+      else{
+        await GetProfilePictureController.loadProfilePicture(
+          mainMenuFinancialController!.loadingPicture,
+          mainMenuFinancialController!.hasPicture,
+          mainMenuFinancialController!.profileImagePath,
+          mainMenuFinancialController!.sharedPreferences,
+        );
+      }
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(

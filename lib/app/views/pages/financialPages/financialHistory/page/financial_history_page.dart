@@ -2,33 +2,36 @@ import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/history_controller.dart';
+import '../controller/financial_history_controller.dart';
 
-class HistoryPage extends StatefulWidget {
+class FinancialHistoryPage extends StatefulWidget {
   final String title;
   final String pageTitle;
+  final double safeBoxAmount;
 
-  const HistoryPage({
+  const FinancialHistoryPage({
     Key? key,
     required this.title,
     required this.pageTitle,
+    required this.safeBoxAmount,
   }) : super(key: key);
 
   @override
-  State<HistoryPage> createState() => _HistoryPageState();
+  State<FinancialHistoryPage> createState() => _FinancialHistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
-  late HistoryController controller;
+class _FinancialHistoryPageState extends State<FinancialHistoryPage> {
+  late FinancialHistoryController controller;
 
   @override
   void initState() {
-    controller = Get.put(HistoryController(widget.title));
+    controller = Get.put(FinancialHistoryController(widget.title, widget.safeBoxAmount));
     super.initState();
   }
 
@@ -87,6 +90,17 @@ class _HistoryPageState extends State<HistoryPage> {
                                     height: 2.h,
                                   ),
                                   TextWidget(
+                                    "Valor do Cofre: R\$ " + FormatNumbers.numbersToString(controller.safeBoxAmount),
+                                    textColor: AppColors.whiteColor,
+                                    fontSize: 18.sp,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  TextWidget(
                                     "Dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
@@ -100,11 +114,11 @@ class _HistoryPageState extends State<HistoryPage> {
                             Expanded(
                               child: Obx(
                                 () => ListView.builder(
-                                  itemCount: controller.maintenanceCardWidgetList.length,
+                                  itemCount: controller.safeBoxCardWidgetList.length,
                                   shrinkWrap: true,
                                   padding: EdgeInsets.symmetric(horizontal: 2.h),
                                   itemBuilder: (context, index){
-                                    return controller.maintenanceCardWidgetList[index];
+                                    return controller.safeBoxCardWidgetList[index];
                                   },
                                 ),
                               ),
