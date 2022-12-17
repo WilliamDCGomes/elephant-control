@@ -13,7 +13,7 @@ class UserService extends BaseService implements IUserService {
       password ??= sharedPreferences.getString('Senha');
       if (username == null || password == null) throw Exception();
       final url = baseUrlApi + 'User/Authenticate';
-      final response = await super.post(url, null, query: {"username": username, "password": password});
+      final response = await super.post(url, null, query: {"username": username, "password": password}).timeout(Duration(seconds: 30));
       if (hasErrorResponse(response)) throw Exception();
       return AuthenticateResponse.fromJson(response.body);
     } catch (_) {

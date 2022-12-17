@@ -8,7 +8,6 @@ import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../../occurrence/page/occurrence_page.dart';
 import '../controller/maintenance_history_controller.dart';
 
 class MaintenanceHistoryPage extends StatefulWidget {
@@ -119,18 +118,9 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 1.h),
-                              child: ButtonWidget(
-                                hintText: "Adicionar Ocorrência",
-                                fontWeight: FontWeight.bold,
-                                widthButton: double.infinity,
-                                onPressed: () => Get.to(() => OccurrencePage()),
-                              ),
-                            ),
-                            Padding(
                               padding: EdgeInsets.fromLTRB(2.h, 1.h, 2.h, 2.h),
                               child: ButtonWidget(
-                                hintText: "Montar nova lista de atendimento",
+                                hintText: "Adicionar máquina para a visita",
                                 fontWeight: FontWeight.bold,
                                 widthButton: double.infinity,
                                 onPressed: () async => controller.newItem(),

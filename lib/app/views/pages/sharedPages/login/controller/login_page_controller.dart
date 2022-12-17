@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/sharedPages/login/page/login_page_page.dart';
 import 'package:elephant_control/base/models/user.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -85,16 +86,7 @@ class LoginPageController extends GetxController {
           loadingAnimation.value = true;
           await loadingWidget.startAnimation();
 
-          String? username = await sharedPreferences.getString("Login");
-          String? password = await sharedPreferences.getString("Senha");
-
-          if(username == null || password == null)
-            throw Exception();
-
-          userLogged = await UserService().authenticate(
-            username: username,
-            password: password,
-          );
+          await _doLoginServer(true);
 
           if(userLogged != null){
             LoggedUser.userType = userLogged!.userType;
@@ -148,7 +140,11 @@ class LoginPageController extends GetxController {
       if (formKey.currentState!.validate()) {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
-        userLogged = await UserService().authenticate(username: userInputController.text, password: passwordInputController.text);
+
+        if(!await _doLoginServer(false)){
+          return;
+        }
+
         loginButtonFocusNode.requestFocus();
 
         if (userLogged != null) {
@@ -180,7 +176,8 @@ class LoginPageController extends GetxController {
           }
         }
         else {
-          await loadingWidget.stopAnimation();
+          if(loadingWidget.animationController.isAnimating)
+            await loadingWidget.stopAnimation();
           loadingAnimationSuccess.value = true;
           await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
           await showDialog(
@@ -195,7 +192,8 @@ class LoginPageController extends GetxController {
         }
       }
     } catch (_) {
-      await loadingWidget.stopAnimation();
+      if(loadingWidget.animationController.isAnimating)
+        await loadingWidget.stopAnimation();
       loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
@@ -208,5 +206,49 @@ class LoginPageController extends GetxController {
         },
       );
     }
+  }
+
+  Future<bool> _doLoginServer(bool fromBiometric) async {
+    try{
+      String? username = "";
+      String? password = "";
+
+      if(fromBiometric){
+        username = await sharedPreferences.getString("Login");
+        password = await sharedPreferences.getString("Senha");
+
+        if(username == null || password == null) {
+          await _resetLogin("Erro ao se autenticar com a digital.\nPor favor, utilize o login e a senha para continuar.");
+          return false;
+        }
+      }
+
+      userLogged = await UserService().authenticate(
+        username: fromBiometric ? username : userInputController.text,
+        password: fromBiometric ? password : passwordInputController.text,
+      ).timeout(Duration(seconds: 30));
+
+      return true;
+    }
+    catch(e){
+      await _resetLogin("Erro ao se conectar com o servidor.");
+      return false;
+    }
+  }
+
+  _resetLogin(String message) async {
+    await loadingWidget.stopAnimation();
+    loadingAnimationSuccess.value = true;
+    await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+    await showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return InformationPopup(
+          warningMessage: message,
+        );
+      },
+    );
+    Get.offAll(LoginPage(cancelFingerPrint: true,));
   }
 }

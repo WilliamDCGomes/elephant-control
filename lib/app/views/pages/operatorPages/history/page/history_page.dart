@@ -26,7 +26,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   void initState() {
-    controller = Get.put(HistoryController());
+    controller = Get.put(HistoryController(widget.title));
     super.initState();
   }
 
@@ -97,7 +97,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                             Expanded(
                               child: Obx(
-                                    () => ListView.builder(
+                                () => ListView.builder(
                                   itemCount: controller.maintenanceCardWidgetList.length,
                                   shrinkWrap: true,
                                   padding: EdgeInsets.symmetric(horizontal: 2.h),
