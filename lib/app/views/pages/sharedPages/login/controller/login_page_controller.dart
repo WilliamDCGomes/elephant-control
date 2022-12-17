@@ -44,6 +44,13 @@ class LoginPageController extends GetxController {
     if (!_cancelFingerPrint) {
       await _checkBiometricSensor();
     }
+    if (kDebugMode) {
+      userInputController.text = "william";
+      passwordInputController.text = "12345678";
+    }
+    else{
+      userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
+    }
     super.onInit();
   }
 
@@ -66,10 +73,6 @@ class LoginPageController extends GetxController {
     passwordInputFocusNode = FocusNode();
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
-    if (kDebugMode) {
-      userInputController.text = "william";
-      passwordInputController.text = "12345678";
-    }
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimationSuccess,
     );
