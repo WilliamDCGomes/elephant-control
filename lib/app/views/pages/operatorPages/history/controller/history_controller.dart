@@ -30,6 +30,7 @@ class HistoryController extends GetxController {
       maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
         MaintenanceCardWidget(
           machineName: "Shopping Boulevard",
+          city: "Jaú",
           status: "Finalizado".obs,
           workPriority: "ALTA",
           priorityColor: AppColors.redColor.value,
@@ -41,6 +42,7 @@ class HistoryController extends GetxController {
         ),
         MaintenanceCardWidget(
           machineName: "Supermercado Central",
+          city: "Bauru",
           status: "Finalizado".obs,
           workPriority: "NORMAL",
           priorityColor: AppColors.greenColor.value,
@@ -52,6 +54,7 @@ class HistoryController extends GetxController {
         ),
         MaintenanceCardWidget(
           machineName: "Cinema Alameda",
+          city: "Campinas",
           status: "Finalizado".obs,
           workPriority: "NORMAL",
           priorityColor: AppColors.greenColor.value,
@@ -68,6 +71,7 @@ class HistoryController extends GetxController {
       maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
         MaintenanceCardWidget(
           machineName: "Shopping Boulevard",
+          city: "Jaú",
           status: "Finalizado".obs,
           workPriority: "ALTA",
           priorityColor: AppColors.redColor.value,
@@ -80,6 +84,7 @@ class HistoryController extends GetxController {
         ),
         MaintenanceCardWidget(
           machineName: "Cinema Alameda",
+          city: "Campinas",
           status: "Finalizado".obs,
           workPriority: "NORMAL",
           priorityColor: AppColors.greenColor.value,

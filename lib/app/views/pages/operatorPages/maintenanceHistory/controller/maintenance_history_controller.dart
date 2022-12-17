@@ -5,10 +5,15 @@ import 'package:get/get.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/maintenance_card_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
+import '../../../widgetsShared/popups/information_popup.dart';
+import '../popups/filter_maintenance_list_popup.dart';
+import '../widgets/city_item_card_widget.dart';
 
 class MaintenanceHistoryController extends GetxController {
   late RxList<MaintenanceCardWidget> maintenanceCardWidgetList;
   late RxList<MaintenanceCardWidget> allMaintenanceCardWidgetList;
+  late RxList<MaintenanceCardWidget> allMaintenanceCardWidgetFilteredList;
+  late RxList<CityItemCardWidget> cityItemCardWidgetList;
   late RxBool loadingAnimation;
   late Function refreshList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -27,12 +32,15 @@ class MaintenanceHistoryController extends GetxController {
 
     maintenanceCardWidgetList = <MaintenanceCardWidget>[].obs;
     allMaintenanceCardWidgetList = <MaintenanceCardWidget>[].obs;
+    allMaintenanceCardWidgetFilteredList = <MaintenanceCardWidget>[].obs;
+    cityItemCardWidgetList = <CityItemCardWidget>[].obs;
   }
 
   _inicializeList(){
     maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
       MaintenanceCardWidget(
         machineName: "Shopping Boulevard",
+        city: "Jaú",
         status: "Finalizado".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
@@ -44,6 +52,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Central",
+        city: "Bauru",
         status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
@@ -55,6 +64,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Cinema Alameda",
+        city: "Campinas",
         status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
@@ -69,6 +79,7 @@ class MaintenanceHistoryController extends GetxController {
     allMaintenanceCardWidgetList.value = <MaintenanceCardWidget>[
       MaintenanceCardWidget(
         machineName: "Shopping Oeste",
+        city: "Campinas",
         status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
@@ -79,6 +90,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Oeste",
+        city: "Jaú",
         status: "Pendente".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
@@ -89,6 +101,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Cinepólis",
+        city: "Bauru",
         status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
@@ -99,6 +112,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Supermercado Norte",
+        city: "Botucatu",
         status: "Pendente".obs,
         workPriority: "ALTA",
         priorityColor: AppColors.redColor.value,
@@ -109,6 +123,7 @@ class MaintenanceHistoryController extends GetxController {
       ),
       MaintenanceCardWidget(
         machineName: "Parque de Diversão",
+        city: "Lençóis Paulista",
         status: "Pendente".obs,
         workPriority: "NORMAL",
         priorityColor: AppColors.greenColor.value,
@@ -117,7 +132,28 @@ class MaintenanceHistoryController extends GetxController {
         pouchCollected: false,
         teddy: "0",
       ),
-    ]; 
+    ];
+
+    allMaintenanceCardWidgetList.sort((a, b) => a.workPriority.compareTo(b.workPriority));
+    allMaintenanceCardWidgetFilteredList.addAll(allMaintenanceCardWidgetList);
+
+    cityItemCardWidgetList.value = <CityItemCardWidget>[
+      CityItemCardWidget(
+        title: "Jaú",
+      ),
+      CityItemCardWidget(
+        title: "Bauru",
+      ),
+      CityItemCardWidget(
+        title: "Campinas",
+      ),
+      CityItemCardWidget(
+        title: "Botucatu",
+      ),
+      CityItemCardWidget(
+        title: "Lençóis Paulista",
+      ),
+    ];
   }
 
   removeItemList(int index) async {
@@ -130,9 +166,10 @@ class MaintenanceHistoryController extends GetxController {
           firstButton: () {},
           secondButton: () {
             maintenanceCardWidgetList[index].showMap = false;
-            allMaintenanceCardWidgetList.add(
+            allMaintenanceCardWidgetFilteredList.add(
               MaintenanceCardWidget(
                 machineName: maintenanceCardWidgetList[index].machineName,
+                city: maintenanceCardWidgetList[index].city,
                 status: maintenanceCardWidgetList[index].status.value.obs,
                 workPriority: maintenanceCardWidgetList[index].workPriority,
                 priorityColor: maintenanceCardWidgetList[index].priorityColor,
@@ -142,6 +179,21 @@ class MaintenanceHistoryController extends GetxController {
                 teddy: maintenanceCardWidgetList[index].teddy,
               ),
             );
+            allMaintenanceCardWidgetList.add(
+              MaintenanceCardWidget(
+                machineName: maintenanceCardWidgetList[index].machineName,
+                city: maintenanceCardWidgetList[index].city,
+                status: maintenanceCardWidgetList[index].status.value.obs,
+                workPriority: maintenanceCardWidgetList[index].workPriority,
+                priorityColor: maintenanceCardWidgetList[index].priorityColor,
+                clock1: maintenanceCardWidgetList[index].clock1,
+                clock2: maintenanceCardWidgetList[index].clock2,
+                pouchCollected: maintenanceCardWidgetList[index].pouchCollected,
+                teddy: maintenanceCardWidgetList[index].teddy,
+              ),
+            );
+            allMaintenanceCardWidgetList.sort((a, b) => a.workPriority.compareTo(b.workPriority));
+            allMaintenanceCardWidgetFilteredList.sort((a, b) => a.workPriority.compareTo(b.workPriority));
             maintenanceCardWidgetList[index].operatorDeletedMachine.value = true;
             maintenanceCardWidgetList[index].status.value = "Excluido";
             maintenanceCardWidgetList.sort(
@@ -161,5 +213,74 @@ class MaintenanceHistoryController extends GetxController {
       title: "Selecione um atendimento para adicionar a sua lista",
       controller: this,
     ));
+  }
+
+  callFilterMaintenanceList() async {
+    await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return FilterMaintenanceListPopup(
+          controller: this,
+        );
+      },
+    );
+  }
+
+  filterMaintenanceList(int index){
+    try{
+      cityItemCardWidgetList.forEach((element) => element.isSelected = false);
+      cityItemCardWidgetList[index].isSelected = true;
+      allMaintenanceCardWidgetFilteredList.clear();
+      for(var item in allMaintenanceCardWidgetList){
+        if(item.city == cityItemCardWidgetList[index].title){
+          allMaintenanceCardWidgetFilteredList.add(item);
+        }
+      }
+    }
+    catch(_){
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao filtrar a lista",
+          );
+        },
+      );
+      allMaintenanceCardWidgetFilteredList.addAll(allMaintenanceCardWidgetList);
+    }
+    finally{
+      Get.back();
+    }
+  }
+
+  removeFilter() async {
+    await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return ConfirmationPopup(
+          title: "Aviso",
+          subTitle: "Tem certeza que deseja remover o filtro?",
+          firstButton: () {},
+          secondButton: () async {
+            allMaintenanceCardWidgetFilteredList.clear();
+            cityItemCardWidgetList.forEach((element) => element.isSelected = false);
+            allMaintenanceCardWidgetFilteredList.addAll(allMaintenanceCardWidgetList);
+            await showDialog(
+              context: Get.context!,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return InformationPopup(
+                  warningMessage: "Filtro removido com sucesso",
+                );
+              },
+            );
+            refreshList();
+            Get.back();
+            Get.back();
+          },
+        );
+      },
+    );
   }
 }

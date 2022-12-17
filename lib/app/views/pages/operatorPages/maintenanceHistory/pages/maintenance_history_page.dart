@@ -30,7 +30,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
   refreshLists(){
     setState(() {
       controller.maintenanceCardWidgetList;
-      controller.allMaintenanceCardWidgetList;
+      controller.allMaintenanceCardWidgetFilteredList;
     });
   }
 

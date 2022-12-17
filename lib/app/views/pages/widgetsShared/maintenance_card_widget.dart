@@ -6,13 +6,14 @@ import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../operatorPages/maintenanceHistory/popup/maintenance_information_popup.dart';
+import '../operatorPages/maintenanceHistory/popups/maintenance_information_popup.dart';
 import '../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget.dart';
 import '../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
 
 //ignore: must_be_immutable
 class MaintenanceCardWidget extends StatefulWidget {
   final String machineName;
+  final String city;
   final String workPriority;
   final int priorityColor;
   final String clock1;
@@ -28,6 +29,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   MaintenanceCardWidget(
       { Key? key,
         required this.machineName,
+        required this.city,
         required this.status,
         required this.workPriority,
         required this.priorityColor,
