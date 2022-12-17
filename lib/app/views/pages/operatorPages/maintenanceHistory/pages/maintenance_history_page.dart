@@ -8,6 +8,7 @@ import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../../requestEditVisit/page/request_edit_visit_page.dart';
 import '../controller/maintenance_history_controller.dart';
 
 class MaintenanceHistoryPage extends StatefulWidget {
@@ -93,19 +94,27 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                       children: [
                                         controller.maintenanceCardWidgetList[index],
                                         Obx(
-                                          () => Visibility(
-                                            visible: controller.maintenanceCardWidgetList[index].status == "Pendente" && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(1.h),
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: InkWell(
-                                                  onTap: () => controller.removeItemList(index),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: AppColors.backgroundColor,
-                                                    size: 3.h,
-                                                  ),
+                                          () => Padding(
+                                            padding: EdgeInsets.all(1.h),
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if(controller.maintenanceCardWidgetList[index].status == "Pendente" && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value){
+                                                    controller.removeItemList(index);
+                                                  }
+                                                  else{
+                                                    Get.to(() => RequestEditVisitPage());
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  controller.maintenanceCardWidgetList[index].status == "Pendente"
+                                                  && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value ?
+                                                  Icons.close : Icons.edit,
+                                                  color: AppColors.backgroundColor,
+                                                  size: controller.maintenanceCardWidgetList[index].status == "Pendente"
+                                                  && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value ?
+                                                  3.h : 2.5.h,
                                                 ),
                                               ),
                                             ),
