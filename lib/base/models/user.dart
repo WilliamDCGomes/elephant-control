@@ -4,11 +4,13 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User extends ElephantCore {
-  late String? name;
-  late String? tellphone;
-  late String? document;
-  late double? balanceMoney;
-  late double? balanceStuffesAnimals;
+  String? name;
+  String? tellphone;
+  String? document;
+  int? balanceMoney;
+  DateTime? pouchLastUpdate;
+  int? balanceStuffedAnimals;
+  DateTime? stuffedAnimalsLastUpdate;
   late UserType type;
 
   User({
@@ -16,11 +18,20 @@ class User extends ElephantCore {
     required this.tellphone,
     required this.document,
     required this.balanceMoney,
-    required this.balanceStuffesAnimals,
+    required this.balanceStuffedAnimals,
     required this.type,
+    required this.pouchLastUpdate,
+    required this.stuffedAnimalsLastUpdate,
   });
 
-  User.emptyConstructor();
+  User.emptyConstructor() {
+    name = "";
+    tellphone = "";
+    document = "";
+    balanceMoney = 0;
+    balanceStuffedAnimals = 0;
+    type = UserType.operator;
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

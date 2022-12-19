@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'app/views/stylePages/app_colors.dart';
-import 'base/services/firebase_messaging_service.dart';
-import 'base/services/notification_service.dart';
 import 'flavors.dart';
 
 class App extends StatefulWidget {
@@ -25,13 +22,13 @@ class _AppState extends State<App> {
     super.initState();
   }
 
-  _initializeFirebaseMessaging() async {
-    await Provider.of<FirebaseMessagingService>(context, listen: false).initialize();
-  }
+  // _initializeFirebaseMessaging() async {
+  //   await Provider.of<FirebaseMessagingService>(context, listen: false).initialize();
+  // }
 
-  _checkNotifications() async {
-    await Provider.of<NotificationService>(context, listen: false).checkForNotifications();
-  }
+  // _checkNotifications() async {
+  //   await Provider.of<NotificationService>(context, listen: false).checkForNotifications();
+  // }
 
   @override
   Widget build(BuildContext context) {

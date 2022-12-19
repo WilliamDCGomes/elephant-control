@@ -14,7 +14,6 @@ class ElephantCore {
   }) {
     id ??= const Uuid().v4();
     inclusion ??= DateTime.now();
-    alteration ??= DateTime.now();
     active ??= true;
   }
 }

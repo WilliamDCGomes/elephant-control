@@ -117,12 +117,14 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       hintText: "Malotes",
                                       height: 6.5.h,
                                       width: 85.w,
-                                      rxListItems: controller.pouchs,
+                                      listItems: controller.pouchs.map((element) => DropdownItem(item: element, value: element)),
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 4.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 4.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.pouchValue,
                                       hintText: "Valor do Malote",
@@ -131,7 +133,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -142,7 +146,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             keyboardType: TextInputType.number,
                                           ),
                                         ),
-                                        SizedBox(width: 3.w,),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
                                         Expanded(
                                           child: TextFieldWidget(
                                             controller: controller.debtCardValue,
@@ -155,7 +161,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.pixValue,
                                       hintText: "Valor PIX",
@@ -164,7 +172,10 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h, bottom: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                      bottom: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: 19.h,
@@ -213,9 +224,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                               ),
                             ),
                           ],

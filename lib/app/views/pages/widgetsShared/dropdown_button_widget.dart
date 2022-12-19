@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../stylePages/app_colors.dart';
 import 'text_widget.dart';
@@ -10,21 +9,19 @@ class DropdownButtonWidget extends StatelessWidget {
   final double? height;
   final double? width;
   final bool? justRead;
-  final List<String>? listItems;
-  final RxList<String>? rxListItems;
+  final Iterable<DropdownItem> listItems;
   final Function(String?)? onChanged;
 
-  const DropdownButtonWidget(
-      { Key? key,
-        this.listItems,
-        this.rxListItems,
-        this.hintText,
-        this.height,
-        this.width,
-        this.justRead,
-        this.itemSelected,
-        required this.onChanged,
-      }) : super(key: key);
+  const DropdownButtonWidget({
+    Key? key,
+    required this.listItems,
+    this.hintText,
+    this.height,
+    this.width,
+    this.justRead,
+    this.itemSelected,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,7 @@ class DropdownButtonWidget extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(1.h),
           child: DropdownButtonHideUnderline(
-            child:DropdownButton(
+            child: DropdownButton(
               elevation: 8,
               dropdownColor: AppColors.whiteColor,
               value: itemSelected,
@@ -61,9 +58,10 @@ class DropdownButtonWidget extends StatelessWidget {
                   size: 2.5.h,
                 ),
               ),
-              items: (listItems ?? rxListItems)!.map((String item) {
+              items: //(listItems as List<DropdownMenuItem<String>>).toList(),
+                  (listItems).map((e) {
                 return DropdownMenuItem<String>(
-                  value: item,
+                  value: e.value,
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
                     width: (width ?? 200) - 6.h,
@@ -72,7 +70,7 @@ class DropdownButtonWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextWidget(
-                            item,
+                            e.item,
                             fontSize: 16.sp,
                             textAlign: TextAlign.start,
                             textColor: AppColors.defaultColor,
@@ -91,4 +89,11 @@ class DropdownButtonWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class DropdownItem {
+  final String item;
+  final String? value;
+
+  DropdownItem({required this.item, required this.value});
 }

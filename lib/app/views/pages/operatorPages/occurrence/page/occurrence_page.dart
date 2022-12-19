@@ -100,12 +100,14 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                       hintText: "Máquina Atendida",
                                       height: 6.5.h,
                                       width: 85.w,
-                                      rxListItems: controller.machinesPlaces,
+                                      listItems: controller.machinesPlaces.map((element) => DropdownItem(item: element, value: element)),
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -153,7 +155,9 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                    ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -175,7 +179,10 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h, bottom: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                      bottom: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: 19.h,

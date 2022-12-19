@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
-import '../../../../../utils/platform_type.dart';
 import '../../../../../utils/text_field_validators.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
@@ -50,12 +49,16 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                 Scaffold(
                   backgroundColor: AppColors.transparentColor,
                   body: Padding(
-                    padding: EdgeInsets.only(top: 2.h,),
+                    padding: EdgeInsets.only(
+                      top: 2.h,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.h,),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 2.h,
+                          ),
                           child: TitleWithBackButtonWidget(
                             title: "Esqueceu a Senha",
                           ),
@@ -71,7 +74,9 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2.h,),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 2.h,
+                                  ),
                                   child: Form(
                                     key: controller.formKey,
                                     child: Obx(
@@ -85,10 +90,9 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                                         hasError: controller.emailInputHasError.value,
                                         validator: (String? value) {
                                           String? validation = TextFieldValidators.emailValidation(value);
-                                          if(validation != null && validation != ""){
+                                          if (validation != null && validation != "") {
                                             controller.emailInputHasError.value = true;
-                                          }
-                                          else{
+                                          } else {
                                             controller.emailInputHasError.value = false;
                                           }
                                           return validation;
@@ -99,7 +103,11 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 2.h, right: 2.h, bottom: 2.h,),
+                                padding: EdgeInsets.only(
+                                  left: 2.h,
+                                  right: 2.h,
+                                  bottom: 2.h,
+                                ),
                                 child: ButtonWidget(
                                   hintText: "ENVIAR",
                                   fontWeight: FontWeight.bold,

@@ -1,17 +1,21 @@
+import 'dart:convert';
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/base/models/visit.dart';
+import 'package:elephant_control/base/models/visit_media.dart';
+import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../../base/models/machine.dart';
+import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
-import '../../../widgetsShared/text_widget.dart';
 import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 
 class MaintenanceController extends GetxController {
-  late RxString machineSelected;
+  Machine? machineSelected;
   late RxString priority;
   late RxString requestTitle;
   late RxString lastMaintenance;
@@ -19,7 +23,6 @@ class MaintenanceController extends GetxController {
   late RxBool yes;
   late RxBool no;
   late RxBool loadingAnimation;
-  late RxList<String> machinesPlaces;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
   late TextEditingController clock1;
@@ -31,20 +34,27 @@ class MaintenanceController extends GetxController {
   late ImagesPictureWidget afterMaintenanceImageClock;
   late MainMenuOperatorController _mainMenuOperatorController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late final MachineService _machineService;
+  late final VisitService _visitService;
+  late final RxList<Machine> _machines;
+  late final Visit _visit;
 
-  MaintenanceController(){
-    _inicializeList();
+  MaintenanceController() {
     _initializeVariables();
   }
 
-  _initializeVariables(){
-    machineSelected = machinesPlaces[0].obs;
-    requestTitle = machinesPlaces[0].obs;
+  _initializeVariables() {
+    _machineService = MachineService();
+    _visitService = VisitService();
+    _machines = <Machine>[].obs;
+    // machineSelected = machinesPlaces[0].obs;
+    requestTitle = "".obs;
     priority = "ALTA".obs;
     priorityColor = AppColors.redColor.value.obs;
     lastMaintenance = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5))).obs;
+    _visit = Visit.emptyConstructor();
     requestTitle.listen((value) {
-      switch(value){
+      switch (value) {
         case "Shopping Boulevard":
           priority.value = "ALTA";
           priorityColor.value = AppColors.redColor.value;
@@ -84,80 +94,130 @@ class MaintenanceController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
+    _initializeMethods();
   }
 
-  _inicializeList(){
-    machinesPlaces = [
-      "Shopping Boulevard",
-      "Supermercado Central",
-      "Cinema Alameda",
-    ].obs;
+  //Getters
+  List<Machine> get machines => _machines;
+
+  onDropdownButtonWidgetChanged(String? machineId) {
+    machineSelected = _machines.firstWhere((element) => element.id == machineId);
+    requestTitle.value = machineSelected?.name ?? "";
   }
 
-  onDropdownButtonWidgetChanged(String? selectedState){
-    machineSelected.value = selectedState ?? "";
-    if(selectedState != null){
-      requestTitle.value = selectedState;
+  Future<void> _initializeMethods() async {
+    try {
+      // await loadingWithSuccessOrErrorWidget.startAnimation();
+      await getMachines();
+    } catch (_) {
+      print(_);
+    } finally {
+      // await loadingWithSuccessOrErrorWidget.stopAnimation();
+    }
+  }
+
+  Future<void> getMachines() async {
+    try {
+      // await loadingWithSuccessOrErrorWidget.startAnimation();
+      _machines.clear();
+      _machines.addAll(await _machineService.getMachinesByUserId());
+    } catch (_) {
+      _machines.clear();
     }
   }
 
   saveMaintenance() async {
-    try{
-      if(!fieldsValidate())
-        return;
+    try {
+      if (!fieldsValidate()) return;
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 2));
       _mainMenuOperatorController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if(yes.value)
-        _mainMenuOperatorController.amountPouch.value++;
+      if (yes.value) _mainMenuOperatorController.amountPouch.value++;
       _mainMenuOperatorController.amountTeddy.value -= teddy;
 
-      double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
-      if(averageValue < 25 || averageValue > 40) {
-        await showDialog(
-          context: Get.context!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InformationPopup(
-              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
-              fontSize: 18.sp,
-              popupColor: AppColors.redColor,
-              title: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.warning,
-                    color: AppColors.yellowDarkColor,
-                    size: 4.h,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  TextWidget(
-                    "AVISO",
-                    textColor: AppColors.whiteColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Icon(
-                    Icons.warning,
-                    color: AppColors.yellowDarkColor,
-                    size: 4.h,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }
+      // double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
+      // if (averageValue < 25 || averageValue > 40) {
+      //   return await showDialog(
+      //     context: Get.context!,
+      //     barrierDismissible: false,
+      //     builder: (BuildContext context) {
+      //       return InformationPopup(
+      //         warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
+      //         fontSize: 18.sp,
+      //         popupColor: AppColors.redColor,
+      //         title: Row(
+      //           mainAxisSize: MainAxisSize.min,
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             Icon(
+      //               Icons.warning,
+      //               color: AppColors.yellowDarkColor,
+      //               size: 4.h,
+      //             ),
+      //             SizedBox(
+      //               width: 2.w,
+      //             ),
+      //             TextWidget(
+      //               "AVISO",
+      //               textColor: AppColors.whiteColor,
+      //               fontSize: 18.sp,
+      //               fontWeight: FontWeight.bold,
+      //             ),
+      //             SizedBox(
+      //               width: 2.w,
+      //             ),
+      //             Icon(
+      //               Icons.warning,
+      //               color: AppColors.yellowDarkColor,
+      //               size: 4.h,
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     },
+      //   );
+      // }
+      _visit.addedProducts = teddy;
+      _visit.machineId = machineSelected!.id!;
+      _visit.moneyQuantity = double.parse(clock1.text);
+      _visit.moneyWithdrawal = yes.isTrue;
+      if (_visit.moneyWithdrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
+      _visit.status = _visit.moneyWithdrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
+      _visit.stuffedAnimalsQuantity = 0;
+      _visit.observation = observations.text;
+      bool createdVisit = await _visitService.createVisit(_visit);
+      if (createdVisit) {
+        List<VisitMedia> medias = [];
+        final bytesClockImage = await imageClock.picture?.readAsBytes();
+        if (bytesClockImage != null)
+          medias.add(VisitMedia(
+            visitId: _visit.id!,
+            base64: base64Encode(bytesClockImage),
+            type: MediaType.moneyWatch,
+            extension: MediaExtension.jpeg,
+          ));
+        final bytesBeforeImage = await beforeMaintenanceImageClock.picture?.readAsBytes();
+        if (bytesBeforeImage != null)
+          medias.add(VisitMedia(
+            visitId: _visit.id!,
+            base64: base64Encode(bytesBeforeImage),
+            type: MediaType.machine,
+            extension: MediaExtension.jpeg,
+          ));
+        final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
+        if (bytesAfterImage != null)
+          medias.add(VisitMedia(
+            visitId: _visit.id!,
+            base64: base64Encode(bytesAfterImage),
+            type: MediaType.machine,
+            extension: MediaExtension.jpeg,
+          ));
 
-      await loadingWithSuccessOrErrorWidget.stopAnimation();
+        if (medias.isNotEmpty) createdVisit = await _visitService.createVisitMedia(medias);
+      }
+      if (!createdVisit) throw Exception();
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -168,8 +228,7 @@ class MaintenanceController extends GetxController {
         },
       );
       Get.back();
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -180,11 +239,13 @@ class MaintenanceController extends GetxController {
           );
         },
       );
+    } finally {
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
     }
   }
 
   bool fieldsValidate() {
-    if(beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty){
+    if (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -196,7 +257,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(imageClock.picture == null || imageClock.picture!.path.isEmpty){
+    if (imageClock.picture == null || imageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -208,7 +269,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(clock1.text.isEmpty){
+    if (clock1.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -220,7 +281,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(clock2.text.isEmpty){
+    if (clock2.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -232,7 +293,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(teddyAddMachine.text.isEmpty){
+    if (teddyAddMachine.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -244,7 +305,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(!yes.value && !no.value){
+    if (!yes.value && !no.value) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -256,7 +317,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if(afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty){
+    if (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

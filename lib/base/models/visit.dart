@@ -1,20 +1,22 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'visit.g.dart';
 
 @JsonSerializable()
 class Visit extends ElephantCore {
-  late final int addedProducts;
-  late final double moneyQuantity;
-  late final double? moneyWithdrawalQuantity;
-  late final int stuffedAnimalsQuantity;
-  late final String latitude;
-  late final String longitude;
-  late final VisitStatus status;
-  late final String machineId;
-  late final bool moneyWithdrawal;
-  late final int code;
+  late int addedProducts;
+  late double moneyQuantity;
+  double? moneyWithdrawalQuantity;
+  late int stuffedAnimalsQuantity;
+  String? latitude;
+  String? longitude;
+  late VisitStatus status;
+  late String machineId;
+  late bool moneyWithdrawal;
+  int? code;
+  String? observation;
 
   Visit({
     required this.addedProducts,
@@ -27,9 +29,14 @@ class Visit extends ElephantCore {
     required this.machineId,
     required this.moneyWithdrawal,
     required this.code,
+    required this.observation,
   });
 
-  Visit._();
+  Visit.emptyConstructor() {
+    id = const Uuid().v4();
+    inclusion = DateTime.now();
+    active = true;
+  }
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 
@@ -37,10 +44,12 @@ class Visit extends ElephantCore {
 }
 
 enum VisitStatus {
+  @JsonValue(0)
   realized,
+  @JsonValue(1)
   moneyWithdrawal,
-  possessionTreasury,
-  moneyPouchReceived,
+  @JsonValue(2)
   moneyPouchLaunched,
+  @JsonValue(3)
   finished,
 }

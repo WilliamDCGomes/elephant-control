@@ -9,7 +9,7 @@ import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../controller/user_profile_controller.dart';
 
-class UserProfileTabsWidget{
+class UserProfileTabsWidget {
   static List<Widget> getList(UserProfileController controller) {
     return [
       Obx(
@@ -30,7 +30,7 @@ class UserProfileTabsWidget{
                   justRead: controller.profileIsDisabled.value,
                   textInputAction: TextInputAction.next,
                   hasError: controller.nameInputHasError.value,
-                  onEditingComplete: (){
+                  onEditingComplete: () {
                     controller.birthDateFocusNode.requestFocus();
                   },
                 ),
@@ -61,7 +61,7 @@ class UserProfileTabsWidget{
                         justRead: controller.profileIsDisabled.value,
                         height: PlatformType.isTablet(Get.context!) ? 5.h : 6.5.h,
                         width: 90.w,
-                        listItems: controller.genderList,
+                        listItems: controller.genderList.map((element) => DropdownItem(item: element, value: element)),
                         onChanged: (selectedState) {
                           controller.genderSelected.value = selectedState ?? "";
                         },
@@ -104,7 +104,7 @@ class UserProfileTabsWidget{
                   maskTextInputFormatter: [MasksForTextFields.cepMask],
                   hasError: controller.cepInputHasError.value,
                   onChanged: (value) async {
-                    if(value.length == 9){
+                    if (value.length == 9) {
                       await Loading.startAndPauseLoading(
                         () => controller.searchAddressInformation(),
                         controller.loadingAnimation,
@@ -133,7 +133,7 @@ class UserProfileTabsWidget{
                           height: PlatformType.isTablet(Get.context!) ? 5.6.h : 6.5.h,
                           width: 23.w,
                           justRead: controller.profileIsDisabled.value,
-                          rxListItems: controller.ufsList,
+                          listItems: controller.ufsList.map((element) => DropdownItem(item: element, value: element)),
                           onChanged: (selectedState) {
                             controller.ufSelected.value = selectedState ?? "";
                           },
@@ -150,7 +150,7 @@ class UserProfileTabsWidget{
                           textInputAction: TextInputAction.next,
                           justRead: controller.profileIsDisabled.value,
                           hasError: controller.cityInputHasError.value,
-                          onEditingComplete: (){
+                          onEditingComplete: () {
                             controller.streetFocusNode.requestFocus();
                           },
                         ),
@@ -178,15 +178,14 @@ class UserProfileTabsWidget{
                         hasError: controller.streetInputHasError.value,
                         validator: (String? value) {
                           String? validation = TextFieldValidators.standardValidation(value, "Informe o Logradouro");
-                          if(validation != null && validation != ""){
+                          if (validation != null && validation != "") {
                             controller.streetInputHasError.value = true;
-                          }
-                          else{
+                          } else {
                             controller.streetInputHasError.value = false;
                           }
                           return validation;
                         },
-                        onEditingComplete: (){
+                        onEditingComplete: () {
                           controller.houseNumberFocusNode.requestFocus();
                         },
                       ),
@@ -202,7 +201,7 @@ class UserProfileTabsWidget{
                         height: PlatformType.isTablet(Get.context!) ? 7.h : 9.h,
                         width: 20.w,
                         keyboardType: TextInputType.number,
-                        onEditingComplete: (){
+                        onEditingComplete: () {
                           controller.neighborhoodFocusNode.requestFocus();
                         },
                       ),
@@ -224,7 +223,7 @@ class UserProfileTabsWidget{
                   enableSuggestions: true,
                   textInputAction: TextInputAction.next,
                   hasError: controller.neighborhoodInputHasError.value,
-                  onEditingComplete: (){
+                  onEditingComplete: () {
                     controller.complementFocusNode.requestFocus();
                   },
                 ),
@@ -264,7 +263,7 @@ class UserProfileTabsWidget{
                   keyboardType: TextInputType.phone,
                   maskTextInputFormatter: [MasksForTextFields.phoneNumberMask],
                   hasError: controller.phoneInputHasError.value,
-                  onEditingComplete: (){
+                  onEditingComplete: () {
                     controller.cellPhoneFocusNode.requestFocus();
                   },
                 ),
@@ -283,7 +282,7 @@ class UserProfileTabsWidget{
                   maskTextInputFormatter: [controller.maskCellPhoneFormatter],
                   onChanged: (cellPhoneTyped) => controller.phoneTextFieldEdited(cellPhoneTyped),
                   hasError: controller.cellPhoneInputHasError.value,
-                  onEditingComplete: (){
+                  onEditingComplete: () {
                     controller.emailFocusNode.requestFocus();
                   },
                 ),
@@ -301,7 +300,7 @@ class UserProfileTabsWidget{
                   keyboardType: TextInputType.emailAddress,
                   enableSuggestions: true,
                   hasError: controller.emailInputHasError.value,
-                  onEditingComplete: (){
+                  onEditingComplete: () {
                     controller.confirmEmailFocusNode.requestFocus();
                   },
                 ),

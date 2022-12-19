@@ -147,12 +147,14 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                       hintText: "Máquina Atendida",
                                       height: 6.5.h,
                                       width: 85.w,
-                                      rxListItems: controller.machinesPlaces,
+                                      listItems: [], //: controller.machinesPlaces,
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                    ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -174,7 +176,9 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -196,7 +200,9 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -225,7 +231,9 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.teddyAddMachine,
                                       hintText: "Reposição de Pelúcias",
@@ -253,10 +261,9 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                             radioText: "Sim",
                                             size: 4.h,
                                             checked: controller.yes.value,
-                                            onChanged: (){
+                                            onChanged: () {
                                               controller.yes.value = !controller.yes.value;
-                                              if(controller.yes.value)
-                                                controller.no.value = !controller.yes.value;
+                                              if (controller.yes.value) controller.no.value = !controller.yes.value;
                                             },
                                           ),
                                         ),
@@ -266,15 +273,14 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                       ),
                                       Expanded(
                                         child: Obx(
-                                              () => CheckboxListTileWidget(
+                                          () => CheckboxListTileWidget(
                                             radioText: "Não",
                                             size: 4.h,
                                             spaceBetween: 1.w,
                                             checked: controller.no.value,
-                                            onChanged: (){
+                                            onChanged: () {
                                               controller.no.value = !controller.no.value;
-                                              if(controller.no.value)
-                                                controller.yes.value = !controller.no.value;
+                                              if (controller.no.value) controller.yes.value = !controller.no.value;
                                             },
                                           ),
                                         ),
@@ -282,7 +288,9 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -304,7 +312,10 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h, bottom: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                      bottom: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: 19.h,

@@ -12,12 +12,13 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       moneyWithdrawalQuantity:
           (json['moneyWithdrawalQuantity'] as num?)?.toDouble(),
       stuffedAnimalsQuantity: json['stuffedAnimalsQuantity'] as int,
-      latitude: json['latitude'] as String,
-      longitude: json['longitude'] as String,
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
       status: $enumDecode(_$VisitStatusEnumMap, json['status']),
       machineId: json['machineId'] as String,
       moneyWithdrawal: json['moneyWithdrawal'] as bool,
-      code: json['code'] as int,
+      code: json['code'] as int?,
+      observation: json['observation'] as String?,
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -43,13 +44,12 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'machineId': instance.machineId,
       'moneyWithdrawal': instance.moneyWithdrawal,
       'code': instance.code,
+      'observation': instance.observation,
     };
 
 const _$VisitStatusEnumMap = {
-  VisitStatus.realized: 'realized',
-  VisitStatus.moneyWithdrawal: 'moneyWithdrawal',
-  VisitStatus.possessionTreasury: 'possessionTreasury',
-  VisitStatus.moneyPouchReceived: 'moneyPouchReceived',
-  VisitStatus.moneyPouchLaunched: 'moneyPouchLaunched',
-  VisitStatus.finished: 'finished',
+  VisitStatus.realized: 0,
+  VisitStatus.moneyWithdrawal: 1,
+  VisitStatus.moneyPouchLaunched: 2,
+  VisitStatus.finished: 3,
 };

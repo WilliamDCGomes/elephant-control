@@ -26,6 +26,7 @@ class UserService extends BaseService implements IUserService {
       final token = await getToken();
       final url = baseUrlApi + 'User/GetUserInformation';
       final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
       return User.fromJson(response.body);
     } catch (_) {
       return null;

@@ -1,7 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
-import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import 'package:elephant_control/app/views/pages/sharedPages/login/page/login_page_page.dart';
-import 'package:elephant_control/base/models/user.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,6 +44,7 @@ class LoginPageController extends GetxController {
     }
     userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
     if (kDebugMode) {
+      userInputController.text = "Hugo";
       passwordInputController.text = "12345678";
     }
     super.onInit();
@@ -89,7 +88,7 @@ class LoginPageController extends GetxController {
 
           await _doLoginServer(true);
 
-          if(userLogged != null){
+          if (userLogged != null) {
             LoggedUser.userType = userLogged!.userType;
             await _saveOptions();
 
@@ -116,17 +115,16 @@ class LoginPageController extends GetxController {
 
   _saveOptions() async {
     String? oldUser = await sharedPreferences.getString("user_logged");
-    if(oldUser == null){
+    if (oldUser == null) {
       await sharedPreferences.setString("user_logged", userInputController.text);
-    }
-    else if(oldUser != userInputController.text){
+    } else if (oldUser != userInputController.text) {
       await sharedPreferences.clear();
       await sharedPreferences.setString("user_logged", userInputController.text);
     }
 
     await sharedPreferences.setBool("keep-connected", keepConected.value);
 
-    if(userLogged != null){
+    if (userLogged != null) {
       LoggedUser.nameAndLastName = userLogged!.name;
       LoggedUser.name = userLogged!.name.split(' ').first;
       LoggedUser.userType = userLogged!.userType;
@@ -146,7 +144,7 @@ class LoginPageController extends GetxController {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
 
-        if(!await _doLoginServer(false)){
+        if (!await _doLoginServer(false)) {
           return;
         }
 
@@ -170,10 +168,8 @@ class LoginPageController extends GetxController {
 
           await loadingWidget.stopAnimation();
           _goToNextPage();
-        }
-        else {
-          if(loadingWidget.animationController.isAnimating)
-            await loadingWidget.stopAnimation();
+        } else {
+          if (loadingWidget.animationController.isAnimating) await loadingWidget.stopAnimation();
           loadingAnimationSuccess.value = true;
           await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
           await showDialog(
@@ -188,8 +184,7 @@ class LoginPageController extends GetxController {
         }
       }
     } catch (_) {
-      if(loadingWidget.animationController.isAnimating)
-        await loadingWidget.stopAnimation();
+      if (loadingWidget.animationController.isAnimating) await loadingWidget.stopAnimation();
       loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
@@ -204,41 +199,40 @@ class LoginPageController extends GetxController {
     }
   }
 
-  _goToNextPage(){
-    if (userLogged!.userType == UserType.operator) {
-      Get.offAll(() => MainMenuOperatorPage());
-    }
-    else if (userLogged!.userType == UserType.admin) {
-      Get.offAll(() => MainMenuOperatorPage());
-    }
-    else {
-      Get.offAll(() => MainMenuFinancialPage());
-    }
+  _goToNextPage() {
+    // if (userLogged!.userType == UserType.operator) {
+    //   Get.offAll(() => MainMenuOperatorPage());
+    // } else if (userLogged!.userType == UserType.admin) {
+    // } else {
+    //   Get.offAll(() => MainMenuFinancialPage());
+    // }
+    Get.offAll(() => MainMenuOperatorPage());
   }
 
   Future<bool> _doLoginServer(bool fromBiometric) async {
-    try{
+    try {
       String? username = "";
       String? password = "";
 
-      if(fromBiometric){
+      if (fromBiometric) {
         username = await sharedPreferences.getString("Login");
         password = await sharedPreferences.getString("Senha");
 
-        if(username == null || password == null) {
+        if (username == null || password == null) {
           await _resetLogin("Erro ao se autenticar com a digital.\nPor favor, utilize o login e a senha para continuar.");
           return false;
         }
       }
 
-      userLogged = await UserService().authenticate(
-        username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
-        password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
-      ).timeout(Duration(seconds: 30));
+      userLogged = await UserService()
+          .authenticate(
+            username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
+            password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
+          )
+          .timeout(Duration(seconds: 30));
 
       return true;
-    }
-    catch(e){
+    } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");
       return false;
     }
@@ -257,6 +251,8 @@ class LoginPageController extends GetxController {
         );
       },
     );
-    Get.offAll(LoginPage(cancelFingerPrint: true,));
+    Get.offAll(LoginPage(
+      cancelFingerPrint: true,
+    ));
   }
 }

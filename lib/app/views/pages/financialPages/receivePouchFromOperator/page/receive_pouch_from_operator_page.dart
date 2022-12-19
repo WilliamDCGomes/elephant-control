@@ -118,12 +118,14 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                       hintText: "Operadores",
                                       height: 6.5.h,
                                       width: 85.w,
-                                      rxListItems: controller.operators,
+                                      listItems: controller.operators.map((element) => DropdownItem(item: element, value: element)),
                                       onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.operatorCode,
                                       hintText: "Código do Operador",
@@ -132,7 +134,9 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.pouchQuantity,
                                       hintText: "Quantidade de Malotes Recebidos",
@@ -142,7 +146,10 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h, bottom: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                      bottom: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: 19.h,
@@ -191,9 +198,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                               ),
                             ),
                           ],

@@ -31,5 +31,7 @@ Map<String, dynamic> _$AuthenticateResponseToJson(
 const _$UserTypeEnumMap = {
   UserType.operator: 0,
   UserType.treasury: 1,
-  UserType.admin: 2,
+  UserType.stockist: 2,
+  UserType.admin: 3,
+  UserType.none: 4,
 };
