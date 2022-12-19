@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/money_mask.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
@@ -128,6 +130,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       hintText: "Valor do Malote",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
+                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
                                     ),
                                   ),
                                   Padding(
@@ -140,6 +143,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             hintText: "Cartão Crédito",
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
                                           ),
                                         ),
                                         SizedBox(width: 3.w,),
@@ -149,6 +153,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             hintText: "Cartão Débito",
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
                                           ),
                                         ),
                                       ],
@@ -161,6 +166,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       hintText: "Valor PIX",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
+                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
                                     ),
                                   ),
                                   Padding(

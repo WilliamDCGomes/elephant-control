@@ -110,9 +110,12 @@ class RequestEditVisitController extends GetxController {
       await Future.delayed(Duration(seconds: 2));
       _mainMenuController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if(yes.value)
+      if(yes.value){
         _mainMenuController.amountPouch.value++;
+        LoggedUser.amountPouch++;
+      }
       _mainMenuController.amountTeddy.value -= teddy;
+      LoggedUser.amountTeddy -= teddy;
 
       double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       if(averageValue < 25 || averageValue > 40) {

@@ -47,6 +47,9 @@ class MainMenuOperatorController extends GetxController {
     nameInitials = "".obs;
     amountPouch = 6.obs;
     amountTeddy = 250.obs;
+    LoggedUser.amountTeddy = 250;
+    LoggedUser.initialAmountTeddy = 250;
+    LoggedUser.amountPouch = 6;
     pouchLastChange = DateTime.now();
     teddyLastChange = DateTime.now();
   }
