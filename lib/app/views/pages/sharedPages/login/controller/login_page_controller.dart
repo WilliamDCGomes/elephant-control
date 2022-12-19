@@ -44,12 +44,9 @@ class LoginPageController extends GetxController {
     if (!_cancelFingerPrint) {
       await _checkBiometricSensor();
     }
+    userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
     if (kDebugMode) {
-      userInputController.text = "william";
       passwordInputController.text = "12345678";
-    }
-    else{
-      userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
     }
     super.onInit();
   }
@@ -158,8 +155,8 @@ class LoginPageController extends GetxController {
         if (userLogged != null) {
           sharedPreferences.setString("Token", userLogged!.token);
           sharedPreferences.setString("ExpiracaoToken", userLogged!.expirationDate.toIso8601String());
-          sharedPreferences.setString("Login", userInputController.text);
-          sharedPreferences.setString("Senha", passwordInputController.text);
+          sharedPreferences.setString("Login", userInputController.text.toLowerCase().trim());
+          sharedPreferences.setString("Senha", passwordInputController.text.toLowerCase().trim());
 
           LoggedUser.userType = userLogged!.userType;
 
@@ -235,8 +232,8 @@ class LoginPageController extends GetxController {
       }
 
       userLogged = await UserService().authenticate(
-        username: fromBiometric ? username : userInputController.text,
-        password: fromBiometric ? password : passwordInputController.text,
+        username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
+        password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
       ).timeout(Duration(seconds: 30));
 
       return true;

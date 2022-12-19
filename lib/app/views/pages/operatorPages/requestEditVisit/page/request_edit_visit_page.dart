@@ -161,7 +161,7 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextWidget(
-                                              "Foto Pré Atendimento",
+                                              "Foto Inicial",
                                               textColor: AppColors.defaultColor,
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,
@@ -228,7 +228,7 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                     padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
                                       controller: controller.teddyAddMachine,
-                                      hintText: "Pelúcias Recolocadas na Máquina",
+                                      hintText: "Reposição de Pelúcias",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
@@ -291,7 +291,7 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextWidget(
-                                              "Foto Pós Atendimento",
+                                              "Foto Final",
                                               textColor: AppColors.defaultColor,
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,

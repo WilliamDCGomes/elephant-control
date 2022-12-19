@@ -132,9 +132,33 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.5.h,),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.credCardValue,
+                                            hintText: "Cartão Crédito",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                        SizedBox(width: 3.w,),
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.debtCardValue,
+                                            hintText: "Cartão Débito",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.credCardValue,
-                                      hintText: "Valor do Cartão da Máquina",
+                                      controller: controller.pixValue,
+                                      hintText: "Valor PIX",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
                                     ),

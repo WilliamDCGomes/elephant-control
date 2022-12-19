@@ -8,6 +8,8 @@ class RegisterPouchController extends GetxController {
   late RxBool loadingAnimation;
   late TextEditingController pouchValue;
   late TextEditingController credCardValue;
+  late TextEditingController debtCardValue;
+  late TextEditingController pixValue;
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
@@ -32,6 +34,8 @@ class RegisterPouchController extends GetxController {
     );
     pouchValue = TextEditingController();
     credCardValue = TextEditingController();
+    debtCardValue = TextEditingController();
+    pixValue = TextEditingController();
     observations = TextEditingController();
   }
 
