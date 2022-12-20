@@ -134,8 +134,12 @@ class MaintenanceController extends GetxController {
       await Future.delayed(Duration(seconds: 2));
       _mainMenuOperatorController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if (yes.value) _mainMenuOperatorController.amountPouch.value++;
+      if(yes.value){
+        _mainMenuOperatorController.amountPouch.value++;
+        LoggedUser.amountPouch++;
+      }
       _mainMenuOperatorController.amountTeddy.value -= teddy;
+      LoggedUser.amountTeddy -= teddy;
 
       // double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       // if (averageValue < 25 || averageValue > 40) {

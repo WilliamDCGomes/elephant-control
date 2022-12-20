@@ -338,7 +338,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             color: AppColors.backgroundColor,
                           ),
                           label: TextWidget(
-                            "Adicionar novo atendimento",
+                            "Adicionar nova visita",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,

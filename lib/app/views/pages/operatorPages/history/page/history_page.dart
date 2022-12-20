@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -85,6 +86,36 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ),
                                   SizedBox(
                                     height: 2.h,
+                                  ),
+                                  Visibility(
+                                    visible: widget.title == "Histórico de Pelúcias",
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextWidget(
+                                          "Saldo Inicial: ${LoggedUser.initialAmountTeddy}",
+                                          textColor: AppColors.whiteColor,
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        TextWidget(
+                                          "Saldo Atual: ${LoggedUser.amountTeddy}",
+                                          textColor: AppColors.whiteColor,
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   TextWidget(
                                     "Dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
