@@ -8,6 +8,7 @@ import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
@@ -81,6 +82,43 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     maxLines: 2,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  SizedBox(height: 2.h),
+                                  Obx(
+                                    () => RichTextTwoDifferentWidget(
+                                      firstText: "Valor total: ",
+                                      firstTextColor: AppColors.whiteColor,
+                                      firstTextFontWeight: FontWeight.normal,
+                                      firstTextSize: 18.sp,
+                                      secondText: "R\$ " + controller.fullValue.value.toStringAsFixed(2).replaceAll('.', ','),
+                                      secondTextColor: AppColors.whiteColor,
+                                      secondTextFontWeight: FontWeight.bold,
+                                      secondTextSize: 18.sp,
+                                      secondTextDecoration: TextDecoration.none,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => Visibility(
+                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20
+                                      || controller.estimateValue.value - controller.fullValue.value < -20)
+                                      && controller.fullValue.value != 0,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 2.h),
+                                        child: RichTextTwoDifferentWidget(
+                                          firstText: "Diferença: ",
+                                          firstTextColor: AppColors.whiteColor,
+                                          firstTextFontWeight: FontWeight.normal,
+                                          firstTextSize: 18.sp,
+                                          secondText: "R\$ " + controller.getDifference(),
+                                          secondTextColor: AppColors.whiteColor,
+                                          secondTextFontWeight: FontWeight.bold,
+                                          secondTextSize: 18.sp,
+                                          secondTextDecoration: TextDecoration.none,
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -124,17 +162,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 4.5.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.pouchValue,
-                                      hintText: "Valor do Malote",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(top: 4.h,),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -144,6 +172,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
+                                            onChanged: (value) => controller.calculeNewValue(),
                                           ),
                                         ),
                                         SizedBox(width: 3.w,),
@@ -154,6 +183,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
+                                            onChanged: (value) => controller.calculeNewValue(),
                                           ),
                                         ),
                                       ],
@@ -161,12 +191,30 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.5.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.pixValue,
-                                      hintText: "Valor PIX",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.pouchValue,
+                                            hintText: "Valor do Malote",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
+                                            onChanged: (value) => controller.calculeNewValue(),
+                                          ),
+                                        ),
+                                        SizedBox(width: 3.w,),
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.pixValue,
+                                            hintText: "Valor PIX",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly, MoneyMask()],
+                                            onChanged: (value) => controller.calculeNewValue(),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Padding(
