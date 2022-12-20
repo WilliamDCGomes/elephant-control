@@ -46,7 +46,6 @@ class LoginPageController extends GetxController {
     }
     userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
     if (kDebugMode) {
-      userInputController.text = "Hugo";
       passwordInputController.text = "12345678";
     }
     super.onInit();
