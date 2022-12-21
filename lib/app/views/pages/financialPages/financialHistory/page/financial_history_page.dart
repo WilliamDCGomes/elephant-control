@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,13 +12,15 @@ import '../controller/financial_history_controller.dart';
 class FinancialHistoryPage extends StatefulWidget {
   final String title;
   final String pageTitle;
-  final double safeBoxAmount;
+  final double? safeBoxAmount;
+  final bool pouchHistory;
 
   const FinancialHistoryPage({
     Key? key,
     required this.title,
     required this.pageTitle,
-    required this.safeBoxAmount,
+    this.safeBoxAmount,
+    required this.pouchHistory,
   }) : super(key: key);
 
   @override
@@ -31,7 +32,11 @@ class _FinancialHistoryPageState extends State<FinancialHistoryPage> {
 
   @override
   void initState() {
-    controller = Get.put(FinancialHistoryController(widget.title, widget.safeBoxAmount));
+    controller = Get.put(FinancialHistoryController(
+      widget.title,
+      widget.safeBoxAmount,
+      widget.pouchHistory,
+    ));
     super.initState();
   }
 
@@ -90,18 +95,8 @@ class _FinancialHistoryPageState extends State<FinancialHistoryPage> {
                                     height: 2.h,
                                   ),
                                   TextWidget(
-                                    "Valor do Cofre: R\$ " + FormatNumbers.numbersToString(controller.safeBoxAmount),
-                                    textColor: AppColors.whiteColor,
-                                    fontSize: 18.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  TextWidget(
-                                    "Dia: ${DateFormatToBrazil.formatDate(DateTime.now())}",
+                                    widget.pouchHistory ? "Quantidade de Malotes: ${controller.safeBoxCardWidgetList.length}"
+                                    : "Valor do Cofre: " + FormatNumbers.numbersToMoney(controller.safeBoxAmount),
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,

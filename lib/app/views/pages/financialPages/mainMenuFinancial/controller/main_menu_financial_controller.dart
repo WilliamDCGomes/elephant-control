@@ -15,6 +15,7 @@ class MainMenuFinancialController extends GetxController {
   late RxString nameInitials;
   late RxString welcomePhrase;
   late RxDouble safeBoxAmount;
+  late RxInt pouchQuantity;
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
   late SharedPreferences sharedPreferences;
@@ -45,6 +46,7 @@ class MainMenuFinancialController extends GetxController {
     nameProfile = "".obs;
     nameInitials = "".obs;
     safeBoxAmount = 15689.00.obs;
+    pouchQuantity = 5.obs;
     pouchLastChange = DateTime.now();
     teddyLastChange = DateTime.now();
   }

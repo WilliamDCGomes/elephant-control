@@ -10,6 +10,7 @@ import '../../../../stylePages/app_colors.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
+import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../financialHistory/page/financial_history_page.dart';
@@ -143,53 +144,42 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.h),
-                          child: Center(
-                            child: InformationContainerWidget(
-                              iconPath: Paths.Malote,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "",
-                              iconInLeft: true,
-                              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
-                              customContainer: ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        TextWidget(
-                                          "Quantidade no Cofre:",
-                                          textColor: AppColors.whiteColor,
-                                          fontSize: 18.sp,
-                                          textAlign: TextAlign.start,
-                                          maxLines: 1,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 1.w),
-                                          child: Obx(
-                                            () => TextWidget(
-                                              "R\$ " + FormatNumbers.numbersToString(controller.safeBoxAmount.value),
-                                              fontWeight: FontWeight.bold,
-                                              maxLines: 2,
-                                              textColor: AppColors.whiteColor,
-                                              fontSize: 20.sp,
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 8.h),
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: [
+                                InformationContainerWidget(
+                                  iconPath: Paths.Money,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  iconInLeft: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  customContainer: SizedBox(
                                     width: 73.w,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                          child: Obx(
+                                            () => RichTextTwoDifferentWidget(
+                                              firstText: "Quantidade no Cofre: ",
+                                              firstTextColor: AppColors.whiteColor,
+                                              firstTextFontWeight: FontWeight.normal,
+                                              firstTextSize: 18.sp,
+                                              secondText: FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
+                                              secondTextColor: AppColors.whiteColor,
+                                              secondTextFontWeight: FontWeight.bold,
+                                              secondTextSize: 20.sp,
+                                              secondTextDecoration: TextDecoration.none,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
                                         TextWidget(
                                           "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
                                           maxLines: 1,
@@ -205,6 +195,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                                           onTap: () => Get.to(() => FinancialHistoryPage(
                                             title: "Histórico do Cofre",
                                             pageTitle: "Cofre",
+                                            pouchHistory: false,
                                             safeBoxAmount: controller.safeBoxAmount.value,
                                           )),
                                           child: TextWidget(
@@ -219,8 +210,78 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                InformationContainerWidget(
+                                  iconPath: Paths.Malote,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  customContainer: SizedBox(
+                                    width: 73.w,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              TextWidget(
+                                                "Quantidade de Malotes:",
+                                                textColor: AppColors.whiteColor,
+                                                fontSize: 18.sp,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 1,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 1.w),
+                                                child: Obx(
+                                                      () => TextWidget(
+                                                    controller.pouchQuantity.value.toString(),
+                                                    fontWeight: FontWeight.bold,
+                                                    maxLines: 2,
+                                                    textColor: AppColors.whiteColor,
+                                                    fontSize: 20.sp,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        TextWidget(
+                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
+                                          maxLines: 1,
+                                          textColor: AppColors.whiteColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        InkWell(
+                                          onTap: () => Get.to(() => FinancialHistoryPage(
+                                            title: "Histórico de Malotes",
+                                            pageTitle: "Malotes",
+                                            pouchHistory: true,
+                                          )),
+                                          child: TextWidget(
+                                            "Clique aqui para ver o histórico de malotes!",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            textDecoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

@@ -5,6 +5,7 @@ class Paths{
 
   static final String Icon = "${imagesPath}Icon.png";
   static final String Logo = "${imagesPath}Logo.png";
+  static final String Money = "${imagesPath}Money.png";
   static final String Video = "${imagesPath}Video.png";
   static final String Camera = "${imagesPath}Camera.png";
   static final String Malote = "${imagesPath}Malote.png";
