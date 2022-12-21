@@ -102,8 +102,8 @@ class MainMenuFinancialController extends GetxController {
           return ConfirmationPopup(
             title: "Aviso",
             subTitle: "Deseja habilitar o login por digital?",
-            firstButton: () => sharedPreferences.setBool("user_finger_print", false),
-            secondButton: () => sharedPreferences.setBool("user_finger_print", true),
+            firstButton: () async => await sharedPreferences.setBool("user_finger_print", false),
+            secondButton: () async => await sharedPreferences.setBool("user_finger_print", true),
           );
         },
       );
