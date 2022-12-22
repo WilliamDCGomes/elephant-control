@@ -6,6 +6,7 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../administratorPages/mainMenuAdministrator/controller/main_menu_administrator_controller.dart';
 import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/button_widget.dart';
@@ -20,11 +21,13 @@ import '../controller/user_profile_controller.dart';
 class UserProfilePage extends StatefulWidget {
   late final MainMenuOperatorController? mainMenuOperatorController;
   late final MainMenuFinancialController? mainMenuFinancialController;
+  late final MainMenuAdministratorController? mainMenuAdministratorController;
 
   UserProfilePage({
     Key? key,
     this.mainMenuOperatorController,
     this.mainMenuFinancialController,
+    this.mainMenuAdministratorController,
   }) : super(key: key);
 
   @override
@@ -40,6 +43,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
       UserProfileController(
         widget.mainMenuOperatorController,
         widget.mainMenuFinancialController,
+        widget.mainMenuAdministratorController,
       ),
       tag: 'user_profile_controller',
     );
@@ -115,13 +119,17 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                 onTap: () {
                                   if(widget.mainMenuOperatorController != null ?
                                   widget.mainMenuOperatorController!.profileImagePath.value.isNotEmpty :
-                                  widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty){
+                                  widget.mainMenuFinancialController != null ?
+                                  widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty :
+                                  widget.mainMenuAdministratorController!.profileImagePath.value.isNotEmpty){
                                     showImageViewer(
                                       context,
                                       Image.memory(
                                         File(widget.mainMenuOperatorController != null ?
                                              widget.mainMenuOperatorController!.profileImagePath.value :
-                                             widget.mainMenuFinancialController!.profileImagePath.value,
+                                             widget.mainMenuFinancialController != null ?
+                                             widget.mainMenuFinancialController!.profileImagePath.value :
+                                             widget.mainMenuAdministratorController!.profileImagePath.value,
                                         ).readAsBytesSync()).image,
                                     );
                                   }
@@ -133,61 +141,62 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                   hasPicture: widget.mainMenuOperatorController!.hasPicture,
                                   loadingPicture: widget.mainMenuOperatorController!.loadingPicture,
                                   profileImagePath: widget.mainMenuOperatorController!.profileImagePath,
-                                ) : ProfilePictureWidget(
+                                ) : widget.mainMenuFinancialController != null ?
+                                ProfilePictureWidget(
                                   hasPicture: widget.mainMenuFinancialController!.hasPicture,
                                   loadingPicture: widget.mainMenuFinancialController!.loadingPicture,
                                   profileImagePath: widget.mainMenuFinancialController!.profileImagePath,
+                                ) :
+                                ProfilePictureWidget(
+                                  hasPicture: widget.mainMenuAdministratorController!.hasPicture,
+                                  loadingPicture: widget.mainMenuAdministratorController!.loadingPicture,
+                                  profileImagePath: widget.mainMenuAdministratorController!.profileImagePath,
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
-                                child: Obx(
-                                  () => Visibility(
-                                    visible: widget.mainMenuOperatorController != null ?
-                                    widget.mainMenuOperatorController!.loadingPicture.value :
-                                    widget.mainMenuFinancialController!.loadingPicture.value,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 1.h),
-                                      child: TextButtonWidget(
-                                        onTap: () => showDialog(
-                                          context: Get.context!,
-                                          builder: (BuildContext context) {
-                                            return ConfirmationPopup(
-                                              title: "Escolha uma das opções",
-                                              subTitle: "Deseja alterar ou apagar a foto de perfil?",
-                                              showSecondButton: widget.mainMenuOperatorController != null ?
-                                              widget.mainMenuOperatorController!.profileImagePath.value.isNotEmpty :
-                                              widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty,
-                                              firstButtonText: "APAGAR",
-                                              secondButtonText: "ALTERAR",
-                                              firstButton: () {
-                                                controller.confirmationDeleteProfilePicture();
-                                              },
-                                              secondButton: () {
-                                                controller.editProfilePicture();
-                                              },
-                                            );
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 1.h),
+                                  child: TextButtonWidget(
+                                    onTap: () => showDialog(
+                                      context: Get.context!,
+                                      builder: (BuildContext context) {
+                                        return ConfirmationPopup(
+                                          title: "Escolha uma das opções",
+                                          subTitle: "Deseja alterar ou apagar a foto de perfil?",
+                                          showSecondButton: widget.mainMenuOperatorController != null ?
+                                          widget.mainMenuOperatorController!.profileImagePath.value.isNotEmpty :
+                                          widget.mainMenuFinancialController != null ?
+                                          widget.mainMenuFinancialController!.profileImagePath.value.isNotEmpty :
+                                          widget.mainMenuAdministratorController!.profileImagePath.value.isNotEmpty,
+                                          firstButtonText: "APAGAR",
+                                          secondButtonText: "ALTERAR",
+                                          firstButton: () {
+                                            controller.confirmationDeleteProfilePicture();
                                           },
-                                        ),
+                                          secondButton: () {
+                                            controller.editProfilePicture();
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    height: 3.h,
+                                    width: 3.h,
+                                    componentPadding: EdgeInsets.zero,
+                                    borderRadius: 1.h,
+                                    widgetCustom: Center(
+                                      child: Container(
                                         height: 3.h,
                                         width: 3.h,
-                                        componentPadding: EdgeInsets.zero,
-                                        borderRadius: 1.h,
-                                        widgetCustom: Center(
-                                          child: Container(
-                                            height: 3.h,
-                                            width: 3.h,
-                                            padding: EdgeInsets.all(.2.h),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(1.h),
-                                              color: AppColors.black40TransparentColor,
-                                            ),
-                                            child: Center(
-                                              child: Image.asset(
-                                                Paths.Edit_Photo,
-                                                color: AppColors.whiteColor,
-                                              ),
-                                            ),
+                                        padding: EdgeInsets.all(.2.h),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(1.h),
+                                          color: AppColors.black40TransparentColor,
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            Paths.Edit_Photo,
+                                            color: AppColors.whiteColor,
                                           ),
                                         ),
                                       ),

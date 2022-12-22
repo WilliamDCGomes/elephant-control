@@ -1,5 +1,4 @@
 import 'package:elephant_control/app/utils/format_numbers.dart';
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -135,7 +134,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                           padding: EdgeInsets.only(top: 6.h),
                           child: Center(
                             child: TextWidget(
-                              "CENTRAL ${LoggedUser.userTypeName.toUpperCase()}",
+                              "CENTRAL TESOURARIA",
                               textColor: AppColors.backgroundColor,
                               fontSize: 22.sp,
                               textAlign: TextAlign.center,

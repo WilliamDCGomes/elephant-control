@@ -1,4 +1,4 @@
-import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -6,28 +6,28 @@ import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../financialPages/financialHistory/page/financial_history_page.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
+import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../maintenance/page/maintenance_page.dart';
-import '../../maintenanceHistory/pages/maintenance_history_page.dart';
-import '../controller/main_menu_operator_controller.dart';
+import '../controller/main_menu_administrator_controller.dart';
 
-class MainMenuOperatorPage extends StatefulWidget {
-  const MainMenuOperatorPage({Key? key}) : super(key: key);
+class MainMenuAdministratorPage extends StatefulWidget {
+  const MainMenuAdministratorPage({Key? key}) : super(key: key);
 
   @override
-  State<MainMenuOperatorPage> createState() => _MainMenuOperatorPageState();
+  State<MainMenuAdministratorPage> createState() => _MainMenuAdministratorPageState();
 }
 
-class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
-  late MainMenuOperatorController controller;
+class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
+  late MainMenuAdministratorController controller;
 
   @override
   void initState() {
-    controller = Get.put(MainMenuOperatorController(), tag: "main_menu_controller");
+    controller = Get.put(MainMenuAdministratorController(), tag: "main_menu_administrator_controller");
     super.initState();
   }
 
@@ -72,7 +72,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             children: [
                               TextButtonWidget(
                                 onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuOperatorController: controller,
+                                  mainMenuAdministratorController: controller,
                                 )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
@@ -98,7 +98,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                       ),
                                     ),
                                     Obx(
-                                      () => Column(
+                                          () => Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -132,7 +132,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                           padding: EdgeInsets.only(top: 6.h),
                           child: Center(
                             child: TextWidget(
-                              "CENTRAL OPERADOR",
+                              "CENTRAL ADMINISTRATIVA",
                               textColor: AppColors.backgroundColor,
                               fontSize: 22.sp,
                               textAlign: TextAlign.center,
@@ -148,11 +148,68 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                               shrinkWrap: true,
                               children: [
                                 InformationContainerWidget(
-                                  iconPath: Paths.Malote,
+                                  iconPath: Paths.Money,
                                   textColor: AppColors.whiteColor,
                                   backgroundColor: AppColors.defaultColor,
                                   informationText: "",
                                   iconInLeft: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  customContainer: SizedBox(
+                                    width: 73.w,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                          child: Obx(
+                                                () => RichTextTwoDifferentWidget(
+                                              firstText: "Quantidade no Cofre: ",
+                                              firstTextColor: AppColors.whiteColor,
+                                              firstTextFontWeight: FontWeight.normal,
+                                              firstTextSize: 18.sp,
+                                              secondText: FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
+                                              secondTextColor: AppColors.whiteColor,
+                                              secondTextFontWeight: FontWeight.bold,
+                                              secondTextSize: 20.sp,
+                                              secondTextDecoration: TextDecoration.none,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        TextWidget(
+                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
+                                          maxLines: 1,
+                                          textColor: AppColors.whiteColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+
+                                          },
+                                          child: TextWidget(
+                                            "Clique aqui para ver o histórico do cofre!",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            textDecoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InformationContainerWidget(
+                                  iconPath: Paths.Malote,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
                                   padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
                                   customContainer: SizedBox(
                                     width: 73.w,
@@ -166,7 +223,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               TextWidget(
-                                                "Quantidade de Malote(s):",
+                                                "Quantidade de Malotes:",
                                                 textColor: AppColors.whiteColor,
                                                 fontSize: 18.sp,
                                                 textAlign: TextAlign.start,
@@ -176,9 +233,9 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: Obx(
                                                       () => TextWidget(
-                                                    controller.amountPouch.value.toString(),
+                                                    controller.pouchQuantity.value.toString(),
                                                     fontWeight: FontWeight.bold,
-                                                    maxLines: 1,
+                                                    maxLines: 2,
                                                     textColor: AppColors.whiteColor,
                                                     fontSize: 20.sp,
                                                     textAlign: TextAlign.start,
@@ -200,81 +257,13 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                           height: 2.h,
                                         ),
                                         InkWell(
-                                          onTap: () => Get.to(() => HistoryPage(
+                                          onTap: () => Get.to(() => FinancialHistoryPage(
                                             title: "Histórico de Malotes",
-                                            pageTitle: "Visitas",
+                                            pageTitle: "Malotes",
+                                            pouchHistory: true,
                                           )),
                                           child: TextWidget(
                                             "Clique aqui para ver o histórico de malotes!",
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontSize: 16.sp,
-                                            textAlign: TextAlign.center,
-                                            textDecoration: TextDecoration.underline,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                InformationContainerWidget(
-                                  iconPath: Paths.Pelucia,
-                                  textColor: AppColors.whiteColor,
-                                  backgroundColor: AppColors.defaultColor,
-                                  informationText: "",
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
-                                  customContainer: SizedBox(
-                                    width: 73.w,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              TextWidget(
-                                                "Saldo de Pelúcias:",
-                                                textColor: AppColors.whiteColor,
-                                                fontSize: 18.sp,
-                                                textAlign: TextAlign.start,
-                                                maxLines: 1,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 1.w),
-                                                child: Obx(
-                                                      () => TextWidget(
-                                                    controller.amountTeddy.value.toString(),
-                                                    fontWeight: FontWeight.bold,
-                                                    maxLines: 1,
-                                                    textColor: AppColors.whiteColor,
-                                                    fontSize: 20.sp,
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        TextWidget(
-                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
-                                          maxLines: 1,
-                                          textColor: AppColors.whiteColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.sp,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        SizedBox(
-                                          height: 2.h,
-                                        ),
-                                        InkWell(
-                                          onTap: () => Get.to(() => HistoryPage(
-                                            title: "Histórico de Pelúcias",
-                                            pageTitle: "Visitas",
-                                          )),
-                                          child: TextWidget(
-                                            "Clique aqui para ver as pelúcias!",
                                             maxLines: 1,
                                             textColor: AppColors.whiteColor,
                                             fontSize: 16.sp,
@@ -308,14 +297,16 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                           color: AppColors.backgroundColor,
                         ),
                         label: TextWidget(
-                          "Visitas",
+                          "Receber Malotes do Operador",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () => Get.to(() => MaintenanceHistoryPage()),
+                        onPressed: () {
+
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -330,14 +321,16 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             color: AppColors.backgroundColor,
                           ),
                           label: TextWidget(
-                            "Adicionar nova visita",
+                            "Lançar Malotes no Sistema",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () => Get.to(() => MaintenancePage()),
+                          onPressed: () {
+
+                          },
                         ),
                       ),
                     ],

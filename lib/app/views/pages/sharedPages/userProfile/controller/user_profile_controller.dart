@@ -15,6 +15,7 @@ import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../administratorPages/mainMenuAdministrator/controller/main_menu_administrator_controller.dart';
 import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
@@ -84,9 +85,10 @@ class UserProfileController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late MainMenuOperatorController? mainMenuOperatorController;
   late MainMenuFinancialController? mainMenuFinancialController;
+  late MainMenuAdministratorController? mainMenuAdministratorController;
   late IConsultCepService _consultCepService;
 
-  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController) {
+  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController, this.mainMenuAdministratorController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -150,7 +152,10 @@ class UserProfileController extends GetxController {
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
       loadingAnimation: mainMenuOperatorController != null ?
-      mainMenuOperatorController!.loadingPicture : mainMenuFinancialController!.loadingPicture,
+      mainMenuOperatorController!.loadingPicture :
+      mainMenuFinancialController != null ?
+      mainMenuFinancialController!.loadingPicture :
+      mainMenuAdministratorController!.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
@@ -456,9 +461,13 @@ class UserProfileController extends GetxController {
       if(mainMenuOperatorController != null){
         mainMenuOperatorController!.loadingPicture.value = true;
       }
-      else{
+      else if(mainMenuFinancialController != null){
         mainMenuFinancialController!.loadingPicture.value = true;
       }
+      else{
+        mainMenuAdministratorController!.loadingPicture.value = true;
+      }
+
       profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
       if (profilePicture != null) {
         if (await _saveProfilePicture()) {
@@ -484,8 +493,11 @@ class UserProfileController extends GetxController {
       if(mainMenuOperatorController != null){
         mainMenuOperatorController!.loadingPicture.value = false;
       }
-      else{
+      else if(mainMenuFinancialController != null){
         mainMenuFinancialController!.loadingPicture.value = false;
+      }
+      else{
+        mainMenuAdministratorController!.loadingPicture.value = false;
       }
     }
   }
@@ -499,9 +511,16 @@ class UserProfileController extends GetxController {
           profilePicture!.path,
         );
       }
-      else{
+      else if(mainMenuFinancialController != null){
         mainMenuFinancialController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuFinancialController!.sharedPreferences.setString(
+          "profile_picture",
+          profilePicture!.path,
+        );
+      }
+      else{
+        mainMenuAdministratorController!.profileImagePath.value = profilePicture!.path;
+        return await mainMenuAdministratorController!.sharedPreferences.setString(
           "profile_picture",
           profilePicture!.path,
         );
@@ -566,8 +585,13 @@ class UserProfileController extends GetxController {
           "profile_picture",
         );
       }
-      else{
+      else if(mainMenuFinancialController != null){
         imageChanged = await mainMenuFinancialController!.sharedPreferences.remove(
+          "profile_picture",
+        );
+      }
+      else{
+        imageChanged = await mainMenuAdministratorController!.sharedPreferences.remove(
           "profile_picture",
         );
       }
@@ -591,12 +615,20 @@ class UserProfileController extends GetxController {
           mainMenuOperatorController!.sharedPreferences,
         );
       }
-      else{
+      else if(mainMenuFinancialController != null){
         await GetProfilePictureController.loadProfilePicture(
           mainMenuFinancialController!.loadingPicture,
           mainMenuFinancialController!.hasPicture,
           mainMenuFinancialController!.profileImagePath,
           mainMenuFinancialController!.sharedPreferences,
+        );
+      }
+      else{
+        await GetProfilePictureController.loadProfilePicture(
+          mainMenuAdministratorController!.loadingPicture,
+          mainMenuAdministratorController!.hasPicture,
+          mainMenuAdministratorController!.profileImagePath,
+          mainMenuAdministratorController!.sharedPreferences,
         );
       }
     } catch (_) {

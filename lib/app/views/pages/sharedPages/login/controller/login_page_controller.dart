@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import 'package:elephant_control/app/views/pages/sharedPages/login/page/login_page_page.dart';
 import 'package:elephant_control/base/services/user_service.dart';
@@ -229,10 +230,14 @@ class LoginPageController extends GetxController {
     if (userLogged!.userType == UserType.operator) {
       Get.offAll(() => MainMenuOperatorPage());
     }
-    else if (userLogged!.userType == UserType.admin) {
-    }
-    else {
+    else if (userLogged!.userType == UserType.treasury) {
       Get.offAll(() => MainMenuFinancialPage());
+    }
+    else if (userLogged!.userType == UserType.admin) {
+      Get.offAll(() => MainMenuAdministratorPage());
+    }
+    else if (userLogged!.userType == UserType.stockist){
+
     }
   }
 
