@@ -145,7 +145,7 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                         ),
                         Center(
                           child: Padding(
-                            padding: EdgeInsets.only(top: 8.h),
+                            padding: EdgeInsets.only(top: 8.h,),
                             child: ListView(
                               shrinkWrap: true,
                               children: [
@@ -296,10 +296,10 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                         backgroundColor: AppColors.defaultColor,
                         foregroundColor: AppColors.backgroundColor,
                         elevation: 3,
-                        icon: Icon(
-                          Icons.history,
-                          size: 4.h,
-                          color: AppColors.backgroundColor,
+                        icon: Image.asset(
+                          Paths.Malote,
+                          height: 3.h,
+                          color: AppColors.whiteColor,
                         ),
                         label: TextWidget(
                           "Receber Malotes do Operador",
@@ -318,10 +318,10 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                           backgroundColor: AppColors.defaultColor,
                           foregroundColor: AppColors.backgroundColor,
                           elevation: 3,
-                          icon: Icon(
-                            Icons.add,
-                            size: 4.5.h,
-                            color: AppColors.backgroundColor,
+                          icon: Image.asset(
+                            Paths.Cofre,
+                            height: 3.h,
+                            color: AppColors.whiteColor,
                           ),
                           label: TextWidget(
                             "Lançar Malotes no Sistema",

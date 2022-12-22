@@ -67,7 +67,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InformationContainerWidget(
-                              iconPath: Paths.Malote,
+                              iconPath: Paths.Cofre,
                               textColor: AppColors.whiteColor,
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
