@@ -4,12 +4,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../operatorPages/mainMenuOperator/widget/menu_options_widget.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
+import '../../operatorPouch/page/operator_pouch_page.dart';
+import '../../registerMachine/page/register_machine_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
+import '../widget/menu_options_widget.dart';
 
 class MainMenuAdministratorPage extends StatefulWidget {
   const MainMenuAdministratorPage({Key? key}) : super(key: key);
@@ -94,7 +96,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                       ),
                                     ),
                                     Obx(
-                                          () => Column(
+                                      () => Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -149,9 +151,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                     MenuOptionsWidget(
                                       text: "Malotes com Operadores",
                                       imagePath: Paths.Malote,
-                                      onTap: () {
-
-                                      },
+                                      onTap: () => Get.to(() => OperatorPouchPage()),
                                     ),
                                     MenuOptionsWidget(
                                       text: "Visitas dos Operadores",
@@ -191,9 +191,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                       MenuOptionsWidget(
                                         text: "Nova Máquina",
                                         imagePath: Paths.Maquina_Pelucia,
-                                        onTap: () {
-
-                                        },
+                                        onTap: () => Get.to(() => RegisterMachinePage()),
                                       ),
                                     ],
                                   ),
