@@ -12,6 +12,18 @@ class User extends ElephantCore {
   int? balanceStuffedAnimals;
   DateTime? stuffedAnimalsLastUpdate;
   late UserType type;
+  DateTime? birthdayDate;
+  late TypeGender gender;
+  String? cep;
+  String? uf;
+  String? city;
+  String? address;
+  String? number;
+  String? district;
+  String? complement;
+  String? cellphone;
+  String? email;
+  late int code;
 
   User({
     required this.name,
@@ -49,4 +61,13 @@ enum UserType {
   admin,
   @JsonValue(4)
   none,
+}
+
+enum TypeGender {
+  @JsonValue(0)
+  masculine,
+  @JsonValue(1)
+  feminine,
+  @JsonValue(2)
+  other,
 }
