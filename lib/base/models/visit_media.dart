@@ -1,5 +1,7 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'media.dart';
 part 'visit_media.g.dart';
 
 @JsonSerializable()
@@ -28,17 +30,4 @@ enum MediaType {
   moneyWatch,
   @JsonValue(2)
   machine,
-}
-
-enum MediaExtension {
-  @JsonValue(0)
-  jpg,
-  @JsonValue(1)
-  jpeg,
-  @JsonValue(2)
-  png,
-  @JsonValue(3)
-  pdf,
-  @JsonValue(4)
-  mp4,
 }

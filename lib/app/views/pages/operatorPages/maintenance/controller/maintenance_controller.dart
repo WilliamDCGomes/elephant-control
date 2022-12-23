@@ -6,6 +6,7 @@ import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/machine.dart';
+import '../../../../../../base/models/media.dart';
 import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
@@ -134,7 +135,7 @@ class MaintenanceController extends GetxController {
       await Future.delayed(Duration(seconds: 2));
       _mainMenuOperatorController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if(yes.value){
+      if (yes.value) {
         _mainMenuOperatorController.amountPouch.value++;
         LoggedUser.amountPouch++;
       }
