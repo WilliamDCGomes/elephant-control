@@ -6,13 +6,16 @@ part 'visit_media.g.dart';
 
 @JsonSerializable()
 class VisitMedia extends ElephantCore {
-  late String base64;
+  String? base64;
+  String? mediaId;
   late MediaType type;
-  late String visitId;
-  late MediaExtension extension;
+  String? visitId;
+  String? incidentId;
+  MediaExtension? extension;
 
   VisitMedia({
-    required this.base64,
+    this.base64,
+    this.mediaId,
     required this.type,
     required this.visitId,
     required this.extension,

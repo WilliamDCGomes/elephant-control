@@ -27,7 +27,10 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?;
+      ..active = json['active'] as bool?
+      ..moneyPouch = json['moneyPouch'] == null
+          ? null
+          : MoneyPouch.fromJson(json['moneyPouch'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'id': instance.id,
@@ -45,6 +48,7 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'moneyWithdrawal': instance.moneyWithdrawal,
       'code': instance.code,
       'observation': instance.observation,
+      'moneyPouch': instance.moneyPouch,
     };
 
 const _$VisitStatusEnumMap = {

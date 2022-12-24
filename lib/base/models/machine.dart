@@ -5,6 +5,22 @@ part 'machine.g.dart';
 @JsonSerializable()
 class Machine extends ElephantCore {
   final String name;
+  DateTime? lastVisit;
+  int? daysToNextVisit;
+  double? prize;
+  double? balance;
+  late String localization;
+  late String longitude;
+  late String latitude;
+  late String cep;
+  late String uf;
+  late String city;
+  late String address;
+  late String number;
+  late String district;
+  late String complement;
+  late double mimimumAverageValue;
+  late double maximumAverageValue;
   late bool selected;
 
   Machine({required this.name, this.selected = false});

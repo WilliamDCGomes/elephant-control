@@ -1,9 +1,6 @@
-import 'package:elephant_control/base/models/visit.dart';
-import 'package:elephant_control/base/models/visit_media.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/create_user_visit_machine_viewcontroller.dart';
-import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:elephant_control/base/viewControllers/user_visit_machine_viewcontroller.dart';
 
 class UserVisitMachineService extends BaseService {
   Future<bool> createUserVisitMachineWithList(CreateUserVisitMachineViewController createUserVisitMachineViewController) async {
@@ -28,6 +25,54 @@ class UserVisitMachineService extends BaseService {
       return response.body;
     } catch (_) {
       return false;
+    }
+  }
+
+  Future<bool> deleteUserVisitMachine(String userVisitMachineId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'UserVisitMachine/DeleteUserVisitMachine';
+      final response = await delete(url, query: {"UserVisitMachineId": userVisitMachineId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> unDeleteUserVisitMachine(String userVisitMachineId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'UserVisitMachine/UndeleteUserVisitMachine';
+      final response = await delete(url, query: {"UserVisitMachineId": userVisitMachineId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<List<UserVisitMachineViewController>> getUserVisitMachineByUserId() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'UserVisitMachine/GetUserVisitMachineByUserId';
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return (response.body as List).map((e) => UserVisitMachineViewController.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<List<UserVisitMachineViewController>> getUserVisitMachineByUserIdAndVisitDay(DateTime visitDay) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'UserVisitMachine/GetUserVisitMachineByUserIdAndVisitDay';
+      final response = await get(url, query: {"VisitDay": visitDay.toIso8601String()}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return (response.body as List).map((e) => UserVisitMachineViewController.fromJson(e)).toList();
+    } catch (_) {
+      return [];
     }
   }
 }
