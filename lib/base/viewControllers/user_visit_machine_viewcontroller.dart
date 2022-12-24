@@ -14,4 +14,8 @@ class UserVisitMachineViewController {
     required this.id,
     required this.visitDay,
   });
+
+  factory UserVisitMachineViewController.fromJson(Map<String, dynamic> json) => _$UserVisitMachineViewControllerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserVisitMachineViewControllerToJson(this);
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/base/models/visit.dart';
 import 'package:elephant_control/base/models/visit_media.dart';
+import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,6 +38,7 @@ class MaintenanceController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final MachineService _machineService;
   late final VisitService _visitService;
+  late final VisitMediaService _visitMediaService;
   late final RxList<Machine> _machines;
   late final Visit _visit;
 
@@ -220,7 +222,7 @@ class MaintenanceController extends GetxController {
             extension: MediaExtension.jpeg,
           ));
 
-        if (medias.isNotEmpty) createdVisit = await _visitService.createVisitMedia(medias);
+        if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
       }
       if (!createdVisit) throw Exception();
       await showDialog(

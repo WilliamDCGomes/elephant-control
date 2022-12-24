@@ -33,6 +33,64 @@ class UserService extends BaseService implements IUserService {
     }
   }
 
+  Future<List<User>> getUserByType(UserType type) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetUserInformation';
+      final response = await super.get(url, query: {"Type": type.toString()}, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<User>((e) => User.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<bool> createUser(User user) async {
+    try {
+      final url = baseUrlApi + 'User/CreateUser';
+      final response = await super.post(url, user.toJson());
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> editUser(User user) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/EditUser';
+      final response = await super.post(url, user.toJson(), headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> forgetPassword(String password, String documemnt) async {
+    try {
+      final url = baseUrlApi + 'User/ForgetPassword';
+      final response = await super.post(url, null, query: {"Password": password, "Document": documemnt});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> forgetPasswordInternal(String password) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/ForgetPasswordInternal';
+      final response = await super.post(url, null, query: {"Password": password}, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<bool> sendNewUser(User newUser) async {
     try {
       return true;

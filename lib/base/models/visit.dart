@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
+import 'package:elephant_control/base/models/money_pouch.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,6 +18,7 @@ class Visit extends ElephantCore {
   late bool moneyWithdrawal;
   int? code;
   String? observation;
+  MoneyPouch? moneyPouch;
 
   Visit({
     required this.addedProducts,
