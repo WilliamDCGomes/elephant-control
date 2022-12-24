@@ -8,7 +8,8 @@ class MachineService extends BaseService {
       final url = baseUrlApi + 'UserMachine/GetMachineByUserId';
       final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
-      return (response.body as List).map((e) => Machine.fromJson(e)).toList();
+      var machines = (response.body as List).map((e) => Machine.fromJson(e)).toList();
+      return machines;
     } catch (_) {
       return [];
     }

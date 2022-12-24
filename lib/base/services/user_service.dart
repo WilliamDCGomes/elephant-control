@@ -9,8 +9,8 @@ class UserService extends BaseService implements IUserService {
   Future<AuthenticateResponse?> authenticate({String? username, String? password}) async {
     try {
       final sharedPreferences = await SharedPreferences.getInstance();
-      username ??= sharedPreferences.getString('Login');
-      password ??= sharedPreferences.getString('Senha');
+      username ??= sharedPreferences.getString('user_logged');
+      password ??= sharedPreferences.getString('password');
       if (username == null || password == null) throw Exception();
       final url = baseUrlApi + 'User/Authenticate';
       final response = await super.post(url, null, query: {"username": username, "password": password}).timeout(Duration(seconds: 30));

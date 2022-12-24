@@ -24,17 +24,17 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       ..daysToNextVisit = json['daysToNextVisit'] as int?
       ..prize = (json['prize'] as num?)?.toDouble()
       ..balance = (json['balance'] as num?)?.toDouble()
-      ..localization = json['localization'] as String
+      ..localization = json['localization'] != null ? json['localization'] as String : ""
       ..longitude = json['longitude'] as String
       ..latitude = json['latitude'] as String
       ..cep = json['cep'] as String
       ..uf = json['uf'] as String
       ..city = json['city'] as String
       ..address = json['address'] as String
-      ..number = json['number'] as String
+      ..number = json['number'] != null ? json['number'] as String : ""
       ..district = json['district'] as String
       ..complement = json['complement'] as String
-      ..mimimumAverageValue = (json['mimimumAverageValue'] as num).toDouble()
+      ..minimumAverageValue = (json['minimumAverageValue'] as num).toDouble()
       ..maximumAverageValue = (json['maximumAverageValue'] as num).toDouble();
 
 Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
@@ -57,7 +57,7 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'number': instance.number,
       'district': instance.district,
       'complement': instance.complement,
-      'mimimumAverageValue': instance.mimimumAverageValue,
+      'minimumAverageValue': instance.minimumAverageValue,
       'maximumAverageValue': instance.maximumAverageValue,
       'selected': instance.selected,
     };

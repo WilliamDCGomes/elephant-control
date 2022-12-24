@@ -14,6 +14,8 @@ class RegisterMachineController extends GetxController {
   late TextEditingController machineNameTextController;
   late TextEditingController minAverageTextController;
   late TextEditingController maxAverageTextController;
+  late TextEditingController firstClockTextController;
+  late TextEditingController secondClockTextController;
   late TextEditingController periodVisitsTextController;
   late TextEditingController cepTextController;
   late TextEditingController cityTextController;
@@ -43,6 +45,8 @@ class RegisterMachineController extends GetxController {
     machineNameTextController = TextEditingController();
     minAverageTextController = TextEditingController();
     maxAverageTextController = TextEditingController();
+    firstClockTextController = TextEditingController();
+    secondClockTextController = TextEditingController();
     periodVisitsTextController = TextEditingController();
     cepTextController = TextEditingController();
     cityTextController = TextEditingController();

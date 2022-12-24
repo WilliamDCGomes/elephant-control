@@ -19,7 +19,7 @@ class Machine extends ElephantCore {
   late String number;
   late String district;
   late String complement;
-  late double mimimumAverageValue;
+  late double minimumAverageValue;
   late double maximumAverageValue;
   late bool selected;
 

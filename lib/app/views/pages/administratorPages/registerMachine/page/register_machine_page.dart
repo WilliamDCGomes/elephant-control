@@ -136,6 +136,35 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.h,),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.firstClockTextController,
+                                            hintText: "Valor 1º Relógio",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
+                                        Expanded(
+                                          child: TextFieldWidget(
+                                            controller: controller.secondClockTextController,
+                                            hintText: "Valor 2º Relógio",
+                                            height: 9.h,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.h,),
                                     child: TextFieldWidget(
                                       controller: controller.periodVisitsTextController,
                                       hintText: "Período de Visitas",

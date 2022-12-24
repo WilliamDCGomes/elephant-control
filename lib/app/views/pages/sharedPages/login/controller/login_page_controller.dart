@@ -219,6 +219,8 @@ class LoginPageController extends GetxController {
       )
       .timeout(Duration(seconds: 30));
 
+      await sharedPreferences.setString('Token', userLogged!.token);
+      await sharedPreferences.setString('ExpiracaoToken', "${userLogged!.expirationDate.year}-${userLogged!.expirationDate.month}-${userLogged!.expirationDate.day}");
       return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");

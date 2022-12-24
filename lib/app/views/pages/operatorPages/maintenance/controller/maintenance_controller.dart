@@ -49,6 +49,7 @@ class MaintenanceController extends GetxController {
   _initializeVariables() {
     _machineService = MachineService();
     _visitService = VisitService();
+    _visitMediaService = VisitMediaService();
     _machines = <Machine>[].obs;
     // machineSelected = machinesPlaces[0].obs;
     requestTitle = "".obs;
@@ -124,6 +125,11 @@ class MaintenanceController extends GetxController {
       // await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachinesByUserId());
+      if(_machines.isNotEmpty){
+        _machines.sort((a, b) => a.name.compareTo(b.name));
+        onDropdownButtonWidgetChanged(_machines.first.id);
+        update(["dropdown-button"]);
+      }
     } catch (_) {
       _machines.clear();
     }
@@ -225,6 +231,7 @@ class MaintenanceController extends GetxController {
         if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
       }
       if (!createdVisit) throw Exception();
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -246,12 +253,22 @@ class MaintenanceController extends GetxController {
           );
         },
       );
-    } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation();
     }
   }
 
   bool fieldsValidate() {
+    if (machineSelected == null) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Selecione a Máquina da Visita!",
+          );
+        },
+      );
+      return false;
+    }
     if (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,

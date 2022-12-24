@@ -158,13 +158,17 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       ),
                                     ),
                                   ),
-                                  DropdownButtonWidget(
-                                    itemSelected: controller.machineSelected?.id,
-                                    hintText: controller.machineSelected == null ? "Máquina Atendida" : controller.machineSelected?.name,
-                                    height: 6.5.h,
-                                    width: 85.w,
-                                    listItems: controller.machines.map((e) => DropdownItem(item: e.name, value: e.id)),
-                                    onChanged: (selectedState) => setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
+                                  GetBuilder(
+                                    id: "dropdown-button",
+                                    init: controller,
+                                    builder: (value) => DropdownButtonWidget(
+                                      itemSelected: controller.machineSelected?.id,
+                                      hintText: controller.machineSelected == null ? "Máquina Atendida" : controller.machineSelected?.name,
+                                      height: 6.5.h,
+                                      width: 85.w,
+                                      listItems: controller.machines.map((e) => DropdownItem(item: e.name, value: e.id)),
+                                      onChanged: (selectedState) => setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
+                                    ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
