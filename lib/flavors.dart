@@ -25,10 +25,10 @@ class F {
       case Flavor.HMLG:
         return 'https://elephantapiprod.azurewebsites.net/api/';
       case Flavor.PROD:
-        //return 'https://elephantapiprod.azurewebsites.net/api/';
-        return 'http://10.10.10.39:5002/api/';
+        return 'https://elephantapiprod.azurewebsites.net/api/';
+        //return 'http://192.168.1.109:5002/api/';
       default:
-        return 'http://10.10.10.39:5002/api/';
+        return 'https://elephantapiprod.azurewebsites.net/api/';
     }
   }
 

@@ -7,7 +7,7 @@ import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 
-class MainMenuFinancialController extends GetxController {
+class MainMenuAdministratorController extends GetxController {
   late RxBool hasPicture;
   late RxBool loadingPicture;
   late RxString profileImagePath;
@@ -20,7 +20,7 @@ class MainMenuFinancialController extends GetxController {
   late DateTime teddyLastChange;
   late SharedPreferences sharedPreferences;
 
-  MainMenuFinancialController(){
+  MainMenuAdministratorController(){
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();

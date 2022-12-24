@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -133,7 +132,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                           padding: EdgeInsets.only(top: 6.h),
                           child: Center(
                             child: TextWidget(
-                              "CENTRAL ${LoggedUser.userTypeName.toUpperCase()}",
+                              "CENTRAL OPERADOR",
                               textColor: AppColors.backgroundColor,
                               fontSize: 22.sp,
                               textAlign: TextAlign.center,
@@ -142,53 +141,53 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.h),
-                          child: Center(
-                            child: InformationContainerWidget(
-                              iconPath: Paths.Malote,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "",
-                              iconInLeft: true,
-                              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
-                              customContainer: ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        TextWidget(
-                                          "Quantidade de Malote(s):",
-                                          textColor: AppColors.whiteColor,
-                                          fontSize: 18.sp,
-                                          textAlign: TextAlign.start,
-                                          maxLines: 1,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 1.w),
-                                          child: Obx(
-                                            () => TextWidget(
-                                              controller.amountPouch.value.toString(),
-                                              fontWeight: FontWeight.bold,
-                                              maxLines: 1,
-                                              textColor: AppColors.whiteColor,
-                                              fontSize: 20.sp,
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 8.h),
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: [
+                                InformationContainerWidget(
+                                  iconPath: Paths.Malote,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  iconInLeft: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  customContainer: SizedBox(
                                     width: 73.w,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              TextWidget(
+                                                "Quantidade de Malote(s):",
+                                                textColor: AppColors.whiteColor,
+                                                fontSize: 18.sp,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 1,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 1.w),
+                                                child: Obx(
+                                                      () => TextWidget(
+                                                    controller.amountPouch.value.toString(),
+                                                    fontWeight: FontWeight.bold,
+                                                    maxLines: 1,
+                                                    textColor: AppColors.whiteColor,
+                                                    fontSize: 20.sp,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         TextWidget(
                                           "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
                                           maxLines: 1,
@@ -217,81 +216,74 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: InformationContainerWidget(
-                            iconPath: Paths.Pelucia,
-                            textColor: AppColors.whiteColor,
-                            backgroundColor: AppColors.defaultColor,
-                            informationText: "",
-                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
-                            customContainer: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextWidget(
-                                        "Saldo de Pelúcias:",
-                                        textColor: AppColors.whiteColor,
-                                        fontSize: 18.sp,
-                                        textAlign: TextAlign.start,
-                                        maxLines: 1,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 1.w),
-                                        child: Obx(
-                                          () => TextWidget(
-                                            controller.amountTeddy.value.toString(),
-                                            fontWeight: FontWeight.bold,
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontSize: 20.sp,
-                                            textAlign: TextAlign.start,
+                                ),
+                                InformationContainerWidget(
+                                  iconPath: Paths.Pelucia,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  customContainer: SizedBox(
+                                    width: 73.w,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              TextWidget(
+                                                "Saldo de Pelúcias:",
+                                                textColor: AppColors.whiteColor,
+                                                fontSize: 18.sp,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 1,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 1.w),
+                                                child: Obx(
+                                                      () => TextWidget(
+                                                    controller.amountTeddy.value.toString(),
+                                                    fontWeight: FontWeight.bold,
+                                                    maxLines: 1,
+                                                    textColor: AppColors.whiteColor,
+                                                    fontSize: 20.sp,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 73.w,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      TextWidget(
-                                        "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
-                                        maxLines: 1,
-                                        textColor: AppColors.whiteColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(
-                                        height: 2.h,
-                                      ),
-                                      InkWell(
-                                        onTap: () => Get.to(() => HistoryPage(
-                                          title: "Histórico de Pelúcias",
-                                          pageTitle: "Visitas",
-                                        )),
-                                        child: TextWidget(
-                                          "Clique aqui para ver as pelúcias!",
+                                        TextWidget(
+                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
                                           maxLines: 1,
                                           textColor: AppColors.whiteColor,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 16.sp,
                                           textAlign: TextAlign.center,
-                                          textDecoration: TextDecoration.underline,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        InkWell(
+                                          onTap: () => Get.to(() => HistoryPage(
+                                            title: "Histórico de Pelúcias",
+                                            pageTitle: "Visitas",
+                                          )),
+                                          child: TextWidget(
+                                            "Clique aqui para ver as pelúcias!",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            textDecoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

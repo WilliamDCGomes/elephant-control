@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/rich_text_two_different_widget.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
@@ -10,13 +11,17 @@ import '../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widg
 class SafeBoxCardWidget extends StatelessWidget {
   final String operatorName;
   final String machineName;
-  final double amount;
+  final double? amount;
+  final DateTime? deliveryDate;
+  final bool pouchHistory;
 
   SafeBoxCardWidget(
       { Key? key,
         required this.operatorName,
         required this.machineName,
-        required this.amount,
+        this.amount,
+        this.deliveryDate,
+        required this.pouchHistory,
       }) : super(key: key);
 
   @override
@@ -52,56 +57,21 @@ class SafeBoxCardWidget extends StatelessWidget {
             Container(
               height: 6.h,
               width: double.infinity,
-              color: AppColors.backgroundColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 44.w,
-                    color: AppColors.grayBackgroundPictureColor,
-                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-                    child: Center(
-                      child: RichTextTwoDifferentWidget(
-                        firstText: "Nome Operador: ",
-                        firstTextColor: AppColors.blackColor,
-                        firstTextFontWeight: FontWeight.normal,
-                        firstTextSize: 14.5.sp,
-                        secondText: operatorName,
-                        secondTextColor: AppColors.blackColor,
-                        secondTextFontWeight: FontWeight.bold,
-                        secondTextSize: 14.5.sp,
-                        secondTextDecoration: TextDecoration.none,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 44.w,
-                    color: AppColors.grayBackgroundPictureColor,
-                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 8.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: RichTextTwoDifferentWidget(
-                              firstText: "Valor Recolhido: \n",
-                              firstTextColor: AppColors.blackColor,
-                              firstTextFontWeight: FontWeight.normal,
-                              firstTextSize: 14.5.sp,
-                              secondText: "R\$ " + FormatNumbers.numbersToString(amount),
-                              secondTextColor: AppColors.blackColor,
-                              secondTextFontWeight: FontWeight.bold,
-                              secondTextSize: 14.5.sp,
-                              secondTextDecoration: TextDecoration.none,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              color: AppColors.grayBackgroundPictureColor,
+              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 8.w),
+              child: Center(
+                child: RichTextTwoDifferentWidget(
+                  firstText: pouchHistory ? "Data Recebimento: " : "Valor Malote: ",
+                  firstTextColor: AppColors.blackColor,
+                  firstTextFontWeight: FontWeight.normal,
+                  firstTextSize: 16.sp,
+                  secondText: pouchHistory ? DateFormatToBrazil.formatDate(deliveryDate) :
+                  FormatNumbers.numbersToMoney(amount),
+                  secondTextColor: AppColors.blackColor,
+                  secondTextFontWeight: FontWeight.bold,
+                  secondTextSize: 16.sp,
+                  secondTextDecoration: TextDecoration.none,
+                ),
               ),
             ),
           ],

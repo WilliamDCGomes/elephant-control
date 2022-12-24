@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
+import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../utils/platform_type.dart';
@@ -37,7 +38,7 @@ class InformationContainerWidget extends StatelessWidget {
             left: 2.h,
             top: PlatformType.isTablet(context) ? 9.h : 7.h,
             right: 2.h,
-            bottom: 2.h,
+            bottom: 1.h,
           ),
           padding: padding ?? EdgeInsets.fromLTRB(5.w, 4.h, 5.w, 3.h),
           decoration: BoxDecoration(
@@ -70,6 +71,7 @@ class InformationContainerWidget extends StatelessWidget {
               iconPath,
               height: 5.h,
               width: 5.h,
+              color: AppColors.whiteColor,
             ),
           ),
         ),

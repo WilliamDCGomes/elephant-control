@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/money_mask.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
@@ -66,7 +67,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InformationContainerWidget(
-                              iconPath: Paths.Malote,
+                              iconPath: Paths.Cofre,
                               textColor: AppColors.whiteColor,
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
@@ -89,7 +90,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       firstTextColor: AppColors.whiteColor,
                                       firstTextFontWeight: FontWeight.normal,
                                       firstTextSize: 18.sp,
-                                      secondText: "R\$ " + controller.fullValue.value.toStringAsFixed(2).replaceAll('.', ','),
+                                      secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
                                       secondTextColor: AppColors.whiteColor,
                                       secondTextFontWeight: FontWeight.bold,
                                       secondTextSize: 18.sp,
@@ -109,7 +110,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                           firstTextColor: AppColors.whiteColor,
                                           firstTextFontWeight: FontWeight.normal,
                                           firstTextSize: 18.sp,
-                                          secondText: "R\$ " + controller.getDifference(),
+                                          secondText: FormatNumbers.stringToMoney(controller.getDifference()),
                                           secondTextColor: AppColors.whiteColor,
                                           secondTextFontWeight: FontWeight.bold,
                                           secondTextSize: 18.sp,

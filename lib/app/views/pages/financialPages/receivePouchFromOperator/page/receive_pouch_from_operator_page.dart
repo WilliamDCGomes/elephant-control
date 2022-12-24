@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
@@ -136,18 +135,6 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 1.5.h,
-                                    ),
-                                    child: TextFieldWidget(
-                                      controller: controller.pouchQuantity,
-                                      hintText: "Quantidade de Malotes Recebidos",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.number,
-                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 1.5.h,
                                       bottom: 3.h,
                                     ),
                                     child: TextFieldWidget(
@@ -193,7 +180,16 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
+                              padding: EdgeInsets.only(left: 2.h, top: 2.h, right: 2.h),
+                              child: ButtonWidget(
+                                hintText: "SELECIONAR MALOTES",
+                                fontWeight: FontWeight.bold,
+                                widthButton: 100.w,
+                                onPressed: () => controller.openPouchList(),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(2.h),
                               child: ButtonWidget(
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,

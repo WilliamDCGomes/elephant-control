@@ -10,6 +10,7 @@ class RichTextTwoDifferentWidget extends StatelessWidget {
   final double? secondTextSize;
   final Color? firstTextColor;
   final Color? secondTextColor;
+  final TextAlign? textAlign;
   final FontWeight? firstTextFontWeight;
   final FontWeight? secondTextFontWeight;
   final TextOverflow? textOverflow;
@@ -25,6 +26,7 @@ class RichTextTwoDifferentWidget extends StatelessWidget {
         this.secondTextSize,
         this.firstTextColor,
         this.secondTextColor,
+        this.textAlign,
         this.firstTextFontWeight,
         this.secondTextFontWeight,
         this.textOverflow,
@@ -36,6 +38,7 @@ class RichTextTwoDifferentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       maxLines: maxLines,
+      textAlign: textAlign ?? TextAlign.start,
       text: TextSpan(
         children: [
           TextSpan(
