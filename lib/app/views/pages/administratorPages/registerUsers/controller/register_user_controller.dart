@@ -6,18 +6,20 @@ import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
 import '../../../../../utils/brazil_address_informations.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
-class RegisterMachineController extends GetxController {
+class RegisterUsersController extends GetxController {
   late RxBool loadingAnimation;
+  late RxString userTypeSelected;
   late RxString ufSelected;
   late RxList<String> ufsList;
+  late RxList<String> userTypeList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late TextEditingController machineNameTextController;
-  late TextEditingController machineTypeTextController;
-  late TextEditingController minAverageTextController;
-  late TextEditingController maxAverageTextController;
-  late TextEditingController firstClockTextController;
-  late TextEditingController secondClockTextController;
-  late TextEditingController periodVisitsTextController;
+  late TextEditingController userNameTextController;
+  late TextEditingController userTextController;
+  late TextEditingController documentTextController;
+  late TextEditingController birthDayTextController;
+  late TextEditingController emailTextController;
+  late TextEditingController phoneTextController;
+  late TextEditingController cellPhoneTextController;
   late TextEditingController cepTextController;
   late TextEditingController cityTextController;
   late TextEditingController streetTextController;
@@ -26,8 +28,9 @@ class RegisterMachineController extends GetxController {
   late TextEditingController complementTextController;
   late IConsultCepService consultCepService;
 
-  RegisterMachineController(){
+  RegisterUsersController(){
     _initializeVariables();
+    _initializeList();
   }
 
   @override
@@ -38,18 +41,20 @@ class RegisterMachineController extends GetxController {
 
   _initializeVariables(){
     loadingAnimation = false.obs;
+    userTypeSelected = "".obs;
     ufSelected = "".obs;
-    ufsList = [""].obs;
+    ufsList = <String>[].obs;
+    userTypeList = <String>[].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
-    machineNameTextController = TextEditingController();
-    machineTypeTextController = TextEditingController();
-    minAverageTextController = TextEditingController();
-    maxAverageTextController = TextEditingController();
-    firstClockTextController = TextEditingController();
-    secondClockTextController = TextEditingController();
-    periodVisitsTextController = TextEditingController();
+    userNameTextController = TextEditingController();
+    userTextController = TextEditingController();
+    documentTextController = TextEditingController();
+    birthDayTextController = TextEditingController();
+    emailTextController = TextEditingController();
+    phoneTextController = TextEditingController();
+    cellPhoneTextController = TextEditingController();
     cepTextController = TextEditingController();
     cityTextController = TextEditingController();
     streetTextController = TextEditingController();
@@ -57,6 +62,15 @@ class RegisterMachineController extends GetxController {
     neighborhoodTextController = TextEditingController();
     complementTextController = TextEditingController();
     consultCepService = ConsultCepService();
+  }
+
+  _initializeList(){
+    userTypeList.addAll([
+      "Administrativo",
+      "Estoquista",
+      "Operador",
+      "Tesouraria",
+    ]);
   }
 
   searchAddressInformation() async {

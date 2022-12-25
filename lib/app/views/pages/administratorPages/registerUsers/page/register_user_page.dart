@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/loading.dart';
@@ -13,21 +12,21 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/register_machine_controller.dart';
+import '../controller/register_user_controller.dart';
 
-class RegisterMachinePage extends StatefulWidget {
-  const RegisterMachinePage({Key? key}) : super(key: key);
+class RegisterUsersPage extends StatefulWidget {
+  const RegisterUsersPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterMachinePage> createState() => _RegisterMachinePageState();
+  State<RegisterUsersPage> createState() => _RegisterUsersPageState();
 }
 
-class _RegisterMachinePageState extends State<RegisterMachinePage> {
-  late RegisterMachineController controller;
+class _RegisterUsersPageState extends State<RegisterUsersPage> {
+  late RegisterUsersController controller;
 
   @override
   void initState() {
-    controller = Get.put(RegisterMachineController());
+    controller = Get.put(RegisterUsersController());
     super.initState();
   }
 
@@ -59,7 +58,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Cadastrar Máquina",
+                          title: "Cadastrar Usuário",
                         ),
                       ),
                       Expanded(
@@ -67,12 +66,12 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InformationContainerWidget(
-                              iconPath: Paths.Maquina_Pelucia,
+                              iconPath: Paths.Novo_Usuario,
                               textColor: AppColors.whiteColor,
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
                               customContainer: TextWidget(
-                                "Cadastrar Nova Máquina",
+                                "Cadastrar Nova Usuário",
                                 textColor: AppColors.whiteColor,
                                 fontSize: 18.sp,
                                 textAlign: TextAlign.center,
@@ -99,8 +98,8 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.5.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.machineNameTextController,
-                                      hintText: "Nome da Máquina",
+                                      controller: controller.userNameTextController,
+                                      hintText: "Nome",
                                       height: 9.h,
                                       keyboardType: TextInputType.name,
                                     ),
@@ -108,77 +107,78 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.machineTypeTextController,
-                                      hintText: "Tipo da Máquina",
+                                      controller: controller.userTextController,
+                                      hintText: "Usuário",
                                       height: 9.h,
+                                      justRead: true,
                                       keyboardType: TextInputType.name,
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.minAverageTextController,
-                                            hintText: "Valor Mínimo",
-                                            height: 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.maxAverageTextController,
-                                            hintText: "Valor Máximo",
-                                            height: 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                      ],
+                                    padding: EdgeInsets.only(top: .5.h,),
+                                    child: Obx(
+                                      () => DropdownButtonRxListWidget(
+                                        itemSelected: controller.userTypeSelected.value == "" ? null : controller.userTypeSelected.value,
+                                        hintText: "Tipo do Usuário",
+                                        height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                        rxListItems: controller.userTypeList,
+                                        onChanged: (selectedState) {
+                                          if(selectedState != null) {
+                                            controller.userTypeSelected.value = selectedState;
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.firstClockTextController,
-                                            hintText: "Valor 1º Relógio",
-                                            height: 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Expanded(
-                                          child: TextFieldWidget(
-                                            controller: controller.secondClockTextController,
-                                            hintText: "Valor 2º Relógio",
-                                            height: 9.h,
-                                            keyboardType: TextInputType.number,
-                                            maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                          ),
-                                        ),
-                                      ],
+                                    padding: EdgeInsets.only(top: 3.h,),
+                                    child: TextFieldWidget(
+                                      controller: controller.documentTextController,
+                                      hintText: "Cpf",
+                                      height: 9.h,
+                                      keyboardType: TextInputType.number,
+                                      enableSuggestions: true,
+                                      maskTextInputFormatter: [MasksForTextFields.cpfMask],
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.h,),
                                     child: TextFieldWidget(
-                                      controller: controller.periodVisitsTextController,
-                                      hintText: "Período de Visitas",
+                                      controller: controller.birthDayTextController,
+                                      hintText: "Data de Nascimento",
                                       height: 9.h,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.number,
+                                      maskTextInputFormatter: [MasksForTextFields.birthDateMask],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.h,),
+                                    child: TextFieldWidget(
+                                      controller: controller.emailTextController,
+                                      hintText: "E-mail",
+                                      height: 9.h,
+                                      keyboardType: TextInputType.emailAddress,
+                                      enableSuggestions: true,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.h,),
+                                    child: TextFieldWidget(
+                                      controller: controller.phoneTextController,
+                                      hintText: "Telefone",
+                                      height: 9.h,
+                                      keyboardType: TextInputType.phone,
+                                      maskTextInputFormatter: [MasksForTextFields.phoneNumberMask],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.h,),
+                                    child: TextFieldWidget(
+                                      controller: controller.cellPhoneTextController,
+                                      hintText: "Celular",
+                                      height: 9.h,
+                                      keyboardType: TextInputType.phone,
+                                      maskTextInputFormatter: [MasksForTextFields.cellPhoneNumberMask],
                                     ),
                                   ),
                                   Padding(
@@ -186,7 +186,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: TextWidget(
-                                        "Localização",
+                                        "Endereço",
                                         textColor: AppColors.defaultColor,
                                         fontSize: 16.sp,
                                         textAlign: TextAlign.center,
@@ -235,7 +235,9 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                                 width: 23.w,
                                                 rxListItems: controller.ufsList,
                                                 onChanged: (selectedState) {
-
+                                                  if(selectedState != null) {
+                                                    controller.ufSelected.value = selectedState;
+                                                  }
                                                 },
                                               ),
                                             ),

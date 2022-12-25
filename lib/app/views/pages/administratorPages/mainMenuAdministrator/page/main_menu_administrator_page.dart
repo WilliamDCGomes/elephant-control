@@ -10,6 +10,7 @@ import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../operatorPouch/page/operator_pouch_page.dart';
 import '../../registerMachine/page/register_machine_page.dart';
+import '../../registerUsers/page/register_user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widget/menu_options_widget.dart';
 
@@ -184,9 +185,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                       MenuOptionsWidget(
                                         text: "Novo Usuário",
                                         imagePath: Paths.Novo_Usuario,
-                                        onTap: () {
-
-                                        },
+                                        onTap: () => Get.to(() => RegisterUsersPage()),
                                       ),
                                       MenuOptionsWidget(
                                         text: "Nova Máquina",
