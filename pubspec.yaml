@@ -44,6 +44,7 @@ dependencies:
   flutter_flavorizr: ^2.1.5
   firebase_messaging: ^14.1.1
   shared_preferences: ^2.0.15
+  flutter_localization: ^0.1.9
   font_awesome_flutter: ^10.2.1
   flutter_native_timezone: ^2.0.0
   credit_card_type_detector: ^2.0.0

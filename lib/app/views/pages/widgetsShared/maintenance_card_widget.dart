@@ -23,6 +23,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final bool pouchCollected;
   final bool showPriorityAndStatus;
   bool? showMap;
+  final String? responsibleName;
   RxString status;
   late RxBool operatorDeletedMachine;
 
@@ -40,6 +41,7 @@ class MaintenanceCardWidget extends StatefulWidget {
         this.pouchList = true,
         this.showPriorityAndStatus = true,
         this.showMap,
+        this.responsibleName,
       }) : super(key: key){
     operatorDeletedMachine = false.obs;
   }
@@ -67,6 +69,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
               widget.workPriority,
               widget.priorityColor,
               widget.pouchCollected,
+              widget.responsibleName,
             ),
           );
         },

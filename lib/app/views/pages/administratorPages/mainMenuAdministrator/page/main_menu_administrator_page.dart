@@ -8,7 +8,9 @@ import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../operatorPouch/page/operator_pouch_page.dart';
+import '../../financialHistoryAdministrator/page/financial_history_administrator_page.dart';
+import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
+import '../../operatorsVisits/page/operators_visits_page.dart';
 import '../../registerMachine/page/register_machine_page.dart';
 import '../../registerUsers/page/register_user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
@@ -152,21 +154,17 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                     MenuOptionsWidget(
                                       text: "Malotes com Operadores",
                                       imagePath: Paths.Malote,
-                                      onTap: () => Get.to(() => OperatorPouchPage()),
+                                      onTap: () => Get.to(() => OperatorFinancialPouchPage(withOperator: true,)),
                                     ),
                                     MenuOptionsWidget(
                                       text: "Visitas dos Operadores",
                                       imagePath: Paths.Manutencao,
-                                      onTap: () {
-
-                                      },
+                                      onTap: () => Get.to(() => OperatorsVisitsPage()),
                                     ),
                                     MenuOptionsWidget(
-                                      text: "Saldo Cofre da Tesouraria",
+                                      text: "Histórico Cofre da Tesouraria",
                                       imagePath: Paths.Cofre,
-                                      onTap: () {
-
-                                      },
+                                      onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
                                     ),
                                   ],
                                 ),
@@ -178,9 +176,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                       MenuOptionsWidget(
                                         text: "Malotes com Tesouraria",
                                         imagePath: Paths.Malote_Com_Tesouraria,
-                                        onTap: () {
-
-                                        },
+                                        onTap: () => Get.to(() => OperatorFinancialPouchPage(withOperator: false,)),
                                       ),
                                       MenuOptionsWidget(
                                         text: "Novo Usuário",

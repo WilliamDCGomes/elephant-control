@@ -20,6 +20,7 @@ class MaintenanceInformationPopup {
       final String priority,
       final int priorityColor,
       final bool pouchCollected,
+      final String? responsibleName,
       ){
     return [
       Center(
@@ -57,7 +58,7 @@ class MaintenanceInformationPopup {
           firstTextColor: AppColors.blackColor,
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
-          secondText: LoggedUser.name,
+          secondText: responsibleName ?? LoggedUser.name,
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,

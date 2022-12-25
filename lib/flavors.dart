@@ -26,7 +26,7 @@ class F {
         return 'https://elephantapiprod.azurewebsites.net/api/';
       case Flavor.PROD:
         //return 'https://elephantapiprod.azurewebsites.net/api/';
-        return 'http://192.168.1.9:5002/api/';
+        return 'http://192.168.1.10:5002/api/';
       default:
         return 'https://elephantapiprod.azurewebsites.net/api/';
     }
