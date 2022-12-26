@@ -215,7 +215,7 @@ class LoginPageController extends GetxController {
       userLogged = await UserService()
           .authenticate(
             username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
-            password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
+            password: fromBiometric ? password : passwordInputController.text,
           )
           .timeout(Duration(seconds: 30));
       if (userLogged?.success == false) {
