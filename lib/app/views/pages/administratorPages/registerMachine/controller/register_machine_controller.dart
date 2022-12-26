@@ -129,8 +129,8 @@ class RegisterMachineController extends GetxController {
         loadingWithSuccessOrErrorWidget.startAnimation();
         _machine = Machine(name: machineNameTextController.text);
         _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
-        _machine!.prize = null;
-        _machine!.balance = null;
+        _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+        _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
         _machine!.selected = false;
         _machine!.localization = "";
         _machine!.longitude = "";
