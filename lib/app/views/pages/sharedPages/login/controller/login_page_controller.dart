@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
@@ -17,7 +18,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class LoginPageController extends GetxController {
   late bool _cancelFingerPrint;
-  late RxBool raInputHasError;
+  late RxBool cpfInputHasError;
   late RxBool passwordInputHasError;
   late RxBool passwordFieldEnabled;
   late RxBool loadingAnimation;
@@ -41,9 +42,9 @@ class LoginPageController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    userInputController.text = await sharedPreferences.getString("user_logged") ?? "";
+    userInputController.text = FormatNumbers.stringToCpf(await sharedPreferences.getString("user_logged") ?? "");
     if (kDebugMode) {
-      passwordInputController.text = "12345678";
+      passwordInputController.text = "Elephant@2022";
     }
     await _getKeepConnected();
     if (!_cancelFingerPrint) {
@@ -57,7 +58,7 @@ class LoginPageController extends GetxController {
   }
 
   _initializeVariables() {
-    raInputHasError = false.obs;
+    cpfInputHasError = false.obs;
     passwordInputHasError = false.obs;
     passwordFieldEnabled = true.obs;
     loadingAnimation = false.obs;
@@ -175,10 +176,10 @@ class LoginPageController extends GetxController {
   _saveOptions() async {
     String? oldUser = await sharedPreferences.getString("user_logged");
     if (oldUser == null) {
-      await sharedPreferences.setString("user_logged", userInputController.text);
-    } else if (oldUser != userInputController.text) {
+      await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
+    } else if (oldUser != userInputController.text.replaceAll('.', '').replaceAll('-', '')) {
       await sharedPreferences.clear();
-      await sharedPreferences.setString("user_logged", userInputController.text);
+      await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
     }
 
     await sharedPreferences.setBool("keep-connected", keepConected.value);
@@ -214,8 +215,8 @@ class LoginPageController extends GetxController {
 
       userLogged = await UserService()
           .authenticate(
-            username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
-            password: fromBiometric ? password : passwordInputController.text,
+            username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
+            password: fromBiometric ? password : passwordInputController.text.trim(),
           )
           .timeout(Duration(seconds: 30));
       if (userLogged?.success == false) {
