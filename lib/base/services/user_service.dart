@@ -8,6 +8,7 @@ import 'interfaces/iuser_service.dart';
 class UserService extends BaseService implements IUserService {
   Future<AuthenticateResponse?> authenticate({String? username, String? password}) async {
     try {
+      httpClient.timeout = Duration(seconds: 30);
       final sharedPreferences = await SharedPreferences.getInstance();
       username ??= sharedPreferences.getString('user_logged');
       password ??= sharedPreferences.getString('password');

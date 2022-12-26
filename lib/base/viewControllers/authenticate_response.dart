@@ -5,12 +5,13 @@ part 'authenticate_response.g.dart';
 
 @JsonSerializable()
 class AuthenticateResponse {
-  final String id;
-  final String name;
-  final String login;
-  final DateTime expirationDate;
-  final String token;
-  final UserType userType;
+  final String? id;
+  final String? name;
+  final String? login;
+  final DateTime? expirationDate;
+  final String? token;
+  final UserType? userType;
+  final bool success;
 
   AuthenticateResponse({
     required this.id,
@@ -19,6 +20,7 @@ class AuthenticateResponse {
     required this.expirationDate,
     required this.token,
     required this.userType,
+    required this.success,
   });
 
   factory AuthenticateResponse.fromJson(Map<String, dynamic> json) => _$AuthenticateResponseFromJson(json);

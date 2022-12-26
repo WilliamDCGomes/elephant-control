@@ -91,7 +91,7 @@ class LoginPageController extends GetxController {
           await _doLoginServer(true);
 
           if (userLogged != null) {
-            LoggedUser.userType = userLogged!.userType;
+            LoggedUser.userType = userLogged!.userType!;
             await _saveOptions();
 
             await loadingWidget.stopAnimation();
@@ -128,7 +128,7 @@ class LoginPageController extends GetxController {
         loginButtonFocusNode.requestFocus();
 
         if (userLogged != null) {
-          LoggedUser.userType = userLogged!.userType;
+          LoggedUser.userType = userLogged!.userType!;
 
           await _saveOptions();
           await sharedPreferences.setString("password", passwordInputController.text);
@@ -176,8 +176,7 @@ class LoginPageController extends GetxController {
     String? oldUser = await sharedPreferences.getString("user_logged");
     if (oldUser == null) {
       await sharedPreferences.setString("user_logged", userInputController.text);
-    }
-    else if (oldUser != userInputController.text) {
+    } else if (oldUser != userInputController.text) {
       await sharedPreferences.clear();
       await sharedPreferences.setString("user_logged", userInputController.text);
     }
@@ -185,16 +184,16 @@ class LoginPageController extends GetxController {
     await sharedPreferences.setBool("keep-connected", keepConected.value);
 
     if (userLogged != null) {
-      LoggedUser.nameAndLastName = userLogged!.name;
-      LoggedUser.name = userLogged!.name.split(' ').first;
-      LoggedUser.userType = userLogged!.userType;
-      LoggedUser.id = userLogged!.id;
+      LoggedUser.nameAndLastName = userLogged!.name!;
+      LoggedUser.name = userLogged!.name!.split(' ').first;
+      LoggedUser.userType = userLogged!.userType!;
+      LoggedUser.id = userLogged!.id!;
       LoggedUser.password = passwordInputController.text;
 
-      await sharedPreferences.setString("user_name_and_last_name", userLogged!.name);
-      await sharedPreferences.setString("user_name", userLogged!.name.split(' ').first);
+      await sharedPreferences.setString("user_name_and_last_name", userLogged!.name!);
+      await sharedPreferences.setString("user_name", userLogged!.name!.split(' ').first);
       await sharedPreferences.setInt("user_type", LoggedUser.userType.index);
-      await sharedPreferences.setString("user_id", userLogged!.id);
+      await sharedPreferences.setString("user_id", userLogged!.id!);
     }
   }
 
@@ -213,14 +212,18 @@ class LoginPageController extends GetxController {
         }
       }
 
-      userLogged = await UserService().authenticate(
-        username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
-        password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
-      )
-      .timeout(Duration(seconds: 30));
-
-      await sharedPreferences.setString('Token', userLogged!.token);
-      await sharedPreferences.setString('ExpiracaoToken', "${userLogged!.expirationDate.year}-${userLogged!.expirationDate.month}-${userLogged!.expirationDate.day}");
+      userLogged = await UserService()
+          .authenticate(
+            username: fromBiometric ? username : userInputController.text.toLowerCase().trim(),
+            password: fromBiometric ? password : passwordInputController.text.toLowerCase().trim(),
+          )
+          .timeout(Duration(seconds: 30));
+      if (userLogged?.success == false) {
+        await _resetLogin("Usuário e/ou senha incorretos");
+        return false;
+      }
+      await sharedPreferences.setString('Token', userLogged!.token!);
+      await sharedPreferences.setString('ExpiracaoToken', "${userLogged!.expirationDate!.year}-${userLogged!.expirationDate!.month}-${userLogged!.expirationDate!.day}");
       return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");
@@ -231,16 +234,11 @@ class LoginPageController extends GetxController {
   _goToNextPage() {
     if (userLogged!.userType == UserType.operator) {
       Get.offAll(() => MainMenuOperatorPage());
-    }
-    else if (userLogged!.userType == UserType.treasury) {
+    } else if (userLogged!.userType == UserType.treasury) {
       Get.offAll(() => MainMenuFinancialPage());
-    }
-    else if (userLogged!.userType == UserType.admin) {
+    } else if (userLogged!.userType == UserType.admin) {
       Get.offAll(() => MainMenuAdministratorPage());
-    }
-    else if (userLogged!.userType == UserType.stockist){
-
-    }
+    } else if (userLogged!.userType == UserType.stockist) {}
   }
 
   _resetLogin(String message) async {
