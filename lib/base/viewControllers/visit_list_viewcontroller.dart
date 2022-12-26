@@ -1,5 +1,5 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
-import 'package:elephant_control/base/models/visit.dart';
+import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'visit_list_viewcontroller.g.dart';

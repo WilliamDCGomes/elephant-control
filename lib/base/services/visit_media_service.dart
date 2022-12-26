@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/visit_media.dart';
+import 'package:elephant_control/base/models/visitMedia/model/visit_media.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 
 class VisitMediaService extends BaseService {

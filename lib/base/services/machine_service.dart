@@ -1,7 +1,8 @@
-import 'package:elephant_control/base/models/machine.dart';
+import 'package:elephant_control/base/models/machine/model/machine.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
+import 'interfaces/imachine_service.dart';
 
-class MachineService extends BaseService {
+class MachineService extends BaseService implements IMachineService {
   Future<List<Machine>> getMachinesByUserId() async {
     try {
       final token = await getToken();

@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../../base/models/user.dart';
+import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_widget.dart';

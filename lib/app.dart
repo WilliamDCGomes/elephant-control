@@ -48,9 +48,12 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: [const Locale('pt', 'BR')],
+        supportedLocales: [
+          const Locale('pt', 'BR'),
+        ],
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
           primaryColor: AppColors.defaultColor,

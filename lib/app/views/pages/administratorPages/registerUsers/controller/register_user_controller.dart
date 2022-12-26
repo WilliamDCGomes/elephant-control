@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/address_information.dart';
+import '../../../../../../base/models/addressInformation/model/address_information.dart';
 import '../../../../../../base/services/consult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
 import '../../../../../utils/brazil_address_informations.dart';

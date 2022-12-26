@@ -1,10 +1,14 @@
+import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/address_information.dart';
+import '../../../../../../base/models/addressInformation/model/address_information.dart';
+import '../../../../../../base/models/machine/model/machine.dart';
 import '../../../../../../base/services/consult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
+import '../../../../../../base/services/interfaces/imachine_service.dart';
 import '../../../../../utils/brazil_address_informations.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
+import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterMachineController extends GetxController {
   late RxBool loadingAnimation;
@@ -25,6 +29,8 @@ class RegisterMachineController extends GetxController {
   late TextEditingController neighborhoodTextController;
   late TextEditingController complementTextController;
   late IConsultCepService consultCepService;
+  late Machine? _machine;
+  late IMachineService _machineService;
 
   RegisterMachineController(){
     _initializeVariables();
@@ -57,6 +63,8 @@ class RegisterMachineController extends GetxController {
     neighborhoodTextController = TextEditingController();
     complementTextController = TextEditingController();
     consultCepService = ConsultCepService();
+    _machine = null;
+    _machineService = MachineService();
   }
 
   searchAddressInformation() async {
@@ -112,5 +120,156 @@ class RegisterMachineController extends GetxController {
     catch(_){
       ufsList.clear();
     }
+  }
+
+  saveNewMachine() async {
+    try{
+      if(_validFields()){
+        loadingAnimation.value = true;
+        loadingWithSuccessOrErrorWidget.startAnimation();
+        _machine = Machine(name: machineNameTextController.text);
+        _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
+        _machine!.prize = null;
+        _machine!.balance = null;
+        _machine!.selected = false;
+        _machine!.localization = "";
+        _machine!.longitude = "";
+        _machine!.latitude = "";
+        _machine!.cep = cepTextController.text;
+        _machine!.uf = ufSelected.value;
+        _machine!.city = cityTextController.text;
+        _machine!.address = streetTextController.text;
+        _machine!.number = houseNumberTextController.text;
+        _machine!.district = neighborhoodTextController.text;
+        _machine!.complement = complementTextController.text;
+        _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
+        _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
+        await _machineService.createMachine(_machine!);
+        await loadingWithSuccessOrErrorWidget.stopAnimation();
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "Máquina cadastrada com sucesso!",
+            );
+          },
+        );
+        Get.back();
+      }
+    }
+    catch(_){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao cadastrar máquina! Tente novamente mais tarde.",
+          );
+        },
+      );
+    }
+  }
+
+  bool _validFields() {
+    if (machineNameTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe o Nome da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (machineTypeTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe o Tipo da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (minAverageTextController.text.isNotEmpty && maxAverageTextController.text.isNotEmpty &&
+        int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Valor mínimo não pode ser maior do que o valor máximo!",
+          );
+        },
+      );
+      return false;
+    }
+    if (cepTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe o Cep da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (ufSelected.value.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Selecione o Estado!",
+          );
+        },
+      );
+      return false;
+    }
+    if (cityTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe a Cidade da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (streetTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe o Logradouro da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (neighborhoodTextController.text.isEmpty) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe o Bairro da Máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    return true;
   }
 }

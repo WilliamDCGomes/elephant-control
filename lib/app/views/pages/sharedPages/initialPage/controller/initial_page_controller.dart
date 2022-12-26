@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../../base/models/user.dart';
+import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';

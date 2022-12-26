@@ -1,5 +1,5 @@
 import 'package:elephant_control/base/services/base/base_service.dart';
-import '../models/media.dart';
+import '../models/media/model/media.dart';
 
 class MediaService extends BaseService {
   Future<Media?> getMediaById(String id) async {

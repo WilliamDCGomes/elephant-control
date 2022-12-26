@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user.dart';
+import '../models/user/model/user.dart';
 import '../viewControllers/authenticate_response.dart';
 import 'base/base_service.dart';
 import 'interfaces/iuser_service.dart';

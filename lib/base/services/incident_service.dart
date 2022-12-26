@@ -1,5 +1,5 @@
-import 'package:elephant_control/base/models/incident.dart';
-import 'package:elephant_control/base/models/visit_media.dart';
+import 'package:elephant_control/base/models/incident/model/incident.dart';
+import 'package:elephant_control/base/models/visitMedia/model/visit_media.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 
 class IncidentService extends BaseService {

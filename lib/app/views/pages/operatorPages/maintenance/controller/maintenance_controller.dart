@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:elephant_control/app/utils/logged_user.dart';
-import 'package:elephant_control/base/models/visit.dart';
-import 'package:elephant_control/base/models/visit_media.dart';
+import 'package:elephant_control/base/models/visit/model/visit.dart';
+import 'package:elephant_control/base/models/visitMedia/model/visit_media.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/machine.dart';
-import '../../../../../../base/models/media.dart';
+import '../../../../../../base/models/machine/model/machine.dart';
+import '../../../../../../base/models/media/model/media.dart';
 import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';

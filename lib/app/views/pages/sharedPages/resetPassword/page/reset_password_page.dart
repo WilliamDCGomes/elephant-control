@@ -63,10 +63,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           InformationContainerWidget(
-                              iconPath: Paths.Icone_Redefinir_Senha,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "Informe sua senha atual e sua nova senha para prosseguir!",
+                            iconPath: Paths.Icone_Redefinir_Senha,
+                            textColor: AppColors.whiteColor,
+                            backgroundColor: AppColors.defaultColor,
+                            informationText: "Informe sua senha atual e sua nova senha para prosseguir!",
                           ),
                           Expanded(
                             child: Padding(

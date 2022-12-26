@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import '../../models/user.dart';
+import '../../models/user/model/user.dart';
 
 abstract class IUserService {
   Future<bool> sendNewUser(User newUser);

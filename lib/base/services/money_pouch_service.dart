@@ -1,6 +1,6 @@
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/money_pouch_value_viewcontroller.dart';
-import '../models/visit.dart';
+import '../models/visit/model/visit.dart';
 
 class MoneyPouchService extends BaseService {
   /// Se não enviar userId vai pegar do usuário que está logado

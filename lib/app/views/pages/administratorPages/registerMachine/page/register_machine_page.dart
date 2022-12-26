@@ -176,9 +176,10 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                     padding: EdgeInsets.only(top: 1.h,),
                                     child: TextFieldWidget(
                                       controller: controller.periodVisitsTextController,
-                                      hintText: "Período de Visitas",
+                                      hintText: "Período de Visitas (dias)",
                                       height: 9.h,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.number,
+                                      maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                     ),
                                   ),
                                   Padding(
@@ -319,9 +320,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {
-
-                                },
+                                onPressed: () async => await controller.saveNewMachine(),
                               ),
                             ),
                           ],

@@ -48,81 +48,74 @@ class _ForgotInformationPageState extends State<ForgotInformationPage> {
               children: [
                 Scaffold(
                   backgroundColor: AppColors.transparentColor,
-                  body: Padding(
-                    padding: EdgeInsets.only(
-                      top: 2.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 2.h,
-                          ),
-                          child: TitleWithBackButtonWidget(
-                            title: "Esqueceu a Senha",
-                          ),
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 8.h,
+                        color: AppColors.defaultColor,
+                        padding: EdgeInsets.symmetric(horizontal: 2.h),
+                        child: TitleWithBackButtonWidget(
+                          title: "Esqueceu a Senha",
                         ),
-                        InformationContainerWidget(
-                          iconPath: Paths.Icone_Exibicao_Esqueci_Senha,
-                          textColor: AppColors.whiteColor,
-                          backgroundColor: AppColors.defaultColor,
-                          informationText: "Informe o seu E-mail para recuperar a sua Senha",
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2.h,
-                                  ),
-                                  child: Form(
-                                    key: controller.formKey,
-                                    child: Obx(
-                                      () => TextFieldWidget(
-                                        controller: controller.emailInputController,
-                                        hintText: "Informe o E-mail",
-                                        height: 9.h,
-                                        width: double.infinity,
-                                        keyboardType: TextInputType.emailAddress,
-                                        enableSuggestions: true,
-                                        hasError: controller.emailInputHasError.value,
-                                        validator: (String? value) {
-                                          String? validation = TextFieldValidators.emailValidation(value);
-                                          if (validation != null && validation != "") {
-                                            controller.emailInputHasError.value = true;
-                                          } else {
-                                            controller.emailInputHasError.value = false;
-                                          }
-                                          return validation;
-                                        },
-                                      ),
+                      ),
+                      InformationContainerWidget(
+                        iconPath: Paths.Icone_Exibicao_Esqueci_Senha,
+                        textColor: AppColors.whiteColor,
+                        backgroundColor: AppColors.defaultColor,
+                        informationText: "Informe o seu E-mail para recuperar a sua Senha",
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(2.h,),
+                                child: Form(
+                                  key: controller.formKey,
+                                  child: Obx(
+                                    () => TextFieldWidget(
+                                      controller: controller.emailInputController,
+                                      hintText: "Informe o E-mail",
+                                      height: 9.h,
+                                      width: double.infinity,
+                                      keyboardType: TextInputType.emailAddress,
+                                      enableSuggestions: true,
+                                      hasError: controller.emailInputHasError.value,
+                                      validator: (String? value) {
+                                        String? validation = TextFieldValidators.emailValidation(value);
+                                        if (validation != null && validation != "") {
+                                          controller.emailInputHasError.value = true;
+                                        } else {
+                                          controller.emailInputHasError.value = false;
+                                        }
+                                        return validation;
+                                      },
                                     ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: 2.h,
-                                  right: 2.h,
-                                  bottom: 2.h,
-                                ),
-                                child: ButtonWidget(
-                                  hintText: "ENVIAR",
-                                  fontWeight: FontWeight.bold,
-                                  widthButton: double.infinity,
-                                  onPressed: () {
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    controller.sendButtonPressed();
-                                  },
-                                ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 2.h,
+                                right: 2.h,
+                                bottom: 2.h,
                               ),
-                            ],
-                          ),
+                              child: ButtonWidget(
+                                hintText: "ENVIAR",
+                                fontWeight: FontWeight.bold,
+                                widthButton: double.infinity,
+                                onPressed: () {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  controller.sendButtonPressed();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 controller.loadingWithSuccessOrErrorWidget,
