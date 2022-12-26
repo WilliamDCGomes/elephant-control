@@ -103,6 +103,8 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                       hintText: "Nome da Máquina",
                                       height: 9.h,
                                       keyboardType: TextInputType.name,
+                                      textCapitalization: TextCapitalization.words,
+                                      textInputAction: TextInputAction.next,
                                     ),
                                   ),
                                   Padding(
@@ -112,6 +114,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                       hintText: "Tipo da Máquina",
                                       height: 9.h,
                                       keyboardType: TextInputType.name,
+                                      textInputAction: TextInputAction.next,
                                     ),
                                   ),
                                   Padding(
@@ -126,6 +129,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                            textInputAction: TextInputAction.next,
                                           ),
                                         ),
                                         SizedBox(
@@ -138,6 +142,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                            textInputAction: TextInputAction.next,
                                           ),
                                         ),
                                       ],
@@ -155,6 +160,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                            textInputAction: TextInputAction.next,
                                           ),
                                         ),
                                         SizedBox(
@@ -167,6 +173,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                             height: 9.h,
                                             keyboardType: TextInputType.number,
                                             maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                            textInputAction: TextInputAction.next,
                                           ),
                                         ),
                                       ],
@@ -180,6 +187,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                      textInputAction: TextInputAction.next,
                                     ),
                                   ),
                                   Padding(
@@ -203,7 +211,8 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                       hintText: "Cep",
                                       height: 9.h,
                                       maskTextInputFormatter: [MasksForTextFields.cepMask],
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
                                       onChanged: (value) async {
                                         if(value.length == 9){
                                           await Loading.startAndPauseLoading(

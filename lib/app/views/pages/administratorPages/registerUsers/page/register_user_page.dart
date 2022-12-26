@@ -102,6 +102,11 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Nome",
                                       height: 9.h,
                                       keyboardType: TextInputType.name,
+                                      textCapitalization: TextCapitalization.words,
+                                      textInputAction: TextInputAction.next,
+                                      onChanged: (value){
+                                        controller.userTextController.text = value.split(' ').first;
+                                      },
                                     ),
                                   ),
                                   Padding(
@@ -117,16 +122,38 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                   Padding(
                                     padding: EdgeInsets.only(top: .5.h,),
                                     child: Obx(
-                                      () => DropdownButtonRxListWidget(
-                                        itemSelected: controller.userTypeSelected.value == "" ? null : controller.userTypeSelected.value,
-                                        hintText: "Tipo do Usuário",
-                                        height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                        rxListItems: controller.userTypeList,
-                                        onChanged: (selectedState) {
-                                          if(selectedState != null) {
-                                            controller.userTypeSelected.value = selectedState;
-                                          }
-                                        },
+                                      () => Row(
+                                        children: [
+                                          Expanded(
+                                            child: DropdownButtonRxListWidget(
+                                              itemSelected: controller.userTypeSelected.value == "" ? null : controller.userTypeSelected.value,
+                                              hintText: "Tipo do Usuário",
+                                              height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                              width: 40.w,
+                                              rxListItems: controller.userTypeList,
+                                              onChanged: (selectedState) {
+                                                if(selectedState != null) {
+                                                  controller.userTypeSelected.value = selectedState;
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(width: 3.w,),
+                                          Expanded(
+                                            child: DropdownButtonRxListWidget(
+                                              itemSelected: controller.userGenderSelected.value == "" ? null : controller.userGenderSelected.value,
+                                              hintText: "Gênero",
+                                              height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                              width: 40.w,
+                                              rxListItems: controller.userGenderList,
+                                              onChanged: (selectedState) {
+                                                if(selectedState != null) {
+                                                  controller.userGenderSelected.value = selectedState;
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -137,6 +164,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Cpf",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
                                       enableSuggestions: true,
                                       maskTextInputFormatter: [MasksForTextFields.cpfMask],
                                     ),
@@ -148,6 +176,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Data de Nascimento",
                                       height: 9.h,
                                       keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
                                       maskTextInputFormatter: [MasksForTextFields.birthDateMask],
                                     ),
                                   ),
@@ -158,6 +187,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "E-mail",
                                       height: 9.h,
                                       keyboardType: TextInputType.emailAddress,
+                                      textInputAction: TextInputAction.next,
                                       enableSuggestions: true,
                                     ),
                                   ),
@@ -168,6 +198,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Telefone",
                                       height: 9.h,
                                       keyboardType: TextInputType.phone,
+                                      textInputAction: TextInputAction.next,
                                       maskTextInputFormatter: [MasksForTextFields.phoneNumberMask],
                                     ),
                                   ),
@@ -178,6 +209,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Celular",
                                       height: 9.h,
                                       keyboardType: TextInputType.phone,
+                                      textInputAction: TextInputAction.next,
                                       maskTextInputFormatter: [MasksForTextFields.cellPhoneNumberMask],
                                     ),
                                   ),
@@ -202,7 +234,8 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       hintText: "Cep",
                                       height: 9.h,
                                       maskTextInputFormatter: [MasksForTextFields.cepMask],
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
                                       onChanged: (value) async {
                                         if(value.length == 9){
                                           await Loading.startAndPauseLoading(
@@ -321,9 +354,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {
-
-                                },
+                                onPressed: () async => await controller.saveNewUser(),
                               ),
                             ),
                           ],

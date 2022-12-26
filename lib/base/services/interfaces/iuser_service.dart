@@ -2,6 +2,8 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/user/model/user.dart';
 
 abstract class IUserService {
+  Future<bool> createUser(User user);
+
   Future<bool> sendNewUser(User newUser);
 
   Future<bool> updateUser(User user);

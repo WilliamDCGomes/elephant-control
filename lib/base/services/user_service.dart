@@ -49,8 +49,8 @@ class UserService extends BaseService implements IUserService {
     try {
       final url = baseUrlApi + 'User/CreateUser';
       final response = await super.post(url, user.toJson());
-      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
-      return response.body;
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body != null;
     } catch (_) {
       return false;
     }

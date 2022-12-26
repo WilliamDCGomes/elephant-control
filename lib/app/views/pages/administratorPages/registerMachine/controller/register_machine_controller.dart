@@ -144,18 +144,20 @@ class RegisterMachineController extends GetxController {
         _machine!.complement = complementTextController.text;
         _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
         _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
-        await _machineService.createMachine(_machine!);
-        await loadingWithSuccessOrErrorWidget.stopAnimation();
-        await showDialog(
-          context: Get.context!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InformationPopup(
-              warningMessage: "Máquina cadastrada com sucesso!",
-            );
-          },
-        );
-        Get.back();
+        if(await _machineService.createMachine(_machine!)){
+          await loadingWithSuccessOrErrorWidget.stopAnimation();
+          await showDialog(
+            context: Get.context!,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return InformationPopup(
+                warningMessage: "Máquina cadastrada com sucesso!",
+              );
+            },
+          );
+          Get.back();
+        }
+        throw Exception();
       }
     }
     catch(_){

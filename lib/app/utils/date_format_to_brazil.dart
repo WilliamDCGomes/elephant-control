@@ -8,6 +8,19 @@ class DateFormatToBrazil {
     return "";
   }
 
+  static DateTime? formatDateFromTextField(String? date) {
+    if(date != null) {
+      var dates = date.split('/');
+      DateTime newDate = DateTime(
+        int.parse(dates[2]),
+        int.parse(dates[1]),
+        int.parse(dates[0]),
+      );
+      return newDate;
+    }
+    return null;
+  }
+
   static String formatDateAndHour(DateTime? date) {
     if(date != null)
       return "${DateFormat('dd-MM-yyyy').format(date).replaceAll('-', '/')} às ${DateFormat('HH:mm').format(date)}";
