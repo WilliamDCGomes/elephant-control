@@ -21,7 +21,6 @@ class RegisterUsersController extends GetxController {
   late RxList<String> userGenderList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late TextEditingController userNameTextController;
-  late TextEditingController userTextController;
   late TextEditingController documentTextController;
   late TextEditingController birthDayTextController;
   late TextEditingController emailTextController;
@@ -60,7 +59,6 @@ class RegisterUsersController extends GetxController {
       loadingAnimation: loadingAnimation,
     );
     userNameTextController = TextEditingController();
-    userTextController = TextEditingController();
     documentTextController = TextEditingController();
     birthDayTextController = TextEditingController();
     emailTextController = TextEditingController();

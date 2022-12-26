@@ -104,19 +104,6 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       keyboardType: TextInputType.name,
                                       textCapitalization: TextCapitalization.words,
                                       textInputAction: TextInputAction.next,
-                                      onChanged: (value){
-                                        controller.userTextController.text = value.split(' ').first;
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
-                                    child: TextFieldWidget(
-                                      controller: controller.userTextController,
-                                      hintText: "Usuário",
-                                      height: 9.h,
-                                      justRead: true,
-                                      keyboardType: TextInputType.name,
                                     ),
                                   ),
                                   Padding(
@@ -163,9 +150,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       controller: controller.documentTextController,
                                       hintText: "Cpf",
                                       height: 9.h,
-                                      keyboardType: TextInputType.number,
                                       textInputAction: TextInputAction.next,
                                       enableSuggestions: true,
+                                      keyboardType: TextInputType.number,
                                       maskTextInputFormatter: [MasksForTextFields.cpfMask],
                                     ),
                                   ),

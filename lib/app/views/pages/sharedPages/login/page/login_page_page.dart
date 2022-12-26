@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
+import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../../utils/text_field_validators.dart';
 import '../../../sharedPages/forgotInformations/page/forgot_information_page.dart';
@@ -103,22 +104,24 @@ class _LoginPageState extends State<LoginPage> {
                                             hintText: "Usuário",
                                             height: 9.h,
                                             width: double.infinity,
-                                            hasError: controller.raInputHasError.value,
+                                            hasError: controller.cpfInputHasError.value,
+                                            enableSuggestions: true,
+                                            keyboardType: TextInputType.number,
+                                            maskTextInputFormatter: [MasksForTextFields.cpfMask],
                                             textInputAction: TextInputAction.next,
                                             validator: (String? value) {
-                                              String? validation = TextFieldValidators.standardValidation(value, "Informe o Usuário");
+                                              String? validation = TextFieldValidators.cpfValidation(value);
                                               if(validation != null && validation != ""){
-                                                controller.raInputHasError.value = true;
+                                                controller.cpfInputHasError.value = true;
                                               }
                                               else{
-                                                controller.raInputHasError.value = false;
+                                                controller.cpfInputHasError.value = false;
                                               }
                                               return validation;
                                             },
                                             onEditingComplete: (){
                                               controller.passwordInputFocusNode.requestFocus();
                                             },
-                                            keyboardType: TextInputType.name,
                                           ),
                                         ),
                                       ],
