@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
@@ -34,6 +36,7 @@ class LoginPageController extends GetxController {
   late final GlobalKey<FormState> formKey;
   late AuthenticateResponse? userLogged;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late IUserService _userService;
 
   LoginPageController(this._cancelFingerPrint) {
     _initializeVariables();
@@ -75,6 +78,7 @@ class LoginPageController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimationSuccess,
     );
+    _userService = UserService();
   }
 
   _checkBiometricSensor() async {
@@ -90,6 +94,7 @@ class LoginPageController extends GetxController {
           await loadingWidget.startAnimation();
 
           await _doLoginServer(true);
+          await _getUserInformations();
 
           if (userLogged != null) {
             LoggedUser.userType = userLogged!.userType!;
@@ -122,7 +127,7 @@ class LoginPageController extends GetxController {
         loadingAnimation.value = true;
         await loadingWidget.startAnimation();
 
-        if (!await _doLoginServer(false)) {
+        if (!await _doLoginServer(false) || !await _getUserInformations()) {
           return;
         }
 
@@ -213,11 +218,10 @@ class LoginPageController extends GetxController {
         }
       }
 
-      userLogged = await UserService()
-          .authenticate(
-            username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
-            password: fromBiometric ? password : passwordInputController.text.trim(),
-          )
+      userLogged = await _userService.authenticate(
+        username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
+        password: fromBiometric ? password : passwordInputController.text.trim(),
+      )
           .timeout(Duration(seconds: 30));
       if (userLogged?.success == false) {
         await _resetLogin("Usuário e/ou senha incorretos");
@@ -228,6 +232,63 @@ class LoginPageController extends GetxController {
       return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");
+      return false;
+    }
+  }
+
+  Future<bool> _getUserInformations() async {
+    try{
+      User? _user = await _userService.getUserInformation();
+      if(_user != null){
+        await sharedPreferences.setString("name", _user.name);
+        await sharedPreferences.setString("birthdate", DateFormatToBrazil.formatDate(_user.birthdayDate));
+        switch(_user.gender){
+          case TypeGender.masculine:
+            await sharedPreferences.setString("gender", "Masculino");
+            LoggedUser.gender = "Masculino";
+            break;
+          case TypeGender.feminine:
+            await sharedPreferences.setString("gender", "Feminino");
+            LoggedUser.gender = "Feminino";
+            break;
+          case TypeGender.other:
+            await sharedPreferences.setString("gender", "Outro");
+            LoggedUser.gender = "Outro";
+            break;
+          case TypeGender.none:
+            await sharedPreferences.setString("gender", "Não Informado");
+            LoggedUser.gender = "Não Informado";
+            break;
+        }
+        await sharedPreferences.setString("cpf", _user.document ?? "");
+        await sharedPreferences.setString("cep", _user.cep ?? "");
+        await sharedPreferences.setString("city", _user.city ?? "");
+        await sharedPreferences.setString("street", _user.address ?? "");
+        await sharedPreferences.setString("houseNumber", _user.number ?? "");
+        await sharedPreferences.setString("neighborhood", _user.district ?? "");
+        await sharedPreferences.setString("complement", _user.complement ?? "");
+        await sharedPreferences.setString("phone", _user.tellphone ?? "");
+        await sharedPreferences.setString("cellPhone", _user.cellphone ?? "");
+        await sharedPreferences.setString("email", _user.email ?? "");
+        await sharedPreferences.setString("uf", _user.uf ?? "");
+        LoggedUser.name = _user.name;
+        LoggedUser.birthdate = DateFormatToBrazil.formatDate(_user.birthdayDate);
+        LoggedUser.cpf = _user.document ?? "";
+        LoggedUser.cep = _user.cep ?? "";
+        LoggedUser.city = _user.city ?? "";
+        LoggedUser.street = _user.address ?? "";
+        LoggedUser.houseNumber = _user.number ?? "";
+        LoggedUser.neighborhood = _user.district ?? "";
+        LoggedUser.complement = _user.complement ?? "";
+        LoggedUser.phone = _user.tellphone ?? "";
+        LoggedUser.cellPhone = _user.cellphone ?? "";
+        LoggedUser.email = _user.email ?? "";
+        LoggedUser.uf = _user.uf ?? "";
+        return true;
+      }
+      return false;
+    }
+    catch(_){
       return false;
     }
   }

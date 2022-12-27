@@ -1,12 +1,16 @@
 import 'package:elephant_control/app/enums/enums.dart';
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/base/services/consult_cep_service.dart';
+import 'package:elephant_control/base/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/addressInformation/model/address_information.dart';
 import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
+import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../utils/brazil_address_informations.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/internet_connection.dart';
@@ -80,13 +84,15 @@ class UserProfileController extends GetxController {
   late RxList<String> ufsList;
   late XFile? profilePicture;
   late final ImagePicker _picker;
-  late User _user;
+  late User? _user;
   late LoadingProfilePictureWidget loadingProfilePicture;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late MainMenuOperatorController? mainMenuOperatorController;
   late MainMenuFinancialController? mainMenuFinancialController;
   late MainMenuAdministratorController? mainMenuAdministratorController;
+  late SharedPreferences sharedPreferences;
   late IConsultCepService _consultCepService;
+  late IUserService _userService;
 
   UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController, this.mainMenuAdministratorController) {
     _initializeVariables();
@@ -95,8 +101,12 @@ class UserProfileController extends GetxController {
 
   @override
   void onInit() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    loadingAnimation.value = true;
+    await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUfsNames();
-    _getUserInformation();
+    await _getUserInformation();
+    await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     super.onInit();
   }
 
@@ -162,6 +172,7 @@ class UserProfileController extends GetxController {
     );
     _user = User.emptyConstructor();
     _consultCepService = ConsultCepService();
+    _userService = UserService();
   }
 
   _getUfsNames() async {
@@ -182,22 +193,22 @@ class UserProfileController extends GetxController {
     tabsList = UserProfileTabsWidget.getList(this);
   }
 
-  _getUserInformation() {
-    nameTextController.text = LoggedUser.name;
-    birthDateTextController.text = LoggedUser.birthdate;
-    genderSelected.value = LoggedUser.gender;
-    cpfTextController.text = LoggedUser.cpf;
-    cepTextController.text = LoggedUser.cep;
-    cityTextController.text = LoggedUser.city;
-    streetTextController.text = LoggedUser.street;
-    houseNumberTextController.text = LoggedUser.houseNumber.toString();
-    neighborhoodTextController.text = LoggedUser.neighborhood;
-    complementTextController.text = LoggedUser.complement;
-    phoneTextController.text = LoggedUser.phone ?? "";
-    cellPhoneTextController.text = LoggedUser.cellPhone ?? "";
-    emailTextController.text = LoggedUser.email;
-    confirmEmailTextController.text = LoggedUser.email;
-    ufSelected.value = LoggedUser.uf;
+  _getUserInformation() async {
+    nameTextController.text = await sharedPreferences.getString("name") ?? "";
+    birthDateTextController.text = await sharedPreferences.getString("birthdate") ?? "";
+    genderSelected.value = await sharedPreferences.getString("gender") ?? "";
+    cpfTextController.text = await sharedPreferences.getString("cpf") ?? "";
+    cepTextController.text = await sharedPreferences.getString("cep") ?? "";
+    cityTextController.text = await sharedPreferences.getString("city") ?? "";
+    streetTextController.text = await sharedPreferences.getString("street") ?? "";
+    houseNumberTextController.text = await sharedPreferences.getString("houseNumber") ?? "";
+    neighborhoodTextController.text = await sharedPreferences.getString("neighborhood") ?? "";
+    complementTextController.text = await sharedPreferences.getString("complement") ?? "";
+    phoneTextController.text = await sharedPreferences.getString("phone") ?? "";
+    cellPhoneTextController.text = await sharedPreferences.getString("cellPhone") ?? "";
+    emailTextController.text = await sharedPreferences.getString("email") ?? "";
+    confirmEmailTextController.text = await sharedPreferences.getString("email") ?? "";
+    ufSelected.value = await sharedPreferences.getString("uf") ?? "";
   }
 
   bool _validPersonalInformationAndAdvanceNextStep() {
@@ -261,43 +272,40 @@ class UserProfileController extends GetxController {
     }
   }
 
-  _setUserToUpdate() {
-    _user.name = nameTextController.text;
-    // _user.birthdate = birthDateTextController.text;
-    // _user.gender = genderSelected.value;
-    // _user.cep = cepTextController.text;
-    // _user.uf = ufSelected.value;
-    // _user.city = cityTextController.text;
-    // _user.street = streetTextController.text;
-    // _user.houseNumber = houseNumberTextController.text;
-    // _user.neighborhood = neighborhoodTextController.text;
-    // _user.complement = complementTextController.text;
-    // _user.phone = phoneTextController.text;
-    // _user.cellPhone = cellPhoneTextController.text;
-    // _user.email = emailTextController.text;
-    _user.id = LoggedUser.id;
-    // _user.cpf = LoggedUser.cpf;
-    // _user.includeDate = LoggedUser.includeDate;
-    // _user.lastChange = DateTime.now();
-  }
+  _setUserToUpdate() async {
+    _user = await _userService.getUserInformation();
 
-  _updateLocaleUser() {
-    // nameTextController.text = _user.name;
-    // birthDateTextController.text = _user.birthdate;
-    // genderSelected.value = _user.gender;
-    // cepTextController.text = _user.cep;
-    // ufSelected.value = _user.uf;
-    // cityTextController.text = _user.city;
-    // streetTextController.text = _user.street;
-    // houseNumberTextController.text = _user.houseNumber ?? "";
-    // neighborhoodTextController.text = _user.neighborhood;
-    // complementTextController.text = _user.complement;
-    // phoneTextController.text = _user.phone ?? "";
-    // cellPhoneTextController.text = _user.cellPhone ?? "";
-    // emailTextController.text = _user.email;
-    // LoggedUser.id = _user.id;
-    // LoggedUser.cpf = _user.cpf;
-    // LoggedUser.includeDate = _user.includeDate;
+    if(_user != null){
+      _user!.name = nameTextController.text;
+      _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(birthDateTextController.text);
+      switch(genderSelected.value){
+        case "Masculino":
+          _user!.gender = TypeGender.masculine;
+          break;
+        case "Feminino":
+          _user!.gender = TypeGender.feminine;
+          break;
+        case "Outro":
+          _user!.gender = TypeGender.other;
+          break;
+        case "Não Informado":
+          _user!.gender = TypeGender.none;
+          break;
+      }
+      _user!.cep = cepTextController.text;
+      _user!.uf = ufSelected.value;
+      _user!.city = cityTextController.text;
+      _user!.address = streetTextController.text;
+      _user!.number = houseNumberTextController.text;
+      _user!.district = neighborhoodTextController.text;
+      _user!.complement = complementTextController.text;
+      _user!.tellphone = phoneTextController.text;
+      _user!.cellphone = cellPhoneTextController.text;
+      _user!.email = emailTextController.text;
+      _user!.id = LoggedUser.id;
+      _user!.document = cpfTextController.text;
+      _user!.alteration = DateTime.now();
+    }
   }
 
   editButtonPressed() async {
@@ -335,7 +343,6 @@ class UserProfileController extends GetxController {
               );
             },
           );
-          _updateLocaleUser();
           buttonText.value = "EDITAR";
           profileIsDisabled.value = true;
           Get.offAll(() => MainMenuOperatorPage());
@@ -534,13 +541,14 @@ class UserProfileController extends GetxController {
 
     while (true) {
       try {
-        //if(await _userService.updateUser(user)) {
-        if (true) {
+        if(await _userService.editUser(_user!)) {
           return true;
-        } else {
+        }
+        else {
           throw Exception();
         }
-      } catch (_) {
+      }
+      catch (_) {
         if (trys < 2) {
           trys++;
           continue;

@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Stack(
                                       children: [
                                         Obx(
-                                          () => TextFieldWidget(
+                                              () => TextFieldWidget(
                                             controller: controller.userInputController,
                                             hintText: "Usuário",
                                             height: 9.h,
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Stack(
                                       children: [
                                         Obx(
-                                          () => TextFieldWidget(
+                                              () => TextFieldWidget(
                                             controller: controller.passwordInputController,
                                             focusNode: controller.passwordInputFocusNode,
                                             hintText: "Senha",
@@ -173,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Obx(
-                                                () => CheckboxListTileWidget(
+                                                    () => CheckboxListTileWidget(
                                                   radioText: "Manter-se Conectado?",
                                                   checked: controller.keepConected.value,
                                                   onChanged: (){

@@ -1,16 +1,21 @@
 import 'package:image_picker/image_picker.dart';
 import '../../models/user/model/user.dart';
+import '../../viewControllers/authenticate_response.dart';
 
 abstract class IUserService {
   Future<bool> createUser(User user);
 
   Future<bool> sendNewUser(User newUser);
 
-  Future<bool> updateUser(User user);
+  Future<bool> editUser(User user);
+
+  Future<User?> getUserInformation();
 
   Future<bool> updatePassword(String newPassword);
 
   Future<bool> forgetPasswordInternal(String password);
+
+  Future<AuthenticateResponse?> authenticate({String? username, String? password});
 
   Future<bool> resetPassword(String email);
 

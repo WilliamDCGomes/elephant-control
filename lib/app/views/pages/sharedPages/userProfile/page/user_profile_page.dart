@@ -125,12 +125,12 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                                     showImageViewer(
                                       context,
                                       Image.memory(
-                                        File(widget.mainMenuOperatorController != null ?
-                                             widget.mainMenuOperatorController!.profileImagePath.value :
-                                             widget.mainMenuFinancialController != null ?
-                                             widget.mainMenuFinancialController!.profileImagePath.value :
-                                             widget.mainMenuAdministratorController!.profileImagePath.value,
-                                        ).readAsBytesSync()).image,
+                                          File(widget.mainMenuOperatorController != null ?
+                                          widget.mainMenuOperatorController!.profileImagePath.value :
+                                          widget.mainMenuFinancialController != null ?
+                                          widget.mainMenuFinancialController!.profileImagePath.value :
+                                          widget.mainMenuAdministratorController!.profileImagePath.value,
+                                          ).readAsBytesSync()).image,
                                     );
                                   }
                                 },
@@ -210,7 +210,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                         Padding(
                           padding: EdgeInsets.only(top: 1.h, bottom: .5.h),
                           child: Obx(
-                            () => TextWidget(
+                                () => TextWidget(
                               "Olá, ${controller.userName.value}!",
                               textColor: AppColors.backgroundColor,
                               fontWeight: FontWeight.bold,
@@ -240,7 +240,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.h),
                           child: Obx(
-                            () => ButtonWidget(
+                                () => ButtonWidget(
                               hintText: controller.buttonText.value,
                               fontWeight: FontWeight.bold,
                               widthButton: double.infinity,
