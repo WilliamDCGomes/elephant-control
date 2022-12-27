@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/services/user_service.dart';
 import '../../../../../utils/internet_connection.dart';
-import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../login/page/login_page_page.dart';
@@ -62,17 +61,12 @@ class ResetPasswordController extends GetxController {
     _userService = UserService();
   }
 
-  Future<bool?> _validPasswordReset() async {
+  Future<bool> _validPasswordReset() async {
     try{
-      bool valid =  await _userService.loginUser(
-        LoggedUser.email,
-        oldPasswordInput.text,
-      );
-
-      return valid;
+      return oldPasswordInput.text == (await sharedPreferences.getString("password") ?? "");
     }
     catch(_){
-      return null;
+      return false;
     }
   }
 
@@ -101,10 +95,10 @@ class ResetPasswordController extends GetxController {
           await loadingWithSuccessOrErrorWidget.startAnimation();
           await Future.delayed(Duration(milliseconds: 500));
           if(await InternetConnection.checkConnection()){
-            var valid = await _validPasswordReset();
+            bool valid = await _validPasswordReset();
 
-            if(valid ?? false){
-              if(await _userService.updatePassword(newPasswordInput.text)){
+            if(valid){
+              if(await _userService.forgetPasswordInternal(newPasswordInput.text)){
                 await loadingWithSuccessOrErrorWidget.stopAnimation();
                 await showDialog(
                   context: Get.context!,
@@ -121,9 +115,18 @@ class ResetPasswordController extends GetxController {
                 await Get.offAll(() => LoginPage());
                 return;
               }
-            }
-            else if(valid == null) {
-              throw Exception();
+              else{
+                await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+                showDialog(
+                  context: Get.context!,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return InformationPopup(
+                      warningMessage: "Erro ao alterar a senha! Tente novamente mais tarde.",
+                    );
+                  },
+                );
+              }
             }
             else{
               await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);

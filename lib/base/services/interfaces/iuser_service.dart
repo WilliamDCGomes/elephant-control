@@ -10,6 +10,8 @@ abstract class IUserService {
 
   Future<bool> updatePassword(String newPassword);
 
+  Future<bool> forgetPasswordInternal(String password);
+
   Future<bool> resetPassword(String email);
 
   Future<User?> getUser(String cpf);
