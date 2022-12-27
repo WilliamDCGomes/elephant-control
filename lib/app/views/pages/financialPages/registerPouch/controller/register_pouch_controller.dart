@@ -1,10 +1,16 @@
+import 'package:elephant_control/base/services/visit_service.dart';
+import 'package:elephant_control/base/viewControllers/money_pouch_viewcontroller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../../base/models/visit/model/visit.dart';
+import '../../../../../../base/services/money_pouch_service.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
+import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterPouchController extends GetxController {
-  late RxString pouchSelected;
-  late RxList<String> pouchs;
+  Visit? pouchSelected;
+  late RxList<Visit> pouchs;
   late RxDouble fullValue;
   late RxDouble estimateValue;
   late RxBool loadingAnimation;
@@ -15,24 +21,20 @@ class RegisterPouchController extends GetxController {
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  RegisterPouchController(){
+  RegisterPouchController() {
     _inicializeList();
     _initializeVariables();
+    _getMoneyPouchReceived();
   }
 
-  _inicializeList(){
-    pouchs = [
-      "Boulevard Shopping",
-      "Shopping Central",
-      "Mercado Central",
-    ].obs;
+  _inicializeList() {
+    pouchs = <Visit>[].obs;
   }
 
-  _initializeVariables(){
-    pouchSelected = pouchs[0].obs;
+  _initializeVariables() {
     loadingAnimation = false.obs;
     fullValue = 0.0.obs;
-    estimateValue = 15000.00.obs;
+    estimateValue = 0.00.obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
@@ -43,33 +45,72 @@ class RegisterPouchController extends GetxController {
     observations = TextEditingController();
   }
 
-  onDropdownButtonWidgetChanged(String? selectedState){
-    pouchSelected.value = selectedState ?? "";
+  Future<void> _getMoneyPouchReceived() async {
+    loadingAnimation.value = true;
+    pouchs.addAll(await MoneyPouchService().getMoneyPouchReceived());
+    loadingAnimation.value = false;
   }
 
-  calculeNewValue(){
+  onDropdownButtonWidgetChanged(String? visitId) {
+    pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
+  }
+
+  calculeNewValue() {
     fullValue.value = 0;
-    if(credCardValue.text.isNotEmpty){
+    if (credCardValue.text.isNotEmpty) {
       fullValue.value += double.parse(credCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
-    if(debtCardValue.text.isNotEmpty){
+    if (debtCardValue.text.isNotEmpty) {
       fullValue.value += double.parse(debtCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
-    if(pixValue.text.isNotEmpty){
+    if (pixValue.text.isNotEmpty) {
       fullValue.value += double.parse(pixValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
-    if(pouchValue.text.isNotEmpty){
+    if (pouchValue.text.isNotEmpty) {
       fullValue.value += double.parse(pouchValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
   }
 
-  String getDifference(){
+  String getDifference() {
     double currentValue = estimateValue.value - fullValue.value;
 
-    if(currentValue < 0){
+    if (currentValue < 0) {
       currentValue *= -1;
     }
 
     return currentValue.toStringAsFixed(2).replaceAll('.', ',');
+  }
+
+  Future<void> save() async {
+    try {
+      loadingAnimation.value = true;
+      final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
+      moneyPouchViewController.valueMatch = false;
+      final result = await VisitService().changeStatusMoneyPouchReceivedToMoneyPouchLaunched(moneyPouchViewController);
+      if (result) {
+        Get.back();
+        showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "Malote lançado com sucesso",
+            );
+          },
+        );
+      }
+    } catch (_) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Não foi possível lançar o malote",
+          );
+        },
+      );
+    } finally {
+      loadingAnimation.value = false;
+    }
   }
 }

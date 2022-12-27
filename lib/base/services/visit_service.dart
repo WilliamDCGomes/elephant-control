@@ -68,12 +68,12 @@ class VisitService extends BaseService {
     }
   }
 
-  Future<bool> changeStatusMoneyWithdrawalToMoneyPouchLaunched(MoneyPouchViewController moneyPouchViewController) async {
+  Future<bool> changeStatusMoneyPouchReceivedToMoneyPouchLaunched(MoneyPouchViewController moneyPouchViewController) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'Visit/ChangeStatusMoneyWithdrawalToMoneyPouchLaunched';
+      final url = baseUrlApi + 'Visit/ChangeStatusMoneyPouchReceivedToMoneyPouchLaunched';
       final response = await post(url, moneyPouchViewController.toJson(), headers: {'Authorization': 'Bearer ${token}'});
-      if (hasErrorResponse(response) || response is! bool) throw Exception();
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
     } catch (_) {
       return false;

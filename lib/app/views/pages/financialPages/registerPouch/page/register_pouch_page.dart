@@ -100,9 +100,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                   ),
                                   Obx(
                                     () => Visibility(
-                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20
-                                      || controller.estimateValue.value - controller.fullValue.value < -20)
-                                      && controller.fullValue.value != 0,
+                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20 || controller.estimateValue.value - controller.fullValue.value < -20) && controller.fullValue.value != 0,
                                       child: Padding(
                                         padding: EdgeInsets.only(top: 2.h),
                                         child: RichTextTwoDifferentWidget(
@@ -152,18 +150,18 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       ),
                                     ),
                                   ),
-                                  Obx(
-                                    () => DropdownButtonWidget(
-                                      itemSelected: controller.pouchSelected.value == "" ? null : controller.pouchSelected.value,
-                                      hintText: "Malotes",
-                                      height: 6.5.h,
-                                      width: 85.w,
-                                      listItems: controller.pouchs.map((element) => DropdownItem(item: element, value: element)),
-                                      onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
-                                    ),
+                                  DropdownButtonWidget(
+                                    itemSelected: controller.pouchSelected?.id,
+                                    hintText: "Malotes",
+                                    height: 6.5.h,
+                                    width: 85.w,
+                                    listItems: controller.pouchs.map((element) => DropdownItem(item: element.machine!.name, value: element.id)),
+                                    onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 4.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 4.h,
+                                    ),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -193,7 +191,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -206,7 +206,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                             onChanged: (value) => controller.calculeNewValue(),
                                           ),
                                         ),
-                                        SizedBox(width: 3.w,),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
                                         Expanded(
                                           child: TextFieldWidget(
                                             controller: controller.pixValue,
@@ -273,7 +275,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {},
+                                onPressed: () => controller.save(),
                               ),
                             ),
                           ],
