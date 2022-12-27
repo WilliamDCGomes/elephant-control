@@ -2,6 +2,15 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class TextFieldValidators {
+  static String? defaultValidator(String? value, {String? errorMessage}) {
+    if (value == null) {
+      return errorMessage ?? "Campo obrigatório";
+    } else if (value.isEmpty) {
+      return errorMessage ?? "Campo obrigatório";
+    }
+    return null;
+  }
+
   static bool _isValidDate(String input) {
     try {
       String datePattern = "dd/MM/yyyy";
@@ -31,7 +40,7 @@ class TextFieldValidators {
     if (value == null || value.trim().isEmpty) {
       return "Informe o $fieldName";
     }
-    if(value.trim().length < size){
+    if (value.trim().length < size) {
       return "$fieldName Inválido";
     }
     return null;
@@ -85,7 +94,7 @@ class TextFieldValidators {
       String datePattern = "dd/MM/yyyy";
       DateTime date = DateFormat(datePattern).parse(value);
       int maxTimeOfHumanLifeInDays = 54750;
-      if(DateTime.now().difference(date) > Duration(days: maxTimeOfHumanLifeInDays) || DateTime.now().isBefore(date)){
+      if (DateTime.now().difference(date) > Duration(days: maxTimeOfHumanLifeInDays) || DateTime.now().isBefore(date)) {
         return "A Data $fieldName digitada é Inválida";
       }
     } catch (e) {
@@ -135,7 +144,7 @@ class TextFieldValidators {
     if (!emailConfirmation.trim().isValidEmail()) {
       return "E-mail Inválido";
     }
-    if(emailConfirmation != email){
+    if (emailConfirmation != email) {
       return "Os E-mails Informados não Conferem";
     }
     return null;

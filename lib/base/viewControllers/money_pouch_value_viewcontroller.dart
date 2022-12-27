@@ -6,10 +6,14 @@ part 'money_pouch_value_viewcontroller.g.dart';
 class MoneyPouchValueViewController {
   final double value;
   final int quantity;
+  final DateTime lastUpdateQuantity;
+  final DateTime lastUpdateValue;
 
   MoneyPouchValueViewController({
     required this.value,
     required this.quantity,
+    required this.lastUpdateQuantity,
+    required this.lastUpdateValue,
   });
 
   factory MoneyPouchValueViewController.fromJson(Map<String, dynamic> json) => _$MoneyPouchValueViewControllerFromJson(json);

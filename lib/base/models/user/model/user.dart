@@ -1,10 +1,10 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
-part '../converter/user.g.dart';
+part 'user.g.dart';
 
 @JsonSerializable()
 class User extends ElephantCore {
-  String? name;
+  late String name;
   String? tellphone;
   String? document;
   int? balanceMoney;

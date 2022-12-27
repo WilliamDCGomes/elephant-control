@@ -26,7 +26,8 @@ VisitListViewController _$VisitListViewControllerFromJson(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?;
+      ..active = json['active'] as bool?
+      ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$VisitListViewControllerToJson(
         VisitListViewController instance) =>
@@ -35,6 +36,7 @@ Map<String, dynamic> _$VisitListViewControllerToJson(
       'inclusion': instance.inclusion?.toIso8601String(),
       'alteration': instance.alteration?.toIso8601String(),
       'active': instance.active,
+      'includeUserId': instance.includeUserId,
       'priority': instance.priority,
       'status': _$VisitStatusEnumMap[instance.status]!,
       'moneyQuantity': instance.moneyQuantity,

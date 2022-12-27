@@ -4,11 +4,11 @@ import '../models/visit/model/visit.dart';
 
 class MoneyPouchService extends BaseService {
   /// Se não enviar userId vai pegar do usuário que está logado
-  Future<MoneyPouchValueViewController?> getMoneyPouchValue(String? userId) async {
+  Future<MoneyPouchValueViewController?> getMoneyPouchValue() async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'MoneyPouch/GetMoneyPouchValue';
-      final response = await get(url, query: {"UserId": userId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return MoneyPouchValueViewController.fromJson(response.body);
     } catch (_) {
@@ -43,11 +43,11 @@ class MoneyPouchService extends BaseService {
   }
 
   ///Dentro da visita terá o malote
-  Future<List<Visit>> getMoneyPouchMoneyWithdrawal() async {
+  Future<List<Visit>> getMoneyPouchMoneyWithdrawal(String operatorUserId) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'MoneyPouch/GetMoneyPouchMoneyWithdrawal';
-      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {"OperatorUserId": operatorUserId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((e) => Visit.fromJson(e)).toList();
     } catch (_) {

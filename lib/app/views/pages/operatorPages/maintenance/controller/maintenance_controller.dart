@@ -125,7 +125,7 @@ class MaintenanceController extends GetxController {
       // await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachinesByUserId());
-      if(_machines.isNotEmpty){
+      if (_machines.isNotEmpty) {
         _machines.sort((a, b) => a.name.compareTo(b.name));
         onDropdownButtonWidgetChanged(_machines.first.id);
         update(["dropdown-button"]);
@@ -195,9 +195,9 @@ class MaintenanceController extends GetxController {
       _visit.addedProducts = teddy;
       _visit.machineId = machineSelected!.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
-      _visit.moneyWithdrawal = yes.isTrue;
-      if (_visit.moneyWithdrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
-      _visit.status = _visit.moneyWithdrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
+      _visit.moneyWithDrawal = yes.isTrue;
+      if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
+      _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
       _visit.stuffedAnimalsQuantity = 0;
       _visit.observation = observations.text;
       bool createdVisit = await _visitService.createVisit(_visit);
