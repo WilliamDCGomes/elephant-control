@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:elephant_control/app/views/pages/financialPages/receivePouchFromOperator/widget/pouch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -67,11 +68,12 @@ class _ReceivePouchPopupState extends State<ReceivePouchPopup> {
                 ),
                 Obx(
                   () => ListView.builder(
-                    itemCount: widget.controller.pouchWidgetViewList.length,
+                    itemCount: widget.controller.pouchList.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.all(2.h),
-                    itemBuilder: (context, index){
-                      return widget.controller.pouchWidgetViewList[index];
+                    itemBuilder: (context, index) {
+                      final moneyPouch = widget.controller.pouchList[index];
+                      return PouchWidget(moneyPouch: moneyPouch);
                     },
                   ),
                 ),

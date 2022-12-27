@@ -1,106 +1,149 @@
+import 'package:elephant_control/base/services/money_pouch_service.dart';
+import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/visit/model/visit.dart';
+import '../../../../../../base/viewControllers/add_money_pouch_viewcontroller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
+import '../../../widgetsShared/popups/information_popup.dart';
 import '../popup/receive_pouch_popup.dart';
 import '../widget/pouch_widget.dart';
+import 'package:collection/collection.dart';
 
 class ReceivePouchFromOperatorController extends GetxController {
-  late RxString operatorSelected;
-  late RxList<String> operators;
-  late RxList<PouchWidget> pouchWidgetList;
-  late RxList<PouchWidget> pouchWidgetViewList;
-  late RxList<PouchWidget> pouchsSelectedList;
+  User? operatorSelected;
+  late RxList<User> operators;
+  late RxList<Visit> pouchListBase;
+  late RxList<Visit> pouchList;
   late RxBool loadingAnimation;
   late TextEditingController operatorCode;
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late final GlobalKey<FormState> _formKey;
 
-  ReceivePouchFromOperatorController(){
+  ReceivePouchFromOperatorController() {
     _inicializeList();
     _initializeVariables();
+    _getData();
   }
 
-  _inicializeList(){
-    operators = [
-      "José Carlos",
-      "Vínicius Moretto",
-      "Vagnar Torres",
-    ].obs;
+  //Getters
+  GlobalKey<FormState> get formKey => _formKey;
+  List<Visit> get pouchsSelectedList => pouchList.where((element) => element.checked).toList();
 
-    pouchWidgetList = <PouchWidget>[
-      PouchWidget(
-        title: "Shopping Boulevard",
-        operatorName: "José Carlos",
-      ),
-      PouchWidget(
-        title: "Supermercado Central",
-        operatorName: "José Carlos",
-      ),
-      PouchWidget(
-        title: "Cinema Alameda",
-        operatorName: "José Carlos",
-      ),
-      PouchWidget(
-        title: "Shopping Oeste",
-        operatorName: "Vínicius Moretto",
-      ),
-      PouchWidget(
-        title: "Supermercado Oeste",
-        operatorName: "Vínicius Moretto",
-      ),
-      PouchWidget(
-        title: "Cinepólis",
-        operatorName: "Vagnar Torres",
-      ),
-    ].obs;
-
-    pouchWidgetViewList = <PouchWidget>[].obs;
-    pouchsSelectedList = <PouchWidget>[].obs;
+  _inicializeList() {
+    operators = <User>[].obs;
+    pouchList = <Visit>[].obs;
+    pouchListBase = <Visit>[].obs;
   }
 
-  _initializeVariables(){
-    operatorSelected = operators[0].obs;
-    refreshPouchList();
+  _initializeVariables() {
     loadingAnimation = false.obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
     );
     operatorCode = TextEditingController();
     observations = TextEditingController();
+    _formKey = GlobalKey<FormState>();
   }
 
-  openPouchList(){
-    showDialog(
-      context: Get.context!,
-      builder: (BuildContext context) {
-        return ReceivePouchPopup(
-          controller: this,
-        );
-      },
-    );
+  void _getData() async {
+    try {
+      loadingAnimation.value = true;
+      await _getOperatorUsersWithVisitStatusMoneyWithdrawal();
+    } catch (_) {
+    } finally {
+      loadingAnimation.value = false;
+    }
   }
 
-  refreshPouchList(){
-    pouchWidgetViewList.clear();
-    pouchWidgetList.forEach((element) {
-      if(element.operatorName == operatorSelected.value){
-        pouchWidgetViewList.add(element);
+  Future<void> _getOperatorUsersWithVisitStatusMoneyWithdrawal() async {
+    try {
+      operators.addAll(await VisitService().getOperatorUsersWithVisitStatusMoneyWithdrawal());
+    } catch (_) {
+      operators.clear();
+    }
+  }
+
+  Future<void> _getMoneyPouchMoneyWithdrawal(String operatorUserId) async {
+    try {
+      pouchList.clear();
+      pouchList.addAll(await MoneyPouchService().getMoneyPouchMoneyWithdrawal(operatorUserId));
+    } catch (_) {
+      pouchList.clear();
+    }
+  }
+
+  openPouchList() {
+    if (operatorSelected == null) {
+      Get.snackbar('Operador não selecionado', 'Por favor, selecione um operador', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    if (!formKey.currentState!.validate()) return;
+    if (int.parse(operatorCode.text) != operatorSelected?.code) {
+      Get.snackbar('Código de operador inválido', 'Por favor, verifique o código digitado', snackPosition: SnackPosition.BOTTOM);
+    } else {
+      showDialog(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return ReceivePouchPopup(
+            controller: this,
+          );
+        },
+      );
+    }
+  }
+
+  void onDropdownButtonWidgetChanged(String? selectedState) async {
+    try {
+      operatorSelected = operators.firstWhereOrNull((element) => element.id == selectedState);
+      if (operatorSelected != null) {
+        loadingAnimation.value = true;
+        await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id!);
+        loadingAnimation.value = false;
       }
-    });
+    } catch (_) {
+      operatorSelected = null;
+    }
   }
 
-  onDropdownButtonWidgetChanged(String? selectedState){
-    operatorSelected.value = selectedState ?? "";
-    refreshPouchList();
-  }
-
-  selectedPouch(){
-    pouchsSelectedList.clear();
-    pouchWidgetViewList.forEach((element) {
-      if(element.checked.value){
-        pouchsSelectedList.add(element);
-      }
-    });
+  selectedPouch() async {
     Get.back();
+  }
+
+  Future<void> saveReceivedPouch() async {
+    if (pouchsSelectedList.isEmpty) {
+      Get.snackbar('Nenhum saque selecionado', 'Por favor, selecione pelo menos um saque', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    bool enviado = false;
+    try {
+      loadingAnimation.value = true;
+      for (var moneyPouch in pouchsSelectedList) {
+        final addMoneyPouchViewController = AddMoneyPouchViewController(
+          userOperatorId: operatorSelected!.id!,
+          code: int.parse(operatorCode.text),
+          visitId: moneyPouch.id!,
+          observation: observations.text,
+        );
+        enviado = await VisitService().changeStatusMoneyWithdrawalToMoneyPouchReceived(addMoneyPouchViewController);
+      }
+      if (enviado) {
+        Get.back();
+        showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "Malotes recebidos com sucesso",
+            );
+          },
+        );
+      }
+    } catch (_) {
+    } finally {
+      loadingAnimation.value = false;
+    }
   }
 }

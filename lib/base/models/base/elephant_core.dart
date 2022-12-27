@@ -5,12 +5,14 @@ class ElephantCore {
   late DateTime? inclusion;
   late DateTime? alteration;
   late bool? active;
+  String? includeUserId;
 
   ElephantCore({
     this.id,
     this.inclusion,
     this.alteration,
     this.active,
+    this.includeUserId,
   }) {
     id ??= const Uuid().v4();
     inclusion ??= DateTime.now();

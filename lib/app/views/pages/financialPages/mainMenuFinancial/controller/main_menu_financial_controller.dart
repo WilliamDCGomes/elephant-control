@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/services/money_pouch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
@@ -16,15 +17,19 @@ class MainMenuFinancialController extends GetxController {
   late RxString welcomePhrase;
   late RxDouble safeBoxAmount;
   late RxInt pouchQuantity;
-  late DateTime pouchLastChange;
-  late DateTime teddyLastChange;
+  late DateTime quantityLastUpdate;
+  late DateTime valueLastUpdate;
   late SharedPreferences sharedPreferences;
+  late RxBool _isLoadingQuantity;
 
-  MainMenuFinancialController(){
+  MainMenuFinancialController() {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
+    _getQuantityData();
   }
+  //Getters
+  bool get isLoadingQuantity => _isLoadingQuantity.value;
 
   @override
   void onInit() async {
@@ -39,20 +44,21 @@ class MainMenuFinancialController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     hasPicture = false.obs;
     loadingPicture = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
-    safeBoxAmount = 15689.00.obs;
-    pouchQuantity = 5.obs;
-    pouchLastChange = DateTime.now();
-    teddyLastChange = DateTime.now();
+    safeBoxAmount = 0.0.obs;
+    pouchQuantity = 0.obs;
+    quantityLastUpdate = DateTime.now();
+    valueLastUpdate = DateTime.now();
+    _isLoadingQuantity = false.obs;
   }
 
-  _getNameUser(){
-    switch(LoggedUser.userType){
+  _getNameUser() {
+    switch (LoggedUser.userType) {
       case UserType.admin:
         LoggedUser.userTypeName = "ADMINISTRATIVO";
         break;
@@ -70,11 +76,11 @@ class MainMenuFinancialController extends GetxController {
     }
     var names = LoggedUser.name.trim().split(" ");
 
-    if(names.isNotEmpty && names.first != ""){
+    if (names.isNotEmpty && names.first != "") {
       nameProfile.value = names[0];
       LoggedUser.nameAndLastName = names[0];
       nameInitials.value = nameProfile.value[0];
-      if(names.length > 1 && names.last != ""){
+      if (names.length > 1 && names.last != "") {
         nameInitials.value += names.last[0];
         LoggedUser.nameAndLastName += " ${names.last}";
       }
@@ -84,9 +90,9 @@ class MainMenuFinancialController extends GetxController {
 
   _getWelcomePhrase() {
     int currentHour = DateTime.now().hour;
-    if(currentHour >= 0 && currentHour < 12)
+    if (currentHour >= 0 && currentHour < 12)
       welcomePhrase = "Bom dia!".obs;
-    else if(currentHour >= 12 && currentHour < 18)
+    else if (currentHour >= 12 && currentHour < 18)
       welcomePhrase = "Boa tarde!".obs;
     else
       welcomePhrase = "Boa noite!".obs;
@@ -94,7 +100,7 @@ class MainMenuFinancialController extends GetxController {
 
   _checkFingerPrintUser() async {
     bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
-    if(useFingerPrint == null && await LocalAuthentication().canCheckBiometrics){
+    if (useFingerPrint == null && await LocalAuthentication().canCheckBiometrics) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -107,6 +113,21 @@ class MainMenuFinancialController extends GetxController {
           );
         },
       );
+    }
+  }
+
+  Future<void> _getQuantityData() async {
+    try {
+      _isLoadingQuantity.value = true;
+      final moneyPouch = await MoneyPouchService().getMoneyPouchValue();
+      if (moneyPouch == null) throw Exception();
+      pouchQuantity.value = moneyPouch.quantity;
+      quantityLastUpdate = moneyPouch.lastUpdateQuantity;
+      valueLastUpdate = moneyPouch.lastUpdateValue;
+      safeBoxAmount.value = moneyPouch.value;
+    } catch (_) {
+    } finally {
+      _isLoadingQuantity.value = false;
     }
   }
 }

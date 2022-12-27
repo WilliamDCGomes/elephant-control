@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../model/user.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      name: json['name'] as String?,
+      name: json['name'] as String,
       tellphone: json['tellphone'] as String?,
       document: json['document'] as String?,
       balanceMoney: json['balanceMoney'] as int?,
@@ -28,6 +28,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ? null
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
+      ..includeUserId = json['includeUserId'] as String?
       ..birthdayDate = json['birthdayDate'] == null
           ? null
           : DateTime.parse(json['birthdayDate'] as String)
@@ -48,6 +49,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'inclusion': instance.inclusion?.toIso8601String(),
       'alteration': instance.alteration?.toIso8601String(),
       'active': instance.active,
+      'includeUserId': instance.includeUserId,
       'name': instance.name,
       'tellphone': instance.tellphone,
       'document': instance.document,
@@ -83,4 +85,5 @@ const _$TypeGenderEnumMap = {
   TypeGender.masculine: 0,
   TypeGender.feminine: 1,
   TypeGender.other: 2,
+  TypeGender.none: 4,
 };

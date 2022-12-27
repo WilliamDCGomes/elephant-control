@@ -1,24 +1,29 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
+import 'package:elephant_control/base/models/machine/model/machine.dart';
 import 'package:elephant_control/base/models/moneyPouch/model/money_pouch.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part '../converter/visit.g.dart';
+part 'visit.g.dart';
 
 @JsonSerializable()
 class Visit extends ElephantCore {
   late int addedProducts;
   late double moneyQuantity;
   double? moneyWithdrawalQuantity;
-  late int stuffedAnimalsQuantity;
+  int? stuffedAnimalsQuantity;
   String? latitude;
   String? longitude;
   late VisitStatus status;
   late String machineId;
-  late bool moneyWithdrawal;
-  int? code;
+  late bool moneyWithDrawal;
+  late int code;
   String? observation;
   MoneyPouch? moneyPouch;
+  Machine? machine;
+  late String responsibleUserId;
+  @JsonKey(ignore: true)
+  bool checked = false;
 
   Visit({
     required this.addedProducts,
@@ -29,9 +34,11 @@ class Visit extends ElephantCore {
     required this.longitude,
     required this.status,
     required this.machineId,
-    required this.moneyWithdrawal,
+    required this.moneyWithDrawal,
     required this.code,
     required this.observation,
+    required this.moneyPouch,
+    required this.machine,
   });
 
   Visit.emptyConstructor() {

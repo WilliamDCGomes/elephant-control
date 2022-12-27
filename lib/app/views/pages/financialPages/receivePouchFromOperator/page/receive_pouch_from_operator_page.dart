@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/text_field_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -111,25 +112,27 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                       ),
                                     ),
                                   ),
-                                  Obx(
-                                    () => DropdownButtonWidget(
-                                      itemSelected: controller.operatorSelected.value == "" ? null : controller.operatorSelected.value,
-                                      hintText: "Operadores",
-                                      height: 6.5.h,
-                                      width: 85.w,
-                                      listItems: controller.operators.map((element) => DropdownItem(item: element, value: element)),
-                                      onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
-                                    ),
+                                  DropdownButtonWidget(
+                                    itemSelected: controller.operatorSelected?.id,
+                                    hintText: "Operadores",
+                                    height: 6.5.h,
+                                    width: 85.w,
+                                    listItems: controller.operators.map((element) => DropdownItem(item: element.name, value: element.id)),
+                                    onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 3.5.h,
                                     ),
-                                    child: TextFieldWidget(
-                                      controller: controller.operatorCode,
-                                      hintText: "Código do Operador",
-                                      height: 9.h,
-                                      keyboardType: TextInputType.name,
+                                    child: Form(
+                                      key: controller.formKey,
+                                      child: TextFieldWidget(
+                                        validator: (value) => TextFieldValidators.defaultValidator(value, errorMessage: "Preencha o código do operador"),
+                                        controller: controller.operatorCode,
+                                        hintText: "Código do Operador",
+                                        height: 9.h,
+                                        keyboardType: TextInputType.name,
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -194,7 +197,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {},
+                                onPressed: () => controller.saveReceivedPouch(),
                               ),
                             ),
                           ],
