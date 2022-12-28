@@ -42,7 +42,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       ..complement = json['complement'] as String?
       ..cellphone = json['cellphone'] as String?
       ..email = json['email'] as String?
-      ..code = json['code'] as int;
+      ..code = json['code'] as int?;
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
