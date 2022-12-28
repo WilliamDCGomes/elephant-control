@@ -105,6 +105,7 @@ class UserProfileController extends GetxController {
     loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUfsNames();
+    _user = await _userService.getUserInformation();
     await _getUserInformation();
     await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     super.onInit();
@@ -211,6 +212,30 @@ class UserProfileController extends GetxController {
     ufSelected.value = await sharedPreferences.getString("uf") ?? "";
   }
 
+  _saveInformations() async {
+    try{
+      await sharedPreferences.setString("uf", ufSelected.value);
+      await sharedPreferences.setString("email", confirmEmailTextController.text);
+      await sharedPreferences.setString("email", emailTextController.text);
+      await sharedPreferences.setString("cellPhone", cellPhoneTextController.text);
+      await sharedPreferences.setString("phone", phoneTextController.text);
+      await sharedPreferences.setString("complement", complementTextController.text);
+      await sharedPreferences.setString("neighborhood", neighborhoodTextController.text);
+      await sharedPreferences.setString("houseNumber", houseNumberTextController.text);
+      await sharedPreferences.setString("street", streetTextController.text);
+      await sharedPreferences.setString("city", cityTextController.text);
+      await sharedPreferences.setString("cep", cepTextController.text);
+      await sharedPreferences.setString("cpf", cpfTextController.text);
+      await sharedPreferences.setString("gender", genderSelected.value);
+      await sharedPreferences.setString("birthdate", birthDateTextController.text);
+      await sharedPreferences.setString("name", nameTextController.text);
+      return true;
+    }
+    catch(_){
+      return false;
+    }
+  }
+
   bool _validPersonalInformationAndAdvanceNextStep() {
     if (genderSelected.value == "") {
       showDialog(
@@ -272,9 +297,7 @@ class UserProfileController extends GetxController {
     }
   }
 
-  _setUserToUpdate() async {
-    _user = await _userService.getUserInformation();
-
+  _setUserToUpdate() {
     if(_user != null){
       _user!.name = nameTextController.text;
       _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(birthDateTextController.text);
@@ -288,7 +311,7 @@ class UserProfileController extends GetxController {
         case "Outro":
           _user!.gender = TypeGender.other;
           break;
-        case "Não Informado":
+        default:
           _user!.gender = TypeGender.none;
           break;
       }
@@ -332,6 +355,7 @@ class UserProfileController extends GetxController {
       } else if (_validPersonalInformationAndAdvanceNextStep()) {
         _setUserToUpdate();
 
+        loadingAnimation.value = true;
         if (await _saveUser()) {
           await loadingWithSuccessOrErrorWidget.stopAnimation();
           await showDialog(
@@ -537,34 +561,24 @@ class UserProfileController extends GetxController {
   }
 
   Future<bool> _saveUser() async {
-    int trys = 0;
-
-    while (true) {
-      try {
-        if(await _userService.editUser(_user!)) {
-          return true;
-        }
-        else {
-          throw Exception();
-        }
+    try {
+      if(await _userService.editUser(_user!) && await _saveInformations()){
+        return true;
       }
-      catch (_) {
-        if (trys < 2) {
-          trys++;
-          continue;
-        }
-        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-        showDialog(
-          context: Get.context!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InformationPopup(
-              warningMessage: "Erro ao atualizar o perfil.\n Tente novamente mais tarde",
-            );
-          },
-        );
-        return false;
-      }
+      throw Exception();
+    }
+    catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao atualizar o perfil.\n Tente novamente mais tarde",
+          );
+        },
+      );
+      return false;
     }
   }
 

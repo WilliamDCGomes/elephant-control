@@ -92,6 +92,7 @@ class TextFieldWidget extends StatelessWidget {
       contentPadding: EdgeInsets.only(
         bottom: heightInput / 2,
         left: 10,
+        right: 10
       ),
     );
   }
