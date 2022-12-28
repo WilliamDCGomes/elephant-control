@@ -23,7 +23,7 @@ class User extends ElephantCore {
   String? complement;
   String? cellphone;
   String? email;
-  late int code;
+  int? code;
 
   User({
     required this.name,

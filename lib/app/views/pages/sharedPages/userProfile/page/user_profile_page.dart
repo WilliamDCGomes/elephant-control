@@ -246,7 +246,7 @@ class _UserProfilePageState extends State<UserProfilePage> with SingleTickerProv
                               widthButton: double.infinity,
                               borderColor: AppColors.defaultColor,
                               backgroundColor: AppColors.defaultColor,
-                              onPressed: () => controller.editButtonPressed(),
+                              onPressed: () async => await controller.editButtonPressed(),
                             ),
                           ),
                         ),
