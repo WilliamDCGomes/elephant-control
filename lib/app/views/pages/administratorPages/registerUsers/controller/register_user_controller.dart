@@ -210,7 +210,6 @@ class RegisterUsersController extends GetxController {
         _user!.cellphone = cellPhoneTextController.text;
         _user!.email = emailTextController.text;
         _user!.gender = typeGender;
-        _user!.code = int.parse(documentTextController.text[0]) + int.parse(documentTextController.text[1]) + int.parse(documentTextController.text[2]);
 
         if(await _userService.createUser(_user!)){
           await loadingWithSuccessOrErrorWidget.stopAnimation();
