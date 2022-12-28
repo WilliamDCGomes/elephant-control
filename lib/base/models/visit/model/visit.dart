@@ -17,13 +17,15 @@ class Visit extends ElephantCore {
   late VisitStatus status;
   late String machineId;
   late bool moneyWithDrawal;
-  late int code;
+  int? code;
   String? observation;
   MoneyPouch? moneyPouch;
   Machine? machine;
-  late String responsibleUserId;
+  String? responsibleUserId;
   @JsonKey(ignore: true)
   bool checked = false;
+
+  static String? toJsonNull(dynamic value) => null;
 
   Visit({
     required this.addedProducts,

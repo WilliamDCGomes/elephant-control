@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/models/visit/model/visit.dart';
 import '../../../../stylePages/app_colors.dart';

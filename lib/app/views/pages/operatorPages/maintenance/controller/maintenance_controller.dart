@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/operatorPages/occurrence/controller/occurrence_controller.dart';
+import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/model/visit_media.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/model/machine.dart';
 import '../../../../../../base/models/media/model/media.dart';
+import '../../../../../../base/services/incident_service.dart';
 import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
@@ -19,7 +23,7 @@ import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 class MaintenanceController extends GetxController {
   Machine? machineSelected;
   late RxString priority;
-  late RxString requestTitle;
+  late RxString machineSelectedListenner;
   late RxString lastMaintenance;
   late RxInt priorityColor;
   late RxBool yes;
@@ -39,43 +43,30 @@ class MaintenanceController extends GetxController {
   late final MachineService _machineService;
   late final VisitService _visitService;
   late final VisitMediaService _visitMediaService;
+  late final IncidentService _incidentService;
   late final RxList<Machine> _machines;
   late final Visit _visit;
+  late final String visitId;
+  late final List<IncidentObject> _incidents;
 
   MaintenanceController() {
     _initializeVariables();
   }
 
   _initializeVariables() {
+    visitId = const Uuid().v4();
+    _incidents = <IncidentObject>[];
     _machineService = MachineService();
     _visitService = VisitService();
     _visitMediaService = VisitMediaService();
     _machines = <Machine>[].obs;
+    _incidentService = IncidentService();
     // machineSelected = machinesPlaces[0].obs;
-    requestTitle = "".obs;
+    machineSelectedListenner = "".obs;
     priority = "ALTA".obs;
     priorityColor = AppColors.redColor.value.obs;
     lastMaintenance = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5))).obs;
     _visit = Visit.emptyConstructor();
-    requestTitle.listen((value) {
-      switch (value) {
-        case "Shopping Boulevard":
-          priority.value = "ALTA";
-          priorityColor.value = AppColors.redColor.value;
-          lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5)));
-          break;
-        case "Supermercado Central":
-          priority.value = "NORMAL";
-          priorityColor.value = AppColors.greenColor.value;
-          lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -3)));
-          break;
-        case "Cinema Alameda":
-          priority.value = "NORMAL";
-          priorityColor.value = AppColors.greenColor.value;
-          lastMaintenance.value = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -1)));
-          break;
-      }
-    });
 
     yes = false.obs;
     no = false.obs;
@@ -106,7 +97,7 @@ class MaintenanceController extends GetxController {
 
   onDropdownButtonWidgetChanged(String? machineId) {
     machineSelected = _machines.firstWhere((element) => element.id == machineId);
-    requestTitle.value = machineSelected?.name ?? "";
+    machineSelectedListenner.value = machineSelected?.name ?? "";
   }
 
   Future<void> _initializeMethods() async {
@@ -135,63 +126,20 @@ class MaintenanceController extends GetxController {
     }
   }
 
+  openIncident(BuildContext context) async {
+    if (machineSelected == null) {
+      return await showDialog(context: context, builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
+    }
+    final incident = await Get.to(() => OccurrencePage(machine: machineSelected!, visitId: visitId));
+    if (incident != null) _incidents.add(incident);
+  }
+
   saveMaintenance() async {
     try {
       if (!fieldsValidate()) return;
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      await Future.delayed(Duration(seconds: 2));
-      _mainMenuOperatorController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if (yes.value) {
-        _mainMenuOperatorController.amountPouch.value++;
-        LoggedUser.amountPouch++;
-      }
-      _mainMenuOperatorController.amountTeddy.value -= teddy;
-      LoggedUser.amountTeddy -= teddy;
-
-      // double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
-      // if (averageValue < 25 || averageValue > 40) {
-      //   return await showDialog(
-      //     context: Get.context!,
-      //     barrierDismissible: false,
-      //     builder: (BuildContext context) {
-      //       return InformationPopup(
-      //         warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
-      //         fontSize: 18.sp,
-      //         popupColor: AppColors.redColor,
-      //         title: Row(
-      //           mainAxisSize: MainAxisSize.min,
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             Icon(
-      //               Icons.warning,
-      //               color: AppColors.yellowDarkColor,
-      //               size: 4.h,
-      //             ),
-      //             SizedBox(
-      //               width: 2.w,
-      //             ),
-      //             TextWidget(
-      //               "AVISO",
-      //               textColor: AppColors.whiteColor,
-      //               fontSize: 18.sp,
-      //               fontWeight: FontWeight.bold,
-      //             ),
-      //             SizedBox(
-      //               width: 2.w,
-      //             ),
-      //             Icon(
-      //               Icons.warning,
-      //               color: AppColors.yellowDarkColor,
-      //               size: 4.h,
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     },
-      //   );
-      // }
       _visit.addedProducts = teddy;
       _visit.machineId = machineSelected!.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
@@ -200,6 +148,7 @@ class MaintenanceController extends GetxController {
       _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
       _visit.stuffedAnimalsQuantity = 0;
       _visit.observation = observations.text;
+      _visit.id = visitId;
       bool createdVisit = await _visitService.createVisit(_visit);
       if (createdVisit) {
         List<VisitMedia> medias = [];
@@ -231,6 +180,10 @@ class MaintenanceController extends GetxController {
         if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
       }
       if (!createdVisit) throw Exception();
+      for (var _incident in _incidents) {
+        final bool createdIncident = await _incidentService.createIncident(_incident.incident);
+        if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
+      }
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(
         context: Get.context!,

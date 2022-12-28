@@ -7,9 +7,8 @@ import '../../../../../../base/models/visit/model/visit.dart';
 import '../../../../../../base/viewControllers/add_money_pouch_viewcontroller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../mainMenuFinancial/controller/main_menu_financial_controller.dart';
 import '../popup/receive_pouch_popup.dart';
-import '../widget/pouch_widget.dart';
-import 'package:collection/collection.dart';
 
 class ReceivePouchFromOperatorController extends GetxController {
   User? operatorSelected;
@@ -135,6 +134,7 @@ class ReceivePouchFromOperatorController extends GetxController {
       }
       Get.back();
       if (pouchsWithErrors.isNotEmpty) throw Exception();
+      Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

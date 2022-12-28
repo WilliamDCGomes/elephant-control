@@ -17,7 +17,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       status: $enumDecode(_$VisitStatusEnumMap, json['status']),
       machineId: json['machineId'] as String,
       moneyWithDrawal: json['moneyWithDrawal'] as bool,
-      code: json['code'] as int,
+      code: json['code'] as int?,
       observation: json['observation'] as String?,
       moneyPouch: json['moneyPouch'] == null
           ? null
@@ -35,7 +35,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?
-      ..responsibleUserId = json['responsibleUserId'] as String;
+      ..responsibleUserId = json['responsibleUserId'] as String?;
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'id': instance.id,

@@ -22,7 +22,9 @@ class LoggedUser {
   static String email = "";
   static String password = "";
   static DateTime? includeDate;
-  static int amountPouch = 0;
-  static int amountTeddy = 0;
   static int initialAmountTeddy = 0;
+  static int? balanceMoney;
+  static DateTime? pouchLastUpdate;
+  static int? balanceStuffedAnimals;
+  static DateTime? stuffedAnimalsLastUpdate;
 }

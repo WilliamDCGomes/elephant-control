@@ -1,10 +1,10 @@
+import 'package:elephant_control/base/models/machine/model/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
-import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
@@ -12,7 +12,9 @@ import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/occurrence_controller.dart';
 
 class OccurrencePage extends StatefulWidget {
-  const OccurrencePage({Key? key}) : super(key: key);
+  final Machine machine;
+  final String visitId;
+  const OccurrencePage({Key? key, required this.machine, required this.visitId}) : super(key: key);
 
   @override
   State<OccurrencePage> createState() => _OccurrencePageState();
@@ -23,7 +25,7 @@ class _OccurrencePageState extends State<OccurrencePage> {
 
   @override
   void initState() {
-    controller = Get.put(OccurrenceController());
+    controller = Get.put(OccurrenceController(widget.machine, widget.visitId), permanent: true);
     super.initState();
   }
 
@@ -94,16 +96,23 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                       ),
                                     ),
                                   ),
-                                  Obx(
-                                    () => DropdownButtonWidget(
-                                      itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
-                                      hintText: "Máquina Atendida",
-                                      height: 6.5.h,
-                                      width: 85.w,
-                                      listItems: controller.machinesPlaces.map((element) => DropdownItem(item: element, value: element)),
-                                      onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
-                                    ),
-                                  ),
+                                  Container(
+                                      height: 5.h,
+                                      width: 80.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: AppColors.defaultColor,
+                                          width: .25.h,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                          padding: EdgeInsets.all(1.h),
+                                          child: TextWidget(
+                                            widget.machine.name,
+                                            fontSize: 16.sp,
+                                            textColor: AppColors.defaultColor,
+                                          ))),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 3.5.h,

@@ -1,12 +1,12 @@
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/money_pouch_viewcontroller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/visit/model/visit.dart';
 import '../../../../../../base/services/money_pouch_service.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../mainMenuFinancial/controller/main_menu_financial_controller.dart';
 
 class RegisterPouchController extends GetxController {
   Visit? pouchSelected;
@@ -89,6 +89,7 @@ class RegisterPouchController extends GetxController {
       moneyPouchViewController.valueMatch = false;
       final result = await VisitService().changeStatusMoneyPouchReceivedToMoneyPouchLaunched(moneyPouchViewController);
       if (result) {
+        Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
         Get.back();
         showDialog(
           context: Get.context!,

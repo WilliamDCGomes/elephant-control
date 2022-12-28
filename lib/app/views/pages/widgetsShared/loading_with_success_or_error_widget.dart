@@ -6,16 +6,17 @@ import '../../../utils/paths.dart';
 import '../../stylePages/app_colors.dart';
 import 'lottie_asset_widget.dart';
 
+// ignore: must_be_immutable
 class LoadingWithSuccessOrErrorWidget extends StatefulWidget {
   late final RxBool loadingAnimation;
   late final RxBool isLoading;
   late final RxBool success;
-  late final AnimationController animationController;
+  late AnimationController animationController;
 
-  LoadingWithSuccessOrErrorWidget(
-      { Key? key,
-        required this.loadingAnimation,
-      }) : super(key: key){
+  LoadingWithSuccessOrErrorWidget({
+    Key? key,
+    required this.loadingAnimation,
+  }) : super(key: key) {
     this.isLoading = true.obs;
     this.success = false.obs;
   }
@@ -29,29 +30,25 @@ class LoadingWithSuccessOrErrorWidget extends StatefulWidget {
   }
 
   Future stopAnimation({Widget? destinationPage, bool? backPage, bool? justLoading, bool? fail, int? duration}) async {
-    if(justLoading != null && justLoading){
+    if (justLoading != null && justLoading) {
       await Future.delayed(Duration(seconds: 1));
       _resetStateWithoutSuccessOrFail();
       return;
-    }
-    else if(destinationPage != null) {
+    } else if (destinationPage != null) {
       isLoading.value = false;
       success.value = true;
       await Future.delayed(Duration(seconds: duration ?? 3));
       Get.offAll(() => destinationPage);
-    }
-    else if(backPage != null && backPage){
+    } else if (backPage != null && backPage) {
       isLoading.value = false;
       success.value = true;
       await Future.delayed(Duration(seconds: duration ?? 3));
       Get.back();
-    }
-    else if(fail != null && fail){
+    } else if (fail != null && fail) {
       isLoading.value = false;
       success.value = false;
       await Future.delayed(Duration(seconds: duration ?? 3));
-    }
-    else{
+    } else {
       isLoading.value = false;
       success.value = true;
       await Future.delayed(Duration(seconds: duration ?? 3));
@@ -59,14 +56,14 @@ class LoadingWithSuccessOrErrorWidget extends StatefulWidget {
     _resetState();
   }
 
-  _resetState(){
+  _resetState() {
     isLoading.value = true;
     success.value = false;
     loadingAnimation.value = false;
     animationController.reset();
   }
 
-  _resetStateWithoutSuccessOrFail(){
+  _resetStateWithoutSuccessOrFail() {
     loadingAnimation.value = false;
     isLoading.value = true;
     animationController.reset();
@@ -89,7 +86,7 @@ class _LoadingWithSuccessOrErrorWidgetState extends State<LoadingWithSuccessOrEr
 
   @override
   Widget build(BuildContext context) {
-    return  WillPopScope(
+    return WillPopScope(
       onWillPop: () async {
         return !widget.loadingAnimation.value;
       },
@@ -106,15 +103,15 @@ class _LoadingWithSuccessOrErrorWidgetState extends State<LoadingWithSuccessOrEr
                 child: Obx(
                   () => Visibility(
                     visible: widget.isLoading.value,
-                    replacement: widget.success.value ?
-                      LottieAssetWidget(
-                        animationPath: Paths.Success_Animation,
-                        repeat: false,
-                      ) :
-                      LottieAssetWidget(
-                        animationPath: Paths.Error,
-                        repeat: false,
-                      ) ,
+                    replacement: widget.success.value
+                        ? LottieAssetWidget(
+                            animationPath: Paths.Success_Animation,
+                            repeat: false,
+                          )
+                        : LottieAssetWidget(
+                            animationPath: Paths.Error,
+                            repeat: false,
+                          ),
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 5.h),
                       child: LottieAssetWidget(

@@ -218,10 +218,11 @@ class LoginPageController extends GetxController {
         }
       }
 
-      userLogged = await _userService.authenticate(
-        username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
-        password: fromBiometric ? password : passwordInputController.text.trim(),
-      )
+      userLogged = await _userService
+          .authenticate(
+            username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
+            password: fromBiometric ? password : passwordInputController.text.trim(),
+          )
           .timeout(Duration(seconds: 30));
       if (userLogged?.success == false) {
         await _resetLogin("Usuário e/ou senha incorretos");
@@ -237,12 +238,16 @@ class LoginPageController extends GetxController {
   }
 
   Future<bool> _getUserInformations() async {
-    try{
+    try {
       User? _user = await _userService.getUserInformation();
-      if(_user != null){
+      if (_user != null) {
         await sharedPreferences.setString("name", _user.name);
         await sharedPreferences.setString("birthdate", DateFormatToBrazil.formatDate(_user.birthdayDate));
-        switch(_user.gender){
+        await sharedPreferences.setString("balanceMoney", _user.balanceMoney.toString());
+        await sharedPreferences.setString("pouchLastUpdate", _user.pouchLastUpdate.toString());
+        await sharedPreferences.setString("balanceStuffedAnimals", _user.balanceStuffedAnimals.toString());
+        await sharedPreferences.setString("stuffedAnimalsLastUpdate", _user.stuffedAnimalsLastUpdate.toString());
+        switch (_user.gender) {
           case TypeGender.masculine:
             await sharedPreferences.setString("gender", "Masculino");
             LoggedUser.gender = "Masculino";
@@ -284,11 +289,14 @@ class LoginPageController extends GetxController {
         LoggedUser.cellPhone = _user.cellphone ?? "";
         LoggedUser.email = _user.email ?? "";
         LoggedUser.uf = _user.uf ?? "";
+        LoggedUser.balanceMoney = _user.balanceMoney;
+        LoggedUser.pouchLastUpdate = _user.pouchLastUpdate;
+        LoggedUser.balanceStuffedAnimals = _user.balanceStuffedAnimals;
+        LoggedUser.stuffedAnimalsLastUpdate = _user.stuffedAnimalsLastUpdate;
         return true;
       }
       return false;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }

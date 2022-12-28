@@ -32,19 +32,19 @@ class RequestEditVisitController extends GetxController {
   late MainMenuOperatorController _mainMenuController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  RequestEditVisitController(){
+  RequestEditVisitController() {
     _inicializeList();
     _initializeVariables();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     machineSelected = machinesPlaces[0].obs;
     requestTitle = machinesPlaces[0].obs;
     priority = "ALTA".obs;
     priorityColor = AppColors.redColor.value.obs;
     lastMaintenance = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5))).obs;
     requestTitle.listen((value) {
-      switch(value){
+      switch (value) {
         case "Shopping Boulevard":
           priority.value = "ALTA";
           priorityColor.value = AppColors.redColor.value;
@@ -86,7 +86,7 @@ class RequestEditVisitController extends GetxController {
     );
   }
 
-  _inicializeList(){
+  _inicializeList() {
     machinesPlaces = [
       "Shopping Boulevard",
       "Supermercado Central",
@@ -94,31 +94,30 @@ class RequestEditVisitController extends GetxController {
     ].obs;
   }
 
-  onDropdownButtonWidgetChanged(String? selectedState){
+  onDropdownButtonWidgetChanged(String? selectedState) {
     machineSelected.value = selectedState ?? "";
-    if(selectedState != null){
+    if (selectedState != null) {
       requestTitle.value = selectedState;
     }
   }
 
   saveMaintenance() async {
-    try{
-      if(!fieldsValidate())
-        return;
+    try {
+      if (!fieldsValidate()) return;
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 2));
       _mainMenuController = Get.find(tag: "main_menu_controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      if(yes.value){
+      if (yes.value) {
         _mainMenuController.amountPouch.value++;
-        LoggedUser.amountPouch++;
+        LoggedUser.balanceMoney = _mainMenuController.amountPouch.value;
       }
       _mainMenuController.amountTeddy.value -= teddy;
-      LoggedUser.amountTeddy -= teddy;
+      LoggedUser.balanceStuffedAnimals = _mainMenuController.amountTeddy.value;
 
       double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
-      if(averageValue < 25 || averageValue > 40) {
+      if (averageValue < 25 || averageValue > 40) {
         await showDialog(
           context: Get.context!,
           barrierDismissible: false,
@@ -171,8 +170,7 @@ class RequestEditVisitController extends GetxController {
         },
       );
       Get.back();
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -187,7 +185,7 @@ class RequestEditVisitController extends GetxController {
   }
 
   bool fieldsValidate() {
-    if(beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty){
+    if (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -199,7 +197,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(imageClock.picture == null || imageClock.picture!.path.isEmpty){
+    if (imageClock.picture == null || imageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -211,7 +209,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(clock1.text.isEmpty){
+    if (clock1.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -223,7 +221,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(clock2.text.isEmpty){
+    if (clock2.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -235,7 +233,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(teddyAddMachine.text.isEmpty){
+    if (teddyAddMachine.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -247,7 +245,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(!yes.value && !no.value){
+    if (!yes.value && !no.value) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -259,7 +257,7 @@ class RequestEditVisitController extends GetxController {
       );
       return false;
     }
-    if(afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty){
+    if (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -10,6 +10,7 @@ import '../popups/filter_maintenance_list_popup.dart';
 import '../widgets/city_item_card_widget.dart';
 
 class MaintenanceHistoryController extends GetxController {
+  //MaintenanceCardWidget
   late RxList<MaintenanceCardWidget> maintenanceCardWidgetList;
   late RxList<MaintenanceCardWidget> allMaintenanceCardWidgetList;
   late RxList<MaintenanceCardWidget> allMaintenanceCardWidgetFilteredList;
@@ -18,12 +19,12 @@ class MaintenanceHistoryController extends GetxController {
   late Function refreshList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  MaintenanceHistoryController(this.refreshList){
+  MaintenanceHistoryController(this.refreshList) {
     _initializeVariables();
     _inicializeList();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     loadingAnimation = false.obs;
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
@@ -36,7 +37,7 @@ class MaintenanceHistoryController extends GetxController {
     cityItemCardWidgetList = <CityItemCardWidget>[].obs;
   }
 
-  _inicializeList(){
+  _inicializeList() {
     maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
       MaintenanceCardWidget(
         machineName: "Shopping Boulevard",
@@ -198,8 +199,8 @@ class MaintenanceHistoryController extends GetxController {
             maintenanceCardWidgetList[index].status.value = "Excluido";
             maintenanceCardWidgetList.sort(
               (a, b) => a.operatorDeletedMachine.toString().compareTo(
-                b.operatorDeletedMachine.toString(),
-              ),
+                    b.operatorDeletedMachine.toString(),
+                  ),
             );
             refreshList();
           },
@@ -210,9 +211,9 @@ class MaintenanceHistoryController extends GetxController {
 
   newItem() async {
     Get.to(() => AppNewMaintenancePage(
-      title: "Selecione um atendimento para adicionar a sua lista",
-      controller: this,
-    ));
+          title: "Selecione um atendimento para adicionar a sua lista",
+          controller: this,
+        ));
   }
 
   callFilterMaintenanceList() async {
@@ -226,18 +227,17 @@ class MaintenanceHistoryController extends GetxController {
     );
   }
 
-  filterMaintenanceList(int index){
-    try{
+  filterMaintenanceList(int index) {
+    try {
       cityItemCardWidgetList.forEach((element) => element.isSelected = false);
       cityItemCardWidgetList[index].isSelected = true;
       allMaintenanceCardWidgetFilteredList.clear();
-      for(var item in allMaintenanceCardWidgetList){
-        if(item.city == cityItemCardWidgetList[index].title){
+      for (var item in allMaintenanceCardWidgetList) {
+        if (item.city == cityItemCardWidgetList[index].title) {
           allMaintenanceCardWidgetFilteredList.add(item);
         }
       }
-    }
-    catch(_){
+    } catch (_) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -248,8 +248,7 @@ class MaintenanceHistoryController extends GetxController {
         },
       );
       allMaintenanceCardWidgetFilteredList.addAll(allMaintenanceCardWidgetList);
-    }
-    finally{
+    } finally {
       Get.back();
     }
   }

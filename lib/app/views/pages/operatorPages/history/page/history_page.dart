@@ -104,7 +104,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                           height: 2.h,
                                         ),
                                         TextWidget(
-                                          "Saldo Atual: ${LoggedUser.amountTeddy}",
+                                          "Saldo Atual: ${LoggedUser.balanceStuffedAnimals}",
                                           textColor: AppColors.whiteColor,
                                           fontSize: 18.sp,
                                           textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   itemCount: controller.maintenanceCardWidgetList.length,
                                   shrinkWrap: true,
                                   padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                  itemBuilder: (context, index){
+                                  itemBuilder: (context, index) {
                                     return controller.maintenanceCardWidgetList[index];
                                   },
                                 ),

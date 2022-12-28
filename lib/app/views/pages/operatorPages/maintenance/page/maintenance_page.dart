@@ -12,7 +12,6 @@ import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../../occurrence/page/occurrence_page.dart';
 import '../controller/maintenance_controller.dart';
 
 class MaintenancePage extends StatefulWidget {
@@ -66,7 +65,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                               ),
                             ),
                             InkWell(
-                              onTap: () => Get.to(() => OccurrencePage()),
+                              onTap: () => controller.openIncident(context),
                               child: Image.asset(
                                 Paths.Ocorrencia,
                                 color: AppColors.whiteColor,
@@ -93,7 +92,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TextWidget(
-                                      "Máquina visitada: ${controller.requestTitle.value}",
+                                      "Máquina visitada: ${controller.machineSelectedListenner.value}",
                                       textColor: AppColors.whiteColor,
                                       fontSize: 18.sp,
                                       textAlign: TextAlign.center,

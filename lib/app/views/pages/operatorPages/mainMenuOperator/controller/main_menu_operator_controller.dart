@@ -20,7 +20,7 @@ class MainMenuOperatorController extends GetxController {
   late DateTime teddyLastChange;
   late SharedPreferences sharedPreferences;
 
-  MainMenuOperatorController(){
+  MainMenuOperatorController() {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
@@ -39,23 +39,20 @@ class MainMenuOperatorController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     hasPicture = false.obs;
     loadingPicture = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
-    amountPouch = 6.obs;
-    amountTeddy = 250.obs;
-    LoggedUser.amountTeddy = 250;
-    LoggedUser.initialAmountTeddy = 250;
-    LoggedUser.amountPouch = 6;
-    pouchLastChange = DateTime.now();
-    teddyLastChange = DateTime.now();
+    amountPouch = (LoggedUser.balanceMoney ?? 0).obs;
+    amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
+    pouchLastChange = LoggedUser.pouchLastUpdate ?? DateTime.now();
+    teddyLastChange = LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now();
   }
 
-  _getNameUser(){
-    switch(LoggedUser.userType){
+  _getNameUser() {
+    switch (LoggedUser.userType) {
       case UserType.admin:
         LoggedUser.userTypeName = "ADMINISTRATIVO";
         break;
@@ -73,11 +70,11 @@ class MainMenuOperatorController extends GetxController {
     }
     var names = LoggedUser.name.trim().split(" ");
 
-    if(names.isNotEmpty && names.first != ""){
+    if (names.isNotEmpty && names.first != "") {
       nameProfile.value = names[0];
       LoggedUser.nameAndLastName = names[0];
       nameInitials.value = nameProfile.value[0];
-      if(names.length > 1 && names.last != ""){
+      if (names.length > 1 && names.last != "") {
         nameInitials.value += names.last[0];
         LoggedUser.nameAndLastName += " ${names.last}";
       }
@@ -87,9 +84,9 @@ class MainMenuOperatorController extends GetxController {
 
   _getWelcomePhrase() {
     int currentHour = DateTime.now().hour;
-    if(currentHour >= 0 && currentHour < 12)
+    if (currentHour >= 0 && currentHour < 12)
       welcomePhrase = "Bom dia!".obs;
-    else if(currentHour >= 12 && currentHour < 18)
+    else if (currentHour >= 12 && currentHour < 18)
       welcomePhrase = "Boa tarde!".obs;
     else
       welcomePhrase = "Boa noite!".obs;
@@ -97,7 +94,7 @@ class MainMenuOperatorController extends GetxController {
 
   _checkFingerPrintUser() async {
     bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
-    if(useFingerPrint == null && await LocalAuthentication().canCheckBiometrics){
+    if (useFingerPrint == null && await LocalAuthentication().canCheckBiometrics) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -26,7 +26,7 @@ class MainMenuFinancialController extends GetxController {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
-    _getQuantityData();
+    getQuantityData();
   }
   //Getters
   bool get isLoadingQuantity => _isLoadingQuantity.value;
@@ -116,7 +116,7 @@ class MainMenuFinancialController extends GetxController {
     }
   }
 
-  Future<void> _getQuantityData() async {
+  Future<void> getQuantityData() async {
     try {
       _isLoadingQuantity.value = true;
       final moneyPouch = await MoneyPouchService().getMoneyPouchValue();

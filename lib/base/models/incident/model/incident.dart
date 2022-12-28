@@ -1,21 +1,17 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
-part '../converter/incident.g.dart';
+part 'incident.g.dart';
 
 @JsonSerializable()
 class Incident extends ElephantCore {
   String? description;
   late IncidentStatus status;
-  late String responsibleUserId;
-  late String operatorUserId;
   late String machineId;
   late String visitId;
 
   Incident({
     this.description,
     required this.status,
-    required this.responsibleUserId,
-    required this.operatorUserId,
     required this.machineId,
     required this.visitId,
   });
