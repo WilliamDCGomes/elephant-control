@@ -12,6 +12,7 @@ MoneyPouchViewController _$MoneyPouchViewControllerFromJson(
       pouchValue: (json['pouchValue'] as num).toDouble(),
       cardValue: (json['cardValue'] as num).toDouble(),
       observation: json['observation'] as String?,
+      differenceValue: (json['differenceValue'] as num?)?.toDouble(),
       visitId: json['visitId'] as String,
     )
       ..code = json['code'] as int?
@@ -30,4 +31,5 @@ Map<String, dynamic> _$MoneyPouchViewControllerToJson(
       'moneyPouchId': instance.moneyPouchId,
       'valueMatch': instance.valueMatch,
       'visitCode': instance.visitCode,
+      'differenceValue': instance.differenceValue,
     };

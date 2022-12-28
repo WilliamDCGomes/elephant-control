@@ -12,11 +12,13 @@ class MoneyPouchViewController {
   String? moneyPouchId;
   bool? valueMatch;
   int? visitCode;
+  double? differenceValue;
 
   MoneyPouchViewController({
     required this.pouchValue,
     required this.cardValue,
     this.observation,
+    this.differenceValue,
     required this.visitId,
   });
 

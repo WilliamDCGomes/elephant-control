@@ -53,6 +53,7 @@ class RegisterPouchController extends GetxController {
 
   onDropdownButtonWidgetChanged(String? visitId) {
     pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
+    if (pouchSelected != null) estimateValue.value = pouchSelected!.moneyQuantity;
   }
 
   calculeNewValue() {
@@ -84,7 +85,7 @@ class RegisterPouchController extends GetxController {
   Future<void> save() async {
     try {
       loadingAnimation.value = true;
-      final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
+      final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
       moneyPouchViewController.valueMatch = false;
       final result = await VisitService().changeStatusMoneyPouchReceivedToMoneyPouchLaunched(moneyPouchViewController);
       if (result) {

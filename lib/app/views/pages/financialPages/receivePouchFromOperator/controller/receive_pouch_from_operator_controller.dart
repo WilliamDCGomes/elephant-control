@@ -118,6 +118,7 @@ class ReceivePouchFromOperatorController extends GetxController {
       return;
     }
     bool enviado = false;
+    List<String> pouchsWithErrors = [];
     try {
       loadingAnimation.value = true;
       for (var moneyPouch in pouchsSelectedList) {
@@ -128,20 +129,31 @@ class ReceivePouchFromOperatorController extends GetxController {
           observation: observations.text,
         );
         enviado = await VisitService().changeStatusMoneyWithdrawalToMoneyPouchReceived(addMoneyPouchViewController);
+        if (!enviado) {
+          pouchsWithErrors.add(moneyPouch.machine!.name);
+        }
       }
-      if (enviado) {
-        Get.back();
-        showDialog(
-          context: Get.context!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InformationPopup(
-              warningMessage: "Malotes recebidos com sucesso",
-            );
-          },
-        );
-      }
+      Get.back();
+      if (pouchsWithErrors.isNotEmpty) throw Exception();
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Malotes recebidos com sucesso",
+          );
+        },
+      );
     } catch (_) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Não foi possível receber os malotes: ${pouchsWithErrors.join('\n')}",
+          );
+        },
+      );
     } finally {
       loadingAnimation.value = false;
     }
