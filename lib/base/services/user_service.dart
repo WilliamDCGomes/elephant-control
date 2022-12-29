@@ -37,8 +37,21 @@ class UserService extends BaseService implements IUserService {
   Future<List<User>> getUserByType(UserType type) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'User/GetUserInformation';
+      final url = baseUrlApi + 'User/GetUserByType';
       final response = await super.get(url, query: {"Type": type.toString()}, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<User>((e) => User.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<List<User>> getAllUserByType(UserType type) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetAllUserByType';
+      String typeUser = type == UserType.operator ? "Operator" : "Treasury";
+      final response = await super.get(url, query: {"Type": typeUser}, headers: {"Authorization": 'Bearer ' + token});
       if (hasErrorResponse(response)) throw Exception();
       return response.body.map<User>((e) => User.fromJson(e)).toList();
     } catch (_) {

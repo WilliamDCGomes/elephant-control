@@ -7,6 +7,10 @@ abstract class IUserService {
 
   Future<bool> sendNewUser(User newUser);
 
+  Future<List<User>> getUserByType(UserType type);
+
+  Future<List<User>> getAllUserByType(UserType type);
+
   Future<bool> editUser(User user);
 
   Future<User?> getUserInformation();

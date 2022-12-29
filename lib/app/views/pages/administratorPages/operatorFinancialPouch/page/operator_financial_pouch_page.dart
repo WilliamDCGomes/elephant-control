@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/dropdown_button_rxlist_wdiget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/operator_financial_pouch_controller.dart';
+import '../widget/pouch_card_widget.dart';
 
 class OperatorFinancialPouchPage extends StatefulWidget {
   final bool withOperator;
@@ -90,6 +93,23 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                               maxLines: 2,
                               fontWeight: FontWeight.bold,
                             ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Obx(
+                              () => RichTextTwoDifferentWidget(
+                                firstText: "Valor Total: ",
+                                firstTextColor: AppColors.whiteColor,
+                                firstTextFontWeight: FontWeight.normal,
+                                firstTextSize: 18.sp,
+                                secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
+                                secondTextColor: AppColors.whiteColor,
+                                secondTextFontWeight: FontWeight.bold,
+                                secondTextSize: 18.sp,
+                                secondTextDecoration: TextDecoration.none,
+                                maxLines: 2,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -111,14 +131,28 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                         ),
                       ),
                       Expanded(
-                        child: Obx(
-                          () => ListView.builder(
-                            itemCount: controller.pouchCardWidgetList.length,
+                        child: GetBuilder(
+                          id: "list-pouch",
+                          init: controller,
+                          builder: (_) => controller.moneyPouchGetViewController != null && controller.moneyPouchGetViewController!.moneyPouchValueList.isNotEmpty ? ListView.builder(
+                            itemCount: controller.moneyPouchGetViewController!.moneyPouchValueList.length,
                             shrinkWrap: true,
                             padding: EdgeInsets.symmetric(horizontal: 2.h),
                             itemBuilder: (context, index){
-                              return controller.pouchCardWidgetList[index];
+                              return PouchCardWidget(
+                                userName: controller.userSelected.value,
+                                moneyPouchValueList: controller.moneyPouchGetViewController!.moneyPouchValueList[index],
+                              );
                             },
+                          ) : Center(
+                            child: TextWidget(
+                              controller.userSelected.value.isNotEmpty ? "Não existem malotes no saldo desse usuário" : "",
+                              textColor: AppColors.grayTextColor,
+                              fontSize: 14.sp,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

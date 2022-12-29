@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,6 +14,7 @@ class PouchInformationPopup {
       final String machineName,
       final String responsibleUser,
       final DateTime lastChange,
+      final double value,
       ){
     return [
       Center(
@@ -65,6 +67,20 @@ class PouchInformationPopup {
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
           secondText: DateFormatToBrazil.formatDate(lastChange),
+          secondTextColor: AppColors.blackColor,
+          secondTextFontWeight: FontWeight.bold,
+          secondTextSize: 16.sp,
+          secondTextDecoration: TextDecoration.none,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 1.h),
+        child: RichTextTwoDifferentWidget(
+          firstText: "Valor do Malote: ",
+          firstTextColor: AppColors.blackColor,
+          firstTextFontWeight: FontWeight.normal,
+          firstTextSize: 16.sp,
+          secondText: FormatNumbers.numbersToMoney(value),
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,

@@ -5,20 +5,19 @@ import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../../base/viewControllers/money_pouch_get_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
 import '../popup/pouch_information_popup.dart';
 
 class PouchCardWidget extends StatefulWidget {
-  final String machineName;
-  final String responsibleUser;
-  final DateTime lastChange;
+  final String userName;
+  final MoneyPouchValueList moneyPouchValueList;
 
   const PouchCardWidget(
   { Key? key,
-    required this.machineName,
-    required this.responsibleUser,
-    required this.lastChange,
+    required this.userName,
+    required this.moneyPouchValueList,
   }) : super(key: key);
 
   @override
@@ -36,9 +35,10 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
             context,
             PouchInformationPopup.getWidgetList(
               context,
-              widget.machineName,
-              widget.responsibleUser,
-              widget.lastChange,
+              widget.moneyPouchValueList.name,
+              widget.userName,
+              widget.moneyPouchValueList.alteration,
+              widget.moneyPouchValueList.moneyQuantity,
             ),
           );
         },
@@ -47,7 +47,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             MaintenanceHeaderCardWidget(
-              machineName: widget.machineName,
+              machineName: widget.moneyPouchValueList.name,
               done: true,
               operatorDeletedMachine: RxBool(false),
             ),
@@ -62,7 +62,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
                   firstTextColor: AppColors.blackColor,
                   firstTextFontWeight: FontWeight.bold,
                   firstTextSize: 14.5.sp,
-                  secondText: DateFormatToBrazil.formatDate(widget.lastChange),
+                  secondText: DateFormatToBrazil.formatDate(widget.moneyPouchValueList.alteration),
                   secondTextColor: AppColors.greenColor,
                   secondTextFontWeight: FontWeight.bold,
                   secondTextSize: 14.5.sp,
