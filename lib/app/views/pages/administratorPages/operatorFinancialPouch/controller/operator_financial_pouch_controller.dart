@@ -62,10 +62,10 @@ class OperatorPouchController extends GetxController {
         if (i + 1 < users.length) {
           try {
             if (users[i].name.startsWith(users[i + 1].name)) {
-              late List<String> nomeUsuarioMeta;
-              nomeUsuarioMeta = users[i].name.trim().split(' ');
-              if (nomeUsuarioMeta.length > 1) {
-                users[i + 1].name += " - ${int.parse(nomeUsuarioMeta.last) + 1}";
+              late List<String> userName;
+              userName = users[i].name.trim().split(' ');
+              if (userName.length > 1) {
+                users[i + 1].name += " - ${int.parse(userName.last) + 1}";
               } else {
                 users[i].name += " - 1";
                 users[i + 1].name += " - 2";
@@ -91,6 +91,7 @@ class OperatorPouchController extends GetxController {
           );
         },
       );
+      Get.back();
     }
   }
 

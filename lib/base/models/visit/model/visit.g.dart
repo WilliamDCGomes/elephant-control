@@ -8,7 +8,8 @@ part of 'visit.dart';
 
 Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       moneyQuantity: (json['moneyQuantity'] as num).toDouble(),
-      moneyWithdrawalQuantity: (json['moneyWithdrawalQuantity'] as num?)?.toDouble(),
+      moneyWithdrawalQuantity:
+          (json['moneyWithdrawalQuantity'] as num?)?.toDouble(),
       stuffedAnimalsQuantity: json['stuffedAnimalsQuantity'] as int,
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
@@ -17,14 +18,23 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       moneyWithDrawal: json['moneyWithDrawal'] as bool,
       code: json['code'] as int?,
       observation: json['observation'] as String?,
-      moneyPouch: json['moneyPouch'] == null ? null : MoneyPouch.fromJson(json['moneyPouch'] as Map<String, dynamic>),
-      machine: json['machine'] == null ? null : Machine.fromJson(json['machine'] as Map<String, dynamic>),
+      moneyPouch: json['moneyPouch'] == null
+          ? null
+          : MoneyPouch.fromJson(json['moneyPouch'] as Map<String, dynamic>),
+      machine: json['machine'] == null
+          ? null
+          : Machine.fromJson(json['machine'] as Map<String, dynamic>),
       responsibleUserId: json['responsibleUserId'] as String?,
-      stuffedAnimalsReplaceQuantity: json['stuffedAnimalsReplaceQuantity'] as int,
+      stuffedAnimalsReplaceQuantity:
+          json['stuffedAnimalsReplaceQuantity'] as int,
     )
       ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null ? null : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null ? null : DateTime.parse(json['alteration'] as String)
+      ..inclusion = json['inclusion'] == null
+          ? null
+          : DateTime.parse(json['inclusion'] as String)
+      ..alteration = json['alteration'] == null
+          ? null
+          : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?;
 
@@ -55,4 +65,5 @@ const _$VisitStatusEnumMap = {
   VisitStatus.moneyWithdrawal: 1,
   VisitStatus.moneyPouchLaunched: 2,
   VisitStatus.finished: 3,
+  VisitStatus.noStatus: 4,
 };

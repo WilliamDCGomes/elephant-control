@@ -5,12 +5,14 @@ import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/dropdown_button_rxlist_wdiget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/operators_visits_controller.dart';
+import '../widget/operator_visit_card_widget.dart';
 
 class OperatorsVisitsPage extends StatefulWidget {
   const OperatorsVisitsPage({Key? key}) : super(key: key);
@@ -100,7 +102,6 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                             onChanged: (selectedState) {
                               if (selectedState != null) {
                                 controller.userSelected.value = selectedState;
-                                // controller.getVisitsUser(selectedState);
                               }
                             },
                           ),
@@ -140,18 +141,42 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                         ),
                       ),
                       Expanded(
-                        child: Obx(
-                          () => Padding(
+                        child: GetBuilder(
+                          id: 'visit-list',
+                          init: controller,
+                          builder: (_) => Padding(
                             padding: EdgeInsets.only(bottom: 2.h),
-                            child: ListView.builder(
-                              itemCount: controller.maintenanceCardWidgetList.length,
+                            child: controller.operatorVisitList.isNotEmpty ?
+                            ListView.builder(
+                              itemCount: controller.operatorVisitList.length,
                               shrinkWrap: true,
                               padding: EdgeInsets.symmetric(horizontal: 2.h),
                               itemBuilder: (context, index) {
-                                return controller.maintenanceCardWidgetList[index];
+                                return OperatorVisitCardWidget(
+                                  visitOfOperatorsViewController: controller.operatorVisitList[index],
+                                );
                               },
+                            ) :
+                            Center(
+                              child: TextWidget(
+                                controller.userSelected.value.isNotEmpty ? "Não existe visitas para esse usuário nesta data" : "",
+                                textColor: AppColors.grayTextColor,
+                                fontSize: 14.sp,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(2.h),
+                        child: ButtonWidget(
+                          hintText: "FILTRAR",
+                          fontWeight: FontWeight.bold,
+                          widthButton: double.infinity,
+                          onPressed: () => controller.getVisitsUser(),
                         ),
                       ),
                     ],

@@ -63,7 +63,9 @@ enum VisitStatus {
   @JsonValue(2)
   moneyPouchLaunched("Malote lançado"),
   @JsonValue(3)
-  finished("Finalizada");
+  finished("Finalizada"),
+  @JsonValue(4)
+  noStatus("Não Informado");
 
   final String description;
   const VisitStatus(this.description);
