@@ -224,6 +224,8 @@ class LoginPageController extends GetxController {
             password: fromBiometric ? password : passwordInputController.text.trim(),
           )
           .timeout(Duration(seconds: 30));
+      await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
+      await sharedPreferences.setString("password", passwordInputController.text);
       if (userLogged?.success == false) {
         await _resetLogin("Usuário e/ou senha incorretos");
         return false;
