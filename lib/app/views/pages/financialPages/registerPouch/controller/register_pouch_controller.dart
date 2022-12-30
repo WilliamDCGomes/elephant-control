@@ -14,6 +14,7 @@ class RegisterPouchController extends GetxController {
   late RxDouble fullValue;
   late RxDouble estimateValue;
   late RxBool loadingAnimation;
+  late RxString lastVisit;
   late TextEditingController pouchValue;
   late TextEditingController credCardValue;
   late TextEditingController debtCardValue;
@@ -32,6 +33,7 @@ class RegisterPouchController extends GetxController {
   }
 
   _initializeVariables() {
+    lastVisit = "".obs;
     loadingAnimation = false.obs;
     fullValue = 0.0.obs;
     estimateValue = 0.00.obs;
@@ -53,7 +55,10 @@ class RegisterPouchController extends GetxController {
 
   onDropdownButtonWidgetChanged(String? visitId) {
     pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
-    if (pouchSelected != null) estimateValue.value = pouchSelected!.moneyQuantity;
+    if (pouchSelected != null) {
+      estimateValue.value = pouchSelected!.moneyQuantity;
+      lastVisit.value = (pouchSelected?.machine?.lastVisit?.toIso8601String()) ?? "";
+    }
   }
 
   calculeNewValue() {

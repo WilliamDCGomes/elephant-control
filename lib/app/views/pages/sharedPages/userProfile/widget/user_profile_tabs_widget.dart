@@ -13,7 +13,7 @@ class UserProfileTabsWidget {
   static List<Widget> getList(UserProfileController controller) {
     return [
       Obx(
-            () => Padding(
+        () => Padding(
           padding: EdgeInsets.symmetric(horizontal: .5.w),
           child: ListView(
             children: [
@@ -82,12 +82,24 @@ class UserProfileTabsWidget {
                   justRead: true,
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 3.h),
+                child: TextFieldWidget(
+                  controller: controller.controllerCode,
+                  hintText: "Código",
+                  height: PlatformType.isTablet(Get.context!) ? 7.h : 9.h,
+                  width: double.infinity,
+                  keyboardType: TextInputType.number,
+                  maskTextInputFormatter: [MasksForTextFields.cpfMask],
+                  justRead: true,
+                ),
+              ),
             ],
           ),
         ),
       ),
       Obx(
-            () => Padding(
+        () => Padding(
           padding: EdgeInsets.symmetric(horizontal: .5.w),
           child: ListView(
             children: [
@@ -106,7 +118,7 @@ class UserProfileTabsWidget {
                   onChanged: (value) async {
                     if (value.length == 9) {
                       await Loading.startAndPauseLoading(
-                            () => controller.searchAddressInformation(),
+                        () => controller.searchAddressInformation(),
                         controller.loadingAnimation,
                         controller.loadingWithSuccessOrErrorWidget,
                       );
@@ -247,7 +259,7 @@ class UserProfileTabsWidget {
         ),
       ),
       Obx(
-            () => Padding(
+        () => Padding(
           padding: EdgeInsets.symmetric(horizontal: .5.w),
           child: ListView(
             children: [

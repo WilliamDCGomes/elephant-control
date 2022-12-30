@@ -1,3 +1,5 @@
+import 'package:elephant_control/app/utils/format_numbers.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -24,6 +26,16 @@ class AppNewMaintenancePage extends StatefulWidget {
 }
 
 class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await widget.controller.getMachineVisitByUserId();
+    });
+  }
+
+  MaintenanceHistoryController get controller => widget.controller;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +74,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                               width: 15.w,
                             ),
                             InkWell(
-                              onTap: () => widget.controller.callFilterMaintenanceList(),
+                              //onTap: () => widget.controller.callFilterMaintenanceList(),
                               child: Icon(
                                 Icons.filter_alt,
                                 color: AppColors.whiteColor,
@@ -100,42 +112,46 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 2.h),
                                 child: Obx(
-                                  () => ListView.builder(
-                                    itemCount: widget.controller.allMaintenanceCardWidgetFilteredList.length,
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                    itemBuilder: (context, index){
-                                      return InkWell(
-                                        onTap: () async {
-                                          await showDialog(
-                                            context: Get.context!,
-                                            builder: (BuildContext context) {
-                                              return ConfirmationPopup(
-                                                title: "Aviso",
-                                                subTitle: "Deseja realmente adicionar a máquina ${widget.controller.allMaintenanceCardWidgetFilteredList[index].machineName} na sua lista de atendimentos?",
-                                                firstButton: () {},
-                                                secondButton: () {
-                                                  widget.controller.allMaintenanceCardWidgetFilteredList[index].showMap = true;
-                                                  widget.controller.maintenanceCardWidgetList.add(widget.controller.allMaintenanceCardWidgetFilteredList[index]);
-                                                  widget.controller.allMaintenanceCardWidgetList.remove(widget.controller.allMaintenanceCardWidgetFilteredList[index]);
-                                                  widget.controller.allMaintenanceCardWidgetFilteredList.removeAt(index);
-                                                  widget.controller.maintenanceCardWidgetList.sort(
-                                                    (a, b) => a.operatorDeletedMachine.toString().compareTo(
-                                                      b.operatorDeletedMachine.toString(),
-                                                    ),
-                                                  );
-                                                  Get.back();
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: IgnorePointer(
-                                          ignoring: true,
-                                          child: widget.controller.allMaintenanceCardWidgetFilteredList[index],
-                                        ),
-                                      );
-                                    },
+                                  () => Visibility(
+                                    visible: controller.machines.isNotEmpty,
+                                    replacement: Center(child: TextWidget("Nenhuma máquina encontrada", textColor: AppColors.blackColor)),
+                                    child: ListView.builder(
+                                      itemCount: controller.machines.length, //TODO widget.controller.allMaintenanceCardWidgetFilteredList.length,
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                      itemBuilder: (context, index) {
+                                        final machine = controller.machines[index];
+                                        return InkWell(
+                                          onTap: () async {
+                                            await showDialog(
+                                              context: Get.context!,
+                                              builder: (BuildContext context) {
+                                                return ConfirmationPopup(
+                                                  title: "Aviso",
+                                                  subTitle: "Deseja realmente adicionar a máquina ${widget.controller.machines[index].name} na sua lista de atendimentos?",
+                                                  firstButton: () {},
+                                                  secondButton: () async => await controller.createuserMachine(machine.id!),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: IgnorePointer(
+                                            ignoring: true,
+                                            child: MaintenanceCardWidget(
+                                              machineName: machine.name,
+                                              city: machine.city,
+                                              status: "Pendente",
+                                              workPriority: "NORMAL",
+                                              priorityColor: AppColors.greenColor.value,
+                                              clock1: "0",
+                                              clock2: "0",
+                                              teddy: "0",
+                                              pouchCollected: false,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -146,6 +162,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                     ],
                   ),
                 ),
+                controller.loadingWithSuccessOrErrorWidgetTwo,
               ],
             ),
           ),

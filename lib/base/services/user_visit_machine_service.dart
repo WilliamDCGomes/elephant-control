@@ -69,7 +69,7 @@ class UserVisitMachineService extends BaseService {
       final token = await getToken();
       final url = baseUrlApi + 'UserVisitMachine/GetUserVisitMachineByUserIdAndVisitDay';
       final response = await get(url, query: {"VisitDay": visitDay.toIso8601String()}, headers: {'Authorization': 'Bearer ${token}'});
-      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((e) => UserVisitMachineViewController.fromJson(e)).toList();
     } catch (_) {
       return [];

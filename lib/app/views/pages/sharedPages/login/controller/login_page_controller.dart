@@ -276,6 +276,7 @@ class LoginPageController extends GetxController {
         await sharedPreferences.setString("cellPhone", _user.cellphone ?? "");
         await sharedPreferences.setString("email", _user.email ?? "");
         await sharedPreferences.setString("uf", _user.uf ?? "");
+        await sharedPreferences.setString("code", _user.code.toString());
         LoggedUser.name = _user.name;
         LoggedUser.birthdate = DateFormatToBrazil.formatDate(_user.birthdayDate);
         LoggedUser.cpf = _user.document ?? "";

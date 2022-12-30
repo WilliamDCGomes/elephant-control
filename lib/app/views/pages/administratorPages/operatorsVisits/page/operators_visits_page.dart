@@ -98,9 +98,9 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                             rxListItems: controller.usersName,
                             onChanged: (selectedState) {
-                              if(selectedState != null) {
+                              if (selectedState != null) {
                                 controller.userSelected.value = selectedState;
-                                controller.getVisitsUser(selectedState);
+                                // controller.getVisitsUser(selectedState);
                               }
                             },
                           ),
@@ -147,7 +147,7 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                               itemCount: controller.maintenanceCardWidgetList.length,
                               shrinkWrap: true,
                               padding: EdgeInsets.symmetric(horizontal: 2.h),
-                              itemBuilder: (context, index){
+                              itemBuilder: (context, index) {
                                 return controller.maintenanceCardWidgetList[index];
                               },
                             ),

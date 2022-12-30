@@ -32,6 +32,18 @@ class VisitService extends BaseService {
     }
   }
 
+  Future<List<VisitListViewController>> getVisitsOperatorByUserId() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetVisitsOperatorByUserId';
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return (response.body as List).map((visit) => VisitListViewController.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<Visit?> getVisitByCode(int code) async {
     try {
       final token = await getToken();

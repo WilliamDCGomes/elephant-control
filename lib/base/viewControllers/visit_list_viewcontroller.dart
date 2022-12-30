@@ -7,21 +7,23 @@ part 'visit_list_viewcontroller.g.dart';
 @JsonSerializable()
 class VisitListViewController extends ElephantCore {
   final String priority;
-  final VisitStatus status;
+  VisitStatus? status;
   final double moneyQuantity;
-  final int stuffedAnimalsReplaceQuantity;
-  final int stuffedAnimalsRetiredQuantity;
+  final double stuffedAnimalsReplaceQuantity;
+  final double stuffedAnimalsQuantity;
   final bool moneyPouchRetired;
   final String machineName;
+  bool? realizedVisit;
 
   VisitListViewController({
     required this.priority,
     required this.status,
     required this.moneyQuantity,
     required this.stuffedAnimalsReplaceQuantity,
-    required this.stuffedAnimalsRetiredQuantity,
+    required this.stuffedAnimalsQuantity,
     required this.moneyPouchRetired,
     required this.machineName,
+    this.realizedVisit,
   });
 
   factory VisitListViewController.fromJson(Map<String, dynamic> json) => _$VisitListViewControllerFromJson(json);

@@ -13,6 +13,9 @@ UserVisitMachineViewController _$UserVisitMachineViewControllerFromJson(
       machineName: json['machineName'] as String,
       id: json['id'] as String,
       visitDay: DateTime.parse(json['visitDay'] as String),
+      lastVisit: json['lastVisit'] == null
+          ? null
+          : DateTime.parse(json['lastVisit'] as String),
     );
 
 Map<String, dynamic> _$UserVisitMachineViewControllerToJson(
@@ -22,4 +25,5 @@ Map<String, dynamic> _$UserVisitMachineViewControllerToJson(
       'machineName': instance.machineName,
       'id': instance.id,
       'visitDay': instance.visitDay.toIso8601String(),
+      'lastVisit': instance.lastVisit?.toIso8601String(),
     };

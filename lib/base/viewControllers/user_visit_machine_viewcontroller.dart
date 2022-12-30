@@ -7,12 +7,14 @@ class UserVisitMachineViewController {
   late String machineName;
   late String id;
   late DateTime visitDay;
+  DateTime? lastVisit;
 
   UserVisitMachineViewController({
     required this.machineId,
     required this.machineName,
     required this.id,
     required this.visitDay,
+    required this.lastVisit,
   });
 
   factory UserVisitMachineViewController.fromJson(Map<String, dynamic> json) => _$UserVisitMachineViewControllerFromJson(json);

@@ -8,10 +8,10 @@ part 'visit.g.dart';
 
 @JsonSerializable()
 class Visit extends ElephantCore {
-  late int addedProducts;
   late double moneyQuantity;
   double? moneyWithdrawalQuantity;
-  int? stuffedAnimalsQuantity;
+  late int stuffedAnimalsQuantity;
+  late int stuffedAnimalsReplaceQuantity;
   String? latitude;
   String? longitude;
   late VisitStatus status;
@@ -28,7 +28,6 @@ class Visit extends ElephantCore {
   static String? toJsonNull(dynamic value) => null;
 
   Visit({
-    required this.addedProducts,
     required this.moneyQuantity,
     required this.moneyWithdrawalQuantity,
     required this.stuffedAnimalsQuantity,
@@ -41,6 +40,8 @@ class Visit extends ElephantCore {
     required this.observation,
     required this.moneyPouch,
     required this.machine,
+    required this.responsibleUserId,
+    required this.stuffedAnimalsReplaceQuantity,
   });
 
   Visit.emptyConstructor() {
@@ -56,11 +57,14 @@ class Visit extends ElephantCore {
 
 enum VisitStatus {
   @JsonValue(0)
-  realized,
+  realized("Realizada"),
   @JsonValue(1)
-  moneyWithdrawal,
+  moneyWithdrawal("Malote retirado"),
   @JsonValue(2)
-  moneyPouchLaunched,
+  moneyPouchLaunched("Malote lançado"),
   @JsonValue(3)
-  finished,
+  finished("Finalizada");
+
+  final String description;
+  const VisitStatus(this.description);
 }

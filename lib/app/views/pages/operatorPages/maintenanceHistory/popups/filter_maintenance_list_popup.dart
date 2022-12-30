@@ -65,25 +65,21 @@ class _FilterMaintenanceListPopupState extends State<FilterMaintenanceListPopup>
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: widget.controller.cityItemCardWidgetList.length,
+                    itemCount: 0, //TODO widget.controller.cityItemCardWidgetList.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.all(2.h),
-                    itemBuilder: (context, index){
+                    itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () => widget.controller.filterMaintenanceList(index),
-                        child: widget.controller.cityItemCardWidgetList[index],
+                        onTap: () {}, //TODO=> widget.controller.filterMaintenanceList(index),
+                        child: SizedBox(), //TODO widget.controller.cityItemCardWidgetList[index],
                       );
                     },
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(2.h, 1.h, 2.h, 2.h),
-                  child: ButtonWidget(
-                    hintText: "Remover Filtros",
-                    fontWeight: FontWeight.bold,
-                    widthButton: double.infinity,
-                    onPressed: () => widget.controller.removeFilter(),
-                  ),
+                  child: ButtonWidget(hintText: "Remover Filtros", fontWeight: FontWeight.bold, widthButton: double.infinity, onPressed: () {} //TODO => widget.controller.removeFilter(),
+                      ),
                 ),
               ],
             ),

@@ -21,9 +21,10 @@ class Machine extends ElephantCore {
   late String complement;
   late double minimumAverageValue;
   late double maximumAverageValue;
+  @JsonKey(ignore: true)
   late bool selected;
 
-  Machine({required this.name, this.selected = false});
+  Machine({required this.name, this.selected = false, super.id, this.lastVisit});
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 

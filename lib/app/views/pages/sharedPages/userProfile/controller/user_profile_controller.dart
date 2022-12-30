@@ -69,6 +69,7 @@ class UserProfileController extends GetxController {
   late TextEditingController currentPasswordTextController;
   late TextEditingController newPasswordTextController;
   late TextEditingController confirmNewPasswordTextController;
+  late TextEditingController controllerCode;
   late FocusNode birthDateFocusNode;
   late FocusNode streetFocusNode;
   late FocusNode houseNumberFocusNode;
@@ -150,6 +151,7 @@ class UserProfileController extends GetxController {
     currentPasswordTextController = TextEditingController();
     newPasswordTextController = TextEditingController();
     confirmNewPasswordTextController = TextEditingController();
+    controllerCode = TextEditingController();
     birthDateFocusNode = FocusNode();
     streetFocusNode = FocusNode();
     houseNumberFocusNode = FocusNode();
@@ -162,11 +164,11 @@ class UserProfileController extends GetxController {
     _picker = ImagePicker();
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
-      loadingAnimation: mainMenuOperatorController != null ?
-      mainMenuOperatorController!.loadingPicture :
-      mainMenuFinancialController != null ?
-      mainMenuFinancialController!.loadingPicture :
-      mainMenuAdministratorController!.loadingPicture,
+      loadingAnimation: mainMenuOperatorController != null
+          ? mainMenuOperatorController!.loadingPicture
+          : mainMenuFinancialController != null
+              ? mainMenuFinancialController!.loadingPicture
+              : mainMenuAdministratorController!.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,
@@ -210,10 +212,11 @@ class UserProfileController extends GetxController {
     emailTextController.text = await sharedPreferences.getString("email") ?? "";
     confirmEmailTextController.text = await sharedPreferences.getString("email") ?? "";
     ufSelected.value = await sharedPreferences.getString("uf") ?? "";
+    controllerCode.text = int.tryParse(await sharedPreferences.getString("code").toString()) == null ? "Não Informado" : await sharedPreferences.getString("code").toString();
   }
 
   _saveInformations() async {
-    try{
+    try {
       await sharedPreferences.setString("uf", ufSelected.value);
       await sharedPreferences.setString("email", confirmEmailTextController.text);
       await sharedPreferences.setString("email", emailTextController.text);
@@ -230,8 +233,7 @@ class UserProfileController extends GetxController {
       await sharedPreferences.setString("birthdate", birthDateTextController.text);
       await sharedPreferences.setString("name", nameTextController.text);
       return true;
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
@@ -298,10 +300,10 @@ class UserProfileController extends GetxController {
   }
 
   _setUserToUpdate() {
-    if(_user != null){
+    if (_user != null) {
       _user!.name = nameTextController.text;
       _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(birthDateTextController.text);
-      switch(genderSelected.value){
+      switch (genderSelected.value) {
         case "Masculino":
           _user!.gender = TypeGender.masculine;
           break;
@@ -489,13 +491,11 @@ class UserProfileController extends GetxController {
 
   getProfileImage(imageOrigin origin) async {
     try {
-      if(mainMenuOperatorController != null){
+      if (mainMenuOperatorController != null) {
         mainMenuOperatorController!.loadingPicture.value = true;
-      }
-      else if(mainMenuFinancialController != null){
+      } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = true;
-      }
-      else{
+      } else {
         mainMenuAdministratorController!.loadingPicture.value = true;
       }
 
@@ -521,13 +521,11 @@ class UserProfileController extends GetxController {
         },
       );
     } finally {
-      if(mainMenuOperatorController != null){
+      if (mainMenuOperatorController != null) {
         mainMenuOperatorController!.loadingPicture.value = false;
-      }
-      else if(mainMenuFinancialController != null){
+      } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = false;
-      }
-      else{
+      } else {
         mainMenuAdministratorController!.loadingPicture.value = false;
       }
     }
@@ -535,21 +533,19 @@ class UserProfileController extends GetxController {
 
   Future<bool> _saveProfilePicture() async {
     if (profilePicture != null && profilePicture!.path.isNotEmpty) {
-      if(mainMenuOperatorController != null){
+      if (mainMenuOperatorController != null) {
         mainMenuOperatorController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuOperatorController!.sharedPreferences.setString(
           "profile_picture",
           profilePicture!.path,
         );
-      }
-      else if(mainMenuFinancialController != null){
+      } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuFinancialController!.sharedPreferences.setString(
           "profile_picture",
           profilePicture!.path,
         );
-      }
-      else{
+      } else {
         mainMenuAdministratorController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuAdministratorController!.sharedPreferences.setString(
           "profile_picture",
@@ -562,12 +558,11 @@ class UserProfileController extends GetxController {
 
   Future<bool> _saveUser() async {
     try {
-      if(await _userService.editUser(_user!) && await _saveInformations()){
+      if (await _userService.editUser(_user!) && await _saveInformations()) {
         return true;
       }
       throw Exception();
-    }
-    catch (_) {
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -602,17 +597,15 @@ class UserProfileController extends GetxController {
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
-      if(mainMenuOperatorController != null){
+      if (mainMenuOperatorController != null) {
         imageChanged = await mainMenuOperatorController!.sharedPreferences.remove(
           "profile_picture",
         );
-      }
-      else if(mainMenuFinancialController != null){
+      } else if (mainMenuFinancialController != null) {
         imageChanged = await mainMenuFinancialController!.sharedPreferences.remove(
           "profile_picture",
         );
-      }
-      else{
+      } else {
         imageChanged = await mainMenuAdministratorController!.sharedPreferences.remove(
           "profile_picture",
         );
@@ -629,23 +622,21 @@ class UserProfileController extends GetxController {
         },
       );
 
-      if(mainMenuOperatorController != null){
+      if (mainMenuOperatorController != null) {
         await GetProfilePictureController.loadProfilePicture(
           mainMenuOperatorController!.loadingPicture,
           mainMenuOperatorController!.hasPicture,
           mainMenuOperatorController!.profileImagePath,
           mainMenuOperatorController!.sharedPreferences,
         );
-      }
-      else if(mainMenuFinancialController != null){
+      } else if (mainMenuFinancialController != null) {
         await GetProfilePictureController.loadProfilePicture(
           mainMenuFinancialController!.loadingPicture,
           mainMenuFinancialController!.hasPicture,
           mainMenuFinancialController!.profileImagePath,
           mainMenuFinancialController!.sharedPreferences,
         );
-      }
-      else{
+      } else {
         await GetProfilePictureController.loadProfilePicture(
           mainMenuAdministratorController!.loadingPicture,
           mainMenuAdministratorController!.hasPicture,

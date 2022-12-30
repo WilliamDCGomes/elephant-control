@@ -199,22 +199,22 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                                           SizedBox(
                                             height: 2.h,
                                           ),
-                                          InkWell(
-                                            onTap: () => Get.to(() => FinancialHistoryPage(
-                                                  title: "Histórico do Cofre",
-                                                  pageTitle: "Cofre",
-                                                  pouchHistory: false,
-                                                  safeBoxAmount: controller.safeBoxAmount.value,
-                                                )),
-                                            child: TextWidget(
-                                              "Clique aqui para ver o histórico do cofre!",
-                                              maxLines: 1,
-                                              textColor: AppColors.whiteColor,
-                                              fontSize: 16.sp,
-                                              textAlign: TextAlign.center,
-                                              textDecoration: TextDecoration.underline,
-                                            ),
-                                          ),
+                                          // InkWell(
+                                          //   onTap: () => Get.to(() => FinancialHistoryPage(
+                                          //         title: "Histórico do Cofre",
+                                          //         pageTitle: "Cofre",
+                                          //         pouchHistory: false,
+                                          //         safeBoxAmount: controller.safeBoxAmount.value,
+                                          //       )),
+                                          //   child: TextWidget(
+                                          //     "Clique aqui para ver o histórico do cofre!",
+                                          //     maxLines: 1,
+                                          //     textColor: AppColors.whiteColor,
+                                          //     fontSize: 16.sp,
+                                          //     textAlign: TextAlign.center,
+                                          //     textDecoration: TextDecoration.underline,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -276,21 +276,21 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
                                           SizedBox(
                                             height: 2.h,
                                           ),
-                                          InkWell(
-                                            onTap: () => Get.to(() => FinancialHistoryPage(
-                                                  title: "Histórico de Malotes",
-                                                  pageTitle: "Malotes",
-                                                  pouchHistory: true,
-                                                )),
-                                            child: TextWidget(
-                                              "Clique aqui para ver o histórico de malotes!",
-                                              maxLines: 1,
-                                              textColor: AppColors.whiteColor,
-                                              fontSize: 16.sp,
-                                              textAlign: TextAlign.center,
-                                              textDecoration: TextDecoration.underline,
-                                            ),
-                                          ),
+                                          // InkWell(
+                                          //   onTap: () => Get.to(() => FinancialHistoryPage(
+                                          //         title: "Histórico de Malotes",
+                                          //         pageTitle: "Malotes",
+                                          //         pouchHistory: true,
+                                          //       )),
+                                          //   child: TextWidget(
+                                          //     "Clique aqui para ver o histórico de malotes!",
+                                          //     maxLines: 1,
+                                          //     textColor: AppColors.whiteColor,
+                                          //     fontSize: 16.sp,
+                                          //     textAlign: TextAlign.center,
+                                          //     textDecoration: TextDecoration.underline,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),

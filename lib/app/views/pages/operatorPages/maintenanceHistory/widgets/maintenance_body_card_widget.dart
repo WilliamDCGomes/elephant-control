@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 
 class MaintenanceBodyCardWidget extends StatefulWidget {
-  final RxString status;
+  final String status;
   final String workPriority;
   final int priorityColor;
 
-  const MaintenanceBodyCardWidget(
-      { Key? key,
-        required this.status,
-        required this.workPriority,
-        required this.priorityColor,
-      }) : super(key: key);
+  const MaintenanceBodyCardWidget({
+    Key? key,
+    required this.status,
+    required this.workPriority,
+    required this.priorityColor,
+  }) : super(key: key);
 
   @override
   State<MaintenanceBodyCardWidget> createState() => _MaintenanceBodyCardWidgetState();
@@ -27,7 +26,7 @@ class _MaintenanceBodyCardWidgetState extends State<MaintenanceBodyCardWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          height: 5.h,
+          height: 6.h,
           width: 44.w,
           color: AppColors.grayBackgroundPictureColor,
           padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
@@ -46,7 +45,7 @@ class _MaintenanceBodyCardWidgetState extends State<MaintenanceBodyCardWidget> {
           ),
         ),
         Container(
-          height: 5.h,
+          height: 6.h,
           width: 44.w,
           color: AppColors.grayBackgroundPictureColor,
           padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 8.w),
@@ -55,18 +54,16 @@ class _MaintenanceBodyCardWidgetState extends State<MaintenanceBodyCardWidget> {
             children: [
               Expanded(
                 child: Center(
-                  child: Obx(
-                    () => RichTextTwoDifferentWidget(
-                      firstText: "Status: ",
-                      firstTextColor: AppColors.blackColor,
-                      firstTextFontWeight: FontWeight.normal,
-                      firstTextSize: 14.5.sp,
-                      secondText: widget.status.value,
-                      secondTextColor: AppColors.blackColor,
-                      secondTextFontWeight: FontWeight.bold,
-                      secondTextSize: 14.5.sp,
-                      secondTextDecoration: TextDecoration.none,
-                    ),
+                  child: RichTextTwoDifferentWidget(
+                    firstText: "Status: ",
+                    firstTextColor: AppColors.blackColor,
+                    firstTextFontWeight: FontWeight.normal,
+                    firstTextSize: 14.5.sp,
+                    secondText: widget.status,
+                    secondTextColor: AppColors.blackColor,
+                    secondTextFontWeight: FontWeight.bold,
+                    secondTextSize: 14.5.sp,
+                    secondTextDecoration: TextDecoration.none,
                   ),
                 ),
               ),

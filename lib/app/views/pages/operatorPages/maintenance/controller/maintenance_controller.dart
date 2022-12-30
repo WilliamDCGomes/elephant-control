@@ -4,6 +4,7 @@ import 'package:elephant_control/app/views/pages/operatorPages/occurrence/contro
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/model/visit_media.dart';
+import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class MaintenanceController extends GetxController {
     machineSelectedListenner = "".obs;
     priority = "ALTA".obs;
     priorityColor = AppColors.redColor.value.obs;
-    lastMaintenance = DateFormatToBrazil.formatDate(DateTime.now().add(Duration(days: -5))).obs;
+    lastMaintenance = "".obs;
     _visit = Visit.emptyConstructor();
 
     yes = false.obs;
@@ -98,6 +99,7 @@ class MaintenanceController extends GetxController {
   onDropdownButtonWidgetChanged(String? machineId) {
     machineSelected = _machines.firstWhere((element) => element.id == machineId);
     machineSelectedListenner.value = machineSelected?.name ?? "";
+    lastMaintenance.value = DateFormatToBrazil.formatDate(machineSelected?.lastVisit);
   }
 
   Future<void> _initializeMethods() async {
@@ -115,7 +117,8 @@ class MaintenanceController extends GetxController {
     try {
       // await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
-      _machines.addAll(await _machineService.getMachinesByUserId());
+      final listTodayMachine = await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
+      _machines.addAll(listTodayMachine.map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit)));
       if (_machines.isNotEmpty) {
         _machines.sort((a, b) => a.name.compareTo(b.name));
         onDropdownButtonWidgetChanged(_machines.first.id);
@@ -131,7 +134,7 @@ class MaintenanceController extends GetxController {
       return await showDialog(context: context, builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
     }
     final incident = await Get.to(() => OccurrencePage(machine: machineSelected!, visitId: visitId));
-    if (incident != null) _incidents.add(incident);
+    if (incident is IncidentObject) _incidents.add(incident);
   }
 
   saveMaintenance() async {
@@ -139,14 +142,14 @@ class MaintenanceController extends GetxController {
       if (!fieldsValidate()) return;
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
-      _visit.addedProducts = teddy;
+      int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
+      _visit.stuffedAnimalsQuantity = teddy;
       _visit.machineId = machineSelected!.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
       _visit.moneyWithDrawal = yes.isTrue;
       if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
       _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
-      _visit.stuffedAnimalsQuantity = 0;
+      _visit.stuffedAnimalsReplaceQuantity = int.parse(teddyAddMachine.text);
       _visit.observation = observations.text;
       _visit.id = visitId;
       bool createdVisit = await _visitService.createVisit(_visit);

@@ -7,11 +7,9 @@ part of 'visit.dart';
 // **************************************************************************
 
 Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
-      addedProducts: json['addedProducts'] as int,
       moneyQuantity: (json['moneyQuantity'] as num).toDouble(),
-      moneyWithdrawalQuantity:
-          (json['moneyWithdrawalQuantity'] as num?)?.toDouble(),
-      stuffedAnimalsQuantity: json['stuffedAnimalsQuantity'] as int?,
+      moneyWithdrawalQuantity: (json['moneyWithdrawalQuantity'] as num?)?.toDouble(),
+      stuffedAnimalsQuantity: json['stuffedAnimalsQuantity'] as int,
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
       status: $enumDecode(_$VisitStatusEnumMap, json['status']),
@@ -19,23 +17,16 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       moneyWithDrawal: json['moneyWithDrawal'] as bool,
       code: json['code'] as int?,
       observation: json['observation'] as String?,
-      moneyPouch: json['moneyPouch'] == null
-          ? null
-          : MoneyPouch.fromJson(json['moneyPouch'] as Map<String, dynamic>),
-      machine: json['machine'] == null
-          ? null
-          : Machine.fromJson(json['machine'] as Map<String, dynamic>),
+      moneyPouch: json['moneyPouch'] == null ? null : MoneyPouch.fromJson(json['moneyPouch'] as Map<String, dynamic>),
+      machine: json['machine'] == null ? null : Machine.fromJson(json['machine'] as Map<String, dynamic>),
+      responsibleUserId: json['responsibleUserId'] as String?,
+      stuffedAnimalsReplaceQuantity: json['stuffedAnimalsReplaceQuantity'] as int,
     )
       ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null
-          ? null
-          : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null
-          ? null
-          : DateTime.parse(json['alteration'] as String)
+      ..inclusion = json['inclusion'] == null ? null : DateTime.parse(json['inclusion'] as String)
+      ..alteration = json['alteration'] == null ? null : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?
-      ..responsibleUserId = json['responsibleUserId'] as String?;
+      ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'id': instance.id,
@@ -43,10 +34,10 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'alteration': instance.alteration?.toIso8601String(),
       'active': instance.active,
       'includeUserId': instance.includeUserId,
-      'addedProducts': instance.addedProducts,
       'moneyQuantity': instance.moneyQuantity,
       'moneyWithdrawalQuantity': instance.moneyWithdrawalQuantity,
       'stuffedAnimalsQuantity': instance.stuffedAnimalsQuantity,
+      'stuffedAnimalsReplaceQuantity': instance.stuffedAnimalsReplaceQuantity,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'status': _$VisitStatusEnumMap[instance.status]!,

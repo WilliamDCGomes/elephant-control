@@ -32,7 +32,7 @@ class RegisterMachineController extends GetxController {
   late Machine? _machine;
   late IMachineService _machineService;
 
-  RegisterMachineController(){
+  RegisterMachineController() {
     _initializeVariables();
   }
 
@@ -42,7 +42,7 @@ class RegisterMachineController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     loadingAnimation = false.obs;
     ufSelected = "".obs;
     ufsList = [""].obs;
@@ -69,19 +69,18 @@ class RegisterMachineController extends GetxController {
 
   searchAddressInformation() async {
     int trys = 1;
-    while(true){
-      try{
-        if(cepTextController.text.length == 9){
+    while (true) {
+      try {
+        if (cepTextController.text.length == 9) {
           AddressInformation? addressInformation = await consultCepService.searchCep(cepTextController.text);
-          if(addressInformation != null){
+          if (addressInformation != null) {
             ufSelected.value = addressInformation.uf;
             cityTextController.text = addressInformation.city;
             streetTextController.text = addressInformation.street;
             neighborhoodTextController.text = addressInformation.neighborhood;
             complementTextController.text = addressInformation.complement;
             break;
-          }
-          else{
+          } else {
             ufSelected.value = "";
             cityTextController.text = "";
             streetTextController.text = "";
@@ -89,20 +88,17 @@ class RegisterMachineController extends GetxController {
             complementTextController.text = "";
           }
         }
-      }
-      catch(_){
+      } catch (_) {
         ufSelected.value = "";
         cityTextController.text = "";
         streetTextController.text = "";
         neighborhoodTextController.text = "";
         complementTextController.text = "";
-      }
-      finally{
+      } finally {
         trys++;
-        if(trys > 3){
+        if (trys > 3) {
           break;
-        }
-        else {
+        } else {
           continue;
         }
       }
@@ -110,27 +106,26 @@ class RegisterMachineController extends GetxController {
   }
 
   _getUfsNames() async {
-    try{
+    try {
       ufsList.clear();
       List<String> states = await BrazilAddressInformations.getUfsNames();
-      for(var uf in states) {
+      for (var uf in states) {
         ufsList.add(uf);
       }
-    }
-    catch(_){
+    } catch (_) {
       ufsList.clear();
     }
   }
 
   saveNewMachine() async {
-    try{
-      if(_validFields()){
+    try {
+      if (_validFields()) {
         loadingAnimation.value = true;
         loadingWithSuccessOrErrorWidget.startAnimation();
         _machine = Machine(name: machineNameTextController.text);
         _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
-        _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
         _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+        _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
         _machine!.selected = false;
         _machine!.localization = "";
         _machine!.longitude = "";
@@ -144,7 +139,7 @@ class RegisterMachineController extends GetxController {
         _machine!.complement = complementTextController.text;
         _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
         _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
-        if(await _machineService.createMachine(_machine!)){
+        if (await _machineService.createMachine(_machine!)) {
           await loadingWithSuccessOrErrorWidget.stopAnimation();
           await showDialog(
             context: Get.context!,
@@ -159,8 +154,7 @@ class RegisterMachineController extends GetxController {
         }
         throw Exception();
       }
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
@@ -199,8 +193,7 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
-    if (minAverageTextController.text.isNotEmpty && maxAverageTextController.text.isNotEmpty &&
-        int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {
+    if (minAverageTextController.text.isNotEmpty && maxAverageTextController.text.isNotEmpty && int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -12,12 +12,12 @@ class OperatorsVisitsController extends GetxController {
   late RxList<MaintenanceCardWidget> maintenanceCardWidgetList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  OperatorsVisitsController(){
+  OperatorsVisitsController() {
     _initializeVariables();
     _initializeList();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     dateFilter = DateTime.now();
     loadingAnimation = false.obs;
     userSelected = "".obs;
@@ -28,7 +28,7 @@ class OperatorsVisitsController extends GetxController {
     );
   }
 
-  _initializeList(){
+  _initializeList() {
     usersName.addAll([
       "João",
       "Marcos",
@@ -37,46 +37,46 @@ class OperatorsVisitsController extends GetxController {
     ]);
   }
 
-  getVisitsUser(String userName){
-    maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
-      MaintenanceCardWidget(
-        machineName: "Shopping Boulevard",
-        responsibleName: userName,
-        city: "Jaú",
-        status: "Finalizado".obs,
-        workPriority: "ALTA",
-        priorityColor: AppColors.redColor.value,
-        clock1: "2566321",
-        clock2: "1556623",
-        pouchCollected: true,
-        teddy: "25",
-      ),
-      MaintenanceCardWidget(
-        machineName: "Supermercado Central",
-        responsibleName: userName,
-        city: "Bauru",
-        status: "Pendente".obs,
-        workPriority: "NORMAL",
-        priorityColor: AppColors.greenColor.value,
-        clock1: "0",
-        clock2: "0",
-        pouchCollected: false,
-        teddy: "0",
-      ),
-      MaintenanceCardWidget(
-        machineName: "Cinema Alameda",
-        responsibleName: userName,
-        city: "Campinas",
-        status: "Pendente".obs,
-        workPriority: "NORMAL",
-        priorityColor: AppColors.greenColor.value,
-        clock1: "0",
-        clock2: "0",
-        pouchCollected: false,
-        teddy: "0",
-      ),
-    ];
-  }
+  // getVisitsUser(String userName){
+  //   maintenanceCardWidgetList.value = <MaintenanceCardWidget>[
+  //     MaintenanceCardWidget(
+  //       machineName: "Shopping Boulevard",
+  //       responsibleName: userName,
+  //       city: "Jaú",
+  //       status: "Finalizado".obs,
+  //       workPriority: "ALTA",
+  //       priorityColor: AppColors.redColor.value,
+  //       clock1: "2566321",
+  //       clock2: "1556623",
+  //       pouchCollected: true,
+  //       teddy: "25",
+  //     ),
+  //     MaintenanceCardWidget(
+  //       machineName: "Supermercado Central",
+  //       responsibleName: userName,
+  //       city: "Bauru",
+  //       status: "Pendente".obs,
+  //       workPriority: "NORMAL",
+  //       priorityColor: AppColors.greenColor.value,
+  //       clock1: "0",
+  //       clock2: "0",
+  //       pouchCollected: false,
+  //       teddy: "0",
+  //     ),
+  //     MaintenanceCardWidget(
+  //       machineName: "Cinema Alameda",
+  //       responsibleName: userName,
+  //       city: "Campinas",
+  //       status: "Pendente".obs,
+  //       workPriority: "NORMAL",
+  //       priorityColor: AppColors.greenColor.value,
+  //       clock1: "0",
+  //       clock2: "0",
+  //       pouchCollected: false,
+  //       teddy: "0",
+  //     ),
+  //   ];
+  // }
 
   filterPerDate() async {
     DateTime auxDate = DateTime.now();
