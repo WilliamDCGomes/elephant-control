@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,9 +78,9 @@ class RequestEditVisitController extends GetxController {
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
 
-    imageClock = ImagesPictureWidget();
-    beforeMaintenanceImageClock = ImagesPictureWidget();
-    afterMaintenanceImageClock = ImagesPictureWidget();
+    imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
       loadingAnimation: loadingAnimation,

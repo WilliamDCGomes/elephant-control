@@ -1,5 +1,6 @@
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/popups/images_picture_widget.dart';
 import 'package:elephant_control/base/services/consult_cep_service.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:get/get.dart';
@@ -499,7 +500,14 @@ class UserProfileController extends GetxController {
         mainMenuAdministratorController!.loadingPicture.value = true;
       }
 
-      profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
+      final ImageSource source = origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery;
+
+      profilePicture = await _picker.pickImage(source: source);
+
+      profilePicture = await ImagesPictureWidget(
+        origin: origin == imageOrigin.camera ? imageOrigin.camera : imageOrigin.gallery,
+      ).compressFile(profilePicture);
+
       if (profilePicture != null) {
         if (await _saveProfilePicture()) {
           imageChanged = true;

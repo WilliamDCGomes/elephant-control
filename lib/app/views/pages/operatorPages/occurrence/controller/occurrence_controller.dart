@@ -1,8 +1,7 @@
 import 'dart:convert';
-
+import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/base/models/incident/model/incident.dart';
 import 'package:elephant_control/base/models/machine/model/machine.dart';
-import 'package:elephant_control/base/services/incident_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/media/model/media.dart';
@@ -37,8 +36,8 @@ class OccurrenceController extends GetxController {
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
     observations = TextEditingController();
-    machineOccurrencePicture = ImagesPictureWidget();
-    extraMachineOccurrencePicture = ImagesPictureWidget();
+    machineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
+    extraMachineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
     machineOccurrenceVideo = VideosPictureWidget();
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
