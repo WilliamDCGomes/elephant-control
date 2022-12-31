@@ -60,7 +60,9 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                 Scaffold(
                   backgroundColor: AppColors.transparentColor,
                   body: Padding(
-                    padding: EdgeInsets.only(top: 2.h,),
+                    padding: EdgeInsets.only(
+                      top: 2.h,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -72,8 +74,8 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                             children: [
                               TextButtonWidget(
                                 onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuOperatorController: controller,
-                                )),
+                                      mainMenuOperatorController: controller,
+                                    )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -153,7 +155,10 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                   backgroundColor: AppColors.defaultColor,
                                   informationText: "",
                                   iconInLeft: true,
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w,
+                                    vertical: 3.h,
+                                  ),
                                   customContainer: SizedBox(
                                     width: 73.w,
                                     child: Column(
@@ -175,7 +180,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                               Padding(
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: Obx(
-                                                      () => TextWidget(
+                                                  () => TextWidget(
                                                     controller.amountPouch.value.toString(),
                                                     fontWeight: FontWeight.bold,
                                                     maxLines: 1,
@@ -201,9 +206,10 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                         ),
                                         InkWell(
                                           onTap: () => Get.to(() => HistoryPage(
-                                            title: "Histórico de Malotes",
-                                            pageTitle: "Visitas",
-                                          )),
+                                                title: "Histórico de Malotes",
+                                                pageTitle: "Visitas",
+                                                visits: controller.visitsWithMoneydrawal,
+                                              )),
                                           child: TextWidget(
                                             "Clique aqui para ver o histórico de malotes!",
                                             maxLines: 1,
@@ -222,7 +228,10 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                   textColor: AppColors.whiteColor,
                                   backgroundColor: AppColors.defaultColor,
                                   informationText: "",
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h,),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w,
+                                    vertical: 3.h,
+                                  ),
                                   customContainer: SizedBox(
                                     width: 73.w,
                                     child: Column(
@@ -244,7 +253,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                               Padding(
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: Obx(
-                                                      () => TextWidget(
+                                                  () => TextWidget(
                                                     controller.amountTeddy.value.toString(),
                                                     fontWeight: FontWeight.bold,
                                                     maxLines: 1,
@@ -270,9 +279,10 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                                         ),
                                         InkWell(
                                           onTap: () => Get.to(() => HistoryPage(
-                                            title: "Histórico de Pelúcias",
-                                            pageTitle: "Visitas",
-                                          )),
+                                                title: "Histórico de Pelúcias",
+                                                pageTitle: "Visitas",
+                                                visits: controller.visitsUser,
+                                              )),
                                           child: TextWidget(
                                             "Clique aqui para ver as pelúcias!",
                                             maxLines: 1,
@@ -343,6 +353,7 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
                     ],
                   ),
                 ),
+                controller.loadingWithSuccessOrErrorWidget,
               ],
             ),
           ),

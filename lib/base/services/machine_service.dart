@@ -34,8 +34,8 @@ class MachineService extends BaseService implements IMachineService {
       final token = await getToken();
       final url = baseUrlApi + 'Machine/CreateMachine';
       final response = await post(url, machine.toJson(), headers: {'Authorization': 'Bearer ${token}'});
-      if (hasErrorResponse(response)) throw Exception();
-      return true;
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
     } catch (_) {
       return false;
     }

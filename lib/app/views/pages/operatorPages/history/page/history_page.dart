@@ -1,5 +1,8 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
+import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,11 +16,13 @@ import '../controller/history_controller.dart';
 class HistoryPage extends StatefulWidget {
   final String title;
   final String pageTitle;
+  final List<Visit> visits;
 
   const HistoryPage({
     Key? key,
     required this.title,
     required this.pageTitle,
+    required this.visits,
   }) : super(key: key);
 
   @override
@@ -93,7 +98,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         TextWidget(
-                                          "Saldo Inicial: ${LoggedUser.initialAmountTeddy}",
+                                          "Saldo Inicial: 0",
                                           textColor: AppColors.whiteColor,
                                           fontSize: 18.sp,
                                           textAlign: TextAlign.center,
@@ -104,7 +109,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                           height: 2.h,
                                         ),
                                         TextWidget(
-                                          "Saldo Atual: ${LoggedUser.balanceStuffedAnimals}",
+                                          "Saldo Atual: 0",
                                           textColor: AppColors.whiteColor,
                                           fontSize: 18.sp,
                                           textAlign: TextAlign.center,
@@ -129,15 +134,25 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                             ),
                             Expanded(
-                              child: Obx(
-                                () => ListView.builder(
-                                  itemCount: controller.maintenanceCardWidgetList.length,
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                  itemBuilder: (context, index) {
-                                    return controller.maintenanceCardWidgetList[index];
-                                  },
-                                ),
+                              child: ListView.builder(
+                                itemCount: widget.visits.length,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                itemBuilder: (context, index) {
+                                  final visit = widget.visits[index];
+                                  return MaintenanceCardWidget(
+                                    machineName: visit.machine!.name,
+                                    city: visit.machine!.city,
+                                    status: visit.status.description,
+                                    workPriority: "NORMAL",
+                                    priorityColor: AppColors.greenColor.value,
+                                    clock1: FormatNumbers.numbersToMoney(visit.moneyQuantity),
+                                    clock2: visit.stuffedAnimalsQuantity.toString(),
+                                    teddy: visit.stuffedAnimalsReplaceQuantity.toString(),
+                                    pouchCollected: visit.moneyWithdrawalQuantity != null,
+                                    showPriorityAndStatus: false,
+                                  );
+                                },
                               ),
                             ),
                           ],

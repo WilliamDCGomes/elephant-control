@@ -12,6 +12,7 @@ import '../../financialHistoryAdministrator/page/financial_history_administrator
 import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
 import '../../operatorsVisits/page/operators_visits_page.dart';
 import '../../registerMachine/page/register_machine_page.dart';
+import '../../registerUserMachine/page/register_user_machine_page.dart';
 import '../../registerUsers/page/register_user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widget/menu_options_widget.dart';
@@ -48,33 +49,28 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                 colors: AppColors.backgroundFirstScreenColor,
               ),
             ),
-            child: Stack(
-              children: [
-                Container(
-                  height: 30.h,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.h)),
-                    color: AppColors.defaultColor,
-                  ),
-                ),
-                Scaffold(
-                  backgroundColor: AppColors.transparentColor,
-                  body: Padding(
-                    padding: EdgeInsets.only(top: 2.h,),
+            child: Scaffold(
+              backgroundColor: AppColors.transparentColor,
+              body: Column(
+                children: [
+                  Container(
+                    height: 30.h,
+                    width: 100.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.h)),
+                      color: AppColors.defaultColor,
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 8.h,
                           margin: EdgeInsets.symmetric(horizontal: 2.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButtonWidget(
                                 onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuAdministratorController: controller,
-                                )),
+                                      mainMenuAdministratorController: controller,
+                                    )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -142,96 +138,106 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                             ),
                           ),
                         ),
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 2.w, top: 14.h, right: 2.w),
-                            child: ListView(
-                              shrinkWrap: true,
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: ListView(
+                        children: [
+                          SizedBox(height: 1.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              MenuOptionsWidget(
+                                text: "Malotes com Operadores",
+                                imagePath: Paths.Malote,
+                                onTap: () => Get.to(() => OperatorFinancialPouchPage(
+                                      withOperator: true,
+                                    )),
+                              ),
+                              MenuOptionsWidget(
+                                text: "Visitas dos Operadores",
+                                imagePath: Paths.Manutencao,
+                                onTap: () => Get.to(() => OperatorsVisitsPage()),
+                              ),
+                              MenuOptionsWidget(
+                                text: "Histórico Cofre da Tesouraria",
+                                imagePath: Paths.Cofre,
+                                onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    MenuOptionsWidget(
-                                      text: "Malotes com Operadores",
-                                      imagePath: Paths.Malote,
-                                      onTap: () => Get.to(() => OperatorFinancialPouchPage(withOperator: true,)),
-                                    ),
-                                    MenuOptionsWidget(
-                                      text: "Visitas dos Operadores",
-                                      imagePath: Paths.Manutencao,
-                                      onTap: () => Get.to(() => OperatorsVisitsPage()),
-                                    ),
-                                    MenuOptionsWidget(
-                                      text: "Histórico Cofre da Tesouraria",
-                                      imagePath: Paths.Cofre,
-                                      onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
-                                    ),
-                                  ],
+                                MenuOptionsWidget(
+                                  text: "Malotes com Tesouraria",
+                                  imagePath: Paths.Malote_Com_Tesouraria,
+                                  onTap: () => Get.to(() => OperatorFinancialPouchPage(
+                                        withOperator: false,
+                                      )),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      MenuOptionsWidget(
-                                        text: "Malotes com Tesouraria",
-                                        imagePath: Paths.Malote_Com_Tesouraria,
-                                        onTap: () => Get.to(() => OperatorFinancialPouchPage(withOperator: false,)),
-                                      ),
-                                      MenuOptionsWidget(
-                                        text: "Novo Usuário",
-                                        imagePath: Paths.Novo_Usuario,
-                                        onTap: () => Get.to(() => RegisterUsersPage()),
-                                      ),
-                                      MenuOptionsWidget(
-                                        text: "Nova Máquina",
-                                        imagePath: Paths.Maquina_Pelucia,
-                                        onTap: () => Get.to(() => RegisterMachinePage()),
-                                      ),
-                                    ],
-                                  ),
+                                MenuOptionsWidget(
+                                  text: "Novo Usuário",
+                                  imagePath: Paths.Novo_Usuario,
+                                  onTap: () => Get.to(() => RegisterUsersPage()),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      MenuOptionsWidget(
-                                        text: "Novo Lembrete",
-                                        imagePath: Paths.Novo_Lembrete,
-                                        disable: true,
-                                        onTap: () {
-
-                                        },
-                                      ),
-                                      MenuOptionsWidget(
-                                        text: "Recolher Dinheiro",
-                                        imagePath: Paths.Recolher_Dinheiro,
-                                        disable: true,
-                                        onTap: () {
-
-                                        },
-                                      ),
-                                      MenuOptionsWidget(
-                                        text: "Solicitações",
-                                        imagePath: Paths.Solicitacoes,
-                                        disable: true,
-                                        onTap: () {
-
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                MenuOptionsWidget(
+                                  text: "Nova Máquina",
+                                  imagePath: Paths.Maquina_Pelucia,
+                                  onTap: () => Get.to(() => RegisterMachinePage()),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                          // Padding(
+                          //   padding: EdgeInsets.only(top: 2.h),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       MenuOptionsWidget(
+                          //         text: "Máquina x Usuário",
+                          //         imagePath: Paths.Maquina_Pelucia,
+                          //         onTap: () => Get.to(() => RegisterUserMachinePage()),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MenuOptionsWidget(
+                                  text: "Novo Lembrete",
+                                  imagePath: Paths.Novo_Lembrete,
+                                  disable: true,
+                                  onTap: () {},
+                                ),
+                                MenuOptionsWidget(
+                                  text: "Recolher Dinheiro",
+                                  imagePath: Paths.Recolher_Dinheiro,
+                                  disable: true,
+                                  onTap: () {},
+                                ),
+                                MenuOptionsWidget(
+                                  text: "Solicitações",
+                                  imagePath: Paths.Solicitacoes,
+                                  disable: true,
+                                  onTap: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
