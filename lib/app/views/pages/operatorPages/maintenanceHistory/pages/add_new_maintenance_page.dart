@@ -29,6 +29,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 200));
       await widget.controller.getMachineVisitByUserId();
     });
   }

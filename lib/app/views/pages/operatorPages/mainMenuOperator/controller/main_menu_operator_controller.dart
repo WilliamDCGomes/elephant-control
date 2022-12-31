@@ -31,7 +31,6 @@ class MainMenuOperatorController extends GetxController {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
-    getOperatorInformation();
   }
 
   @override
@@ -44,6 +43,7 @@ class MainMenuOperatorController extends GetxController {
       sharedPreferences,
     );
     await _checkFingerPrintUser();
+    await getOperatorInformation();
     super.onInit();
   }
 
@@ -127,6 +127,7 @@ class MainMenuOperatorController extends GetxController {
   Future<void> getOperatorInformation() async {
     try {
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       final operatorInformations = await UserService().getOperatorInformation();
       if (operatorInformations == null) throw Exception();
       amountPouch.value = operatorInformations.balanceMoney;
@@ -137,7 +138,7 @@ class MainMenuOperatorController extends GetxController {
       visitsWithMoneydrawal = operatorInformations.visitsWithMoneydrawal;
     } catch (_) {
     } finally {
-      loadingAnimation.value = false;
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 }

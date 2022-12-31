@@ -27,8 +27,14 @@ class MaintenanceHistoryController extends GetxController {
 
   MaintenanceHistoryController() {
     _initializeVariables();
-    _getVisitsOperatorByUserId();
     // _inicializeList();
+  }
+
+  @override
+  void onInit() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    await _getVisitsOperatorByUserId();
+    super.onInit();
   }
 
   //Getters
@@ -77,15 +83,15 @@ class MaintenanceHistoryController extends GetxController {
 
   Future<void> getMachineVisitByUserId() async {
     try {
-      loadingAnimation.value = true;
-      await loadingWithSuccessOrErrorWidget.startAnimation();
+      loadingAnimationTwo.value = true;
+      await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachineVisitByUserId());
       if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.compareTo(b.name));
     } catch (_) {
       _machines.clear();
     } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
     }
   }
 
