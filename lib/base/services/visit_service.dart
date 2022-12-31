@@ -4,6 +4,7 @@ import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/add_money_pouch_viewcontroller.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
 import '../viewControllers/money_pouch_viewcontroller.dart';
+import '../viewControllers/safe_box_financial_viewcontroller.dart';
 import '../viewControllers/visits_of_operators_viewcontroller.dart';
 import 'interfaces/ivisit_service.dart';
 
@@ -33,13 +34,25 @@ class VisitService extends BaseService implements IVisitService{
     }
   }
 
-  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(String userId, DateTime? filterDate) async {
+  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(String? userId, DateTime? filterDate) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetVisitsOfOperatorsByUserId';
       final response = await get(url, query: {"UserId": userId, "filterDate": filterDate != null ? filterDate.toString() : ""}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<List<SafeBoxFinancialViewController>> getVisitsOfFinancialByUserId(String? userId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetVisitsOfFinancialByUserId';
+      final response = await get(url, query: {"UserId": userId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return (response.body as List).map((visit) => SafeBoxFinancialViewController.fromJson(visit)).toList();
     } catch (_) {
       return [];
     }

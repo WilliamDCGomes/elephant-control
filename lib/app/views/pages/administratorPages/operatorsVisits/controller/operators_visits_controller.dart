@@ -93,8 +93,14 @@ class OperatorsVisitsController extends GetxController {
     try{
       loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
+
+      User? user = null;
+      if(userSelected.value != "Todos"){
+        user = users.firstWhere((element) => element.name == userSelected.value);
+      }
+
       operatorVisitList.value = await _visitService.getVisitsOfOperatorsByUserId(
-        users.firstWhere((element) => element.name == userSelected.value).id ?? "",
+        user != null ? user.id ?? null : null,
         dateFilter,
       );
       update(["visit-list"]);

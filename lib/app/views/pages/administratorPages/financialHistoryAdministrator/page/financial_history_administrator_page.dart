@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../../utils/platform_type.dart';
@@ -11,6 +10,7 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/financial_history_administrator_controller.dart';
+import '../widget/financial_history_card__widget.dart';
 
 class FinancialHistoryAdministratorPage extends StatefulWidget {
   const FinancialHistoryAdministratorPage({Key? key}) : super(key: key);
@@ -117,21 +117,34 @@ class _FinancialHistoryAdministratorPageState extends State<FinancialHistoryAdmi
                                   onChanged: (selectedState) {
                                     if(selectedState != null) {
                                       controller.userSelected.value = selectedState;
-                                      controller.getVisitsUser(selectedState);
+                                      controller.getVisitsUser();
                                     }
                                   },
                                 ),
                               ),
                             ),
                             Expanded(
-                              child: Obx(
-                                () => ListView.builder(
-                                  itemCount: controller.safeBoxCardWidgetList.length,
+                              child: GetBuilder(
+                                id: "safebox-list",
+                                init: controller,
+                                builder: (_) => controller.safeBoxHistoryList.isNotEmpty ? ListView.builder(
+                                  itemCount: controller.safeBoxHistoryList.length,
                                   shrinkWrap: true,
                                   padding: EdgeInsets.symmetric(horizontal: 2.h),
                                   itemBuilder: (context, index){
-                                    return controller.safeBoxCardWidgetList[index];
+                                    return FinancialHistoryCardWidget(
+                                      safeBoxFinancialViewController: controller.safeBoxHistoryList[index],
+                                    );
                                   },
+                                ) : Center(
+                                  child: TextWidget(
+                                    controller.userSelected.value.isNotEmpty ? "Não existe valores no histórico do cofre desse usuário" : "",
+                                    textColor: AppColors.grayTextColor,
+                                    fontSize: 14.sp,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
