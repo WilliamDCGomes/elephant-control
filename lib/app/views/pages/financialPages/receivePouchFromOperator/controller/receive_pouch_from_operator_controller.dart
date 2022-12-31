@@ -99,10 +99,14 @@ class ReceivePouchFromOperatorController extends GetxController {
       operatorSelected = operators.firstWhereOrNull((element) => element.id == selectedState);
       if (operatorSelected != null) {
         loadingAnimation.value = true;
+        await loadingWithSuccessOrErrorWidget.startAnimation();
         await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id!);
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
         loadingAnimation.value = false;
       }
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      loadingAnimation.value = false;
       operatorSelected = null;
     }
   }

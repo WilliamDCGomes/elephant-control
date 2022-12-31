@@ -1,21 +1,13 @@
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/maintenanceHistory/pages/add_new_maintenance_page.dart';
-import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:elephant_control/base/models/machine/model/machine.dart';
 import 'package:elephant_control/base/services/machine_service.dart';
-import 'package:elephant_control/base/services/user_machine_service.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/viewControllers/user_machine_viewcontroller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
-import '../../../widgetsShared/maintenance_card_widget.dart';
-import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
-import '../popups/filter_maintenance_list_popup.dart';
-import '../widgets/city_item_card_widget.dart';
 
 class MaintenanceHistoryController extends GetxController {
   //MaintenanceCardWidget
@@ -72,11 +64,13 @@ class MaintenanceHistoryController extends GetxController {
   Future<void> _getVisitsOperatorByUserId() async {
     try {
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       _visits.clear();
       _visits.addAll(await _visitService.getVisitsOperatorByUserId());
     } catch (_) {
       _visits.clear();
     } finally {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       loadingAnimation.value = false;
     }
   }
@@ -84,13 +78,14 @@ class MaintenanceHistoryController extends GetxController {
   Future<void> getMachineVisitByUserId() async {
     try {
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachineVisitByUserId());
       if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.compareTo(b.name));
     } catch (_) {
       _machines.clear();
     } finally {
-      loadingAnimation.value = false;
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 

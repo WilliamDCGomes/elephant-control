@@ -88,6 +88,8 @@ class RegisterUsersController extends GetxController {
       "Feminino",
       "Outro",
     ]);
+
+    userGenderSelected.value = userGenderList.first;
   }
 
   searchAddressInformation() async {
@@ -197,9 +199,14 @@ class RegisterUsersController extends GetxController {
           pouchLastUpdate: DateTime.now(),
           stuffedAnimalsLastUpdate: DateTime.now(),
         );
-        _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(
-          birthDayTextController.text,
-        );
+        if(birthDayTextController.text.isNotEmpty){
+          _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(
+            birthDayTextController.text,
+          );
+        }
+        else{
+          _user!.birthdayDate = null;
+        }
         _user!.cep = cepTextController.text;
         _user!.uf = ufSelected.value;
         _user!.city = cityTextController.text;
@@ -278,7 +285,8 @@ class RegisterUsersController extends GetxController {
       );
       return false;
     }
-    if (emailTextController.text.isEmpty) {
+    /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
+    /*if (emailTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -361,7 +369,7 @@ class RegisterUsersController extends GetxController {
         },
       );
       return false;
-    }
+    }*/
 
     return true;
   }

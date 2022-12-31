@@ -205,7 +205,8 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
-    if (cepTextController.text.isEmpty) {
+    /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
+    /*if (cepTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -264,7 +265,7 @@ class RegisterMachineController extends GetxController {
         },
       );
       return false;
-    }
+    }*/
     return true;
   }
 }
