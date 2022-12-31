@@ -1,3 +1,4 @@
+import 'package:elephant_control/base/viewControllers/operator_information_viewcontroller.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/user/model/user.dart';
 import '../../viewControllers/authenticate_response.dart';
@@ -7,13 +8,13 @@ abstract class IUserService {
 
   Future<bool> sendNewUser(User newUser);
 
-  Future<List<User>> getUserByType(UserType type);
-
   Future<List<User>> getAllUserByType(UserType type);
+  Future<List<User>> getUserMachineOperator();
 
   Future<bool> editUser(User user);
 
   Future<User?> getUserInformation();
+  Future<OperatorInformationViewController?> getOperatorInformation();
 
   Future<bool> updatePassword(String newPassword);
 

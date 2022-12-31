@@ -1,4 +1,7 @@
+import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
 import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/visit/model/visit.dart';
+import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
@@ -18,12 +21,17 @@ class MainMenuOperatorController extends GetxController {
   late RxInt amountTeddy;
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
+  late RxBool loadingAnimation;
   late SharedPreferences sharedPreferences;
+  late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late List<Visit> visitsUser;
+  late List<Visit> visitsWithMoneydrawal;
 
   MainMenuOperatorController() {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
+    getOperatorInformation();
   }
 
   @override
@@ -41,6 +49,9 @@ class MainMenuOperatorController extends GetxController {
 
   _initializeVariables() {
     hasPicture = false.obs;
+    visitsUser = [];
+    visitsWithMoneydrawal = [];
+    loadingAnimation = false.obs;
     loadingPicture = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
@@ -49,6 +60,9 @@ class MainMenuOperatorController extends GetxController {
     amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
     pouchLastChange = LoggedUser.pouchLastUpdate ?? DateTime.now();
     teddyLastChange = LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now();
+    loadingWithSuccessOrErrorWidget = loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
+      loadingAnimation: loadingAnimation,
+    );
   }
 
   _getNameUser() {
@@ -107,6 +121,23 @@ class MainMenuOperatorController extends GetxController {
           );
         },
       );
+    }
+  }
+
+  Future<void> getOperatorInformation() async {
+    try {
+      loadingAnimation.value = true;
+      final operatorInformations = await UserService().getOperatorInformation();
+      if (operatorInformations == null) throw Exception();
+      amountPouch.value = operatorInformations.balanceMoney;
+      amountTeddy.value = operatorInformations.balanceStuffedAnimals;
+      pouchLastChange = operatorInformations.pouchLastUpdate ?? DateTime.now();
+      teddyLastChange = operatorInformations.stuffedAnimalsLastUpdate ?? DateTime.now();
+      visitsUser = operatorInformations.visitsUser;
+      visitsWithMoneydrawal = operatorInformations.visitsWithMoneydrawal;
+    } catch (_) {
+    } finally {
+      loadingAnimation.value = false;
     }
   }
 }

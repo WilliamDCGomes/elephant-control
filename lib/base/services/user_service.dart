@@ -1,3 +1,4 @@
+import 'package:elephant_control/base/viewControllers/operator_information_viewcontroller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user/model/user.dart';
@@ -31,18 +32,6 @@ class UserService extends BaseService implements IUserService {
       return User.fromJson(response.body);
     } catch (_) {
       return null;
-    }
-  }
-
-  Future<List<User>> getUserByType(UserType type) async {
-    try {
-      final token = await getToken();
-      final url = baseUrlApi + 'User/GetUserByType';
-      final response = await super.get(url, query: {"Type": type.toString()}, headers: {"Authorization": 'Bearer ' + token});
-      if (hasErrorResponse(response)) throw Exception();
-      return response.body.map<User>((e) => User.fromJson(e)).toList();
-    } catch (_) {
-      return [];
     }
   }
 
@@ -222,6 +211,32 @@ class UserService extends BaseService implements IUserService {
       return true;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<List<User>> getUserMachineOperator() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetUserMachineOperator';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<User>((e) => User.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<OperatorInformationViewController?> getOperatorInformation() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetOperatorInformation';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return OperatorInformationViewController.fromJson(response.body);
+    } catch (_) {
+      return null;
     }
   }
 }
