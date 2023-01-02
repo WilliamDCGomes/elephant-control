@@ -9,7 +9,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 part 'register_user_machine_controller.g.dart';
 
 class RegisterUserMachineController extends GetxController {
-  late RxBool loadingAnimation;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final RxList<User> _users;
   late final IUserService _userService;
@@ -24,17 +23,13 @@ class RegisterUserMachineController extends GetxController {
   }
 
   _initializeVariables() {
-    loadingAnimation = false.obs;
     _users = <User>[].obs;
     _userService = UserService();
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
 
   Future<void> _getAllUserByType() async {
     try {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       _users.clear();
       _users.addAll(await _userService.getAllUserByType(UserType.operator));

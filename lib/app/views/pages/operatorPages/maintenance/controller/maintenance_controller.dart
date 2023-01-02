@@ -30,7 +30,6 @@ class MaintenanceController extends GetxController {
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
-  late RxBool loadingAnimation;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
   late TextEditingController clock1;
@@ -72,7 +71,6 @@ class MaintenanceController extends GetxController {
 
     yes = false.obs;
     no = false.obs;
-    loadingAnimation = false.obs;
 
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
@@ -88,9 +86,7 @@ class MaintenanceController extends GetxController {
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _initializeMethods();
   }
 
@@ -141,7 +137,6 @@ class MaintenanceController extends GetxController {
   saveMaintenance() async {
     try {
       if (!fieldsValidate()) return;
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
       _visit.stuffedAnimalsQuantity = teddy;

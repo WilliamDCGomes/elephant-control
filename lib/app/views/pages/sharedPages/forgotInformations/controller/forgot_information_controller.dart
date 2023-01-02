@@ -6,7 +6,6 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class ForgotInformationController extends GetxController {
   late TextEditingController emailInputController;
-  late RxBool loadingAnimation;
   late RxBool emailInputHasError;
   late final GlobalKey<FormState> formKey;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -18,19 +17,15 @@ class ForgotInformationController extends GetxController {
 
   _inicializeVariables() {
     emailInputController = TextEditingController();
-    loadingAnimation = false.obs;
     emailInputHasError = false.obs;
     formKey = GlobalKey<FormState>();
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
   }
 
   sendButtonPressed() async {
     try {
       // if(formKey.currentState!.validate()){
-      //   loadingAnimation.value = true;
       //   await loadingWithSuccessOrErrorWidget.startAnimation();
       //   if(await _userService.resetPassword(emailInputController.text)){
       //     await loadingWithSuccessOrErrorWidget.stopAnimation();

@@ -19,7 +19,6 @@ class RequestEditVisitController extends GetxController {
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
-  late RxBool loadingAnimation;
   late RxList<String> machinesPlaces;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
@@ -66,7 +65,6 @@ class RequestEditVisitController extends GetxController {
 
     yes = false.obs;
     no = false.obs;
-    loadingAnimation = false.obs;
 
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
@@ -82,9 +80,7 @@ class RequestEditVisitController extends GetxController {
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
 
   _inicializeList() {
@@ -105,7 +101,6 @@ class RequestEditVisitController extends GetxController {
   saveMaintenance() async {
     try {
       if (!fieldsValidate()) return;
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 2));
       _mainMenuController = Get.find(tag: "main_menu_controller");

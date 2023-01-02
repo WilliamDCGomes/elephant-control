@@ -19,7 +19,6 @@ class ReceivePouchFromOperatorController extends GetxController {
   late RxList<User> operators;
   late RxList<Visit> pouchListBase;
   late RxList<Visit> pouchList;
-  late RxBool loadingAnimation;
   late TextEditingController operatorCode;
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -51,10 +50,7 @@ class ReceivePouchFromOperatorController extends GetxController {
   }
 
   _initializeVariables() {
-    loadingAnimation = false.obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     operatorCode = TextEditingController();
     observations = TextEditingController();
     _formKey = GlobalKey<FormState>();
@@ -63,7 +59,6 @@ class ReceivePouchFromOperatorController extends GetxController {
 
   Future<void> _getData() async {
     try {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await _getOperatorUsersWithVisitStatusMoneyWithdrawal();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -131,7 +126,6 @@ class ReceivePouchFromOperatorController extends GetxController {
     try {
       operatorSelected = operators.firstWhereOrNull((element) => element.id == selectedState);
       if (operatorSelected != null) {
-        loadingAnimation.value = true;
         await loadingWithSuccessOrErrorWidget.startAnimation();
         await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id!);
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -158,7 +152,6 @@ class ReceivePouchFromOperatorController extends GetxController {
       }
       return true;
     } catch (e) {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -188,7 +181,6 @@ class ReceivePouchFromOperatorController extends GetxController {
       if(!await _checkBiometricSensor()){
         return;
       }
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       for (var moneyPouch in pouchsSelectedList) {
         final addMoneyPouchViewController = AddMoneyPouchViewController(

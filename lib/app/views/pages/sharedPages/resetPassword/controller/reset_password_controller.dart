@@ -16,7 +16,6 @@ class ResetPasswordController extends GetxController {
   late RxBool oldPasswordVisible;
   late RxBool newPasswordVisible;
   late RxBool confirmNewPasswordVisible;
-  late RxBool loadingAnimation;
   late RxBool oldPasswordInputHasError;
   late RxBool newPasswordInputHasError;
   late RxBool confirmNewPasswordInputHasError;
@@ -46,7 +45,6 @@ class ResetPasswordController extends GetxController {
     oldPasswordVisible = true.obs;
     newPasswordVisible = true.obs;
     confirmNewPasswordVisible = true.obs;
-    loadingAnimation = false.obs;
     oldPasswordInputHasError = false.obs;
     newPasswordInputHasError = false.obs;
     confirmNewPasswordInputHasError = false.obs;
@@ -55,9 +53,7 @@ class ResetPasswordController extends GetxController {
     resetPasswordButtonFocusNode = FocusNode();
     formKey = GlobalKey<FormState>();
     fingerPrintAuth = LocalAuthentication();
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
   }
 
@@ -90,7 +86,6 @@ class ResetPasswordController extends GetxController {
         resetPasswordButtonFocusNode.requestFocus();
 
         if(await _checkFingerPrint()){
-          loadingAnimation.value = true;
           await loadingWithSuccessOrErrorWidget.startAnimation();
           await Future.delayed(Duration(milliseconds: 500));
           if(await InternetConnection.checkConnection()){

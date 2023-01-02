@@ -23,8 +23,6 @@ class LoginPageController extends GetxController {
   late RxBool cpfInputHasError;
   late RxBool passwordInputHasError;
   late RxBool passwordFieldEnabled;
-  late RxBool loadingAnimation;
-  late RxBool loadingAnimationSuccess;
   late RxBool keepConected;
   late LoadingWidget loadingWidget;
   late TextEditingController userInputController;
@@ -64,20 +62,16 @@ class LoginPageController extends GetxController {
     cpfInputHasError = false.obs;
     passwordInputHasError = false.obs;
     passwordFieldEnabled = true.obs;
-    loadingAnimation = false.obs;
-    loadingAnimationSuccess = false.obs;
     keepConected = false.obs;
     userLogged = null;
     formKey = GlobalKey<FormState>();
-    loadingWidget = LoadingWidget(loadingAnimation: loadingAnimation);
     userInputController = TextEditingController();
     passwordInputController = TextEditingController();
     passwordInputFocusNode = FocusNode();
     loginButtonFocusNode = FocusNode();
     fingerPrintAuth = LocalAuthentication();
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimationSuccess,
-    );
+    loadingWidget = LoadingWidget();
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
   }
 
@@ -90,7 +84,6 @@ class LoginPageController extends GetxController {
         );
 
         if (authenticate) {
-          loadingAnimation.value = true;
           await loadingWidget.startAnimation();
 
           await _doLoginServer(true);
@@ -107,7 +100,6 @@ class LoginPageController extends GetxController {
       }
     } catch (e) {
       await loadingWidget.stopAnimation();
-      loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -124,7 +116,6 @@ class LoginPageController extends GetxController {
   loginPressed() async {
     try {
       if (formKey.currentState!.validate()) {
-        //loadingAnimation.value = true;
         await loadingWidget.startAnimation();
 
         if (!await _doLoginServer(false) || !await _getUserInformations()) {
@@ -149,7 +140,6 @@ class LoginPageController extends GetxController {
           _goToNextPage();
         } else {
           if (loadingWidget.animationController.isAnimating) await loadingWidget.stopAnimation();
-          loadingAnimationSuccess.value = true;
           await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
           await showDialog(
             context: Get.context!,
@@ -164,7 +154,6 @@ class LoginPageController extends GetxController {
       }
     } catch (_) {
       if (loadingWidget.animationController.isAnimating) await loadingWidget.stopAnimation();
-      loadingAnimationSuccess.value = true;
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -316,7 +305,6 @@ class LoginPageController extends GetxController {
 
   _resetLogin(String message) async {
     await loadingWidget.stopAnimation();
-    loadingAnimationSuccess.value = true;
     await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
     await showDialog(
       context: Get.context!,

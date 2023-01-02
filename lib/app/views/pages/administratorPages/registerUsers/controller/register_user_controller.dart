@@ -12,7 +12,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterUsersController extends GetxController {
-  late RxBool loadingAnimation;
   late RxString userTypeSelected;
   late RxString userGenderSelected;
   late RxString ufSelected;
@@ -48,16 +47,13 @@ class RegisterUsersController extends GetxController {
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
     userTypeSelected = "".obs;
     userGenderSelected = "".obs;
     ufSelected = "".obs;
     ufsList = <String>[].obs;
     userTypeList = <String>[].obs;
     userGenderList = <String>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     userNameTextController = TextEditingController();
     documentTextController = TextEditingController();
     birthDayTextController = TextEditingController();
@@ -150,7 +146,6 @@ class RegisterUsersController extends GetxController {
   saveNewUser() async {
     try{
       if(_validFields()){
-        loadingAnimation.value = true;
         loadingWithSuccessOrErrorWidget.startAnimation();
 
         late UserType userType;

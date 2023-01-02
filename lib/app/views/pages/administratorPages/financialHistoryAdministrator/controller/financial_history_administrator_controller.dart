@@ -11,7 +11,6 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class FinancialHistoryAdministratorController extends GetxController {
   late RxDouble safeBoxAmount;
-  late RxBool loadingAnimation;
   late RxString userSelected;
   late RxList<String> usersName;
   late RxList<User> users;
@@ -27,22 +26,18 @@ class FinancialHistoryAdministratorController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUsers();
     super.onInit();
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
     userSelected = "".obs;
     safeBoxAmount = 0.0.obs;
     usersName = <String>[].obs;
     users = <User>[].obs;
     safeBoxHistoryList = <SafeBoxFinancialViewController>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _visitService = VisitService();
   }
@@ -92,7 +87,6 @@ class FinancialHistoryAdministratorController extends GetxController {
   getVisitsUser() async {
     try{
       safeBoxAmount.value = 0;
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       User? user = null;
       if(userSelected.value != "Todos"){

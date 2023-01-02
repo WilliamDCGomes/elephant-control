@@ -8,7 +8,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
 class FingerPrintSettingController extends GetxController {
   late RxBool showReceivePouchOptionAnimation;
-  late RxBool loadingAnimation;
   late RxBool fingerPrintLoginChecked;
   late RxBool alwaysRequestFingerPrintChecked;
   late RxBool enableAlwaysRequestFingerPrint;
@@ -37,12 +36,9 @@ class FingerPrintSettingController extends GetxController {
     enableAlwaysRequestFingerPrint = true.obs;
     fingerPrintChangePasswordChecked = false.obs;
     fingerPrintToReceivePouch = false.obs;
-    loadingAnimation = false.obs;
     saveButtonFocusNode = FocusNode();
 
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     fingerPrintAuth = LocalAuthentication();
   }
 
@@ -96,7 +92,6 @@ class FingerPrintSettingController extends GetxController {
   saveButtonPressed() async {
     try{
       if(await _checkFingerPrint()){
-        loadingAnimation.value = true;
         await loadingWithSuccessOrErrorWidget.startAnimation();
         await sharedPreferences.setBool("user_finger_print", fingerPrintLoginChecked.value);
         await sharedPreferences.setBool("always_request_finger_print", alwaysRequestFingerPrintChecked.value);

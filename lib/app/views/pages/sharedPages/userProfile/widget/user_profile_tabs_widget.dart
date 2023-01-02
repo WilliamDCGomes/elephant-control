@@ -119,7 +119,6 @@ class UserProfileTabsWidget {
                     if (value.length == 9) {
                       await Loading.startAndPauseLoading(
                         () => controller.searchAddressInformation(),
-                        controller.loadingAnimation,
                         controller.loadingWithSuccessOrErrorWidget,
                       );
                     }

@@ -11,7 +11,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterMachineController extends GetxController {
-  late RxBool loadingAnimation;
   late RxString ufSelected;
   late RxList<String> ufsList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -43,12 +42,9 @@ class RegisterMachineController extends GetxController {
   }
 
   _initializeVariables() {
-    loadingAnimation = false.obs;
     ufSelected = "".obs;
     ufsList = [""].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     machineNameTextController = TextEditingController();
     machineTypeTextController = TextEditingController();
     minAverageTextController = TextEditingController();
@@ -120,7 +116,6 @@ class RegisterMachineController extends GetxController {
   saveNewMachine() async {
     try {
       if (_validFields()) {
-        loadingAnimation.value = true;
         loadingWithSuccessOrErrorWidget.startAnimation();
         _machine = Machine(name: machineNameTextController.text);
         _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);

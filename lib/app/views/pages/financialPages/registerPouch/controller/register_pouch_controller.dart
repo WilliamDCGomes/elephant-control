@@ -14,7 +14,6 @@ class RegisterPouchController extends GetxController {
   late RxList<Visit> pouchs;
   late RxDouble fullValue;
   late RxDouble estimateValue;
-  late RxBool loadingAnimation;
   late RxString lastVisit;
   late RxString inclusionVisit;
   late TextEditingController pouchValue;
@@ -43,12 +42,9 @@ class RegisterPouchController extends GetxController {
   _initializeVariables() {
     lastVisit = "".obs;
     inclusionVisit = "".obs;
-    loadingAnimation = false.obs;
     fullValue = 0.0.obs;
     estimateValue = 0.00.obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     pouchValue = TextEditingController();
     credCardValue = TextEditingController();
     debtCardValue = TextEditingController();
@@ -58,7 +54,6 @@ class RegisterPouchController extends GetxController {
 
   Future<void> _getMoneyPouchReceived() async {
     try{
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       pouchs.addAll(await MoneyPouchService().getMoneyPouchReceived());
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -120,7 +115,6 @@ class RegisterPouchController extends GetxController {
 
   Future<void> save() async {
     try {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
       moneyPouchViewController.valueMatch = false;

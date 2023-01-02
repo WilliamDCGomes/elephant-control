@@ -11,7 +11,6 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class OperatorPouchController extends GetxController {
   final bool withOperator;
-  late RxBool loadingAnimation;
   late RxString userSelected;
   late RxDouble fullValue;
   late RxList<User> users;
@@ -28,21 +27,17 @@ class OperatorPouchController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUsers();
     super.onInit();
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
     userSelected = "".obs;
     fullValue = 0.0.obs;
     users = <User>[].obs;
     usersName = <String>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _moneyPouchService = MoneyPouchService();
     moneyPouchGetViewController = null;
@@ -97,7 +92,6 @@ class OperatorPouchController extends GetxController {
 
   getPouchUser(String user) async {
     try{
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       if(user == "Todos"){
         if(withOperator){

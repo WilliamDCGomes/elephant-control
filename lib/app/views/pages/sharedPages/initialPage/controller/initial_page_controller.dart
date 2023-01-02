@@ -15,7 +15,6 @@ import '../../../widgetsShared/popups/information_popup.dart';
 import '../../login/page/login_page_page.dart';
 
 class InitialPageController extends GetxController {
-  late RxBool loadingAnimationSuccess;
   late SharedPreferences sharedPreferences;
   late final LocalAuthentication fingerPrintAuth;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -33,10 +32,7 @@ class InitialPageController extends GetxController {
   }
 
   _initializeVariables(){
-    loadingAnimationSuccess = false.obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimationSuccess,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     fingerPrintAuth = LocalAuthentication();
     _userService = UserService();
   }
@@ -50,8 +46,6 @@ class InitialPageController extends GetxController {
         );
 
         if (authenticate) {
-          loadingAnimationSuccess.value = true;
-
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
           await _doLoginServerKeepConnected();
           _goToNextPage();
@@ -124,7 +118,6 @@ class InitialPageController extends GetxController {
   }
 
   _resetLogin(String message) async {
-    loadingAnimationSuccess.value = true;
     await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
     await showDialog(
       context: Get.context!,

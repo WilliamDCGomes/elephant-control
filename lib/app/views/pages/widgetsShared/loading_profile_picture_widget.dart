@@ -11,9 +11,10 @@ class LoadingProfilePictureWidget extends StatefulWidget {
 
   LoadingProfilePictureWidget(
       { Key? key,
-        required this.loadingAnimation,
+        RxBool? internalLoadingAnimation,
       }) : super(key: key){
     this.isLoading = true.obs;
+    loadingAnimation = internalLoadingAnimation ?? false.obs;
   }
 
   @override

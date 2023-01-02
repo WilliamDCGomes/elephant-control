@@ -4,9 +4,8 @@ import '../views/pages/widgetsShared/loading_widget.dart';
 import '../views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
 
 class Loading{
-  static Future startAndPauseLoading(Function action, RxBool loadingAnimation, LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget) async {
+  static Future startAndPauseLoading(Function action, LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget) async {
     FocusScope.of(Get.context!).requestFocus(FocusNode());
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
 
     await Future.delayed(Duration(seconds: 1));
@@ -17,12 +16,10 @@ class Loading{
 
   static Future starAnimationAndCallOtherPage(
       Function action,
-      RxBool loadingAnimation,
       LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget,
       Widget destinationPage,
   ) async {
     FocusScope.of(Get.context!).requestFocus(FocusNode());
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
 
     await Future.delayed(Duration(seconds: 1));
@@ -33,9 +30,8 @@ class Loading{
     );
   }
 
-  static Future startAndPauseLoadingLogin(Function action, RxBool loadingAnimation, LoadingWidget loadingWidget) async {
+  static Future startAndPauseLoadingLogin(Function action, LoadingWidget loadingWidget) async {
     FocusScope.of(Get.context!).requestFocus(FocusNode());
-    loadingAnimation.value = true;
     await loadingWidget.startAnimation();
 
     await Future.delayed(Duration(seconds: 1));

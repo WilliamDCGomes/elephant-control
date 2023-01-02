@@ -15,10 +15,11 @@ class LoadingWithSuccessOrErrorWidget extends StatefulWidget {
 
   LoadingWithSuccessOrErrorWidget({
     Key? key,
-    required this.loadingAnimation,
+    RxBool? internalLoadingAnimation,
   }) : super(key: key) {
     this.isLoading = true.obs;
     this.success = false.obs;
+    loadingAnimation = internalLoadingAnimation ?? false.obs;
   }
 
   @override
@@ -30,6 +31,7 @@ class LoadingWithSuccessOrErrorWidget extends StatefulWidget {
   }
 
   Future stopAnimation({Widget? destinationPage, bool? backPage, bool? justLoading, bool? fail, int? duration}) async {
+    loadingAnimation.value = true;
     if (justLoading != null && justLoading) {
       await Future.delayed(Duration(seconds: 1));
       _resetStateWithoutSuccessOrFail();

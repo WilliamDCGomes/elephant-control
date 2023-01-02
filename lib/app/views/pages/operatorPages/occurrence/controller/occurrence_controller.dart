@@ -14,7 +14,6 @@ import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/popups/videos_picture_widget.dart';
 
 class OccurrenceController extends GetxController {
-  late RxBool loadingAnimation;
   late RxString machineSelected;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
@@ -32,7 +31,6 @@ class OccurrenceController extends GetxController {
 
   _initializeVariables() {
     machineSelected = _machine.name.obs;
-    loadingAnimation = false.obs;
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
     observations = TextEditingController();
@@ -40,9 +38,7 @@ class OccurrenceController extends GetxController {
     extraMachineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
     machineOccurrenceVideo = VideosPictureWidget();
 
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
 
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
