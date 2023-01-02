@@ -33,9 +33,22 @@ class ImagesPictureWidget extends StatefulWidget {
       final extensaoArquivo = p.extension(file.path);
 
       if (checkFileType(extensaoArquivo)) {
+        var targetPath = file.path.split('.');
+        targetPath[targetPath.length - 2] += "_compacted";
+        String newPath = "";
+
+        for(int i = 0; i < targetPath.length; i++){
+          if(i != targetPath.length - 1){
+            newPath += (targetPath[i] + ".");
+          }
+          else{
+            newPath += targetPath[i];
+          }
+        }
+
         final imageLowQuality = await FlutterImageCompress.compressAndGetFile(
           file.path,
-          file.path,
+          newPath,
           quality: 30,
         );
 
@@ -64,7 +77,11 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
         preferredCameraDevice: CameraDevice.rear,
       );
 
-      picture = await widget.compressFile(picture);
+      XFile? pictureCompressed = await widget.compressFile(picture);
+
+      if(pictureCompressed != null){
+        picture = pictureCompressed;
+      }
 
       if(picture != null){
         setState(() {

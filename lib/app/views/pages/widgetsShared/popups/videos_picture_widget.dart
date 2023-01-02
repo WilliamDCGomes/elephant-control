@@ -33,7 +33,11 @@ class _VideosPictureWidgetState extends State<VideosPictureWidget> {
         maxDuration: const Duration(seconds: 30),
       );
 
-      video = await _compressVideo(video);
+      XFile? videoCompressed = await _compressVideo(video);
+
+      if(videoCompressed != null){
+        video = videoCompressed;
+      }
 
       if(video != null){
         setState(() {

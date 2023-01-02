@@ -58,6 +58,11 @@ class RegisterMachineController extends GetxController {
     houseNumberTextController = TextEditingController();
     neighborhoodTextController = TextEditingController();
     complementTextController = TextEditingController();
+    minAverageTextController.text = "0";
+    maxAverageTextController.text = "0";
+    firstClockTextController.text = "0";
+    secondClockTextController.text = "0";
+    periodVisitsTextController.text = "0";
     consultCepService = ConsultCepService();
     _machine = null;
     _machineService = MachineService();
