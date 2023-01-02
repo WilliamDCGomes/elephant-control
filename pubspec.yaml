@@ -43,6 +43,7 @@ dependencies:
   easy_image_viewer: ^1.2.0
   firebase_storage: ^11.0.6
   flutter_flavorizr: ^2.1.5
+  package_info_plus: ^3.0.2
   firebase_messaging: ^14.1.1
   shared_preferences: ^2.0.15
   flutter_localization: ^0.1.9

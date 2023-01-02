@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
@@ -24,6 +25,7 @@ class LoginPageController extends GetxController {
   late RxBool passwordInputHasError;
   late RxBool passwordFieldEnabled;
   late RxBool keepConected;
+  late RxString appVersion;
   late LoadingWidget loadingWidget;
   late TextEditingController userInputController;
   late TextEditingController passwordInputController;
@@ -35,6 +37,7 @@ class LoginPageController extends GetxController {
   late AuthenticateResponse? userLogged;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late IUserService _userService;
+  late User? _user;
 
   LoginPageController(this._cancelFingerPrint) {
     _initializeVariables();
@@ -43,6 +46,7 @@ class LoginPageController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    appVersion.value = (await PackageInfo.fromPlatform()).version;
     userInputController.text = FormatNumbers.stringToCpf(await sharedPreferences.getString("user_logged") ?? "");
     if (kDebugMode) {
       passwordInputController.text = "Elephant@2022";
@@ -59,10 +63,12 @@ class LoginPageController extends GetxController {
   }
 
   _initializeVariables() {
+    _user = null;
     cpfInputHasError = false.obs;
     passwordInputHasError = false.obs;
     passwordFieldEnabled = true.obs;
     keepConected = false.obs;
+    appVersion = "".obs;
     userLogged = null;
     formKey = GlobalKey<FormState>();
     userInputController = TextEditingController();
@@ -178,6 +184,61 @@ class LoginPageController extends GetxController {
 
     await sharedPreferences.setBool("keep-connected", keepConected.value);
 
+    if (_user != null) {
+      await sharedPreferences.setString("name", _user!.name);
+      await sharedPreferences.setString("birthdate", DateFormatToBrazil.formatDate(_user!.birthdayDate));
+      await sharedPreferences.setString("balanceMoney", _user!.balanceMoney.toString());
+      await sharedPreferences.setString("pouchLastUpdate", _user!.pouchLastUpdate.toString());
+      await sharedPreferences.setString("balanceStuffedAnimals", _user!.balanceStuffedAnimals.toString());
+      await sharedPreferences.setString("stuffedAnimalsLastUpdate", _user!.stuffedAnimalsLastUpdate.toString());
+      switch (_user!.gender) {
+        case TypeGender.masculine:
+          await sharedPreferences.setString("gender", "Masculino");
+          LoggedUser.gender = "Masculino";
+          break;
+        case TypeGender.feminine:
+          await sharedPreferences.setString("gender", "Feminino");
+          LoggedUser.gender = "Feminino";
+          break;
+        case TypeGender.other:
+          await sharedPreferences.setString("gender", "Outro");
+          LoggedUser.gender = "Outro";
+          break;
+        case TypeGender.none:
+          await sharedPreferences.setString("gender", "Não Informado");
+          LoggedUser.gender = "Não Informado";
+          break;
+      }
+      await sharedPreferences.setString("cpf", _user!.document ?? "");
+      await sharedPreferences.setString("cep", _user!.cep ?? "");
+      await sharedPreferences.setString("city", _user!.city ?? "");
+      await sharedPreferences.setString("street", _user!.address ?? "");
+      await sharedPreferences.setString("houseNumber", _user!.number ?? "");
+      await sharedPreferences.setString("neighborhood", _user!.district ?? "");
+      await sharedPreferences.setString("complement", _user!.complement ?? "");
+      await sharedPreferences.setString("phone", _user!.tellphone ?? "");
+      await sharedPreferences.setString("cellPhone", _user!.cellphone ?? "");
+      await sharedPreferences.setString("email", _user!.email ?? "");
+      await sharedPreferences.setString("uf", _user!.uf ?? "");
+      await sharedPreferences.setString("code", _user!.code.toString());
+      LoggedUser.birthdate = DateFormatToBrazil.formatDate(_user!.birthdayDate);
+      LoggedUser.cpf = _user!.document ?? "";
+      LoggedUser.cep = _user!.cep ?? "";
+      LoggedUser.city = _user!.city ?? "";
+      LoggedUser.street = _user!.address ?? "";
+      LoggedUser.houseNumber = _user!.number ?? "";
+      LoggedUser.neighborhood = _user!.district ?? "";
+      LoggedUser.complement = _user!.complement ?? "";
+      LoggedUser.phone = _user!.tellphone ?? "";
+      LoggedUser.cellPhone = _user!.cellphone ?? "";
+      LoggedUser.email = _user!.email ?? "";
+      LoggedUser.uf = _user!.uf ?? "";
+      LoggedUser.balanceMoney = _user!.balanceMoney;
+      LoggedUser.pouchLastUpdate = _user!.pouchLastUpdate;
+      LoggedUser.balanceStuffedAnimals = _user!.balanceStuffedAnimals;
+      LoggedUser.stuffedAnimalsLastUpdate = _user!.stuffedAnimalsLastUpdate;
+    }
+
     if (userLogged != null) {
       LoggedUser.nameAndLastName = userLogged!.name!;
       LoggedUser.name = userLogged!.name!.split(' ').first;
@@ -230,64 +291,9 @@ class LoginPageController extends GetxController {
 
   Future<bool> _getUserInformations() async {
     try {
-      User? _user = await _userService.getUserInformation();
-      if (_user != null) {
-        await sharedPreferences.setString("name", _user.name);
-        await sharedPreferences.setString("birthdate", DateFormatToBrazil.formatDate(_user.birthdayDate));
-        await sharedPreferences.setString("balanceMoney", _user.balanceMoney.toString());
-        await sharedPreferences.setString("pouchLastUpdate", _user.pouchLastUpdate.toString());
-        await sharedPreferences.setString("balanceStuffedAnimals", _user.balanceStuffedAnimals.toString());
-        await sharedPreferences.setString("stuffedAnimalsLastUpdate", _user.stuffedAnimalsLastUpdate.toString());
-        switch (_user.gender) {
-          case TypeGender.masculine:
-            await sharedPreferences.setString("gender", "Masculino");
-            LoggedUser.gender = "Masculino";
-            break;
-          case TypeGender.feminine:
-            await sharedPreferences.setString("gender", "Feminino");
-            LoggedUser.gender = "Feminino";
-            break;
-          case TypeGender.other:
-            await sharedPreferences.setString("gender", "Outro");
-            LoggedUser.gender = "Outro";
-            break;
-          case TypeGender.none:
-            await sharedPreferences.setString("gender", "Não Informado");
-            LoggedUser.gender = "Não Informado";
-            break;
-        }
-        await sharedPreferences.setString("cpf", _user.document ?? "");
-        await sharedPreferences.setString("cep", _user.cep ?? "");
-        await sharedPreferences.setString("city", _user.city ?? "");
-        await sharedPreferences.setString("street", _user.address ?? "");
-        await sharedPreferences.setString("houseNumber", _user.number ?? "");
-        await sharedPreferences.setString("neighborhood", _user.district ?? "");
-        await sharedPreferences.setString("complement", _user.complement ?? "");
-        await sharedPreferences.setString("phone", _user.tellphone ?? "");
-        await sharedPreferences.setString("cellPhone", _user.cellphone ?? "");
-        await sharedPreferences.setString("email", _user.email ?? "");
-        await sharedPreferences.setString("uf", _user.uf ?? "");
-        await sharedPreferences.setString("code", _user.code.toString());
-        LoggedUser.name = _user.name;
-        LoggedUser.birthdate = DateFormatToBrazil.formatDate(_user.birthdayDate);
-        LoggedUser.cpf = _user.document ?? "";
-        LoggedUser.cep = _user.cep ?? "";
-        LoggedUser.city = _user.city ?? "";
-        LoggedUser.street = _user.address ?? "";
-        LoggedUser.houseNumber = _user.number ?? "";
-        LoggedUser.neighborhood = _user.district ?? "";
-        LoggedUser.complement = _user.complement ?? "";
-        LoggedUser.phone = _user.tellphone ?? "";
-        LoggedUser.cellPhone = _user.cellphone ?? "";
-        LoggedUser.email = _user.email ?? "";
-        LoggedUser.uf = _user.uf ?? "";
-        LoggedUser.balanceMoney = _user.balanceMoney;
-        LoggedUser.pouchLastUpdate = _user.pouchLastUpdate;
-        LoggedUser.balanceStuffedAnimals = _user.balanceStuffedAnimals;
-        LoggedUser.stuffedAnimalsLastUpdate = _user.stuffedAnimalsLastUpdate;
-        return true;
-      }
-      return false;
+      _user = await _userService.getUserInformation();
+
+      return _user != null;
     } catch (_) {
       return false;
     }

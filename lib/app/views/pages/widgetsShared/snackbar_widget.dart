@@ -8,11 +8,13 @@ class SnackbarWidget {
   final String warningText;
   final String informationText;
   final Color backgrondColor;
+  final int? maxLine;
 
   SnackbarWidget({
     required this.warningText,
     required this.informationText,
     required this.backgrondColor,
+    this.maxLine,
   }) {
     showSnackBar(informationText);
   }
@@ -33,7 +35,7 @@ class SnackbarWidget {
       textColor: AppColors.whiteColor,
       fontSize: 14.sp,
       textAlign: TextAlign.center,
-      maxLines: 1,
+      maxLines: maxLine ?? 1,
       fontWeight: FontWeight.bold,
     ),
     duration: const Duration(seconds: 2),

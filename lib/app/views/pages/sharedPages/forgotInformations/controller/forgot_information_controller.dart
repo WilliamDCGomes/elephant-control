@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import '../../../../../../base/services/user_service.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
@@ -9,7 +8,6 @@ class ForgotInformationController extends GetxController {
   late RxBool emailInputHasError;
   late final GlobalKey<FormState> formKey;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late UserService _userService;
 
   ForgotInformationController() {
     _inicializeVariables();
@@ -20,7 +18,6 @@ class ForgotInformationController extends GetxController {
     emailInputHasError = false.obs;
     formKey = GlobalKey<FormState>();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
-    _userService = UserService();
   }
 
   sendButtonPressed() async {

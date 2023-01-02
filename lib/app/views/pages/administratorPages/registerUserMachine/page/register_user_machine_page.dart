@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../utils/loading.dart';
-import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/paths.dart';
-import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
-import '../../../widgetsShared/dropdown_button_rxlist_wdiget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
-import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/register_user_machine_controller.dart';

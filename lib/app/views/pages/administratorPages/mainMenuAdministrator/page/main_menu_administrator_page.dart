@@ -12,7 +12,6 @@ import '../../financialHistoryAdministrator/page/financial_history_administrator
 import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
 import '../../operatorsVisits/page/operators_visits_page.dart';
 import '../../registerMachine/page/register_machine_page.dart';
-import '../../registerUserMachine/page/register_user_machine_page.dart';
 import '../../registerUsers/page/register_user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widget/menu_options_widget.dart';
@@ -56,6 +55,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                   Container(
                     height: 30.h,
                     width: 100.w,
+                    padding: EdgeInsets.only(top: 1.5.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.h)),
                       color: AppColors.defaultColor,
@@ -144,6 +144,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                   Expanded(
                     child: Center(
                       child: ListView(
+                        padding: EdgeInsets.all(2.h),
                         children: [
                           SizedBox(height: 1.h),
                           Row(

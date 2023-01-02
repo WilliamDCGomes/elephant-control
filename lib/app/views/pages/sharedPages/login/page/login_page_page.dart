@@ -5,9 +5,9 @@ import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../../utils/text_field_validators.dart';
-import '../../../sharedPages/forgotInformations/page/forgot_information_page.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
+import '../../../widgetsShared/snackbar_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Stack(
                                       children: [
                                         Obx(
-                                              () => TextFieldWidget(
+                                          () => TextFieldWidget(
                                             controller: controller.userInputController,
                                             hintText: "Usuário",
                                             height: 9.h,
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Stack(
                                       children: [
                                         Obx(
-                                              () => TextFieldWidget(
+                                          () => TextFieldWidget(
                                             controller: controller.passwordInputController,
                                             focusNode: controller.passwordInputFocusNode,
                                             hintText: "Senha",
@@ -186,7 +186,12 @@ class _LoginPageState extends State<LoginPage> {
                                                 fontSize: 15.sp,
                                                 height: 3.5.h,
                                                 componentPadding: EdgeInsets.zero,
-                                                onTap: () => Get.to(() => ForgotInformationPage()),
+                                                onTap: () => SnackbarWidget(
+                                                  warningText: "Aviso",
+                                                  informationText: "Entre em contato com o administrador para que ele resete a sua senha para a padrão!",
+                                                  backgrondColor: AppColors.defaultColor,
+                                                  maxLine: 2,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -205,6 +210,20 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2.h),
+                            child: Obx(
+                              () => Visibility(
+                                visible: controller.appVersion.value.isNotEmpty,
+                                child: TextWidget(
+                                  "Versão: ${controller.appVersion.value}",
+                                  textColor: AppColors.blackColor,
+                                  fontSize: 16.sp,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
