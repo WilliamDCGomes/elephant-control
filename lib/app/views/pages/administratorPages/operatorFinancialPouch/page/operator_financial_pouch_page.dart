@@ -141,7 +141,6 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                             padding: EdgeInsets.symmetric(horizontal: 2.h),
                             itemBuilder: (context, index){
                               return PouchCardWidget(
-                                userName: controller.userSelected.value,
                                 moneyPouchValueList: controller.moneyPouchGetViewController!.moneyPouchValueList[index],
                               );
                             },

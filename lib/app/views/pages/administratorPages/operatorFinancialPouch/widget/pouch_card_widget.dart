@@ -11,12 +11,10 @@ import '../../../operatorPages/maintenanceHistory/widgets/maintenance_header_car
 import '../popup/pouch_information_popup.dart';
 
 class PouchCardWidget extends StatefulWidget {
-  final String userName;
   final MoneyPouchValueList moneyPouchValueList;
 
   const PouchCardWidget(
   { Key? key,
-    required this.userName,
     required this.moneyPouchValueList,
   }) : super(key: key);
 
@@ -36,7 +34,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
             PouchInformationPopup.getWidgetList(
               context,
               widget.moneyPouchValueList.name,
-              widget.userName,
+              widget.moneyPouchValueList.userName,
               widget.moneyPouchValueList.alteration,
               widget.moneyPouchValueList.moneyQuantity,
             ),

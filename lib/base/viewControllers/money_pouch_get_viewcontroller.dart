@@ -15,6 +15,7 @@ class MoneyPouchGetViewController {
 
 class MoneyPouchValueList {
   late String name;
+  late String userName;
   late DateTime alteration;
   late double moneyQuantity;
 
@@ -22,6 +23,7 @@ class MoneyPouchValueList {
 
   MoneyPouchValueList.fromJson(Map<String, dynamic> json) {
     name = json["name"];
+    userName = json["userName"];
     alteration = DateTime.parse(json["alteration"]);
     moneyQuantity = json["moneyQuantity"];
   }
