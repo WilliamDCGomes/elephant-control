@@ -98,6 +98,7 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                             itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
                             hintText: "Usuário",
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                            width: 90.w,
                             rxListItems: controller.usersName,
                             onChanged: (selectedState) {
                               if (selectedState != null) {

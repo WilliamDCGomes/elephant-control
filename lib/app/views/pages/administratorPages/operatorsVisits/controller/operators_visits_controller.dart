@@ -67,6 +67,9 @@ class OperatorsVisitsController extends GetxController {
       usersName.add("Todos");
       users.forEach((element) => usersName.add(element.name));
 
+      userSelected.value = usersName.first;
+      await getVisitsUser(loadingEnabled: true);
+
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
     catch(_){
@@ -84,9 +87,11 @@ class OperatorsVisitsController extends GetxController {
     }
   }
 
-  getVisitsUser() async {
+  getVisitsUser({bool loadingEnabled = true}) async {
     try{
-      await loadingWithSuccessOrErrorWidget.startAnimation();
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.startAnimation();
+      }
 
       User? user = null;
       if(userSelected.value != "Todos"){
@@ -98,10 +103,14 @@ class OperatorsVisitsController extends GetxController {
         dateFilter,
       );
       update(["visit-list"]);
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
     }
     catch(_){
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      }
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

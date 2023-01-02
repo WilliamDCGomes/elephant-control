@@ -73,6 +73,9 @@ class OperatorPouchController extends GetxController {
       usersName.add("Todos");
       users.forEach((element) => usersName.add(element.name));
 
+      userSelected.value = usersName.first;
+      await getPouchUser(loadingEnabled: false);
+
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
     catch(_){
@@ -90,10 +93,12 @@ class OperatorPouchController extends GetxController {
     }
   }
 
-  getPouchUser(String user) async {
+  getPouchUser({bool loadingEnabled = true}) async {
     try{
-      await loadingWithSuccessOrErrorWidget.startAnimation();
-      if(user == "Todos"){
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.startAnimation();
+      }
+      if(userSelected.value == "Todos"){
         if(withOperator){
           moneyPouchGetViewController = await _moneyPouchService.getAllPouchInformation(UserType.operator);
         }
@@ -102,7 +107,7 @@ class OperatorPouchController extends GetxController {
         }
       }
       else{
-        var selected = users.firstWhere((element) => element.name == user);
+        var selected = users.firstWhere((element) => element.name == userSelected.value);
 
         moneyPouchGetViewController = await _moneyPouchService.getPouchInformation(selected.id ??  "");
       }
@@ -112,10 +117,14 @@ class OperatorPouchController extends GetxController {
       }
 
       update(["list-pouch"]);
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
     }
     catch(_){
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      }
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
