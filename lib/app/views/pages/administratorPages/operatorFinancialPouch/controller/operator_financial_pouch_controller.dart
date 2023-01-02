@@ -12,6 +12,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 class OperatorPouchController extends GetxController {
   final bool withOperator;
   late RxString userSelected;
+  late RxInt pouchQuantity;
   late RxDouble fullValue;
   late RxList<User> users;
   late RxList<String> usersName;
@@ -34,6 +35,7 @@ class OperatorPouchController extends GetxController {
 
   _initializeVariables(){
     userSelected = "".obs;
+    pouchQuantity= 0.obs;
     fullValue = 0.0.obs;
     users = <User>[].obs;
     usersName = <String>[].obs;
@@ -95,6 +97,8 @@ class OperatorPouchController extends GetxController {
 
   getPouchUser({bool loadingEnabled = true}) async {
     try{
+      fullValue.value = 0;
+      pouchQuantity.value = 0;
       if(loadingEnabled){
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
@@ -114,6 +118,7 @@ class OperatorPouchController extends GetxController {
 
       if(moneyPouchGetViewController != null){
         fullValue.value = moneyPouchGetViewController!.fullValue;
+        pouchQuantity.value = moneyPouchGetViewController!.moneyPouchValueList.length;
       }
 
       update(["list-pouch"]);
