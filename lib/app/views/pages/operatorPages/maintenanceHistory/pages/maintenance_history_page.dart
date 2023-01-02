@@ -1,5 +1,4 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
-import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,7 +96,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                             status: visit.status?.description ?? "Pendente",
                                             workPriority: "NORMAL",
                                             priorityColor: AppColors.greenColor.value,
-                                            clock1: FormatNumbers.numbersToMoney(visit.moneyQuantity),
+                                            clock1: visit.moneyQuantity.toString(),
                                             clock2: visit.stuffedAnimalsQuantity.toString(),
                                             teddy: visit.stuffedAnimalsReplaceQuantity.toString(),
                                             pouchCollected: visit.moneyPouchRetired,
