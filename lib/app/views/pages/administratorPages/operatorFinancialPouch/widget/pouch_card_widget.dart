@@ -5,13 +5,13 @@ import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../../base/viewControllers/money_pouch_get_viewcontroller.dart';
+import '../../../../../../base/viewControllers/money_pouch_value_list_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
 import '../popup/pouch_information_popup.dart';
 
 class PouchCardWidget extends StatefulWidget {
-  final MoneyPouchValueList moneyPouchValueList;
+  final MoneyPouchValueListViewController moneyPouchValueList;
 
   const PouchCardWidget(
   { Key? key,
