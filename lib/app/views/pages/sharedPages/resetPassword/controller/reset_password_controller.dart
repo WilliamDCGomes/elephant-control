@@ -91,7 +91,6 @@ class ResetPasswordController extends GetxController {
 
         if(await _checkFingerPrint()){
           loadingAnimation.value = true;
-
           await loadingWithSuccessOrErrorWidget.startAnimation();
           await Future.delayed(Duration(milliseconds: 500));
           if(await InternetConnection.checkConnection()){

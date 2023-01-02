@@ -21,7 +21,9 @@ import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../administratorPages/mainMenuAdministrator/controller/main_menu_administrator_controller.dart';
+import '../../../administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
+import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
@@ -372,10 +374,20 @@ class UserProfileController extends GetxController {
           );
           buttonText.value = "EDITAR";
           profileIsDisabled.value = true;
-          Get.offAll(() => MainMenuOperatorPage());
+          _goToNextPage();
         }
       }
     }
+  }
+
+  _goToNextPage(){
+    if (LoggedUser.userType == UserType.operator) {
+      Get.offAll(() => MainMenuOperatorPage());
+    } else if (LoggedUser.userType == UserType.treasury) {
+      Get.offAll(() => MainMenuFinancialPage());
+    } else if (LoggedUser.userType == UserType.admin) {
+      Get.offAll(() => MainMenuAdministratorPage());
+    } else if (LoggedUser.userType == UserType.stockist) {}
   }
 
   bool _validProfile() {

@@ -8,6 +8,12 @@ class DateFormatToBrazil {
     return "";
   }
 
+  static String formatDateAmerican(DateTime? date) {
+    if(date != null)
+      return DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
+    return "";
+  }
+
   static DateTime? formatDateFromTextField(String? date) {
     if(date != null) {
       var dates = date.split('/');

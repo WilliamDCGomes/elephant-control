@@ -2,11 +2,15 @@ import 'package:elephant_control/base/services/money_pouch_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../../base/models/visit/model/visit.dart';
 import '../../../../../../base/viewControllers/add_money_pouch_viewcontroller.dart';
+import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/snackbar_widget.dart';
 import '../../mainMenuFinancial/controller/main_menu_financial_controller.dart';
 import '../popup/receive_pouch_popup.dart';
 
@@ -20,11 +24,20 @@ class ReceivePouchFromOperatorController extends GetxController {
   late TextEditingController observations;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final GlobalKey<FormState> _formKey;
+  late SharedPreferences sharedPreferences;
+  late final LocalAuthentication fingerPrintAuth;
 
   ReceivePouchFromOperatorController() {
     _inicializeList();
     _initializeVariables();
-    _getData();
+  }
+
+  @override
+  void onInit() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    await Future.delayed(Duration(milliseconds: 200));
+    await _getData();
+    super.onInit();
   }
 
   //Getters
@@ -45,15 +58,27 @@ class ReceivePouchFromOperatorController extends GetxController {
     operatorCode = TextEditingController();
     observations = TextEditingController();
     _formKey = GlobalKey<FormState>();
+    fingerPrintAuth = LocalAuthentication();
   }
 
-  void _getData() async {
+  Future<void> _getData() async {
     try {
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       await _getOperatorUsersWithVisitStatusMoneyWithdrawal();
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     } catch (_) {
-    } finally {
-      loadingAnimation.value = false;
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao receber informações para receber o malote!\nTente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
     }
   }
 
@@ -76,12 +101,20 @@ class ReceivePouchFromOperatorController extends GetxController {
 
   openPouchList() {
     if (operatorSelected == null) {
-      Get.snackbar('Operador não selecionado', 'Por favor, selecione um operador', snackPosition: SnackPosition.BOTTOM);
+      SnackbarWidget(
+        warningText: "Operador não selecionado",
+        informationText: "Por favor, selecione um operador",
+        backgrondColor: AppColors.defaultColor,
+      );
       return;
     }
     if (!formKey.currentState!.validate()) return;
     if (int.parse(operatorCode.text) != operatorSelected?.code) {
-      Get.snackbar('Código de operador inválido', 'Por favor, verifique o código digitado', snackPosition: SnackPosition.BOTTOM);
+      SnackbarWidget(
+        warningText: "Código de operador inválido",
+        informationText: "Por favor, verifique o código digitado",
+        backgrondColor: AppColors.defaultColor,
+      );
     } else {
       showDialog(
         context: Get.context!,
@@ -102,11 +135,9 @@ class ReceivePouchFromOperatorController extends GetxController {
         await loadingWithSuccessOrErrorWidget.startAnimation();
         await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id!);
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-        loadingAnimation.value = false;
       }
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-      loadingAnimation.value = false;
       operatorSelected = null;
     }
   }
@@ -115,15 +146,50 @@ class ReceivePouchFromOperatorController extends GetxController {
     Get.back();
   }
 
+  Future<bool> _checkBiometricSensor() async {
+    try {
+      bool? useFingerPrint = await sharedPreferences.getBool("finger_print_to_receive_pouch");
+      if (await fingerPrintAuth.canCheckBiometrics && (useFingerPrint ?? false)) {
+        var authenticate = await fingerPrintAuth.authenticate(
+          localizedReason: "Utilize a sua digital para receber o malote.",
+        );
+
+        return authenticate;
+      }
+      return true;
+    } catch (e) {
+      loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao receber o malote!\nTente novamente mais tarde.",
+          );
+        },
+      );
+      return false;
+    }
+  }
+
   Future<void> saveReceivedPouch() async {
     if (pouchsSelectedList.isEmpty) {
-      Get.snackbar('Nenhum saque selecionado', 'Por favor, selecione pelo menos um saque', snackPosition: SnackPosition.BOTTOM);
+      SnackbarWidget(
+        warningText: "Nenhum saque selecionado",
+        informationText: "Por favor, selecione pelo menos um saque",
+        backgrondColor: AppColors.defaultColor,
+      );
       return;
     }
     bool enviado = false;
     List<String> pouchsWithErrors = [];
     try {
+      if(!await _checkBiometricSensor()){
+        return;
+      }
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       for (var moneyPouch in pouchsSelectedList) {
         final addMoneyPouchViewController = AddMoneyPouchViewController(
           userOperatorId: operatorSelected!.id!,
@@ -136,9 +202,11 @@ class ReceivePouchFromOperatorController extends GetxController {
           pouchsWithErrors.add(moneyPouch.machine!.name);
         }
       }
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
       Get.back();
       if (pouchsWithErrors.isNotEmpty) throw Exception();
       Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
+
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -149,6 +217,7 @@ class ReceivePouchFromOperatorController extends GetxController {
         },
       );
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -158,8 +227,6 @@ class ReceivePouchFromOperatorController extends GetxController {
           );
         },
       );
-    } finally {
-      loadingAnimation.value = false;
     }
   }
 }

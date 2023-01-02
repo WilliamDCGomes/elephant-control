@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -83,32 +82,51 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     maxLines: 2,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  SizedBox(height: 2.h),
                                   Obx(
-                                    () => RichTextTwoDifferentWidget(
-                                      firstText: "Valor total: ",
-                                      firstTextColor: AppColors.whiteColor,
-                                      firstTextFontWeight: FontWeight.normal,
-                                      firstTextSize: 18.sp,
-                                      secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
-                                      secondTextColor: AppColors.whiteColor,
-                                      secondTextFontWeight: FontWeight.bold,
-                                      secondTextSize: 18.sp,
-                                      secondTextDecoration: TextDecoration.none,
-                                      maxLines: 2,
+                                    () => Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 2.h),
+                                      child: RichTextTwoDifferentWidget(
+                                        firstText: "Valor total: ",
+                                        firstTextColor: AppColors.whiteColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 18.sp,
+                                        secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
+                                        secondTextColor: AppColors.whiteColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 18.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                        maxLines: 2,
+                                      ),
                                     ),
                                   ),
                                   Obx(
                                     () => Visibility(
                                       visible: controller.lastVisit.value.isNotEmpty,
+                                      child: RichTextTwoDifferentWidget(
+                                        firstText: "Última Visita: ",
+                                        firstTextColor: AppColors.whiteColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 18.sp,
+                                        secondText: controller.lastVisit.value,
+                                        secondTextColor: AppColors.whiteColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 18.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => Visibility(
+                                      visible: controller.inclusionVisit.value.isNotEmpty,
                                       child: Padding(
-                                        padding: EdgeInsets.only(top: 1.h),
+                                        padding: EdgeInsets.only(top: 2.h),
                                         child: RichTextTwoDifferentWidget(
-                                          firstText: "Última Visita: ",
+                                          firstText: "Visita Atual: ",
                                           firstTextColor: AppColors.whiteColor,
                                           firstTextFontWeight: FontWeight.normal,
                                           firstTextSize: 18.sp,
-                                          secondText: controller.lastVisit.value.isEmpty ? "" : DateFormatToBrazil.formatDate(DateTime.parse(controller.lastVisit.value)),
+                                          secondText: controller.inclusionVisit.value,
                                           secondTextColor: AppColors.whiteColor,
                                           secondTextFontWeight: FontWeight.bold,
                                           secondTextSize: 18.sp,
@@ -122,7 +140,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     () => Visibility(
                                       visible: (controller.estimateValue.value - controller.fullValue.value > 20 || controller.estimateValue.value - controller.fullValue.value < -20) && controller.fullValue.value != 0,
                                       child: Padding(
-                                        padding: EdgeInsets.only(top: 1.h),
+                                        padding: EdgeInsets.only(top: 2.h),
                                         child: RichTextTwoDifferentWidget(
                                           firstText: "Diferença: ",
                                           firstTextColor: AppColors.whiteColor,
@@ -144,7 +162,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                             Expanded(
                               child: ListView(
                                 shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                padding: EdgeInsets.all(2.h),
                                 children: [
                                   Align(
                                     alignment: Alignment.centerLeft,

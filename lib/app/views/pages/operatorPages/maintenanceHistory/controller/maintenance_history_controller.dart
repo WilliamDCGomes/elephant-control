@@ -77,7 +77,6 @@ class MaintenanceHistoryController extends GetxController {
       _visits.clear();
     } finally {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-      loadingAnimation.value = false;
     }
   }
 

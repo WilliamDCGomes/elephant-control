@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/money_pouch_viewcontroller.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class RegisterPouchController extends GetxController {
   late RxDouble estimateValue;
   late RxBool loadingAnimation;
   late RxString lastVisit;
+  late RxString inclusionVisit;
   late TextEditingController pouchValue;
   late TextEditingController credCardValue;
   late TextEditingController debtCardValue;
@@ -25,7 +27,13 @@ class RegisterPouchController extends GetxController {
   RegisterPouchController() {
     _inicializeList();
     _initializeVariables();
-    _getMoneyPouchReceived();
+  }
+
+  @override
+  void onInit() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    await _getMoneyPouchReceived();
+    super.onInit();
   }
 
   _inicializeList() {
@@ -34,6 +42,7 @@ class RegisterPouchController extends GetxController {
 
   _initializeVariables() {
     lastVisit = "".obs;
+    inclusionVisit = "".obs;
     loadingAnimation = false.obs;
     fullValue = 0.0.obs;
     estimateValue = 0.00.obs;
@@ -48,16 +57,38 @@ class RegisterPouchController extends GetxController {
   }
 
   Future<void> _getMoneyPouchReceived() async {
-    loadingAnimation.value = true;
-    pouchs.addAll(await MoneyPouchService().getMoneyPouchReceived());
-    loadingAnimation.value = false;
+    try{
+      loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
+      pouchs.addAll(await MoneyPouchService().getMoneyPouchReceived());
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    }
+    catch(_){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao receber informações para lançar o malote!\nTente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
+    }
   }
 
   onDropdownButtonWidgetChanged(String? visitId) {
     pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
     if (pouchSelected != null) {
       estimateValue.value = pouchSelected!.moneyQuantity;
-      lastVisit.value = (pouchSelected?.machine?.lastVisit?.toIso8601String()) ?? "";
+      lastVisit.value = DateFormatToBrazil.formatDateAndHour(
+        pouchSelected?.machine?.lastVisit
+      );
+
+      inclusionVisit.value = DateFormatToBrazil.formatDateAndHour(
+        pouchSelected?.inclusion
+      );
     }
   }
 
@@ -90,10 +121,12 @@ class RegisterPouchController extends GetxController {
   Future<void> save() async {
     try {
       loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
       moneyPouchViewController.valueMatch = false;
       final result = await VisitService().changeStatusMoneyPouchReceivedToMoneyPouchLaunched(moneyPouchViewController);
       if (result) {
+        await loadingWithSuccessOrErrorWidget.stopAnimation();
         Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
         Get.back();
         showDialog(
@@ -107,6 +140,7 @@ class RegisterPouchController extends GetxController {
         );
       }
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -116,8 +150,6 @@ class RegisterPouchController extends GetxController {
           );
         },
       );
-    } finally {
-      loadingAnimation.value = false;
     }
   }
 }

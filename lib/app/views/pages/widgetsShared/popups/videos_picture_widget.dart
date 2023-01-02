@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../../../utils/paths.dart';
 import '../../../stylePages/app_colors.dart';
@@ -32,6 +33,8 @@ class _VideosPictureWidgetState extends State<VideosPictureWidget> {
         maxDuration: const Duration(seconds: 30),
       );
 
+      video = await _compressVideo(video);
+
       if(video != null){
         setState(() {
           widget.picture = video;
@@ -48,6 +51,29 @@ class _VideosPictureWidgetState extends State<VideosPictureWidget> {
           );
         },
       );
+    }
+  }
+
+  Future<XFile?> _compressVideo(XFile? video) async {
+    try{
+      if(video == null){
+        return null;
+      }
+
+      MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+        video.path,
+        quality: VideoQuality.LowQuality,
+        deleteOrigin: true,
+      );
+
+      if(mediaInfo == null || mediaInfo.path == null || mediaInfo.path!.isEmpty){
+        return null;
+      }
+
+      return XFile(mediaInfo.path!);
+    }
+    catch(_){
+      return null;
     }
   }
 

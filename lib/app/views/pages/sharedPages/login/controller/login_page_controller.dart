@@ -124,11 +124,11 @@ class LoginPageController extends GetxController {
   loginPressed() async {
     try {
       if (formKey.currentState!.validate()) {
-        loadingAnimation.value = true;
+        //loadingAnimation.value = true;
         await loadingWidget.startAnimation();
 
         if (!await _doLoginServer(false) || !await _getUserInformations()) {
-          return;
+          throw Exception();
         }
 
         loginButtonFocusNode.requestFocus();
@@ -224,14 +224,14 @@ class LoginPageController extends GetxController {
             password: fromBiometric ? password : passwordInputController.text.trim(),
           )
           .timeout(Duration(seconds: 30));
-      await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
+      //await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
       await sharedPreferences.setString("password", passwordInputController.text);
       if (userLogged?.success == false) {
         await _resetLogin("Usuário e/ou senha incorretos");
         return false;
       }
       await sharedPreferences.setString('Token', userLogged!.token!);
-      await sharedPreferences.setString('ExpiracaoToken', "${userLogged!.expirationDate!.year}-${userLogged!.expirationDate!.month}-${userLogged!.expirationDate!.day}");
+      await sharedPreferences.setString('ExpiracaoToken', DateFormatToBrazil.formatDateAmerican(userLogged!.expirationDate));
       return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");

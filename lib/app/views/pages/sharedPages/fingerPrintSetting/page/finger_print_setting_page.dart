@@ -116,34 +116,21 @@ class _FingerPrintSettingPageState extends State<FingerPrintSettingPage> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 1.h),
-                                  child: Card(
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(1.h),
-                                    ),
-                                    child: Obx(
-                                      () => SwitchWidget(
-                                        text: "Habilitar a digital para gerar código de entrega de malotes?",
-                                        checked: controller.fingerPrintToGeneratePouchCode.value,
-                                        onClicked: () => controller.fingerPrintToGeneratePouchCodePressed(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 1.h),
-                                  child: Card(
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(1.h),
-                                    ),
-                                    child: Obx(
-                                      () => SwitchWidget(
-                                        text: "Habilitar a digital para recebimentos de malotes?",
-                                        checked: controller.fingerPrintToReceivePouch.value,
-                                        onClicked: () => controller.fingerPrintToReceivePouchPressed(),
+                                Obx(
+                                  () => Visibility(
+                                    visible: controller.showReceivePouchOptionAnimation.value,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(bottom: 1.h),
+                                      child: Card(
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(1.h),
+                                        ),
+                                        child: SwitchWidget(
+                                          text: "Habilitar a digital para recebimentos de malotes?",
+                                          checked: controller.fingerPrintToReceivePouch.value,
+                                          onClicked: () => controller.fingerPrintToReceivePouchPressed(),
+                                        ),
                                       ),
                                     ),
                                   ),
