@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
@@ -213,19 +214,26 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.h),
-                            child: Obx(
-                              () => Visibility(
-                                visible: controller.appVersion.value.isNotEmpty,
-                                child: TextWidget(
-                                  "Versão: ${controller.appVersion.value}",
-                                  textColor: AppColors.blackColor,
-                                  fontSize: 16.sp,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
+                          KeyboardVisibilityBuilder(
+                            builder: (context, isKeyboardVisible){
+                              if(!isKeyboardVisible){
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.h),
+                                  child: Obx(
+                                    () => Visibility(
+                                      visible: controller.appVersion.value.isNotEmpty,
+                                      child: TextWidget(
+                                        "Versão: ${controller.appVersion.value}",
+                                        textColor: AppColors.blackColor,
+                                        fontSize: 16.sp,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                              return SizedBox(height: 3.h,);
+                            }
                           ),
                         ],
                       ),
