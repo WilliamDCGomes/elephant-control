@@ -139,7 +139,7 @@ class RegisterMachineController extends GetxController {
         _machine!.complement = complementTextController.text;
         _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
         _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
-        if (await _machineService.createMachine(_machine!)) {
+        if (await _machineService.createOrUpdateMachine(_machine!)) {
           await loadingWithSuccessOrErrorWidget.stopAnimation();
           await showDialog(
             context: Get.context!,

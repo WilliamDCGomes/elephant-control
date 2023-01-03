@@ -29,10 +29,23 @@ class MachineService extends BaseService implements IMachineService {
     }
   }
 
-  Future<bool> createMachine(Machine machine) async {
+  Future<List<Machine>> getAll() async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'Machine/CreateMachine';
+      final url = baseUrlApi + 'Machine/GetAll';
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      var machines = (response.body as List).map((e) => Machine.fromJson(e)).toList();
+      return machines;
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<bool> createOrUpdateMachine(Machine machine) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/CreateOrUpdateMachine';
       final response = await post(url, machine.toJson(), headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
