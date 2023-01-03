@@ -11,7 +11,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterMachineController extends GetxController {
-  late RxBool loadingAnimation;
   late RxString ufSelected;
   late RxList<String> ufsList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -43,12 +42,9 @@ class RegisterMachineController extends GetxController {
   }
 
   _initializeVariables() {
-    loadingAnimation = false.obs;
     ufSelected = "".obs;
     ufsList = [""].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     machineNameTextController = TextEditingController();
     machineTypeTextController = TextEditingController();
     minAverageTextController = TextEditingController();
@@ -62,6 +58,11 @@ class RegisterMachineController extends GetxController {
     houseNumberTextController = TextEditingController();
     neighborhoodTextController = TextEditingController();
     complementTextController = TextEditingController();
+    minAverageTextController.text = "0";
+    maxAverageTextController.text = "0";
+    firstClockTextController.text = "0";
+    secondClockTextController.text = "0";
+    periodVisitsTextController.text = "0";
     consultCepService = ConsultCepService();
     _machine = null;
     _machineService = MachineService();
@@ -120,7 +121,6 @@ class RegisterMachineController extends GetxController {
   saveNewMachine() async {
     try {
       if (_validFields()) {
-        loadingAnimation.value = true;
         loadingWithSuccessOrErrorWidget.startAnimation();
         _machine = Machine(name: machineNameTextController.text);
         _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
@@ -205,7 +205,8 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
-    if (cepTextController.text.isEmpty) {
+    /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
+    /*if (cepTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -264,7 +265,7 @@ class RegisterMachineController extends GetxController {
         },
       );
       return false;
-    }
+    }*/
     return true;
   }
 }

@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/views/pages/widgetsShared/loading_widget.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';

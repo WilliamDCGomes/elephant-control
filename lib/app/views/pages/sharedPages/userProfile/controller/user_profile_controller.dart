@@ -1,5 +1,6 @@
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/popups/images_picture_widget.dart';
 import 'package:elephant_control/base/services/consult_cep_service.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,9 @@ import '../../../../../utils/text_field_validators.dart';
 import '../../../../../utils/valid_cellphone_mask.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../administratorPages/mainMenuAdministrator/controller/main_menu_administrator_controller.dart';
+import '../../../administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial_controller.dart';
+import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
@@ -41,7 +44,6 @@ class UserProfileController extends GetxController {
   late RxBool newPasswordFieldEnabled;
   late RxBool confirmNewPasswordFieldEnabled;
   late RxBool profileIsDisabled;
-  late RxBool loadingAnimation;
   late RxBool nameInputHasError;
   late RxBool birthdayInputHasError;
   late RxBool cepInputHasError;
@@ -103,7 +105,6 @@ class UserProfileController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUfsNames();
     _user = await _userService.getUserInformation();
@@ -120,7 +121,6 @@ class UserProfileController extends GetxController {
     buttonText = "EDITAR".obs;
     genderSelected = "".obs;
     profileIsDisabled = true.obs;
-    loadingAnimation = false.obs;
     currentPasswordFieldEnabled = true.obs;
     newPasswordFieldEnabled = true.obs;
     confirmNewPasswordFieldEnabled = true.obs;
@@ -164,15 +164,13 @@ class UserProfileController extends GetxController {
     _picker = ImagePicker();
     maskCellPhoneFormatter = MasksForTextFields.phoneNumberAcceptExtraNumberMask;
     loadingProfilePicture = LoadingProfilePictureWidget(
-      loadingAnimation: mainMenuOperatorController != null
+      internalLoadingAnimation: mainMenuOperatorController != null
           ? mainMenuOperatorController!.loadingPicture
           : mainMenuFinancialController != null
               ? mainMenuFinancialController!.loadingPicture
               : mainMenuAdministratorController!.loadingPicture,
     );
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _user = User.emptyConstructor();
     _consultCepService = ConsultCepService();
     _userService = UserService();
@@ -339,14 +337,12 @@ class UserProfileController extends GetxController {
       buttonText.value = "SALVAR";
       profileIsDisabled.value = false;
     } else {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
       await Future.delayed(Duration(seconds: 1));
 
       if (!await InternetConnection.validInternet(
         "É necessário uma conexão com a internet para fazer o cadastro",
-        loadingAnimation,
         loadingWithSuccessOrErrorWidget,
       )) {
         return;
@@ -357,7 +353,6 @@ class UserProfileController extends GetxController {
       } else if (_validPersonalInformationAndAdvanceNextStep()) {
         _setUserToUpdate();
 
-        loadingAnimation.value = true;
         if (await _saveUser()) {
           await loadingWithSuccessOrErrorWidget.stopAnimation();
           await showDialog(
@@ -371,10 +366,20 @@ class UserProfileController extends GetxController {
           );
           buttonText.value = "EDITAR";
           profileIsDisabled.value = true;
-          Get.offAll(() => MainMenuOperatorPage());
+          _goToNextPage();
         }
       }
     }
+  }
+
+  _goToNextPage(){
+    if (LoggedUser.userType == UserType.operator) {
+      Get.offAll(() => MainMenuOperatorPage());
+    } else if (LoggedUser.userType == UserType.treasury) {
+      Get.offAll(() => MainMenuFinancialPage());
+    } else if (LoggedUser.userType == UserType.admin) {
+      Get.offAll(() => MainMenuAdministratorPage());
+    } else if (LoggedUser.userType == UserType.stockist) {}
   }
 
   bool _validProfile() {
@@ -499,7 +504,14 @@ class UserProfileController extends GetxController {
         mainMenuAdministratorController!.loadingPicture.value = true;
       }
 
-      profilePicture = await _picker.pickImage(source: origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery);
+      final ImageSource source = origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery;
+
+      profilePicture = await _picker.pickImage(source: source);
+
+      profilePicture = await ImagesPictureWidget(
+        origin: origin == imageOrigin.camera ? imageOrigin.camera : imageOrigin.gallery,
+      ).compressFile(profilePicture);
+
       if (profilePicture != null) {
         if (await _saveProfilePicture()) {
           imageChanged = true;
@@ -594,7 +606,6 @@ class UserProfileController extends GetxController {
 
   _deleteProfilePicture() async {
     try {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
       if (mainMenuOperatorController != null) {

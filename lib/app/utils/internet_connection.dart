@@ -17,9 +17,8 @@ class InternetConnection {
     }
   }
 
-  static Future<bool> validInternet(String errorMessage, RxBool loadingAnimation, LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget) async {
+  static Future<bool> validInternet(String errorMessage, LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget) async {
     try {
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 1));
 

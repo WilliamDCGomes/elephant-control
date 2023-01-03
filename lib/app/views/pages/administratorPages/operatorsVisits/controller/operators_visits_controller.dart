@@ -11,7 +11,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class OperatorsVisitsController extends GetxController {
   late DateTime dateFilter;
-  late RxBool loadingAnimation;
+  late RxInt visitsQuantity;
   late RxString userSelected;
   late RxList<String> usersName;
   late RxList<User> users;
@@ -27,7 +27,6 @@ class OperatorsVisitsController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUsers();
     super.onInit();
@@ -35,14 +34,12 @@ class OperatorsVisitsController extends GetxController {
 
   _initializeVariables() {
     dateFilter = DateTime.now();
-    loadingAnimation = false.obs;
+    visitsQuantity = 0.obs;
     userSelected = "".obs;
     usersName = <String>[].obs;
     users = <User>[].obs;
     operatorVisitList = <VisitOfOperatorsViewController>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _visitService = VisitService();
   }
@@ -72,6 +69,9 @@ class OperatorsVisitsController extends GetxController {
       usersName.add("Todos");
       users.forEach((element) => usersName.add(element.name));
 
+      userSelected.value = usersName.first;
+      await getVisitsUser(loadingEnabled: true);
+
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
     catch(_){
@@ -89,10 +89,12 @@ class OperatorsVisitsController extends GetxController {
     }
   }
 
-  getVisitsUser() async {
+  getVisitsUser({bool loadingEnabled = true}) async {
     try{
-      loadingAnimation.value = true;
-      await loadingWithSuccessOrErrorWidget.startAnimation();
+      visitsQuantity.value = 0;
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.startAnimation();
+      }
 
       User? user = null;
       if(userSelected.value != "Todos"){
@@ -103,11 +105,16 @@ class OperatorsVisitsController extends GetxController {
         user != null ? user.id ?? null : null,
         dateFilter,
       );
+      visitsQuantity.value = operatorVisitList.length;
       update(["visit-list"]);
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
     }
     catch(_){
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      }
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

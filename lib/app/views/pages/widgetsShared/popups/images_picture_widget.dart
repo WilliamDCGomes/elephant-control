@@ -1,20 +1,66 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../enums/enums.dart';
 import '../../../../utils/paths.dart';
 import '../../../stylePages/app_colors.dart';
 import 'information_popup.dart';
+import 'package:path/path.dart' as p;
 
 //ignore: must_be_immutable
 class ImagesPictureWidget extends StatefulWidget {
   late XFile? picture;
+  late imageOrigin origin;
 
   ImagesPictureWidget({
     Key? key,
+    required this.origin,
   }) : super(key: key){
     picture = null;
+  }
+
+  bool checkFileType(String fileName) => fileName.contains('jpg') || fileName.contains('png') || fileName.contains('jpeg');
+
+  Future<XFile?> compressFile(XFile? file) async {
+    try {
+      if(file == null){
+        return null;
+      }
+
+      final extensaoArquivo = p.extension(file.path);
+
+      if (checkFileType(extensaoArquivo)) {
+        var targetPath = file.path.split('.');
+        targetPath[targetPath.length - 2] += "_compacted";
+        String newPath = "";
+
+        for(int i = 0; i < targetPath.length; i++){
+          if(i != targetPath.length - 1){
+            newPath += (targetPath[i] + ".");
+          }
+          else{
+            newPath += targetPath[i];
+          }
+        }
+
+        final imageLowQuality = await FlutterImageCompress.compressAndGetFile(
+          file.path,
+          newPath,
+          quality: 30,
+        );
+
+        if (imageLowQuality != null) {
+          file = XFile(imageLowQuality.path);
+        }
+      }
+
+      return file;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -26,9 +72,16 @@ class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   _getImage() async {
     try{
       XFile? picture = await _picker.pickImage(
-        source: ImageSource.camera,
+        source: widget.origin == imageOrigin.camera ?
+        ImageSource.camera : ImageSource.gallery,
         preferredCameraDevice: CameraDevice.rear,
       );
+
+      XFile? pictureCompressed = await widget.compressFile(picture);
+
+      if(pictureCompressed != null){
+        picture = pictureCompressed;
+      }
 
       if(picture != null){
         setState(() {

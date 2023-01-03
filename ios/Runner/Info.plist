@@ -51,5 +51,11 @@
 		<false/>
 		<key>NSFaceIDUsageDescription</key>
         <string>É necessário a permissão para autenticação com o Touch ID ou Face ID</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+        <string>É necessário a permissão para Carregar imagens da sua Galeria</string>
+		<key>NSCameraUsageDescription</key>
+        <string>É necessário a permissão para tirar fotos e gravar vídeos com a Câmera do seu aparelho</string>
+		<key>NSMicrophoneUsageDescription</key>
+        <string>É necessário a permissão para gravar áudios nos vídeos</string>
 	</dict>
 </plist>

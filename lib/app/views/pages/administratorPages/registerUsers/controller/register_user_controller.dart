@@ -12,7 +12,6 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterUsersController extends GetxController {
-  late RxBool loadingAnimation;
   late RxString userTypeSelected;
   late RxString userGenderSelected;
   late RxString ufSelected;
@@ -48,16 +47,13 @@ class RegisterUsersController extends GetxController {
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
     userTypeSelected = "".obs;
     userGenderSelected = "".obs;
     ufSelected = "".obs;
     ufsList = <String>[].obs;
     userTypeList = <String>[].obs;
     userGenderList = <String>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     userNameTextController = TextEditingController();
     documentTextController = TextEditingController();
     birthDayTextController = TextEditingController();
@@ -88,6 +84,8 @@ class RegisterUsersController extends GetxController {
       "Feminino",
       "Outro",
     ]);
+
+    userGenderSelected.value = userGenderList.first;
   }
 
   searchAddressInformation() async {
@@ -148,7 +146,6 @@ class RegisterUsersController extends GetxController {
   saveNewUser() async {
     try{
       if(_validFields()){
-        loadingAnimation.value = true;
         loadingWithSuccessOrErrorWidget.startAnimation();
 
         late UserType userType;
@@ -197,9 +194,14 @@ class RegisterUsersController extends GetxController {
           pouchLastUpdate: DateTime.now(),
           stuffedAnimalsLastUpdate: DateTime.now(),
         );
-        _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(
-          birthDayTextController.text,
-        );
+        if(birthDayTextController.text.isNotEmpty){
+          _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(
+            birthDayTextController.text,
+          );
+        }
+        else{
+          _user!.birthdayDate = null;
+        }
         _user!.cep = cepTextController.text;
         _user!.uf = ufSelected.value;
         _user!.city = cityTextController.text;
@@ -278,7 +280,8 @@ class RegisterUsersController extends GetxController {
       );
       return false;
     }
-    if (emailTextController.text.isEmpty) {
+    /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
+    /*if (emailTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -361,7 +364,7 @@ class RegisterUsersController extends GetxController {
         },
       );
       return false;
-    }
+    }*/
 
     return true;
   }

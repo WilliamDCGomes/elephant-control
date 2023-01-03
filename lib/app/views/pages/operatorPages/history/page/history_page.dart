@@ -1,6 +1,5 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/utils/format_numbers.dart';
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:flutter/material.dart';

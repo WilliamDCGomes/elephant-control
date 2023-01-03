@@ -12,7 +12,6 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../financialHistory/page/financial_history_page.dart';
 import '../../receivePouchFromOperator/page/receive_pouch_from_operator_page.dart';
 import '../../registerPouch/page/register_pouch_page.dart';
 import '../controller/main_menu_financial_controller.dart';

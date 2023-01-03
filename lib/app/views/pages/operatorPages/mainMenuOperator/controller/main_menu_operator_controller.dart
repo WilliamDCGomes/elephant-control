@@ -21,7 +21,6 @@ class MainMenuOperatorController extends GetxController {
   late RxInt amountTeddy;
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
-  late RxBool loadingAnimation;
   late SharedPreferences sharedPreferences;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late List<Visit> visitsUser;
@@ -31,7 +30,6 @@ class MainMenuOperatorController extends GetxController {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
-    getOperatorInformation();
   }
 
   @override
@@ -44,6 +42,7 @@ class MainMenuOperatorController extends GetxController {
       sharedPreferences,
     );
     await _checkFingerPrintUser();
+    await getOperatorInformation();
     super.onInit();
   }
 
@@ -51,7 +50,6 @@ class MainMenuOperatorController extends GetxController {
     hasPicture = false.obs;
     visitsUser = [];
     visitsWithMoneydrawal = [];
-    loadingAnimation = false.obs;
     loadingPicture = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
@@ -60,9 +58,7 @@ class MainMenuOperatorController extends GetxController {
     amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
     pouchLastChange = LoggedUser.pouchLastUpdate ?? DateTime.now();
     teddyLastChange = LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now();
-    loadingWithSuccessOrErrorWidget = loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
 
   _getNameUser() {
@@ -126,7 +122,7 @@ class MainMenuOperatorController extends GetxController {
 
   Future<void> getOperatorInformation() async {
     try {
-      loadingAnimation.value = true;
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       final operatorInformations = await UserService().getOperatorInformation();
       if (operatorInformations == null) throw Exception();
       amountPouch.value = operatorInformations.balanceMoney;
@@ -137,7 +133,7 @@ class MainMenuOperatorController extends GetxController {
       visitsWithMoneydrawal = operatorInformations.visitsWithMoneydrawal;
     } catch (_) {
     } finally {
-      loadingAnimation.value = false;
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 }

@@ -98,6 +98,23 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                             ),
                             Obx(
                               () => RichTextTwoDifferentWidget(
+                                firstText: "Quantidade de Malotes: ",
+                                firstTextColor: AppColors.whiteColor,
+                                firstTextFontWeight: FontWeight.normal,
+                                firstTextSize: 18.sp,
+                                secondText: controller.pouchQuantity.value.toString(),
+                                secondTextColor: AppColors.whiteColor,
+                                secondTextFontWeight: FontWeight.bold,
+                                secondTextSize: 18.sp,
+                                secondTextDecoration: TextDecoration.none,
+                                maxLines: 2,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Obx(
+                              () => RichTextTwoDifferentWidget(
                                 firstText: "Valor Total: ",
                                 firstTextColor: AppColors.whiteColor,
                                 firstTextFontWeight: FontWeight.normal,
@@ -120,11 +137,12 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                             itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
                             hintText: "Usuário",
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                            width: 90.w,
                             rxListItems: controller.usersName,
                             onChanged: (selectedState) {
                               if(selectedState != null) {
                                 controller.userSelected.value = selectedState;
-                                controller.getPouchUser(selectedState);
+                                controller.getPouchUser();
                               }
                             },
                           ),
@@ -134,13 +152,13 @@ class _OperatorFinancialPouchPageState extends State<OperatorFinancialPouchPage>
                         child: GetBuilder(
                           id: "list-pouch",
                           init: controller,
-                          builder: (_) => controller.moneyPouchGetViewController != null && controller.moneyPouchGetViewController!.moneyPouchValueList.isNotEmpty ? ListView.builder(
+                          builder: (_) => controller.moneyPouchGetViewController != null && controller.moneyPouchGetViewController!.moneyPouchValueList.isNotEmpty ?
+                          ListView.builder(
                             itemCount: controller.moneyPouchGetViewController!.moneyPouchValueList.length,
                             shrinkWrap: true,
                             padding: EdgeInsets.symmetric(horizontal: 2.h),
                             itemBuilder: (context, index){
                               return PouchCardWidget(
-                                userName: controller.userSelected.value,
                                 moneyPouchValueList: controller.moneyPouchGetViewController!.moneyPouchValueList[index],
                               );
                             },

@@ -88,6 +88,23 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                               maxLines: 2,
                               fontWeight: FontWeight.bold,
                             ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Obx(
+                              () => RichTextTwoDifferentWidget(
+                                firstText: "Quantidade de Visitas: ",
+                                firstTextColor: AppColors.whiteColor,
+                                firstTextFontWeight: FontWeight.normal,
+                                firstTextSize: 18.sp,
+                                secondText: controller.visitsQuantity.value.toString(),
+                                secondTextColor: AppColors.whiteColor,
+                                secondTextFontWeight: FontWeight.bold,
+                                secondTextSize: 18.sp,
+                                secondTextDecoration: TextDecoration.none,
+                                maxLines: 2,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -98,6 +115,7 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
                             itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
                             hintText: "Usuário",
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                            width: 90.w,
                             rxListItems: controller.usersName,
                             onChanged: (selectedState) {
                               if (selectedState != null) {

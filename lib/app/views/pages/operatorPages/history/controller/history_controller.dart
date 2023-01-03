@@ -1,26 +1,18 @@
-import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:get/get.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/maintenance_card_widget.dart';
 
 class HistoryController extends GetxController {
   late RxList<MaintenanceCardWidget> maintenanceCardWidgetList;
-  late RxBool loadingAnimation;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late bool _isPouchList;
 
   HistoryController(String title) {
-    _isPouchList = title == "Histórico de Malotes";
     _initializeVariables();
     _inicializeList();
   }
 
   _initializeVariables() {
-    loadingAnimation = false.obs;
-
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
 
     maintenanceCardWidgetList = <MaintenanceCardWidget>[].obs;
   }

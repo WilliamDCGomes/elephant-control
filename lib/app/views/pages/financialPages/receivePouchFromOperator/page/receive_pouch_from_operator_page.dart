@@ -1,5 +1,6 @@
 import 'package:elephant_control/app/utils/text_field_validators.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
@@ -131,7 +132,8 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                         controller: controller.operatorCode,
                                         hintText: "Código do Operador",
                                         height: 9.h,
-                                        keyboardType: TextInputType.name,
+                                        maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                        keyboardType: TextInputType.number,
                                       ),
                                     ),
                                   ),

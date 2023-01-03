@@ -217,7 +217,6 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                         if(value.length == 9){
                                           await Loading.startAndPauseLoading(
                                             () => controller.searchAddressInformation(),
-                                            controller.loadingAnimation,
                                             controller.loadingWithSuccessOrErrorWidget,
                                           );
                                         }

@@ -1,29 +1,16 @@
+import 'money_pouch_value_list_viewcontroller.dart';
+
 class MoneyPouchGetViewController {
-  late List<MoneyPouchValueList> moneyPouchValueList;
+  late List<MoneyPouchValueListViewController> moneyPouchValueList;
   late double fullValue;
 
   MoneyPouchGetViewController();
 
   MoneyPouchGetViewController.fromJson(Map<String, dynamic> json) {
-    moneyPouchValueList = <MoneyPouchValueList>[];
+    moneyPouchValueList = <MoneyPouchValueListViewController>[];
     for(var pouch in json["pouchs"]){
-      moneyPouchValueList.add(MoneyPouchValueList.fromJson(pouch));
+      moneyPouchValueList.add(MoneyPouchValueListViewController.fromJson(pouch));
     }
     fullValue = json["fullValue"];
   }
 }
-
-class MoneyPouchValueList {
-  late String name;
-  late DateTime alteration;
-  late double moneyQuantity;
-
-  MoneyPouchValueList();
-
-  MoneyPouchValueList.fromJson(Map<String, dynamic> json) {
-    name = json["name"];
-    alteration = DateTime.parse(json["alteration"]);
-    moneyQuantity = json["moneyQuantity"];
-  }
-}
-

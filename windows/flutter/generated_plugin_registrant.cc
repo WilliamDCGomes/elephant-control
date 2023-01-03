@@ -8,13 +8,10 @@
 
 #include <flutter_localization/flutter_localization_plugin_c_api.h>
 #include <local_auth_windows/local_auth_plugin.h>
-#include <smart_auth/smart_auth_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   FlutterLocalizationPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterLocalizationPluginCApi"));
   LocalAuthPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("LocalAuthPlugin"));
-  SmartAuthPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("SmartAuthPlugin"));
 }

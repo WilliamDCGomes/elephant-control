@@ -11,9 +11,12 @@ class LoadingWidget extends StatefulWidget {
   late final AnimationController animationController;
 
   LoadingWidget(
-      { Key? key,
-        required this.loadingAnimation,
-      }) : super(key: key);
+      {
+        Key? key,
+        RxBool? internalLoadingAnimation,
+      }) : super(key: key){
+    loadingAnimation = internalLoadingAnimation ?? false.obs;
+  }
 
   @override
   State<LoadingWidget> createState() => _LoadingWidgetState();
@@ -24,6 +27,7 @@ class LoadingWidget extends StatefulWidget {
   }
 
   Future stopAnimation({Widget? destinationPage, bool? backPage, bool? justLoading}) async {
+    loadingAnimation.value = true;
     if(justLoading != null && justLoading){
       await Future.delayed(Duration(seconds: 1));
       _resetState();

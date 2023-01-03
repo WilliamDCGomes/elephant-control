@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/controller/occurrence_controller.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
@@ -13,7 +14,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/model/machine.dart';
 import '../../../../../../base/models/media/model/media.dart';
 import '../../../../../../base/services/incident_service.dart';
-import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -29,7 +29,6 @@ class MaintenanceController extends GetxController {
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
-  late RxBool loadingAnimation;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
   late TextEditingController clock1;
@@ -39,9 +38,7 @@ class MaintenanceController extends GetxController {
   late ImagesPictureWidget imageClock;
   late ImagesPictureWidget beforeMaintenanceImageClock;
   late ImagesPictureWidget afterMaintenanceImageClock;
-  late MainMenuOperatorController _mainMenuOperatorController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
-  late final MachineService _machineService;
   late final VisitService _visitService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
@@ -57,7 +54,6 @@ class MaintenanceController extends GetxController {
   _initializeVariables() {
     visitId = const Uuid().v4();
     _incidents = <IncidentObject>[];
-    _machineService = MachineService();
     _visitService = VisitService();
     _visitMediaService = VisitMediaService();
     _machines = <Machine>[].obs;
@@ -71,7 +67,6 @@ class MaintenanceController extends GetxController {
 
     yes = false.obs;
     no = false.obs;
-    loadingAnimation = false.obs;
 
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
@@ -83,13 +78,11 @@ class MaintenanceController extends GetxController {
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
 
-    imageClock = ImagesPictureWidget();
-    beforeMaintenanceImageClock = ImagesPictureWidget();
-    afterMaintenanceImageClock = ImagesPictureWidget();
+    imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _initializeMethods();
   }
 
@@ -140,7 +133,6 @@ class MaintenanceController extends GetxController {
   saveMaintenance() async {
     try {
       if (!fieldsValidate()) return;
-      loadingAnimation.value = true;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
       _visit.stuffedAnimalsQuantity = teddy;

@@ -15,7 +15,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final String machineName;
   final String city;
   final String workPriority;
-  final int priorityColor;
+  int priorityColor;
   final String clock1;
   final String clock2;
   final String teddy;
@@ -79,7 +79,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
           children: [
             MaintenanceHeaderCardWidget(
               machineName: widget.machineName,
-              done: widget.status == "Finalizado",
+              done: widget.status == "Realizada" || widget.status == "Malote retirado",
               operatorDeletedMachine: widget.operatorDeletedMachine,
             ),
             widget.showPriorityAndStatus

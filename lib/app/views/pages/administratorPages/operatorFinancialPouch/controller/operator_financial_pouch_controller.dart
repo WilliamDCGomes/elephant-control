@@ -11,8 +11,8 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class OperatorPouchController extends GetxController {
   final bool withOperator;
-  late RxBool loadingAnimation;
   late RxString userSelected;
+  late RxInt pouchQuantity;
   late RxDouble fullValue;
   late RxList<User> users;
   late RxList<String> usersName;
@@ -28,21 +28,18 @@ class OperatorPouchController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    loadingAnimation.value = true;
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUsers();
     super.onInit();
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
     userSelected = "".obs;
+    pouchQuantity= 0.obs;
     fullValue = 0.0.obs;
     users = <User>[].obs;
     usersName = <String>[].obs;
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _moneyPouchService = MoneyPouchService();
     moneyPouchGetViewController = null;
@@ -78,6 +75,9 @@ class OperatorPouchController extends GetxController {
       usersName.add("Todos");
       users.forEach((element) => usersName.add(element.name));
 
+      userSelected.value = usersName.first;
+      await getPouchUser(loadingEnabled: false);
+
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
     catch(_){
@@ -95,11 +95,14 @@ class OperatorPouchController extends GetxController {
     }
   }
 
-  getPouchUser(String user) async {
+  getPouchUser({bool loadingEnabled = true}) async {
     try{
-      loadingAnimation.value = true;
-      await loadingWithSuccessOrErrorWidget.startAnimation();
-      if(user == "Todos"){
+      fullValue.value = 0;
+      pouchQuantity.value = 0;
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.startAnimation();
+      }
+      if(userSelected.value == "Todos"){
         if(withOperator){
           moneyPouchGetViewController = await _moneyPouchService.getAllPouchInformation(UserType.operator);
         }
@@ -108,20 +111,25 @@ class OperatorPouchController extends GetxController {
         }
       }
       else{
-        var selected = users.firstWhere((element) => element.name == user);
+        var selected = users.firstWhere((element) => element.name == userSelected.value);
 
         moneyPouchGetViewController = await _moneyPouchService.getPouchInformation(selected.id ??  "");
       }
 
       if(moneyPouchGetViewController != null){
         fullValue.value = moneyPouchGetViewController!.fullValue;
+        pouchQuantity.value = moneyPouchGetViewController!.moneyPouchValueList.length;
       }
 
       update(["list-pouch"]);
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
     }
     catch(_){
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      if(loadingEnabled){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      }
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

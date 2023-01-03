@@ -6,7 +6,6 @@ class FinancialHistoryController extends GetxController {
   final bool pouchHistory;
   late double? safeBoxAmount;
   late RxList<SafeBoxCardWidget> safeBoxCardWidgetList;
-  late RxBool loadingAnimation;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
   FinancialHistoryController(String title, this.safeBoxAmount, this.pouchHistory){
@@ -15,11 +14,7 @@ class FinancialHistoryController extends GetxController {
   }
 
   _initializeVariables(){
-    loadingAnimation = false.obs;
-
-    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget(
-      loadingAnimation: loadingAnimation,
-    );
+    loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
 
     safeBoxCardWidgetList = <SafeBoxCardWidget>[].obs;
   }

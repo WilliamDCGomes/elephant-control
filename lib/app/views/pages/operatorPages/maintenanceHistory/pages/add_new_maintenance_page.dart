@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,6 +29,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 200));
       await widget.controller.getMachineVisitByUserId();
     });
   }
