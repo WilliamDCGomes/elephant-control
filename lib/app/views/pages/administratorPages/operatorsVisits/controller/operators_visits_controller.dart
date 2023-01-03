@@ -11,6 +11,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class OperatorsVisitsController extends GetxController {
   late DateTime dateFilter;
+  late RxInt visitsQuantity;
   late RxString userSelected;
   late RxList<String> usersName;
   late RxList<User> users;
@@ -33,6 +34,7 @@ class OperatorsVisitsController extends GetxController {
 
   _initializeVariables() {
     dateFilter = DateTime.now();
+    visitsQuantity = 0.obs;
     userSelected = "".obs;
     usersName = <String>[].obs;
     users = <User>[].obs;
@@ -89,6 +91,7 @@ class OperatorsVisitsController extends GetxController {
 
   getVisitsUser({bool loadingEnabled = true}) async {
     try{
+      visitsQuantity.value = 0;
       if(loadingEnabled){
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
@@ -102,6 +105,7 @@ class OperatorsVisitsController extends GetxController {
         user != null ? user.id ?? null : null,
         dateFilter,
       );
+      visitsQuantity.value = operatorVisitList.length;
       update(["visit-list"]);
       if(loadingEnabled){
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
