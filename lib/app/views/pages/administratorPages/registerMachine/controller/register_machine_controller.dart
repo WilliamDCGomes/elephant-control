@@ -28,16 +28,19 @@ class RegisterMachineController extends GetxController {
   late TextEditingController neighborhoodTextController;
   late TextEditingController complementTextController;
   late IConsultCepService consultCepService;
-  late Machine? _machine;
+  Machine? _machine;
   late IMachineService _machineService;
 
-  RegisterMachineController() {
+  RegisterMachineController(this._machine) {
     _initializeVariables();
   }
 
   @override
   void onInit() async {
     await _getUfsNames();
+    if (_machine != null) {
+      await searchAddressInformation();
+    }
     super.onInit();
   }
 
@@ -45,27 +48,28 @@ class RegisterMachineController extends GetxController {
     ufSelected = "".obs;
     ufsList = [""].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
-    machineNameTextController = TextEditingController();
+    machineNameTextController = TextEditingController(text: _machine?.name);
     machineTypeTextController = TextEditingController();
-    minAverageTextController = TextEditingController();
-    maxAverageTextController = TextEditingController();
-    firstClockTextController = TextEditingController();
-    secondClockTextController = TextEditingController();
-    periodVisitsTextController = TextEditingController();
-    cepTextController = TextEditingController();
-    cityTextController = TextEditingController();
-    streetTextController = TextEditingController();
-    houseNumberTextController = TextEditingController();
-    neighborhoodTextController = TextEditingController();
-    complementTextController = TextEditingController();
-    minAverageTextController.text = "0";
-    maxAverageTextController.text = "0";
-    firstClockTextController.text = "0";
-    secondClockTextController.text = "0";
-    periodVisitsTextController.text = "0";
+    minAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.minimumAverageValue.toInt().toString());
+    maxAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.maximumAverageValue.toInt().toString());
+    firstClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.prize ?? 0.0).toStringAsFixed(0));
+    secondClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.balance ?? 0.0).toStringAsFixed(0));
+    periodVisitsTextController = TextEditingController(text: _machine == null ? null : _machine?.daysToNextVisit.toString());
+    cepTextController = TextEditingController(text: _machine == null ? null : _machine?.cep);
+    cityTextController = TextEditingController(text: _machine == null ? null : _machine?.city);
+    streetTextController = TextEditingController(text: _machine == null ? null : _machine?.address);
+    houseNumberTextController = TextEditingController(text: _machine == null ? null : _machine?.number);
+    neighborhoodTextController = TextEditingController(text: _machine == null ? null : _machine?.district);
+    complementTextController = TextEditingController(text: _machine == null ? null : _machine?.complement);
     consultCepService = ConsultCepService();
-    _machine = null;
     _machineService = MachineService();
+    if (_machine == null) {
+      minAverageTextController.text = "0";
+      maxAverageTextController.text = "0";
+      firstClockTextController.text = "0";
+      secondClockTextController.text = "0";
+      periodVisitsTextController.text = "0";
+    }
   }
 
   searchAddressInformation() async {
@@ -119,53 +123,40 @@ class RegisterMachineController extends GetxController {
   }
 
   saveNewMachine() async {
-    try {
-      if (_validFields()) {
-        loadingWithSuccessOrErrorWidget.startAnimation();
-        _machine = Machine(name: machineNameTextController.text);
-        _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
-        _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-        _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-        _machine!.selected = false;
-        _machine!.localization = "";
-        _machine!.longitude = "";
-        _machine!.latitude = "";
-        _machine!.cep = cepTextController.text;
-        _machine!.uf = ufSelected.value;
-        _machine!.city = cityTextController.text;
-        _machine!.address = streetTextController.text;
-        _machine!.number = houseNumberTextController.text;
-        _machine!.district = neighborhoodTextController.text;
-        _machine!.complement = complementTextController.text;
-        _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
-        _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
-        if (await _machineService.createOrUpdateMachine(_machine!)) {
-          await loadingWithSuccessOrErrorWidget.stopAnimation();
-          await showDialog(
-            context: Get.context!,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return InformationPopup(
-                warningMessage: "Máquina cadastrada com sucesso!",
-              );
-            },
-          );
-          Get.back();
-        }
-        throw Exception();
-      }
-    } catch (_) {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
-      await showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return InformationPopup(
-            warningMessage: "Erro ao cadastrar máquina! Tente novamente mais tarde.",
-          );
-        },
-      );
-    }
+    if (!_validFields()) throw Exception();
+    _machine ??= Machine(name: machineNameTextController.text);
+    _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
+    _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+    _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+    _machine!.selected = false;
+    _machine!.localization = "";
+    _machine!.longitude = "";
+    _machine!.latitude = "";
+    _machine!.cep = cepTextController.text;
+    _machine!.uf = ufSelected.value;
+    _machine!.city = cityTextController.text;
+    _machine!.address = streetTextController.text;
+    _machine!.number = houseNumberTextController.text;
+    _machine!.district = neighborhoodTextController.text;
+    _machine!.complement = complementTextController.text;
+    _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
+    _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
+    Get.back(result: _machine);
+    // if (await _machineService.createOrUpdateMachine(_machine!)) {
+    //   await loadingWithSuccessOrErrorWidget.stopAnimation();
+    //   await showDialog(
+    //     context: Get.context!,
+    //     barrierDismissible: false,
+    //     builder: (BuildContext context) {
+    //       return InformationPopup(
+    //         warningMessage: "Máquina cadastrada com sucesso!",
+    //       );
+    //     },
+    //   );
+    //   Get.back();
+    // }
+    // throw Exception();
+    // }
   }
 
   bool _validFields() {
@@ -205,6 +196,7 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
+
     /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
     /*if (cepTextController.text.isEmpty) {
       showDialog(

@@ -6,23 +6,17 @@ part of 'authenticate_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthenticateResponse _$AuthenticateResponseFromJson(
-        Map<String, dynamic> json) =>
-    AuthenticateResponse(
+AuthenticateResponse _$AuthenticateResponseFromJson(Map<String, dynamic> json) => AuthenticateResponse(
       id: json['id'] as String?,
       name: json['name'] as String?,
       login: json['login'] as String?,
-      expirationDate: json['expirationDate'] == null
-          ? null
-          : DateTime.parse(json['expirationDate'] as String),
+      expirationDate: json['expirationDate'] == null ? null : DateTime.parse(json['expirationDate'] as String),
       token: json['token'] as String?,
       userType: $enumDecodeNullable(_$UserTypeEnumMap, json['userType']),
       success: json['success'] as bool,
     );
 
-Map<String, dynamic> _$AuthenticateResponseToJson(
-        AuthenticateResponse instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AuthenticateResponseToJson(AuthenticateResponse instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'login': instance.login,

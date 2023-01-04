@@ -7,35 +7,50 @@ import '../../../widgetsShared/text_widget.dart';
 class MaintenanceHeaderCardWidget extends StatelessWidget {
   final String machineName;
   final bool done;
-  final RxBool operatorDeletedMachine;
+  final bool operatorDeletedMachine;
+  final bool decoratorLine;
+  final Color? color;
+  final List<Widget> children;
 
-  const MaintenanceHeaderCardWidget(
-      { Key? key,
-        required this.machineName,
-        required this.done,
-        required this.operatorDeletedMachine,
-      }) : super(key: key);
+  const MaintenanceHeaderCardWidget({
+    Key? key,
+    required this.machineName,
+    required this.done,
+    required this.operatorDeletedMachine,
+    this.decoratorLine = false,
+    this.color,
+    this.children = const [],
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
-        color: operatorDeletedMachine.value ? AppColors.grayBackgroundPictureColor : done ? AppColors.greenColor : AppColors.redColor,
-        height: 5.h,
-        width: 100.w,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-          child: Center(
-            child: TextWidget(
-              machineName,
-              textColor: operatorDeletedMachine.value ? AppColors.blackColor : AppColors.whiteColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              textDecoration: TextDecoration.none,
-              textAlign: TextAlign.center,
-              maxLines: 1,
+    return Container(
+      color: color ??
+          (operatorDeletedMachine
+              ? AppColors.redColor
+              : !done
+                  ? AppColors.greenColor
+                  : AppColors.redColor),
+      height: 5.h,
+      width: 100.w,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+        child: Row(
+          mainAxisAlignment: children.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: TextWidget(
+                machineName,
+                textColor: operatorDeletedMachine ? AppColors.blackColor : AppColors.whiteColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16.sp,
+                textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
+                textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
+                maxLines: 1,
+              ),
             ),
-          ),
+            ...children,
+          ],
         ),
       ),
     );

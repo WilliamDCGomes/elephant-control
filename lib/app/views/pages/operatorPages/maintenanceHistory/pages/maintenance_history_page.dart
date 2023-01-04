@@ -91,7 +91,9 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                       return Stack(
                                         children: [
                                           MaintenanceCardWidget(
+                                            onTapHabilitate: (visit.active == true && visit.realizedVisit == true),
                                             machineName: visit.machineName,
+                                            decoratorLine: visit.active == false,
                                             city: "",
                                             status: visit.status?.description ?? "Pendente",
                                             workPriority: "NORMAL",
@@ -100,35 +102,23 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                             clock2: visit.stuffedAnimalsQuantity.toString(),
                                             teddy: visit.stuffedAnimalsReplaceQuantity.toString(),
                                             pouchCollected: visit.moneyPouchRetired,
-                                          )
-
-                                          // Obx(
-                                          //   () => Padding(
-                                          //     padding: EdgeInsets.all(1.h),
-                                          //     child: Align(
-                                          //       alignment: Alignment.topRight,
-                                          //       child: InkWell(
-                                          //         onTap: () {
-                                          //           if(controller.maintenanceCardWidgetList[index].status == "Pendente" && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value){
-                                          //             controller.removeItemList(index);
-                                          //           }
-                                          //           else{
-                                          //             Get.to(() => RequestEditVisitPage());
-                                          //           }
-                                          //         },
-                                          //         child: Icon(
-                                          //           controller.maintenanceCardWidgetList[index].status == "Pendente"
-                                          //           && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value ?
-                                          //           Icons.close : Icons.edit,
-                                          //           color: AppColors.backgroundColor,
-                                          //           size: controller.maintenanceCardWidgetList[index].status == "Pendente"
-                                          //           && !controller.maintenanceCardWidgetList[index].operatorDeletedMachine.value ?
-                                          //           3.h : 2.5.h,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // )
+                                            machineAddOtherList: visit.active == false,
+                                          ),
+                                          if (visit.realizedVisit == false && visit.active == true)
+                                            Padding(
+                                              padding: EdgeInsets.all(1.h),
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: InkWell(
+                                                  onTap: () async => await controller.deleteOrUndeleteVisitDay(visit),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    color: AppColors.backgroundColor,
+                                                    size: 3.h,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                         ],
                                       );
                                     },

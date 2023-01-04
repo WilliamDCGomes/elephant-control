@@ -4,6 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../machine/page/machine_page.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
@@ -142,99 +143,108 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                     ),
                   ),
                   Expanded(
-                    child: Center(
-                      child: ListView(
-                        padding: EdgeInsets.all(2.h),
-                        children: [
-                          SizedBox(height: 1.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              MenuOptionsWidget(
-                                text: "Malotes com Operadores",
-                                imagePath: Paths.Malote,
-                                onTap: () => Get.to(() => OperatorFinancialPouchPage(
-                                      withOperator: true,
-                                    )),
-                              ),
-                              MenuOptionsWidget(
-                                text: "Visitas dos Operadores",
-                                imagePath: Paths.Manutencao,
-                                onTap: () => Get.to(() => OperatorsVisitsPage()),
-                              ),
-                              MenuOptionsWidget(
-                                text: "Histórico Cofre da Tesouraria",
-                                imagePath: Paths.Cofre,
-                                onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 2.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MenuOptionsWidget(
-                                  text: "Malotes com Tesouraria",
-                                  imagePath: Paths.Malote_Com_Tesouraria,
-                                  onTap: () => Get.to(() => OperatorFinancialPouchPage(
-                                        withOperator: false,
-                                      )),
-                                ),
-                                MenuOptionsWidget(
-                                  text: "Novo Usuário",
-                                  imagePath: Paths.Novo_Usuario,
-                                  onTap: () => Get.to(() => RegisterUsersPage()),
-                                ),
-                                MenuOptionsWidget(
-                                  text: "Nova Máquina",
-                                  imagePath: Paths.Maquina_Pelucia,
-                                  onTap: () => Get.to(() => RegisterMachinePage()),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(top: 2.h),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       MenuOptionsWidget(
-                          //         text: "Máquina x Usuário",
-                          //         imagePath: Paths.Maquina_Pelucia,
-                          //         onTap: () => Get.to(() => RegisterUserMachinePage()),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 2.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MenuOptionsWidget(
-                                  text: "Novo Lembrete",
-                                  imagePath: Paths.Novo_Lembrete,
-                                  disable: true,
-                                  onTap: () {},
-                                ),
-                                MenuOptionsWidget(
-                                  text: "Recolher Dinheiro",
-                                  imagePath: Paths.Recolher_Dinheiro,
-                                  disable: true,
-                                  onTap: () {},
-                                ),
-                                MenuOptionsWidget(
-                                  text: "Solicitações",
-                                  imagePath: Paths.Solicitacoes,
-                                  disable: true,
-                                  onTap: () {},
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    child: GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 1.h,
                       ),
+                      padding: EdgeInsets.all(2.h),
+                      children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //   ],
+                        // ),
+
+                        MenuOptionsWidget(
+                          text: "Malotes com Operadores",
+                          imagePath: Paths.Malote,
+                          onTap: () => Get.to(() => OperatorFinancialPouchPage(
+                                withOperator: true,
+                              )),
+                        ),
+                        MenuOptionsWidget(
+                          text: "Visitas dos Operadores",
+                          imagePath: Paths.Manutencao,
+                          onTap: () => Get.to(() => OperatorsVisitsPage()),
+                        ),
+                        MenuOptionsWidget(
+                          text: "Histórico Cofre da Tesouraria",
+                          imagePath: Paths.Cofre,
+                          onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
+                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 2.h),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //     ],
+                        //   ),
+                        // ),
+
+                        MenuOptionsWidget(
+                          text: "Malotes com Tesouraria",
+                          imagePath: Paths.Malote_Com_Tesouraria,
+                          onTap: () => Get.to(() => OperatorFinancialPouchPage(
+                                withOperator: false,
+                              )),
+                        ),
+                        MenuOptionsWidget(
+                          text: "Novo Usuário",
+                          imagePath: Paths.Novo_Usuario,
+                          onTap: () => Get.to(() => RegisterUsersPage()),
+                        ),
+                        MenuOptionsWidget(
+                          text: "Nova Máquina",
+                          imagePath: Paths.Maquina_Pelucia,
+                          onTap: () => Get.to(() => RegisterMachinePage()),
+                        ),
+                        MenuOptionsWidget(
+                          text: "Máquinas",
+                          imagePath: Paths.Maquina_Pelucia,
+                          onTap: () => Get.to(() => MachinePage()),
+                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 2.h),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       MenuOptionsWidget(
+                        //         text: "Máquina x Usuário",
+                        //         imagePath: Paths.Maquina_Pelucia,
+                        //         onTap: () => Get.to(() => RegisterUserMachinePage()),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 2.h),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //     ],
+                        //   ),
+                        // ),
+
+                        MenuOptionsWidget(
+                          text: "Novo Lembrete",
+                          imagePath: Paths.Novo_Lembrete,
+                          disable: true,
+                          onTap: () {},
+                        ),
+                        MenuOptionsWidget(
+                          text: "Recolher Dinheiro",
+                          imagePath: Paths.Recolher_Dinheiro,
+                          disable: true,
+                          onTap: () {},
+                        ),
+                        MenuOptionsWidget(
+                          text: "Solicitações",
+                          imagePath: Paths.Solicitacoes,
+                          disable: true,
+                          onTap: () {},
+                        ),
+                      ],
                     ),
                   ),
                 ],

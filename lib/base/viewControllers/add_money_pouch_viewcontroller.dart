@@ -8,12 +8,16 @@ class AddMoneyPouchViewController {
   final int code;
   final String? observation;
   final String visitId;
+  final String? latitude;
+  final String? longitude;
 
   AddMoneyPouchViewController({
     required this.userOperatorId,
     required this.code,
     this.observation,
     required this.visitId,
+    this.latitude,
+    this.longitude,
   });
 
   factory AddMoneyPouchViewController.fromJson(Map<String, dynamic> json) => _$AddMoneyPouchViewControllerFromJson(json);

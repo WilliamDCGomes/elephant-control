@@ -15,21 +15,21 @@ class SafeBoxCardWidget extends StatelessWidget {
   final DateTime? deliveryDate;
   final bool pouchHistory;
 
-  SafeBoxCardWidget(
-      { Key? key,
-        required this.operatorName,
-        required this.machineName,
-        this.amount,
-        this.deliveryDate,
-        required this.pouchHistory,
-      }) : super(key: key);
+  SafeBoxCardWidget({
+    Key? key,
+    required this.operatorName,
+    required this.machineName,
+    this.amount,
+    this.deliveryDate,
+    required this.pouchHistory,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
-        onTap: (){
+        onTap: () {
           /*BottomSheetPopup.showAlert(
             context,
             MaintenanceInformationPopup.getWidgetList(
@@ -52,7 +52,7 @@ class SafeBoxCardWidget extends StatelessWidget {
             MaintenanceHeaderCardWidget(
               machineName: machineName,
               done: true,
-              operatorDeletedMachine: false.obs,
+              operatorDeletedMachine: false,
             ),
             Container(
               height: 6.h,
@@ -65,8 +65,7 @@ class SafeBoxCardWidget extends StatelessWidget {
                   firstTextColor: AppColors.blackColor,
                   firstTextFontWeight: FontWeight.normal,
                   firstTextSize: 16.sp,
-                  secondText: pouchHistory ? DateFormatToBrazil.formatDate(deliveryDate) :
-                  FormatNumbers.numbersToMoney(amount),
+                  secondText: pouchHistory ? DateFormatToBrazil.formatDate(deliveryDate) : FormatNumbers.numbersToMoney(amount),
                   secondTextColor: AppColors.blackColor,
                   secondTextFontWeight: FontWeight.bold,
                   secondTextSize: 16.sp,

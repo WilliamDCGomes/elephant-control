@@ -10,25 +10,30 @@ import '../operatorPages/maintenanceHistory/popups/maintenance_information_popup
 import '../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget.dart';
 import '../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
 
-//ignore: must_be_immutable
 class MaintenanceCardWidget extends StatefulWidget {
   final String machineName;
   final String city;
   final String workPriority;
-  int priorityColor;
+  final int priorityColor;
   final String clock1;
   final String clock2;
   final String teddy;
   final bool pouchList;
   final bool pouchCollected;
   final bool showPriorityAndStatus;
-  bool? showMap;
+  final bool? showMap;
+  final bool machineAddOtherList;
   final String? responsibleName;
-  String status;
-  late RxBool operatorDeletedMachine;
+  final bool operatorDeletedMachine;
+  final String status;
+  final bool decoratorLine;
+  final bool onTapHabilitate;
+  final Widget? child;
+  final List<Widget> childMaintenanceHeaderCardWidget;
+  final Color? machineContainerColor;
 
-  MaintenanceCardWidget({
-    Key? key,
+  const MaintenanceCardWidget({
+    super.key,
     required this.machineName,
     required this.city,
     required this.status,
@@ -42,9 +47,14 @@ class MaintenanceCardWidget extends StatefulWidget {
     this.showPriorityAndStatus = true,
     this.showMap,
     this.responsibleName,
-  }) : super(key: key) {
-    operatorDeletedMachine = false.obs;
-  }
+    this.machineAddOtherList = false,
+    this.operatorDeletedMachine = false,
+    this.decoratorLine = false,
+    this.onTapHabilitate = true,
+    this.child,
+    this.machineContainerColor,
+    this.childMaintenanceHeaderCardWidget = const [],
+  });
 
   @override
   State<MaintenanceCardWidget> createState() => _MaintenanceCardWidgetState();
@@ -56,61 +66,69 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
-        onTap: () {
-          BottomSheetPopup.showAlert(
-            context,
-            MaintenanceInformationPopup.getWidgetList(
-              context,
-              widget.machineName,
-              widget.clock1,
-              widget.clock2,
-              widget.teddy,
-              widget.status,
-              widget.workPriority,
-              widget.priorityColor,
-              widget.pouchCollected,
-              widget.responsibleName,
-            ),
-          );
-        },
+        onTap: !widget.onTapHabilitate
+            ? null
+            : () {
+                BottomSheetPopup.showAlert(
+                  context,
+                  MaintenanceInformationPopup.getWidgetList(
+                    context,
+                    widget.machineName,
+                    widget.clock1,
+                    widget.clock2,
+                    widget.teddy,
+                    widget.status,
+                    widget.workPriority,
+                    widget.priorityColor,
+                    widget.pouchCollected,
+                    widget.responsibleName,
+                  ),
+                );
+              },
         componentPadding: EdgeInsets.zero,
         widgetCustom: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             MaintenanceHeaderCardWidget(
               machineName: widget.machineName,
-              done: widget.status == "Realizada" || widget.status == "Malote retirado",
+              done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
               operatorDeletedMachine: widget.operatorDeletedMachine,
+              decoratorLine: widget.decoratorLine,
+              color: widget.machineContainerColor,
+              children: widget.childMaintenanceHeaderCardWidget,
             ),
-            widget.showPriorityAndStatus
-                ? MaintenanceBodyCardWidget(
-                    status: widget.status,
-                    workPriority: widget.workPriority,
-                    priorityColor: widget.priorityColor,
-                  )
-                : Container(
-                    height: 5.h,
-                    width: double.infinity,
-                    color: AppColors.grayBackgroundPictureColor,
-                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-                    child: Center(
-                      child: RichTextTwoDifferentWidget(
-                        firstText: widget.pouchList ? "Malote retirado da máquina? " : "Pelúcias adicionadas à maquina: ",
-                        firstTextColor: AppColors.blackColor,
-                        firstTextFontWeight: FontWeight.bold,
-                        firstTextSize: 14.5.sp,
-                        secondText: widget.pouchList
-                            ? widget.pouchCollected
-                                ? "Sim"
-                                : "Não"
-                            : widget.teddy,
-                        secondTextColor: AppColors.greenColor,
-                        secondTextFontWeight: FontWeight.bold,
-                        secondTextSize: 14.5.sp,
-                        secondTextDecoration: TextDecoration.none,
-                      ),
-                    ),
-                  ),
+            widget.child ??
+                (widget.showPriorityAndStatus
+                    ? widget.decoratorLine
+                        ? const SizedBox()
+                        : MaintenanceBodyCardWidget(
+                            status: widget.status,
+                            workPriority: widget.workPriority,
+                            priorityColor: widget.priorityColor,
+                          )
+                    : Container(
+                        height: 5.h,
+                        width: double.infinity,
+                        color: AppColors.grayBackgroundPictureColor,
+                        padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                        child: Center(
+                          child: RichTextTwoDifferentWidget(
+                            firstText: widget.pouchList ? "Malote retirado da máquina? " : "Pelúcias adicionadas à maquina: ",
+                            firstTextColor: AppColors.blackColor,
+                            firstTextFontWeight: FontWeight.bold,
+                            firstTextSize: 14.5.sp,
+                            secondText: widget.pouchList
+                                ? widget.pouchCollected
+                                    ? "Sim"
+                                    : "Não"
+                                : widget.teddy,
+                            secondTextColor: AppColors.greenColor,
+                            secondTextFontWeight: FontWeight.bold,
+                            secondTextSize: 14.5.sp,
+                            secondTextDecoration: TextDecoration.none,
+                          ),
+                        ),
+                      )),
             Visibility(
               visible: widget.showMap ?? false,
               child: Container(

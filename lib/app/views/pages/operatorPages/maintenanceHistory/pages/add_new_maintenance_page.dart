@@ -34,6 +34,12 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
     });
   }
 
+  @override
+  void dispose() {
+    Future.microtask(() async => await controller.getVisitsOperatorByUserId());
+    super.dispose();
+  }
+
   MaintenanceHistoryController get controller => widget.controller;
 
   @override
@@ -140,6 +146,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                             child: MaintenanceCardWidget(
                                               machineName: machine.name,
                                               city: machine.city,
+                                              machineAddOtherList: machine.machineAddOtherList ?? false,
                                               status: "Pendente",
                                               workPriority: "NORMAL",
                                               priorityColor: AppColors.greenColor.value,

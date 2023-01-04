@@ -13,8 +13,8 @@ import '../popup/pouch_information_popup.dart';
 class PouchCardWidget extends StatefulWidget {
   final MoneyPouchValueListViewController moneyPouchValueList;
 
-  const PouchCardWidget(
-  { Key? key,
+  const PouchCardWidget({
+    Key? key,
     required this.moneyPouchValueList,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
-        onTap: (){
+        onTap: () {
           BottomSheetPopup.showAlert(
             context,
             PouchInformationPopup.getWidgetList(
@@ -47,7 +47,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
             MaintenanceHeaderCardWidget(
               machineName: widget.moneyPouchValueList.name,
               done: true,
-              operatorDeletedMachine: RxBool(false),
+              operatorDeletedMachine: false,
             ),
             Container(
               height: 5.h,

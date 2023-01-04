@@ -25,7 +25,7 @@ class MaintenanceHistoryController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    await _getVisitsOperatorByUserId();
+    await getVisitsOperatorByUserId();
     super.onInit();
   }
 
@@ -48,7 +48,7 @@ class MaintenanceHistoryController extends GetxController {
     loadingWithSuccessOrErrorWidgetTwo = LoadingWithSuccessOrErrorWidget();
   }
 
-  Future<void> _getVisitsOperatorByUserId() async {
+  Future<void> getVisitsOperatorByUserId() async {
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       _visits.clear();
@@ -73,15 +73,36 @@ class MaintenanceHistoryController extends GetxController {
     }
   }
 
+  Future<void> deleteOrUndeleteVisitDay(VisitListViewController visit) async {
+    try {
+      await loadingWithSuccessOrErrorWidget.startAnimation();
+      if (visit.active == true) {
+        final visitDeletedOrUndelete = await UserVisitMachineService().deleteUserVisitMachine(visit.id!);
+        if (visitDeletedOrUndelete) visit.active = false;
+      } else {
+        final visitDeletedOrUndelete = await UserVisitMachineService().unDeleteUserVisitMachine(visit.id!);
+        if (visitDeletedOrUndelete) visit.active = false;
+      }
+    } catch (_) {
+    } finally {
+      _visits.refresh();
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    }
+  }
+
   Future<void> createuserMachine(String machineId) async {
     try {
+      await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       final userMachineCreated = await _userVisitMachineService.createUserVisitMachine(machineId, DateTime.now());
       if (!userMachineCreated) throw Exception();
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Máquina adicionada com sucesso"));
       Get.back();
     } catch (_) {
+      if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Erro ao adicionar máquina"));
-    } finally {}
+    } finally {
+      if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation();
+    }
   }
 
   newItem() async {

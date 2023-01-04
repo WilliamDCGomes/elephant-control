@@ -13,6 +13,8 @@ AddMoneyPouchViewController _$AddMoneyPouchViewControllerFromJson(
       code: json['code'] as int,
       observation: json['observation'] as String?,
       visitId: json['visitId'] as String,
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
     );
 
 Map<String, dynamic> _$AddMoneyPouchViewControllerToJson(
@@ -22,4 +24,6 @@ Map<String, dynamic> _$AddMoneyPouchViewControllerToJson(
       'code': instance.code,
       'observation': instance.observation,
       'visitId': instance.visitId,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };

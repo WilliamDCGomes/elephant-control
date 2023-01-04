@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../../base/models/visit/model/visit.dart';
 import '../../../../../../base/viewControllers/add_money_pouch_viewcontroller.dart';
+import '../../../../../utils/position_util.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
@@ -178,16 +179,23 @@ class ReceivePouchFromOperatorController extends GetxController {
     bool enviado = false;
     List<String> pouchsWithErrors = [];
     try {
-      if(!await _checkBiometricSensor()){
+      if (!await _checkBiometricSensor()) {
         return;
       }
       await loadingWithSuccessOrErrorWidget.startAnimation();
+      final position = await PositionUtil.determinePosition();
+      final latitude = position?.latitude == null ? null : position?.latitude.toString();
+      final longitude = position?.longitude == null ? null : position?.longitude.toString();
+
       for (var moneyPouch in pouchsSelectedList) {
+        //TODO buscar localização aqui
         final addMoneyPouchViewController = AddMoneyPouchViewController(
           userOperatorId: operatorSelected!.id!,
           code: int.parse(operatorCode.text),
           visitId: moneyPouch.id!,
           observation: observations.text,
+          latitude: latitude,
+          longitude: longitude,
         );
         enviado = await VisitService().changeStatusMoneyWithdrawalToMoneyPouchReceived(addMoneyPouchViewController);
         if (!enviado) {

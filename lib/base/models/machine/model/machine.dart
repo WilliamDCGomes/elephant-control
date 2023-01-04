@@ -1,6 +1,6 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
 import 'package:json_annotation/json_annotation.dart';
-part '../converter/machine.g.dart';
+part 'machine.g.dart';
 
 @JsonSerializable()
 class Machine extends ElephantCore {
@@ -21,6 +21,7 @@ class Machine extends ElephantCore {
   late String complement;
   late double minimumAverageValue;
   late double maximumAverageValue;
+  bool? machineAddOtherList;
   @JsonKey(ignore: true)
   late bool selected;
 

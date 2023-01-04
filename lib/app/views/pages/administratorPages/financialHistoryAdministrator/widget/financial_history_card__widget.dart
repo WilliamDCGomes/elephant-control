@@ -13,17 +13,17 @@ import '../popup/financial_history_popup.dart';
 class FinancialHistoryCardWidget extends StatelessWidget {
   final SafeBoxFinancialViewController safeBoxFinancialViewController;
 
-  const FinancialHistoryCardWidget(
-      { Key? key,
-        required this.safeBoxFinancialViewController,
-      }) : super(key: key);
+  const FinancialHistoryCardWidget({
+    Key? key,
+    required this.safeBoxFinancialViewController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
-        onTap: (){
+        onTap: () {
           BottomSheetPopup.showAlert(
             context,
             FinancialHistoryPopup.getWidgetList(
@@ -39,7 +39,7 @@ class FinancialHistoryCardWidget extends StatelessWidget {
             MaintenanceHeaderCardWidget(
               machineName: safeBoxFinancialViewController.machineName,
               done: true,
-              operatorDeletedMachine: false.obs,
+              operatorDeletedMachine: false,
             ),
             Container(
               height: 6.h,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
+import 'package:elephant_control/app/utils/position_util.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/controller/occurrence_controller.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/model/visit.dart';
@@ -144,6 +145,9 @@ class MaintenanceController extends GetxController {
       _visit.stuffedAnimalsReplaceQuantity = int.parse(teddyAddMachine.text);
       _visit.observation = observations.text;
       _visit.id = visitId;
+      final position = await PositionUtil.determinePosition();
+      _visit.latitude = position?.latitude == null ? null : position?.latitude.toString();
+      _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
       bool createdVisit = await _visitService.createVisit(_visit);
       if (createdVisit) {
         List<VisitMedia> medias = [];

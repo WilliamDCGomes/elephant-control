@@ -23,32 +23,30 @@ class OperatorVisitCardWidget extends StatefulWidget {
 }
 
 class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
-  String _getVisitPriority(){
-    if(widget.visitOfOperatorsViewController.lastMachineVisit != null){
+  String _getVisitPriority() {
+    if (widget.visitOfOperatorsViewController.lastMachineVisit != null) {
       int nextTime = widget.visitOfOperatorsViewController.periodDaysToVisit ?? 0;
       DateTime nextVisit = widget.visitOfOperatorsViewController.lastMachineVisit!.add(Duration(days: nextTime));
-      if(nextTime != 0 && DateTime.now().compareTo(nextVisit) != -1){
+      if (nextTime != 0 && DateTime.now().compareTo(nextVisit) != -1) {
         return "ALTA";
       }
     }
     return "NORMAL";
   }
 
-  int _getColorPriority(){
-    if(widget.visitOfOperatorsViewController.lastMachineVisit != null){
+  int _getColorPriority() {
+    if (widget.visitOfOperatorsViewController.lastMachineVisit != null) {
       int nextTime = widget.visitOfOperatorsViewController.periodDaysToVisit ?? 0;
       DateTime nextVisit = widget.visitOfOperatorsViewController.lastMachineVisit!.add(Duration(days: nextTime));
-      if(nextTime != 0 && DateTime.now().compareTo(nextVisit) != -1){
+      if (nextTime != 0 && DateTime.now().compareTo(nextVisit) != -1) {
         return AppColors.redColor.value;
       }
     }
     return AppColors.greenColor.value;
   }
 
-  String getStatus(){
-    return widget.visitOfOperatorsViewController.visitedMachine.isNotEmpty
-        && !widget.visitOfOperatorsViewController.visitedMachine.contains("00000000-0000-0000-0000-000000000000") ?
-    "Finalizado" : "Pendente";
+  String getStatus() {
+    return widget.visitOfOperatorsViewController.visitedMachine.isNotEmpty && !widget.visitOfOperatorsViewController.visitedMachine.contains("00000000-0000-0000-0000-000000000000") ? "Finalizado" : "Pendente";
   }
 
   @override
@@ -80,7 +78,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
             MaintenanceHeaderCardWidget(
               machineName: widget.visitOfOperatorsViewController.machineName,
               done: getStatus() == "Finalizado",
-              operatorDeletedMachine: false.obs,
+              operatorDeletedMachine: false,
               // TODO widget.operatorDeletedMachine,
             ),
             MaintenanceBodyCardWidget(

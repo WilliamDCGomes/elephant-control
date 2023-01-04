@@ -14,19 +14,17 @@ class TextWidget extends StatelessWidget {
   final TextDecoration? textDecoration;
 
   TextWidget(
-      this._text,
-      {
-        Key? key,
-        this.maxLines,
-        this.textColor,
-        this.backgroundTextColor,
-        this.textAlign,
-        this.fontSize,
-        this.fontWeight,
-        this.textOverflow,
-        this.textDecoration,
-      }
-      ) : super(key: key);
+    this._text, {
+    Key? key,
+    this.maxLines,
+    this.textColor,
+    this.backgroundTextColor,
+    this.textAlign,
+    this.fontSize,
+    this.fontWeight,
+    this.textOverflow,
+    this.textDecoration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
