@@ -3,7 +3,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widge
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:elephant_control/base/models/visit/model/visit.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/viewControllers/visits_of_operators_viewcontroller.dart';
 import '../../../operatorPages/maintenanceHistory/popups/maintenance_information_popup.dart';

@@ -13,4 +13,16 @@ class UserMachineService extends BaseService {
       return false;
     }
   }
+
+  Future<bool> deleteUserMachine(UserMachineViewController userMachineViewController) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'UserMachine/DeleteUserMachine';
+      final response = await post(url, userMachineViewController.toJson(), headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 }

@@ -72,6 +72,7 @@ class MachineController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final editted = await _machineService.createOrUpdateMachine(machine);
       if (!editted) throw Exception();
+      await getMachines();
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
     } catch (_) {
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível editar a máquina"));

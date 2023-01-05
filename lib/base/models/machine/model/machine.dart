@@ -4,7 +4,7 @@ part 'machine.g.dart';
 
 @JsonSerializable()
 class Machine extends ElephantCore {
-  final String name;
+  late String name;
   DateTime? lastVisit;
   int? daysToNextVisit;
   double? prize;

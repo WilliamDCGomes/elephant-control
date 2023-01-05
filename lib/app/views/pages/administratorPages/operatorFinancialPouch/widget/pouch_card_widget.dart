@@ -3,7 +3,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/rich_text_two_dif
 import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/viewControllers/money_pouch_value_list_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
