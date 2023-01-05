@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/views/pages/user/page/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -189,10 +190,15 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                                 withOperator: false,
                               )),
                         ),
+                        // MenuOptionsWidget(
+                        //   text: "Novo Usuário",
+                        //   imagePath: Paths.Novo_Usuario,
+                        //   onTap: () => Get.to(() => RegisterUsersPage()),
+                        // ),
                         MenuOptionsWidget(
-                          text: "Novo Usuário",
+                          text: "Usuários",
                           imagePath: Paths.Novo_Usuario,
-                          onTap: () => Get.to(() => RegisterUsersPage()),
+                          onTap: () => Get.to(() => UserPage()),
                         ),
                         // MenuOptionsWidget(
                         //   text: "Nova Máquina",

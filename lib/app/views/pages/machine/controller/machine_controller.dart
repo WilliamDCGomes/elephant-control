@@ -27,7 +27,7 @@ class MachineController extends GetxController {
   }
 
   //Getters
-  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim())).toList();
+  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines.where((p0) => p0.active == true).toList() : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true).toList();
 
   Future<void> getMachines() async {
     try {

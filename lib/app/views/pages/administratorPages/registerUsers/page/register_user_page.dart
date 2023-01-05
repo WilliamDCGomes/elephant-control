@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../../base/models/user/model/user.dart';
 import '../../../../../utils/loading.dart';
 import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/paths.dart';
@@ -15,7 +16,9 @@ import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/register_user_controller.dart';
 
 class RegisterUsersPage extends StatefulWidget {
-  const RegisterUsersPage({Key? key}) : super(key: key);
+  final User? user;
+  final bool edit;
+  const RegisterUsersPage({Key? key, this.user, required this.edit}) : super(key: key);
 
   @override
   State<RegisterUsersPage> createState() => _RegisterUsersPageState();
@@ -26,7 +29,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
 
   @override
   void initState() {
-    controller = Get.put(RegisterUsersController());
+    controller = Get.put(RegisterUsersController(widget.user));
     super.initState();
   }
 
@@ -58,7 +61,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Cadastrar Usuário",
+                          title: widget.edit ? "Editar Usuário" : "Cadastrar Usuário",
                         ),
                       ),
                       Expanded(
@@ -71,7 +74,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
                               customContainer: TextWidget(
-                                "Cadastrar Nova Usuário",
+                                widget.edit ? "Editar Novo Usuário" : "Cadastrar Novo Usuário",
                                 textColor: AppColors.whiteColor,
                                 fontSize: 18.sp,
                                 textAlign: TextAlign.center,
@@ -96,7 +99,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.userNameTextController,
                                       hintText: "Nome",
@@ -107,7 +112,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: .5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: .5.h,
+                                    ),
                                     child: Obx(
                                       () => Row(
                                         children: [
@@ -119,13 +126,15 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                               width: 40.w,
                                               rxListItems: controller.userTypeList,
                                               onChanged: (selectedState) {
-                                                if(selectedState != null) {
+                                                if (selectedState != null) {
                                                   controller.userTypeSelected.value = selectedState;
                                                 }
                                               },
                                             ),
                                           ),
-                                          SizedBox(width: 3.w,),
+                                          SizedBox(
+                                            width: 3.w,
+                                          ),
                                           Expanded(
                                             child: DropdownButtonRxListWidget(
                                               itemSelected: controller.userGenderSelected.value == "" ? null : controller.userGenderSelected.value,
@@ -134,7 +143,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                               width: 40.w,
                                               rxListItems: controller.userGenderList,
                                               onChanged: (selectedState) {
-                                                if(selectedState != null) {
+                                                if (selectedState != null) {
                                                   controller.userGenderSelected.value = selectedState;
                                                 }
                                               },
@@ -145,7 +154,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 3.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 3.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.documentTextController,
                                       hintText: "Cpf",
@@ -157,7 +168,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.birthDayTextController,
                                       hintText: "Data de Nascimento",
@@ -168,7 +181,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.emailTextController,
                                       hintText: "E-mail",
@@ -179,7 +194,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.phoneTextController,
                                       hintText: "Telefone",
@@ -190,7 +207,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.cellPhoneTextController,
                                       hintText: "Celular",
@@ -201,7 +220,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.h,
+                                    ),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: TextWidget(
@@ -215,7 +236,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.5.h,),
+                                    padding: EdgeInsets.only(
+                                      top: 1.5.h,
+                                    ),
                                     child: TextFieldWidget(
                                       controller: controller.cepTextController,
                                       hintText: "Cep",
@@ -224,7 +247,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                       keyboardType: TextInputType.number,
                                       textInputAction: TextInputAction.next,
                                       onChanged: (value) async {
-                                        if(value.length == 9){
+                                        if (value.length == 9) {
                                           await Loading.startAndPauseLoading(
                                             () => controller.searchAddressInformation(),
                                             controller.loadingWithSuccessOrErrorWidget,
@@ -254,7 +277,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                                 width: 23.w,
                                                 rxListItems: controller.ufsList,
                                                 onChanged: (selectedState) {
-                                                  if(selectedState != null) {
+                                                  if (selectedState != null) {
                                                     controller.ufSelected.value = selectedState;
                                                   }
                                                 },

@@ -57,41 +57,44 @@ class _UserMachinePageState extends State<UserMachinePage> {
                                 title: "Usuários da máquina",
                               ),
                             ),
-                            GestureDetector(onTap: () => controller.addUser(), child: Icon(Icons.add, color: AppColors.whiteColor)),
+                            GestureDetector(onTap: () => controller.addUser(), child: Icon(Icons.add_circle, color: AppColors.whiteColor)),
                           ],
                         ),
                       ),
                       Expanded(
-                        child: Obx(
-                          () => ListView.builder(
-                            itemCount: controller.users.length,
-                            itemBuilder: (context, index) {
-                              final user = controller.users[index];
-                              return MaintenanceCardWidget(
-                                machineName: user.name,
-                                city: user.name,
-                                status: "",
-                                workPriority: "",
-                                priorityColor: 0,
-                                clock1: "0",
-                                clock2: "0",
-                                teddy: "0",
-                                pouchCollected: false,
-                                showPriorityAndStatus: false,
-                                machineContainerColor: Color(0xFF7a7878),
-                                child: const SizedBox(),
-                                childMaintenanceHeaderCardWidget: [
-                                  GestureDetector(
-                                    onTap: () async => await controller.deleteMachine(user),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                          child: Obx(
+                            () => ListView.builder(
+                              itemCount: controller.users.length,
+                              itemBuilder: (context, index) {
+                                final user = controller.users[index];
+                                return MaintenanceCardWidget(
+                                  machineName: user.name,
+                                  city: user.name,
+                                  status: "",
+                                  workPriority: "",
+                                  priorityColor: 0,
+                                  clock1: "0",
+                                  clock2: "0",
+                                  teddy: "0",
+                                  pouchCollected: false,
+                                  showPriorityAndStatus: false,
+                                  machineContainerColor: AppColors.defaultColor,
+                                  child: const SizedBox(),
+                                  childMaintenanceHeaderCardWidget: [
+                                    GestureDetector(
+                                      onTap: () async => await controller.deleteMachine(user),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: AppColors.whiteColor,
+                                        size: 3.h,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                         ),
                       )

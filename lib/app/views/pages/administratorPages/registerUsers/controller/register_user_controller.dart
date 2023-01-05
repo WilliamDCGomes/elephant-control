@@ -31,11 +31,10 @@ class RegisterUsersController extends GetxController {
   late TextEditingController houseNumberTextController;
   late TextEditingController neighborhoodTextController;
   late TextEditingController complementTextController;
-  late User? _user;
+  User? _user;
   late IConsultCepService consultCepService;
-  late IUserService _userService;
 
-  RegisterUsersController(){
+  RegisterUsersController(this._user) {
     _initializeVariables();
     _initializeList();
   }
@@ -43,10 +42,13 @@ class RegisterUsersController extends GetxController {
   @override
   void onInit() async {
     await _getUfsNames();
+    if (_user != null) {
+      await searchAddressInformation();
+    }
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     userTypeSelected = "".obs;
     userGenderSelected = "".obs;
     ufSelected = "".obs;
@@ -54,24 +56,25 @@ class RegisterUsersController extends GetxController {
     userTypeList = <String>[].obs;
     userGenderList = <String>[].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
-    userNameTextController = TextEditingController();
-    documentTextController = TextEditingController();
-    birthDayTextController = TextEditingController();
-    emailTextController = TextEditingController();
-    phoneTextController = TextEditingController();
-    cellPhoneTextController = TextEditingController();
-    cepTextController = TextEditingController();
-    cityTextController = TextEditingController();
-    streetTextController = TextEditingController();
-    houseNumberTextController = TextEditingController();
-    neighborhoodTextController = TextEditingController();
-    complementTextController = TextEditingController();
-    _user = null;
+    userNameTextController = TextEditingController(text: _user?.name);
+    documentTextController = TextEditingController(text: _user?.document);
+    birthDayTextController = TextEditingController(text: _user?.birthdayDate != null ? DateFormatToBrazil.formatDate(_user!.birthdayDate!) : "");
+    emailTextController = TextEditingController(text: _user?.email);
+    phoneTextController = TextEditingController(text: _user?.tellphone);
+    cellPhoneTextController = TextEditingController(text: _user?.cellphone);
+    cepTextController = TextEditingController(text: _user?.cep);
+    cityTextController = TextEditingController(text: _user?.city);
+    streetTextController = TextEditingController(text: _user?.address);
+    houseNumberTextController = TextEditingController(text: _user?.number);
+    neighborhoodTextController = TextEditingController(text: _user?.district);
+    complementTextController = TextEditingController(text: _user?.complement);
+    if (_user != null) {
+      userTypeSelected.value = _user!.type.description;
+    }
     consultCepService = ConsultCepService();
-    _userService = UserService();
   }
 
-  _initializeList(){
+  _initializeList() {
     userTypeList.addAll([
       "Administrativo",
       "Estoquista",
@@ -90,19 +93,18 @@ class RegisterUsersController extends GetxController {
 
   searchAddressInformation() async {
     int trys = 1;
-    while(true){
-      try{
-        if(cepTextController.text.length == 9){
+    while (true) {
+      try {
+        if (cepTextController.text.length == 9) {
           AddressInformation? addressInformation = await consultCepService.searchCep(cepTextController.text);
-          if(addressInformation != null){
+          if (addressInformation != null) {
             ufSelected.value = addressInformation.uf;
             cityTextController.text = addressInformation.city;
             streetTextController.text = addressInformation.street;
             neighborhoodTextController.text = addressInformation.neighborhood;
             complementTextController.text = addressInformation.complement;
             break;
-          }
-          else{
+          } else {
             ufSelected.value = "";
             cityTextController.text = "";
             streetTextController.text = "";
@@ -110,20 +112,17 @@ class RegisterUsersController extends GetxController {
             complementTextController.text = "";
           }
         }
-      }
-      catch(_){
+      } catch (_) {
         ufSelected.value = "";
         cityTextController.text = "";
         streetTextController.text = "";
         neighborhoodTextController.text = "";
         complementTextController.text = "";
-      }
-      finally{
+      } finally {
         trys++;
-        if(trys > 3){
+        if (trys > 3) {
           break;
-        }
-        else {
+        } else {
           continue;
         }
       }
@@ -131,27 +130,26 @@ class RegisterUsersController extends GetxController {
   }
 
   _getUfsNames() async {
-    try{
+    try {
       ufsList.clear();
       List<String> states = await BrazilAddressInformations.getUfsNames();
-      for(var uf in states) {
+      for (var uf in states) {
         ufsList.add(uf);
       }
-    }
-    catch(_){
+    } catch (_) {
       ufsList.clear();
     }
   }
 
   saveNewUser() async {
-    try{
-      if(_validFields()){
+    try {
+      if (_validFields()) {
         loadingWithSuccessOrErrorWidget.startAnimation();
 
         late UserType userType;
         late TypeGender typeGender;
 
-        switch(userTypeSelected.value){
+        switch (userTypeSelected.value) {
           case "Administrativo":
             userType = UserType.admin;
             break;
@@ -169,7 +167,7 @@ class RegisterUsersController extends GetxController {
             break;
         }
 
-        switch(userGenderSelected.value){
+        switch (userGenderSelected.value) {
           case "Masculino":
             typeGender = TypeGender.masculine;
             break;
@@ -184,7 +182,7 @@ class RegisterUsersController extends GetxController {
             break;
         }
 
-        _user = User(
+        _user ??= User(
           name: userNameTextController.text,
           tellphone: phoneTextController.text,
           document: documentTextController.text,
@@ -194,12 +192,20 @@ class RegisterUsersController extends GetxController {
           pouchLastUpdate: DateTime.now(),
           stuffedAnimalsLastUpdate: DateTime.now(),
         );
-        if(birthDayTextController.text.isNotEmpty){
+        _user?.name = userNameTextController.text;
+        _user?.tellphone ??= phoneTextController.text;
+        _user?.document ??= documentTextController.text;
+        _user?.balanceMoney = null;
+        _user?.balanceStuffedAnimals = null;
+        _user?.type = userType;
+        _user?.pouchLastUpdate ??= DateTime.now();
+        _user?.stuffedAnimalsLastUpdate ??= DateTime.now();
+
+        if (birthDayTextController.text.isNotEmpty) {
           _user!.birthdayDate = DateFormatToBrazil.formatDateFromTextField(
             birthDayTextController.text,
           );
-        }
-        else{
+        } else {
           _user!.birthdayDate = null;
         }
         _user!.cep = cepTextController.text;
@@ -213,23 +219,22 @@ class RegisterUsersController extends GetxController {
         _user!.email = emailTextController.text;
         _user!.gender = typeGender;
 
-        if(await _userService.createUser(_user!)){
-          await loadingWithSuccessOrErrorWidget.stopAnimation();
-          await showDialog(
-            context: Get.context!,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return InformationPopup(
-                warningMessage: "Usuário cadastrado com sucesso!",
-              );
-            },
-          );
-          Get.back();
-        }
-        throw Exception();
+        // if(await _userService.createUser(_user!)){
+        //   await loadingWithSuccessOrErrorWidget.stopAnimation();
+        //   await showDialog(
+        //     context: Get.context!,
+        //     barrierDismissible: false,
+        //     builder: (BuildContext context) {
+        //       return InformationPopup(
+        //         warningMessage: "Usuário cadastrado com sucesso!",
+        //       );
+        //     },
+        //   );
+        //   Get.back();
+        // }
+        Get.back(result: _user);
       }
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
@@ -243,7 +248,7 @@ class RegisterUsersController extends GetxController {
     }
   }
 
-  bool _validFields(){
+  bool _validFields() {
     if (userNameTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
@@ -280,6 +285,7 @@ class RegisterUsersController extends GetxController {
       );
       return false;
     }
+
     /// Alessandro pediu para deixar sem obrigatoriedade de cadastro de endereço por hora
     /*if (emailTextController.text.isEmpty) {
       showDialog(

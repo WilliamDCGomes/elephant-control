@@ -52,15 +52,18 @@ class User extends ElephantCore {
 
 enum UserType {
   @JsonValue(0)
-  operator,
+  operator("Operador"),
   @JsonValue(1)
-  treasury,
+  treasury("Tesouraria"),
   @JsonValue(2)
-  stockist,
+  stockist("Estoquista"),
   @JsonValue(3)
-  admin,
+  admin("Administrativo"),
   @JsonValue(4)
-  none,
+  none("Nenhum");
+
+  final String description;
+  const UserType(this.description);
 }
 
 enum TypeGender {

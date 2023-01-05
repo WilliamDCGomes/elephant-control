@@ -48,6 +48,18 @@ class UserService extends BaseService implements IUserService {
     }
   }
 
+  Future<List<User>> getAll() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetAll';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<User>((e) => User.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<bool> createUser(User user) async {
     try {
       final url = baseUrlApi + 'User/CreateUser';
