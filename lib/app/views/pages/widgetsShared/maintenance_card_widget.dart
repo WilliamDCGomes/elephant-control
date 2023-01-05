@@ -4,7 +4,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widge
 import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../operatorPages/maintenanceHistory/popups/maintenance_information_popup.dart';
 import '../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget.dart';
@@ -89,13 +88,19 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
         widgetCustom: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            MaintenanceHeaderCardWidget(
-              machineName: widget.machineName,
-              done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
-              operatorDeletedMachine: widget.operatorDeletedMachine,
-              decoratorLine: widget.decoratorLine,
-              color: widget.machineContainerColor,
-              children: widget.childMaintenanceHeaderCardWidget,
+            SizedBox(
+              height: 10.h,
+              child: MaintenanceHeaderCardWidget(
+                machineName: widget.machineName,
+                done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
+                operatorDeletedMachine: widget.operatorDeletedMachine,
+                decoratorLine: widget.decoratorLine,
+                decoration: BoxDecoration(
+                  color: widget.machineContainerColor,
+                  borderRadius: BorderRadius.circular(2.h),
+                ),
+                children: widget.childMaintenanceHeaderCardWidget,
+              ),
             ),
             widget.child ??
                 (widget.showPriorityAndStatus

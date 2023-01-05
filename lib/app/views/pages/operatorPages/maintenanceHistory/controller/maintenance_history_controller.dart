@@ -10,6 +10,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class MaintenanceHistoryController extends GetxController {
+  late TextEditingController searchMachines;
   late final RxList<VisitListViewController> _visits;
   late final RxList<Machine> _machines;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -17,6 +18,7 @@ class MaintenanceHistoryController extends GetxController {
   late final VisitService _visitService;
   late final MachineService _machineService;
   late final UserVisitMachineService _userVisitMachineService;
+  late final RxList<Machine> _machinesScreen;
 
   MaintenanceHistoryController() {
     _initializeVariables();
@@ -35,11 +37,13 @@ class MaintenanceHistoryController extends GetxController {
         (p0) => p0.inclusion?.day == DateTime.now().day && p0.inclusion?.month == DateTime.now().month && p0.inclusion?.year == DateTime.now().year,
       )
       .toList();
-  List<Machine> get machines => _machines;
+  List<Machine> get machines => _machinesScreen;
 
   _initializeVariables() {
+    searchMachines = TextEditingController();
     _visits = <VisitListViewController>[].obs;
     _machines = <Machine>[].obs;
+    _machinesScreen = <Machine>[].obs;
     _visitService = VisitService();
     _userVisitMachineService = UserVisitMachineService();
     _machineService = MachineService();
@@ -60,12 +64,30 @@ class MaintenanceHistoryController extends GetxController {
     }
   }
 
+  searchMachinesByName(String machineName){
+    try{
+      _machinesScreen.clear();
+      if(machineName.isNotEmpty) {
+        _machinesScreen.addAll(_machines.where((p0) =>
+            p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
+      }
+      else{
+        _machinesScreen.addAll(_machines);
+      }
+      _machinesScreen.sort((a, b) => a.name.compareTo(b.name));
+    }
+    catch(_){
+      _machinesScreen.value = <Machine>[];
+    }
+  }
+
   Future<void> getMachineVisitByUserId() async {
     try {
       await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachineVisitByUserId());
-      if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.compareTo(b.name));
+      _machinesScreen.addAll(_machines);
+      if (_machinesScreen.isNotEmpty) _machinesScreen.sort((a, b) => a.name.compareTo(b.name));
     } catch (_) {
       _machines.clear();
     } finally {

@@ -6,6 +6,7 @@ import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
+import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/maintenance_history_controller.dart';
@@ -112,6 +113,22 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
+                              child: TextFieldWidget(
+                                controller: controller.searchMachines,
+                                hintText: "Pesquisar Máquinas",
+                                height: 9.h,
+                                width: double.infinity,
+                                onChanged: (value) => controller.searchMachinesByName(value),
+                                iconTextField: Icon(
+                                  Icons.search,
+                                  color: AppColors.defaultColor,
+                                  size: 3.h,
+                                ),
+                                keyboardType: TextInputType.name,
                               ),
                             ),
                             Expanded(

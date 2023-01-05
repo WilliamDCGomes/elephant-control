@@ -18,7 +18,13 @@ import '../controller/register_machine_controller.dart';
 
 class RegisterMachinePage extends StatefulWidget {
   final Machine? machine;
-  const RegisterMachinePage({Key? key, this.machine}) : super(key: key);
+  final bool edit;
+
+  const RegisterMachinePage({
+    Key? key,
+    this.machine,
+    this.edit = false,
+  }) : super(key: key);
 
   @override
   State<RegisterMachinePage> createState() => _RegisterMachinePageState();
@@ -29,7 +35,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
 
   @override
   void initState() {
-    controller = Get.put(RegisterMachineController(widget.machine));
+    controller = Get.put(RegisterMachineController(widget.machine, widget.edit));
     super.initState();
   }
 
@@ -66,7 +72,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                           color: AppColors.defaultColor,
                           padding: EdgeInsets.symmetric(horizontal: 2.h),
                           child: TitleWithBackButtonWidget(
-                            title: "Cadastrar Máquina",
+                            title: (widget.edit ? "Editar " : "Cadastrar ") + "Máquina",
                           ),
                         ),
                         Expanded(
@@ -79,7 +85,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                 backgroundColor: AppColors.defaultColor,
                                 informationText: "",
                                 customContainer: TextWidget(
-                                  "Cadastrar Nova Máquina",
+                                  (widget.edit ? "Editar " : "Cadastrar Nova ") + "Máquina",
                                   textColor: AppColors.whiteColor,
                                   fontSize: 18.sp,
                                   textAlign: TextAlign.center,

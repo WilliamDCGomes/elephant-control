@@ -4,41 +4,47 @@ import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-
 import '../../../../../base/models/machine/model/machine.dart';
 import '../../administratorPages/registerMachine/page/register_machine_page.dart';
 
 class MachineController extends GetxController {
+  late TextEditingController searchMachines;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final MachineService _machineService;
   late final RxList<Machine> _machines;
 
   MachineController() {
+    searchMachines = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _machineService = MachineService();
     _machines = <Machine>[].obs;
   }
   @override
   onInit() async {
+    await Future.delayed(Duration(milliseconds: 200));
     await getMachines();
     super.onInit();
   }
 
   //Getters
-  List<Machine> get machines => _machines;
+  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim())).toList();
 
   Future<void> getMachines() async {
     try {
-      // await loadingWithSuccessOrErrorWidget.startAnimation();
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getAll());
     } catch (e) {
       print(e);
     } finally {
-      _machines.sort((a, b) => a.name.compareTo(b.name));
       _machines.refresh();
-      loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
+  }
+
+  void updateList() {
+    _machines.refresh();
   }
 
   Future<void> addUserMachine() async {
@@ -65,19 +71,22 @@ class MachineController extends GetxController {
     }
   }
 
-  Future<void> editMachine(Machine machine) async {
-    final _machine = await Get.to(() => RegisterMachinePage(machine: machine));
+  Future<void> editMachine(Machine? machine) async {
+    final _machine = await Get.to(() => RegisterMachinePage(
+          machine: machine,
+          edit: machine != null,
+        ));
     if (_machine is! Machine) return;
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      final editted = await _machineService.createOrUpdateMachine(machine);
+      final editted = await _machineService.createOrUpdateMachine(_machine);
       if (!editted) throw Exception();
       await getMachines();
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível editar a máquina"));
-    } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 }
