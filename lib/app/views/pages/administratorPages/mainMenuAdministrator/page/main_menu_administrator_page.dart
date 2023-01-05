@@ -195,11 +195,6 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                           onTap: () => Get.to(() => RegisterUsersPage()),
                         ),
                         MenuOptionsWidget(
-                          text: "Nova Máquina",
-                          imagePath: Paths.Maquina_Pelucia,
-                          onTap: () => Get.to(() => RegisterMachinePage()),
-                        ),
-                        MenuOptionsWidget(
                           text: "Máquinas",
                           imagePath: Paths.Maquina_Pelucia,
                           onTap: () => Get.to(() => MachinePage()),

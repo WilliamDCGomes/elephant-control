@@ -11,6 +11,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class RegisterMachineController extends GetxController {
+  late bool edit;
   late RxString ufSelected;
   late RxList<String> ufsList;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -31,7 +32,7 @@ class RegisterMachineController extends GetxController {
   Machine? _machine;
   late IMachineService _machineService;
 
-  RegisterMachineController(this._machine) {
+  RegisterMachineController(this._machine, this.edit) {
     _initializeVariables();
   }
 
@@ -123,40 +124,56 @@ class RegisterMachineController extends GetxController {
   }
 
   saveNewMachine() async {
-    if (!_validFields()) throw Exception();
-    _machine ??= Machine(name: machineNameTextController.text);
-    _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
-    _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-    _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-    _machine!.selected = false;
-    _machine!.localization = "";
-    _machine!.longitude = "";
-    _machine!.latitude = "";
-    _machine!.cep = cepTextController.text;
-    _machine!.uf = ufSelected.value;
-    _machine!.city = cityTextController.text;
-    _machine!.address = streetTextController.text;
-    _machine!.number = houseNumberTextController.text;
-    _machine!.district = neighborhoodTextController.text;
-    _machine!.complement = complementTextController.text;
-    _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
-    _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
-    Get.back(result: _machine);
-    // if (await _machineService.createOrUpdateMachine(_machine!)) {
-    //   await loadingWithSuccessOrErrorWidget.stopAnimation();
-    //   await showDialog(
-    //     context: Get.context!,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext context) {
-    //       return InformationPopup(
-    //         warningMessage: "Máquina cadastrada com sucesso!",
-    //       );
-    //     },
-    //   );
-    //   Get.back();
-    // }
-    // throw Exception();
-    // }
+    try{
+      if (!_validFields()) {
+        return;
+      }
+      await loadingWithSuccessOrErrorWidget.startAnimation();
+      _machine ??= Machine(name: machineNameTextController.text);
+      _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
+      _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+      _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+      _machine!.selected = false;
+      _machine!.localization = "";
+      _machine!.longitude = "";
+      _machine!.latitude = "";
+      _machine!.cep = cepTextController.text;
+      _machine!.uf = ufSelected.value;
+      _machine!.city = cityTextController.text;
+      _machine!.address = streetTextController.text;
+      _machine!.number = houseNumberTextController.text;
+      _machine!.district = neighborhoodTextController.text;
+      _machine!.complement = complementTextController.text;
+      _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
+      _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
+      Get.back(result: _machine);
+      /*if (await _machineService.createOrUpdateMachine(_machine!)) {
+        await loadingWithSuccessOrErrorWidget.stopAnimation();
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "Máquina " + (edit ? "atualizada " : " cadastrada ") + "com sucesso!",
+            );
+          },
+        );
+        Get.back();
+      }
+      throw Exception();*/
+    }
+    catch(_){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao " + (edit ? "atualizar " : " cadastrar ") + "máquina! Tente novamente mais tarde.",
+          );
+        },
+      );
+    }
   }
 
   bool _validFields() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/text_widget.dart';
@@ -9,6 +8,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
   final bool done;
   final bool operatorDeletedMachine;
   final bool decoratorLine;
+  final BoxDecoration? decoration;
   final Color? color;
   final List<Widget> children;
 
@@ -18,6 +18,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
     required this.done,
     required this.operatorDeletedMachine,
     this.decoratorLine = false,
+    this.decoration,
     this.color,
     this.children = const [],
   }) : super(key: key);
@@ -25,12 +26,13 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: color ??
+      color: decoration != null ? null : color ??
           (operatorDeletedMachine
               ? AppColors.redColor
               : !done
                   ? AppColors.greenColor
                   : AppColors.redColor),
+      decoration: decoration,
       height: 5.h,
       width: 100.w,
       child: Padding(
