@@ -167,6 +167,8 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                               status: "Pendente",
                                               workPriority: "NORMAL",
                                               priorityColor: AppColors.greenColor.value,
+                                              showRadius: false,
+                                              setHeight: false,
                                               clock1: "0",
                                               clock2: "0",
                                               teddy: "0",
