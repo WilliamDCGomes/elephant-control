@@ -14,6 +14,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final String city;
   final String workPriority;
   final int priorityColor;
+  final bool showRadius;
   final String clock1;
   final String clock2;
   final String teddy;
@@ -21,6 +22,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final bool pouchCollected;
   final bool showPriorityAndStatus;
   final bool? showMap;
+  final bool setHeight;
   final bool machineAddOtherList;
   final String? responsibleName;
   final bool operatorDeletedMachine;
@@ -43,6 +45,8 @@ class MaintenanceCardWidget extends StatefulWidget {
     required this.teddy,
     required this.pouchCollected,
     this.pouchList = true,
+    this.showRadius = true,
+    this.setHeight = true,
     this.showPriorityAndStatus = true,
     this.showMap,
     this.responsibleName,
@@ -89,15 +93,15 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: 10.h,
+              height: widget.setHeight ? 10.h : null,
               child: MaintenanceHeaderCardWidget(
                 machineName: widget.machineName,
                 done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
                 operatorDeletedMachine: widget.operatorDeletedMachine,
                 decoratorLine: widget.decoratorLine,
                 decoration: BoxDecoration(
-                  color: widget.machineContainerColor,
-                  borderRadius: BorderRadius.circular(2.h),
+                  color: Color(widget.priorityColor),
+                  borderRadius: widget.showRadius ? BorderRadius.circular(2.h) : null,
                 ),
                 children: widget.childMaintenanceHeaderCardWidget,
               ),
