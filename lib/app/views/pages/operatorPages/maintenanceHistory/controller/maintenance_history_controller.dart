@@ -33,10 +33,11 @@ class MaintenanceHistoryController extends GetxController {
 
   //Getters
   List<VisitListViewController> get visits => _visits
-      .where(
-        (p0) => p0.inclusion?.day == DateTime.now().day && p0.inclusion?.month == DateTime.now().month && p0.inclusion?.year == DateTime.now().year,
-      )
-      .toList();
+      // .where(
+      //   (p0) => p0.inclusion?.day == DateTime.now().day && p0.inclusion?.month == DateTime.now().month && p0.inclusion?.year == DateTime.now().year,
+      // )
+      // .toList();
+      ;
   List<Machine> get machines => _machinesScreen;
 
   _initializeVariables() {
@@ -64,19 +65,16 @@ class MaintenanceHistoryController extends GetxController {
     }
   }
 
-  searchMachinesByName(String machineName){
-    try{
+  searchMachinesByName(String machineName) {
+    try {
       _machinesScreen.clear();
-      if(machineName.isNotEmpty) {
-        _machinesScreen.addAll(_machines.where((p0) =>
-            p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
-      }
-      else{
+      if (machineName.isNotEmpty) {
+        _machinesScreen.addAll(_machines.where((p0) => p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
+      } else {
         _machinesScreen.addAll(_machines);
       }
       _machinesScreen.sort((a, b) => a.name.compareTo(b.name));
-    }
-    catch(_){
+    } catch (_) {
       _machinesScreen.value = <Machine>[];
     }
   }
