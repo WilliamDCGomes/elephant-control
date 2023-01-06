@@ -102,6 +102,8 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
                                             clock2: visit.stuffedAnimalsQuantity.toString(),
                                             teddy: visit.stuffedAnimalsReplaceQuantity.toString(),
                                             pouchCollected: visit.moneyPouchRetired,
+                                            showRadius: false,
+                                            setHeight: false,
                                             machineAddOtherList: visit.active == false,
                                           ),
                                           if (visit.realizedVisit == false && visit.active == true)

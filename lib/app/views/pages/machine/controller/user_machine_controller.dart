@@ -25,6 +25,7 @@ class UserMachineController extends GetxController {
   }
   @override
   onInit() async {
+    await Future.delayed(Duration(milliseconds: 200));
     await getUserMachines();
     super.onInit();
   }
@@ -34,7 +35,7 @@ class UserMachineController extends GetxController {
 
   Future<void> getUserMachines() async {
     try {
-      // await loadingWithSuccessOrErrorWidget.startAnimation();
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       _users.clear();
       _users.addAll(await _machineService.getUsersByMachineId(_machineId));
     } catch (e) {
