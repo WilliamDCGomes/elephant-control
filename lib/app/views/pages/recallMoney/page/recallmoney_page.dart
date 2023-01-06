@@ -5,20 +5,21 @@ import '../../../stylePages/app_colors.dart';
 import 'package:get/get.dart';
 import '../../widgetsShared/text_field_widget.dart';
 import '../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/user_controller.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+import '../controller/recallmoney_controller.dart';
+
+class RecallMoneyPage extends StatefulWidget {
+  const RecallMoneyPage({super.key});
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<RecallMoneyPage> createState() => _RecallMoneyPageState();
 }
 
-class _UserPageState extends State<UserPage> {
-  late final UserController controller;
+class _RecallMoneyPageState extends State<RecallMoneyPage> {
+  late final RecallMoneyController controller;
   @override
   void initState() {
-    controller = Get.put(UserController());
+    controller = Get.put(RecallMoneyController());
     super.initState();
   }
 
@@ -54,25 +55,25 @@ class _UserPageState extends State<UserPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Usuários",
+                                title: "Recolher Dinheiro",
                               ),
                             ),
-                            InkWell(
-                              onTap: () => controller.editUser(null),
-                              child: Icon(
-                                Icons.add_circle,
-                                color: AppColors.whiteColor,
-                                size: 3.h,
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () => controller.editVisit(null),
+                            //   child: Icon(
+                            //     Icons.add_circle,
+                            //     color: AppColors.whiteColor,
+                            //     size: 3.h,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchUsers,
-                          hintText: "Pesquisar Usuários",
+                          controller: controller.searchVisits,
+                          hintText: "Pesquisar Atendimentos",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -89,11 +90,11 @@ class _UserPageState extends State<UserPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.users.length,
+                            itemCount: controller.visits.length,
                             itemBuilder: (context, index) {
-                              final user = controller.users[index];
+                              final visit = controller.visits[index];
                               return MaintenanceCardWidget(
-                                machineName: user.name,
+                                machineName: visit.machine!.name,
                                 city: "",
                                 status: "",
                                 workPriority: "",
@@ -106,27 +107,9 @@ class _UserPageState extends State<UserPage> {
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
                                   GestureDetector(
-                                    onTap: () async => await controller.editUser(user),
+                                    onTap: () async => await controller.finishVisit(visit),
                                     child: Icon(
-                                      Icons.edit,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  GestureDetector(
-                                    onTap: () async => await controller.deleteUser(user),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  GestureDetector(
-                                    onTap: () async => await controller.resetPassword(user),
-                                    child: Icon(
-                                      Icons.key,
+                                      Icons.attach_money_rounded,
                                       color: AppColors.whiteColor,
                                       size: 3.h,
                                     ),

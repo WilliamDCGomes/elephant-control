@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/views/pages/recallMoney/page/recallmoney_page.dart';
 import 'package:elephant_control/app/views/pages/user/page/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -241,8 +242,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                         MenuOptionsWidget(
                           text: "Recolher Dinheiro",
                           imagePath: Paths.Recolher_Dinheiro,
-                          disable: true,
-                          onTap: () {},
+                          onTap: () => Get.to(() => RecallMoneyPage()),
                         ),
                         MenuOptionsWidget(
                           text: "Solicitações",

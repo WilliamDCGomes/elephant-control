@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/information_popup.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class UserController extends GetxController {
       print(e);
     } finally {
       _users.refresh();
+      users.removeWhere((element) => element.id == LoggedUser.id);
       _users.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
@@ -67,6 +69,19 @@ class UserController extends GetxController {
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar o usuário"));
     } finally {
       await getUsers();
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    }
+  }
+
+  Future<void> resetPassword(User user) async {
+    try {
+      await loadingWithSuccessOrErrorWidget.startAnimation();
+      final reseted = await _userService.forgetPassword("Elephant@${DateTime.now().year}", user.document!);
+      if (!reseted) throw Exception();
+      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "A senha de ${user.name} foi resetada com sucesso para\nElephant@${DateTime.now().year}"));
+    } catch (_) {
+      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível resetar a senha"));
+    } finally {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }

@@ -8,7 +8,7 @@ import '../viewControllers/safe_box_financial_viewcontroller.dart';
 import '../viewControllers/visits_of_operators_viewcontroller.dart';
 import 'interfaces/ivisit_service.dart';
 
-class VisitService extends BaseService implements IVisitService{
+class VisitService extends BaseService implements IVisitService {
   Future<bool> createVisit(Visit visit) async {
     try {
       final token = await getToken();
@@ -115,6 +115,30 @@ class VisitService extends BaseService implements IVisitService{
       return response.body;
     } catch (_) {
       return false;
+    }
+  }
+
+  Future<bool> changeStatusMoneyPouchLaunchedToFinished(String visitId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/ChangeStatusMoneyPouchLaunchedToFinished';
+      final response = await post(url, null, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<List<Visit>> getVisitWithStatusMoneyPouchLaunchedOrRealized() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetVisitWithStatusMoneyPouchLaunchedOrRealized';
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<Visit>((visit) => Visit.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
     }
   }
 
