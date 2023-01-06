@@ -100,7 +100,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                 operatorDeletedMachine: widget.operatorDeletedMachine,
                 decoratorLine: widget.decoratorLine,
                 decoration: BoxDecoration(
-                  color: Color(widget.priorityColor),
+                  color: Color(widget.priorityColor != 0 ? widget.priorityColor : AppColors.defaultColor.value),
                   borderRadius: widget.showRadius ? BorderRadius.circular(2.h) : null,
                 ),
                 children: widget.childMaintenanceHeaderCardWidget,
