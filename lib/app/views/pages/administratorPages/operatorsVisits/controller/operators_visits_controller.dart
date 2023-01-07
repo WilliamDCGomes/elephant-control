@@ -2,7 +2,7 @@ import 'package:elephant_control/base/services/user_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/user/user.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/services/interfaces/ivisit_service.dart';
 import '../../../../../../base/viewControllers/visits_of_operators_viewcontroller.dart';

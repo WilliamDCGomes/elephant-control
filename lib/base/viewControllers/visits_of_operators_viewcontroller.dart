@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/visit/model/visit.dart';
+import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'visits_of_operators_viewcontroller.g.dart';

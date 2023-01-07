@@ -1,4 +1,4 @@
-import '../../models/sync/model/sync.dart';
+import '../../models/sync/sync.dart';
 import '../interfaces/ibase_service_get.dart';
 import '../interfaces/ibase_service_post_and_get.dart';
 

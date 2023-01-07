@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../models/addressInformation/model/address_information.dart';
+import '../models/addressInformation/address_information.dart';
 import 'base/base_service.dart';
 import 'interfaces/iconsult_cep_service.dart';
 

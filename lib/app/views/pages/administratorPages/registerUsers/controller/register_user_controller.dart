@@ -1,8 +1,8 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
-import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/addressInformation/model/address_information.dart';
+import '../../../../../../base/models/addressInformation/address_information.dart';
 import '../../../../../../base/services/consult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';

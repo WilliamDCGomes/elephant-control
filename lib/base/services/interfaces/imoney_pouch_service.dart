@@ -1,4 +1,4 @@
-import '../../models/user/model/user.dart';
+import '../../models/user/user.dart';
 import '../../viewControllers/money_pouch_get_viewcontroller.dart';
 
 abstract class IMoneyPouchService {

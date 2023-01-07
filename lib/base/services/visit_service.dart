@@ -1,5 +1,5 @@
-import 'package:elephant_control/base/models/user/model/user.dart';
-import 'package:elephant_control/base/models/visit/model/visit.dart';
+import 'package:elephant_control/base/models/user/user.dart';
+import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/add_money_pouch_viewcontroller.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';

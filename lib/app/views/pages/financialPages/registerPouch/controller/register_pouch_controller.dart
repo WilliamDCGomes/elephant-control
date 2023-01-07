@@ -3,7 +3,7 @@ import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/money_pouch_viewcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/visit/model/visit.dart';
+import '../../../../../../base/models/visit/visit.dart';
 import '../../../../../../base/services/money_pouch_service.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';

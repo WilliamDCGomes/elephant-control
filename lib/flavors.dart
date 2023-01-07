@@ -16,6 +16,17 @@ class F {
     }
   }
 
+  static String get extension {
+    switch (appFlavor) {
+      case Flavor.HMLG:
+        return 'HMLG';
+      case Flavor.PROD:
+        return 'PROD';
+      default:
+        return 'DEV';
+    }
+  }
+
   static bool get isDev => F.appFlavor == Flavor.DEV;
   static bool get isHmlg => F.appFlavor == Flavor.HMLG;
   static bool get isProd => F.appFlavor == Flavor.PROD;

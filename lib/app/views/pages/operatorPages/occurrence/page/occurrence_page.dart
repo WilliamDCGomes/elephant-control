@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/machine/model/machine.dart';
+import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/services/money_pouch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

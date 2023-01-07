@@ -1,8 +1,8 @@
 import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/addressInformation/model/address_information.dart';
-import '../../../../../../base/models/machine/model/machine.dart';
+import '../../../../../../base/models/addressInformation/address_information.dart';
+import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/services/consult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
 import '../../../../../../base/services/interfaces/imachine_service.dart';
@@ -54,7 +54,7 @@ class RegisterMachineController extends GetxController {
     minAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.minimumAverageValue.toInt().toString());
     maxAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.maximumAverageValue.toInt().toString());
     firstClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.prize ?? 0.0).toStringAsFixed(0));
-    secondClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.balance ?? 0.0).toStringAsFixed(0));
+    secondClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.balanceStuffedAnimals ?? 0.0).toStringAsFixed(0));
     periodVisitsTextController = TextEditingController(text: _machine == null ? null : _machine?.daysToNextVisit.toString());
     cepTextController = TextEditingController(text: _machine == null ? null : _machine?.cep);
     cityTextController = TextEditingController(text: _machine == null ? null : _machine?.city);
@@ -133,7 +133,7 @@ class RegisterMachineController extends GetxController {
       _machine!.name = machineNameTextController.text;
       _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
       _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-      _machine!.balance = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+      _machine!.balanceStuffedAnimals = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
       _machine!.selected = false;
       _machine!.localization = "";
       _machine!.longitude = "";

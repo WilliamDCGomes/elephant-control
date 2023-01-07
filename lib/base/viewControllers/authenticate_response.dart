@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'authenticate_response.g.dart';

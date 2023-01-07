@@ -1,6 +1,6 @@
 import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
-import 'package:elephant_control/base/models/user/model/user.dart';
-import 'package:elephant_control/base/models/visit/model/visit.dart';
+import 'package:elephant_control/base/models/user/user.dart';
+import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

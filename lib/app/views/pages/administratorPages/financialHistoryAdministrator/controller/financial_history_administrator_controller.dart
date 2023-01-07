@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/user/user.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/services/interfaces/ivisit_service.dart';
 import '../../../../../../base/services/user_service.dart';

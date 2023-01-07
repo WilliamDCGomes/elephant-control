@@ -2,13 +2,13 @@ import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/confirmation_popup.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/information_popup.dart';
-import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:elephant_control/base/viewControllers/recall_money_viewcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import '../../../../../base/models/visit/model/visit.dart';
+import '../../../../../base/models/visit/visit.dart';
 import '../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../base/services/visit_service.dart';
 

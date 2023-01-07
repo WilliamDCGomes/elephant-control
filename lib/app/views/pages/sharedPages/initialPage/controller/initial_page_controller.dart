@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/user/user.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';

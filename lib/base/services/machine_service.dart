@@ -1,7 +1,7 @@
-import 'package:elephant_control/base/models/machine/model/machine.dart';
-import 'package:elephant_control/base/models/machine/model/reminder.dart';
+import 'package:elephant_control/base/models/machine/machine.dart';
+import 'package:elephant_control/base/models/reminderMachine/reminder_machine.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
-import '../models/user/model/user.dart';
+import '../models/user/user.dart';
 import 'interfaces/imachine_service.dart';
 
 class MachineService extends BaseService implements IMachineService {
@@ -120,7 +120,7 @@ class MachineService extends BaseService implements IMachineService {
     }
   }
 
-  Future<bool> createOrEditReminder(Reminder reminder) async {
+  Future<bool> createOrEditReminder(ReminderMachine reminder) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Machine/CreateOrEditReminderMachine';

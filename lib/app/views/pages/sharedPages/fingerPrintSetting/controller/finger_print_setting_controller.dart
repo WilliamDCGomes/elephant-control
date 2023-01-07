@@ -1,5 +1,5 @@
 import 'package:elephant_control/app/utils/logged_user.dart';
-import 'package:elephant_control/base/models/user/model/user.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';

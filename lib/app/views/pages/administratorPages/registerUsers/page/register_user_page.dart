@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/user/user.dart';
 import '../../../../../utils/loading.dart';
 import '../../../../../utils/masks_for_text_fields.dart';
 import '../../../../../utils/paths.dart';

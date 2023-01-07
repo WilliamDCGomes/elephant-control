@@ -19,19 +19,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  // _initializeFirebaseMessaging() async {
-  //   await Provider.of<FirebaseMessagingService>(context, listen: false).initialize();
-  // }
-
-  // _checkNotifications() async {
-  //   await Provider.of<NotificationService>(context, listen: false).checkForNotifications();
-  // }
-
-  @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

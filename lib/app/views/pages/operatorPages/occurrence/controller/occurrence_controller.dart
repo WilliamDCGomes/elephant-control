@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:elephant_control/app/enums/enums.dart';
-import 'package:elephant_control/base/models/incident/model/incident.dart';
-import 'package:elephant_control/base/models/machine/model/machine.dart';
+import 'package:elephant_control/base/models/incident/incident.dart';
+import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../base/models/media/model/media.dart';
-import '../../../../../../base/models/visitMedia/model/visit_media.dart';
+import '../../../../../../base/models/media/media.dart';
+import '../../../../../../base/models/visitMedia/visit_media.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';

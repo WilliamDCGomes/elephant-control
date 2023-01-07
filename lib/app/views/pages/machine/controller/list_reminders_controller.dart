@@ -4,36 +4,35 @@ import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_succ
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/confirmation_popup.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/snackbar_widget.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/text_field_widget.dart';
-import 'package:elephant_control/app/views/pages/widgetsShared/text_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../base/models/machine/model/reminder.dart';
+import '../../../../../base/models/reminderMachine/reminder_machine.dart';
 import '../../widgetsShared/popups/default_popup_widget.dart';
 
 class ListReminderController extends GetxController {
-  late final RxList<Reminder> _reminders;
+  late final RxList<ReminderMachine> _reminders;
   late final MachineService _machineService;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final TextEditingController _searchReminders;
   late final String _machineId;
 
-  ListReminderController(List<Reminder> reminders, this._machineId) {
-    _reminders = RxList<Reminder>(reminders);
+  ListReminderController(List<ReminderMachine> reminders, this._machineId) {
+    _reminders = RxList<ReminderMachine>(reminders);
     _machineService = MachineService();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _searchReminders = TextEditingController();
     // getReminders();
   }
 
-  List<Reminder> get reminders => searchReminders.text.toLowerCase().trim().isEmpty ? _reminders.where((p0) => p0.active == true).toList() : _reminders.where((p0) => p0.description.toLowerCase().trim().contains(searchReminders.text.toLowerCase().trim()) && p0.active == true).toList();
+  List<ReminderMachine> get reminders => searchReminders.text.toLowerCase().trim().isEmpty ? _reminders.where((p0) => p0.active == true).toList() : _reminders.where((p0) => p0.description.toLowerCase().trim().contains(searchReminders.text.toLowerCase().trim()) && p0.active == true).toList();
   TextEditingController get searchReminders => _searchReminders;
 
   void updateList() => _reminders.refresh();
 
-  Future<void> deleteReminder(Reminder reminder) async {
+  Future<void> deleteReminder(ReminderMachine reminder) async {
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       bool? exclude;
@@ -62,7 +61,7 @@ class ListReminderController extends GetxController {
     }
   }
 
-  Future<void> createOrEditReminder(Reminder? reminder, {bool delet = false}) async {
+  Future<void> createOrEditReminder(ReminderMachine? reminder, {bool delet = false}) async {
     final bool edition = reminder != null;
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
@@ -122,7 +121,7 @@ class ListReminderController extends GetxController {
               }));
       if (description.text.trim().isEmpty) return;
       if (reminder == null) {
-        reminder = Reminder(description: description.text.trim(), realized: realized, machineId: _machineId);
+        reminder = ReminderMachine(description: description.text.trim(), realized: realized, machineId: _machineId);
       } else {
         reminder.description = description.text.trim();
         reminder.realized = realized;

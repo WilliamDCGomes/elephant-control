@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 import 'app/enums/enums.dart';
 import 'app/views/stylePages/app_colors.dart';
+import 'base/context/elephant_context.dart';
 import 'flavors.dart';
 
 buildFlavor(Flavor flavor) async {
+  F.appFlavor = flavor;
+  WidgetsFlutterBinding.ensureInitialized();
   Map<int, Color> color = {
     50: AppColors.defaultColor,
     100: AppColors.defaultColor,
@@ -18,7 +21,7 @@ buildFlavor(Flavor flavor) async {
     900: AppColors.defaultColor,
   };
   MaterialColor colorCustom = MaterialColor(0XFF1E4767, color);
-  F.appFlavor = flavor;
+  await ElephantContext().initializeDatabase();
   runApp(
     App(color: colorCustom)
   );

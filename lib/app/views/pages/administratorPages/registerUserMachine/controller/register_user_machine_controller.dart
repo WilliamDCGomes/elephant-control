@@ -2,8 +2,8 @@ import 'package:elephant_control/base/services/interfaces/iuser_service.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../../../../../../base/models/machine/model/machine.dart';
-import '../../../../../../base/models/user/model/user.dart';
+import '../../../../../../base/models/machine/machine.dart';
+import '../../../../../../base/models/user/user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
 part 'register_user_machine_controller.g.dart';

@@ -1,5 +1,5 @@
 import 'package:elephant_control/app/views/pages/operatorPages/maintenanceHistory/pages/add_new_maintenance_page.dart';
-import 'package:elephant_control/base/models/machine/model/machine.dart';
+import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';

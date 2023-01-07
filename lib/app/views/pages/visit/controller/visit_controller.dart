@@ -3,7 +3,7 @@ import 'package:elephant_control/app/views/pages/widgetsShared/popups/informatio
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import '../../../../../base/models/visit/model/visit.dart';
+import '../../../../../base/models/visit/visit.dart';
 import '../../../../../base/services/visit_service.dart';
 
 class VisitController extends GetxController {

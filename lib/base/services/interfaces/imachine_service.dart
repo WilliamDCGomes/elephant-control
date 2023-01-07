@@ -1,4 +1,4 @@
-import 'package:elephant_control/base/models/machine/model/machine.dart';
+import 'package:elephant_control/base/models/machine/machine.dart';
 
 abstract class IMachineService {
   Future<List<Machine>> getMachinesByUserId();

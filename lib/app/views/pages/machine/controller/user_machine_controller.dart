@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../base/models/user/model/user.dart';
+import '../../../../../base/models/user/user.dart';
 
 class UserMachineController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;

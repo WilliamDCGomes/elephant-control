@@ -1,4 +1,4 @@
-import '../../base/models/user/model/user.dart';
+import '../../base/models/user/user.dart';
 
 class LoggedUser {
   static String id = "";
