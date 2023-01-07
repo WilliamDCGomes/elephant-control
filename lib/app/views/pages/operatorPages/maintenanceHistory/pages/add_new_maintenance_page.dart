@@ -122,7 +122,7 @@ class _AppNewMaintenancePageState extends State<AppNewMaintenancePage> {
                                 hintText: "Pesquisar Máquinas",
                                 height: 9.h,
                                 width: double.infinity,
-                                onChanged: (value) => controller.searchMachinesByName(value),
+                                onChanged: (value) => controller.updateList(),
                                 iconTextField: Icon(
                                   Icons.search,
                                   color: AppColors.defaultColor,
