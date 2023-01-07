@@ -18,7 +18,6 @@ class MaintenanceHistoryController extends GetxController {
   late final VisitService _visitService;
   late final MachineService _machineService;
   late final UserVisitMachineService _userVisitMachineService;
-  late final RxList<Machine> _machinesScreen;
 
   MaintenanceHistoryController() {
     _initializeVariables();
@@ -38,13 +37,18 @@ class MaintenanceHistoryController extends GetxController {
       // )
       // .toList();
       ;
-  List<Machine> get machines => _machinesScreen;
+  List<Machine> get machines {
+    if (searchMachines.text.isNotEmpty) {
+      return _machines.where((p0) => p0.name.toLowerCase().startsWith(searchMachines.text.toLowerCase())).toList();
+    } else {
+      return _machines;
+    }
+  }
 
   _initializeVariables() {
     searchMachines = TextEditingController();
     _visits = <VisitListViewController>[].obs;
     _machines = <Machine>[].obs;
-    _machinesScreen = <Machine>[].obs;
     _visitService = VisitService();
     _userVisitMachineService = UserVisitMachineService();
     _machineService = MachineService();
@@ -52,6 +56,8 @@ class MaintenanceHistoryController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     loadingWithSuccessOrErrorWidgetTwo = LoadingWithSuccessOrErrorWidget();
   }
+
+  void updateList() => _machines.refresh();
 
   Future<void> getVisitsOperatorByUserId() async {
     try {
@@ -65,27 +71,26 @@ class MaintenanceHistoryController extends GetxController {
     }
   }
 
-  searchMachinesByName(String machineName) {
-    try {
-      _machinesScreen.clear();
-      if (machineName.isNotEmpty) {
-        _machinesScreen.addAll(_machines.where((p0) => p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
-      } else {
-        _machinesScreen.addAll(_machines);
-      }
-      _machinesScreen.sort((a, b) => a.name.compareTo(b.name));
-    } catch (_) {
-      _machinesScreen.value = <Machine>[];
-    }
-  }
+  // searchMachinesByName(String machineName) {
+  //   try {
+  //     _machines.clear();
+  //     if (machineName.isNotEmpty) {
+  //       _machines.addAll(_machines.where((p0) => p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
+  //     } else {
+  //       _machines.addAll(_machines);
+  //     }
+  //     _machines.sort((a, b) => a.name.compareTo(b.name));
+  //   } catch (_) {
+  //     _machines.value = <Machine>[];
+  //   }
+  // }
 
   Future<void> getMachineVisitByUserId() async {
     try {
       await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getMachineVisitByUserId());
-      _machinesScreen.addAll(_machines);
-      if (_machinesScreen.isNotEmpty) _machinesScreen.sort((a, b) => a.name.compareTo(b.name));
+      if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
     } catch (_) {
       _machines.clear();
     } finally {
@@ -121,7 +126,7 @@ class MaintenanceHistoryController extends GetxController {
       if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Erro ao adicionar máquina"));
     } finally {
-      if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation();
+      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
     }
   }
 
