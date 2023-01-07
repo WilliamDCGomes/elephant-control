@@ -2,6 +2,7 @@ import 'package:elephant_control/base/viewControllers/operator_information_viewc
 import 'package:image_picker/image_picker.dart';
 import '../../models/user/model/user.dart';
 import '../../viewControllers/authenticate_response.dart';
+import '../../viewControllers/recall_money_viewcontroller.dart';
 
 abstract class IUserService {
   Future<bool> createUser(User user);
@@ -45,4 +46,5 @@ abstract class IUserService {
   Future<String> getUserProfilePicture();
 
   Future<bool> deleteProfilePicture();
+  Future<List<RecallMoneyViewController>> getTreasuryUsersWithMoneyPouchLaunched();
 }

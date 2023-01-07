@@ -16,13 +16,14 @@ class BaseService extends GetConnect {
     try {
       sharedPreferences ??= sharedPreferences = await SharedPreferences.getInstance();
       String? token = sharedPreferences!.getString('Token');
-      final String? expiracaoToken = sharedPreferences!.getString('ExpiracaoToken');
+      final String? expiracaoToken = sharedPreferences?.getString('ExpiracaoToken');
       if (getTokenForcado || (expiracaoToken != null && DateTime.now().compareTo(DateTime.parse(expiracaoToken)) >= 0)) {
-        token = (await UserService().authenticate())?.token;
-        if (token == null) throw Exception();
-        sharedPreferences!.setString('Token', token);
+        String? _token = (await UserService().authenticate())?.token;
+        if (_token == null) throw Exception();
+        token = _token;
+        sharedPreferences!.setString('Token', _token);
       }
-      return token ?? "";
+      return token!;
     } catch (_) {
       throw Exception();
     }

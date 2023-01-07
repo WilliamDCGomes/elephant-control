@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
+import 'package:elephant_control/base/models/machine/model/reminder.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'machine.g.dart';
 
@@ -22,10 +23,11 @@ class Machine extends ElephantCore {
   late double minimumAverageValue;
   late double maximumAverageValue;
   bool? machineAddOtherList;
+  List<Reminder>? reminders;
   @JsonKey(ignore: true)
   late bool selected;
 
-  Machine({required this.name, this.selected = false, super.id, this.lastVisit});
+  Machine({required this.name, this.selected = false, super.id, this.lastVisit, this.reminders});
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 

@@ -11,6 +11,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
   final BoxDecoration? decoration;
   final Color? color;
   final List<Widget> children;
+  final int? maxLines;
 
   const MaintenanceHeaderCardWidget({
     Key? key,
@@ -21,17 +22,20 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
     this.decoration,
     this.color,
     this.children = const [],
+    this.maxLines,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: decoration != null ? null : color ??
-          (operatorDeletedMachine
-              ? AppColors.redColor
-              : !done
-                  ? AppColors.greenColor
-                  : AppColors.redColor),
+      color: decoration != null
+          ? null
+          : color ??
+              (operatorDeletedMachine
+                  ? AppColors.redColor
+                  : !done
+                      ? AppColors.greenColor
+                      : AppColors.redColor),
       decoration: decoration,
       height: 5.h,
       width: 100.w,
@@ -48,7 +52,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
                 fontSize: 16.sp,
                 textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
                 textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
-                maxLines: 1,
+                maxLines: maxLines ?? 1,
               ),
             ),
             ...children,

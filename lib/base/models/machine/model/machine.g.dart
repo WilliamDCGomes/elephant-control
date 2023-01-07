@@ -12,6 +12,9 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       lastVisit: json['lastVisit'] == null
           ? null
           : DateTime.parse(json['lastVisit'] as String),
+      reminders: (json['reminders'] as List<dynamic>?)
+          ?.map((e) => Reminder.fromJson(e as Map<String, dynamic>))
+          .toList(),
     )
       ..inclusion = json['inclusion'] == null
           ? null
@@ -62,4 +65,5 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'minimumAverageValue': instance.minimumAverageValue,
       'maximumAverageValue': instance.maximumAverageValue,
       'machineAddOtherList': instance.machineAddOtherList,
+      'reminders': instance.reminders,
     };

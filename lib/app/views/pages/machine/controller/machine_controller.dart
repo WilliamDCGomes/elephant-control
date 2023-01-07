@@ -31,6 +31,7 @@ class MachineController extends GetxController {
 
   Future<void> getMachines() async {
     try {
+      await Future.delayed(const Duration(milliseconds: 200));
       await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getAll());

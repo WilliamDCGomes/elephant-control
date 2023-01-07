@@ -29,9 +29,11 @@ class MaintenanceCardWidget extends StatefulWidget {
   final String status;
   final bool decoratorLine;
   final bool onTapHabilitate;
+  final dynamic Function()? onTap;
   final Widget? child;
   final List<Widget> childMaintenanceHeaderCardWidget;
   final Color? machineContainerColor;
+  final int? maxLines;
 
   const MaintenanceCardWidget({
     super.key,
@@ -57,6 +59,8 @@ class MaintenanceCardWidget extends StatefulWidget {
     this.child,
     this.machineContainerColor,
     this.childMaintenanceHeaderCardWidget = const [],
+    this.onTap,
+    this.maxLines,
   });
 
   @override
@@ -69,25 +73,26 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
-        onTap: !widget.onTapHabilitate
-            ? null
-            : () {
-                BottomSheetPopup.showAlert(
-                  context,
-                  MaintenanceInformationPopup.getWidgetList(
-                    context,
-                    widget.machineName,
-                    widget.clock1,
-                    widget.clock2,
-                    widget.teddy,
-                    widget.status,
-                    widget.workPriority,
-                    widget.priorityColor,
-                    widget.pouchCollected,
-                    widget.responsibleName,
-                  ),
-                );
-              },
+        onTap: widget.onTap ??
+            (!widget.onTapHabilitate
+                ? null
+                : () {
+                    BottomSheetPopup.showAlert(
+                      context,
+                      MaintenanceInformationPopup.getWidgetList(
+                        context,
+                        widget.machineName,
+                        widget.clock1,
+                        widget.clock2,
+                        widget.teddy,
+                        widget.status,
+                        widget.workPriority,
+                        widget.priorityColor,
+                        widget.pouchCollected,
+                        widget.responsibleName,
+                      ),
+                    );
+                  }),
         componentPadding: EdgeInsets.zero,
         widgetCustom: Column(
           mainAxisSize: MainAxisSize.min,
@@ -96,6 +101,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
               height: widget.setHeight ? 10.h : null,
               child: MaintenanceHeaderCardWidget(
                 machineName: widget.machineName,
+                maxLines: widget.maxLines,
                 done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
                 operatorDeletedMachine: widget.operatorDeletedMachine,
                 decoratorLine: widget.decoratorLine,

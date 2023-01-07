@@ -30,6 +30,7 @@ class MaintenanceController extends GetxController {
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
+  late RxBool _showReminders;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
   late TextEditingController clock1;
@@ -54,6 +55,7 @@ class MaintenanceController extends GetxController {
 
   _initializeVariables() {
     visitId = const Uuid().v4();
+    _showReminders = false.obs;
     _incidents = <IncidentObject>[];
     _visitService = VisitService();
     _visitMediaService = VisitMediaService();
@@ -89,6 +91,7 @@ class MaintenanceController extends GetxController {
 
   //Getters
   List<Machine> get machines => _machines;
+  bool get showReminders => _showReminders.value;
 
   onDropdownButtonWidgetChanged(String? machineId) {
     machineSelected = _machines.firstWhere((element) => element.id == machineId);
@@ -112,9 +115,9 @@ class MaintenanceController extends GetxController {
       // await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       final listTodayMachine = await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
-      _machines.addAll(listTodayMachine.map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit)));
+      _machines.addAll(listTodayMachine.map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
       if (_machines.isNotEmpty) {
-        _machines.sort((a, b) => a.name.compareTo(b.name));
+        _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
         onDropdownButtonWidgetChanged(_machines.first.id);
         update(["dropdown-button"]);
       }
@@ -122,6 +125,8 @@ class MaintenanceController extends GetxController {
       _machines.clear();
     }
   }
+
+  void setShowReminders() => _showReminders.value = !_showReminders.value;
 
   openIncident(BuildContext context) async {
     if (machineSelected == null) {

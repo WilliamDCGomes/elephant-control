@@ -165,4 +165,16 @@ class VisitService extends BaseService implements IVisitService {
       return [];
     }
   }
+
+  Future<bool> recallMoneyVisitsByUserId(String treasuryUserId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/RecallMoneyVisitsByUserId';
+      final response = await post(url, null, query: {"TreasuryUserId": treasuryUserId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
 }

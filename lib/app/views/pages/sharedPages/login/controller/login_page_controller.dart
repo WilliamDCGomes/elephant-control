@@ -178,7 +178,7 @@ class LoginPageController extends GetxController {
     if (oldUser == null) {
       await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
     } else if (oldUser != userInputController.text.replaceAll('.', '').replaceAll('-', '')) {
-      await sharedPreferences.clear();
+      // await sharedPreferences.clear();
       await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
     }
 
@@ -281,7 +281,7 @@ class LoginPageController extends GetxController {
         return false;
       }
       await sharedPreferences.setString('Token', userLogged!.token!);
-      await sharedPreferences.setString('ExpiracaoToken', DateFormatToBrazil.formatDateAmerican(userLogged!.expirationDate));
+      await sharedPreferences.setString('ExpiracaoToken', userLogged!.expirationDate!.toIso8601String());
       return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");

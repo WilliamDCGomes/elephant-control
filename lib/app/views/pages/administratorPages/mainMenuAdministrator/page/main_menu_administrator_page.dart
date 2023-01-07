@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/views/pages/machine/page/list_machine_page.dart';
 import 'package:elephant_control/app/views/pages/recallMoney/page/recallmoney_page.dart';
 import 'package:elephant_control/app/views/pages/user/page/user_page.dart';
 import 'package:flutter/material.dart';
@@ -236,8 +237,7 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
                         MenuOptionsWidget(
                           text: "Novo Lembrete",
                           imagePath: Paths.Novo_Lembrete,
-                          disable: true,
-                          onTap: () {},
+                          onTap: () => Get.to(() => ListMachinePage()),
                         ),
                         MenuOptionsWidget(
                           text: "Recolher Dinheiro",

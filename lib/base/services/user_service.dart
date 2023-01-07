@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user/model/user.dart';
 import '../viewControllers/authenticate_response.dart';
+import '../viewControllers/recall_money_viewcontroller.dart';
 import 'base/base_service.dart';
 import 'interfaces/iuser_service.dart';
 
@@ -249,6 +250,18 @@ class UserService extends BaseService implements IUserService {
       return OperatorInformationViewController.fromJson(response.body);
     } catch (_) {
       return null;
+    }
+  }
+
+  Future<List<RecallMoneyViewController>> getTreasuryUsersWithMoneyPouchLaunched() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetTreasuryUsersWithMoneyPouchLaunched';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<RecallMoneyViewController>((e) => RecallMoneyViewController.fromJson(e)).toList();
+    } catch (_) {
+      return [];
     }
   }
 }

@@ -1,26 +1,35 @@
-import 'package:elephant_control/app/utils/format_numbers.dart';
-import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../../../../base/models/machine/model/reminder.dart';
 import '../../../stylePages/app_colors.dart';
-import 'package:get/get.dart';
+import '../../widgetsShared/maintenance_card_widget.dart';
 import '../../widgetsShared/text_field_widget.dart';
 import '../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/list_reminders_controller.dart';
 
-import '../controller/recallmoney_controller.dart';
-
-class RecallMoneyPage extends StatefulWidget {
-  const RecallMoneyPage({super.key});
+class ListReminderPage extends StatefulWidget {
+  final List<Reminder> reminders;
+  final String machineId;
+  const ListReminderPage({super.key, required this.reminders, required this.machineId});
 
   @override
-  State<RecallMoneyPage> createState() => _RecallMoneyPageState();
+  State<ListReminderPage> createState() => _ListReminderPageState();
 }
 
-class _RecallMoneyPageState extends State<RecallMoneyPage> {
-  late final RecallMoneyController controller;
+class _ListReminderPageState extends State<ListReminderPage> {
+  late final ListReminderController controller;
+
   @override
   void initState() {
-    controller = Get.put(RecallMoneyController());
+    controller = Get.put(ListReminderController(
+      widget.reminders,
+      widget.machineId,
+    ));
     super.initState();
   }
 
@@ -56,25 +65,25 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Recolher Dinheiro",
+                                title: "Lembretes",
                               ),
                             ),
-                            // InkWell(
-                            //   onTap: () => controller.editVisit(null),
-                            //   child: Icon(
-                            //     Icons.add_circle,
-                            //     color: AppColors.whiteColor,
-                            //     size: 3.h,
-                            //   ),
-                            // ),
+                            InkWell(
+                              onTap: () => controller.createOrEditReminder(null),
+                              child: Icon(
+                                Icons.add_circle,
+                                color: AppColors.whiteColor,
+                                size: 3.h,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchUsers,
-                          hintText: "Pesquisar Usuários",
+                          controller: controller.searchReminders,
+                          hintText: "Pesquisar Lembretes",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -91,13 +100,13 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.users.length,
+                            itemCount: controller.reminders.length,
                             itemBuilder: (context, index) {
-                              final user = controller.users[index];
+                              final reminder = controller.reminders[index];
                               return MaintenanceCardWidget(
-                                machineName: user.name + "\n" + FormatNumbers.numbersToMoney(user.totalValue),
-                                onTap: () => controller.finishVisit(user),
+                                machineName: reminder.description,
                                 maxLines: 3,
+                                onTap: () => controller.createOrEditReminder(reminder),
                                 city: "",
                                 status: "",
                                 workPriority: "",
@@ -109,14 +118,14 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
-                                  GestureDetector(
-                                    onTap: () async => await controller.finishVisit(user),
-                                    child: Icon(
-                                      Icons.attach_money_rounded,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
+                                  SizedBox(width: 1.h),
+                                  Icon(
+                                    reminder.realized ? Icons.check_box : Icons.check_box_outline_blank_outlined,
+                                    color: AppColors.whiteColor,
+                                    size: 3.h,
                                   ),
+                                  SizedBox(width: 2.h),
+                                  GestureDetector(onTap: () => controller.deleteReminder(reminder), child: Icon(Icons.delete, color: AppColors.whiteColor, size: 3.h)),
                                 ],
                                 child: const SizedBox(),
                               );

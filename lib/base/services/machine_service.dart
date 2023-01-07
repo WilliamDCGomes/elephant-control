@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/models/machine/model/machine.dart';
+import 'package:elephant_control/base/models/machine/model/reminder.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 import '../models/user/model/user.dart';
 import 'interfaces/imachine_service.dart';
@@ -82,6 +83,19 @@ class MachineService extends BaseService implements IMachineService {
     }
   }
 
+  Future<List<Machine>> getAllMachines() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/GetAllMachines';
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      var machines = (response.body as List).map((e) => Machine.fromJson(e)).toList();
+      return machines;
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<bool> createOrUpdateMachine(Machine machine) async {
     try {
       final token = await getToken();
@@ -103,6 +117,25 @@ class MachineService extends BaseService implements IMachineService {
       return (response.body as List).map((e) => e.toString()).toList();
     } catch (_) {
       return [];
+    }
+  }
+
+  Future<bool> createOrEditReminder(Reminder reminder) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/CreateOrEditReminderMachine';
+      final response = await post(url, null, query: {
+        "MachineId": reminder.machineId,
+        "Description": reminder.description,
+        "Realized": reminder.realized.toString(),
+        "ReminderId": reminder.id,
+      }, headers: {
+        'Authorization': 'Bearer ${token}'
+      });
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
     }
   }
 }

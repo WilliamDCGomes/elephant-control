@@ -172,6 +172,49 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       onChanged: (selectedState) => setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
                                     ),
                                   ),
+                                  if ((controller.machineSelected?.reminders ?? []).isNotEmpty)
+                                    Obx(
+                                      () => Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 1.h),
+                                          GestureDetector(
+                                            onTap: () => controller.setShowReminders(),
+                                            child: Row(
+                                              children: [
+                                                Icon(controller.showReminders ? Icons.visibility : Icons.visibility_off, color: AppColors.defaultColor, size: 3.h),
+                                                SizedBox(width: 1.w),
+                                                TextWidget("Visualizar lembretes", textColor: AppColors.defaultColor),
+                                              ],
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: controller.showReminders,
+                                            child: Container(
+                                              color: AppColors.defaultColor.withOpacity(0.6),
+                                              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 0.5.w),
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics: NeverScrollableScrollPhysics(),
+                                                  itemCount: (controller.machineSelected?.reminders ?? []).length,
+                                                  itemBuilder: (context, index) {
+                                                    final reminder = (controller.machineSelected?.reminders ?? [])[index];
+                                                    return Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 0.5.w),
+                                                      child: TextWidget(
+                                                        "- " + reminder.description,
+                                                        textColor: AppColors.blackColor,
+                                                        maxLines: 3,
+                                                        textAlign: TextAlign.start,
+                                                        fontSize: 17.sp,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 3.5.h,

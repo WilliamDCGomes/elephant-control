@@ -1,3 +1,4 @@
+import 'package:elephant_control/base/models/machine/model/reminder.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_visit_machine_viewcontroller.g.dart';
 
@@ -8,6 +9,7 @@ class UserVisitMachineViewController {
   late String id;
   late DateTime visitDay;
   DateTime? lastVisit;
+  late List<Reminder> reminders;
 
   UserVisitMachineViewController({
     required this.machineId,
@@ -15,6 +17,7 @@ class UserVisitMachineViewController {
     required this.id,
     required this.visitDay,
     required this.lastVisit,
+    required this.reminders,
   });
 
   factory UserVisitMachineViewController.fromJson(Map<String, dynamic> json) => _$UserVisitMachineViewControllerFromJson(json);

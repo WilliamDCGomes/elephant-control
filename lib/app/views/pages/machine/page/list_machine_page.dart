@@ -1,26 +1,31 @@
-import 'package:elephant_control/app/utils/format_numbers.dart';
-import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
+import 'package:elephant_control/app/views/pages/machine/controller/list_machine_controller.dart';
+import 'package:elephant_control/app/views/pages/machine/page/list_reminders_page.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../stylePages/app_colors.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../../stylePages/app_colors.dart';
+import '../../widgetsShared/maintenance_card_widget.dart';
 import '../../widgetsShared/text_field_widget.dart';
 import '../../widgetsShared/title_with_back_button_widget.dart';
 
-import '../controller/recallmoney_controller.dart';
-
-class RecallMoneyPage extends StatefulWidget {
-  const RecallMoneyPage({super.key});
+class ListMachinePage extends StatefulWidget {
+  const ListMachinePage({super.key});
 
   @override
-  State<RecallMoneyPage> createState() => _RecallMoneyPageState();
+  State<ListMachinePage> createState() => _ListMachinePageState();
 }
 
-class _RecallMoneyPageState extends State<RecallMoneyPage> {
-  late final RecallMoneyController controller;
+class _ListMachinePageState extends State<ListMachinePage> {
+  late final ListMachineController controller;
+
   @override
   void initState() {
-    controller = Get.put(RecallMoneyController());
+    controller = Get.put(ListMachineController());
     super.initState();
   }
 
@@ -51,30 +56,15 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TitleWithBackButtonWidget(
-                                title: "Recolher Dinheiro",
-                              ),
-                            ),
-                            // InkWell(
-                            //   onTap: () => controller.editVisit(null),
-                            //   child: Icon(
-                            //     Icons.add_circle,
-                            //     color: AppColors.whiteColor,
-                            //     size: 3.h,
-                            //   ),
-                            // ),
-                          ],
+                        child: TitleWithBackButtonWidget(
+                          title: "Máquinas",
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchUsers,
-                          hintText: "Pesquisar Usuários",
+                          controller: controller.searchMachines,
+                          hintText: "Pesquisar Máquinas",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -91,14 +81,13 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.users.length,
+                            itemCount: controller.machines.length,
                             itemBuilder: (context, index) {
-                              final user = controller.users[index];
+                              final machine = controller.machines[index];
                               return MaintenanceCardWidget(
-                                machineName: user.name + "\n" + FormatNumbers.numbersToMoney(user.totalValue),
-                                onTap: () => controller.finishVisit(user),
-                                maxLines: 3,
-                                city: "",
+                                machineName: machine.name,
+                                city: machine.city,
+                                onTap: () => Get.to(() => ListReminderPage(reminders: machine.reminders ?? [], machineId: machine.id!)),
                                 status: "",
                                 workPriority: "",
                                 priorityColor: 0,
@@ -108,16 +97,6 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                                 pouchCollected: false,
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
-                                childMaintenanceHeaderCardWidget: [
-                                  GestureDetector(
-                                    onTap: () async => await controller.finishVisit(user),
-                                    child: Icon(
-                                      Icons.attach_money_rounded,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
-                                ],
                                 child: const SizedBox(),
                               );
                             },
