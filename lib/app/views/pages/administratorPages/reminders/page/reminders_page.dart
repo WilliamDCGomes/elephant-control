@@ -1,24 +1,32 @@
-import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../stylePages/app_colors.dart';
-import 'package:get/get.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/user_controller.dart';
+import '../../../../../../base/models/reminderMachine/reminder_machine.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/maintenance_card_widget.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/reminders_controller.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+class ReminderPage extends StatefulWidget {
+  final List<ReminderMachine> reminders;
+  final String machineId;
+  const ReminderPage({super.key, required this.reminders, required this.machineId});
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<ReminderPage> createState() => _ReminderPageState();
 }
 
-class _UserPageState extends State<UserPage> {
-  late final UserController controller;
+class _ReminderPageState extends State<ReminderPage> {
+  late final ReminderController controller;
+
   @override
   void initState() {
-    controller = Get.put(UserController());
+    controller = Get.put(ReminderController(
+      widget.reminders,
+      widget.machineId,
+    ));
     super.initState();
   }
 
@@ -54,11 +62,11 @@ class _UserPageState extends State<UserPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Usuários",
+                                title: "Lembretes",
                               ),
                             ),
                             InkWell(
-                              onTap: () => controller.editUser(null),
+                              onTap: () => controller.createOrEditReminder(null),
                               child: Icon(
                                 Icons.add_circle,
                                 color: AppColors.whiteColor,
@@ -71,8 +79,8 @@ class _UserPageState extends State<UserPage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchUsers,
-                          hintText: "Pesquisar Usuários",
+                          controller: controller.searchReminders,
+                          hintText: "Pesquisar Lembretes",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -89,11 +97,13 @@ class _UserPageState extends State<UserPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.users.length,
+                            itemCount: controller.reminders.length,
                             itemBuilder: (context, index) {
-                              final user = controller.users[index];
+                              final reminder = controller.reminders[index];
                               return MaintenanceCardWidget(
-                                machineName: user.name,
+                                machineName: reminder.description,
+                                maxLines: 3,
+                                onTap: () => controller.createOrEditReminder(reminder),
                                 city: "",
                                 status: "",
                                 workPriority: "",
@@ -105,32 +115,14 @@ class _UserPageState extends State<UserPage> {
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
-                                  GestureDetector(
-                                    onTap: () async => await controller.editUser(user),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
+                                  SizedBox(width: 1.h),
+                                  Icon(
+                                    reminder.realized ? Icons.check_box : Icons.check_box_outline_blank_outlined,
+                                    color: AppColors.whiteColor,
+                                    size: 3.h,
                                   ),
-                                  SizedBox(width: 2.w),
-                                  GestureDetector(
-                                    onTap: () async => await controller.deleteUser(user),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  GestureDetector(
-                                    onTap: () async => await controller.resetPassword(user),
-                                    child: Icon(
-                                      Icons.key,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
+                                  SizedBox(width: 2.h),
+                                  GestureDetector(onTap: () => controller.deleteReminder(reminder), child: Icon(Icons.delete, color: AppColors.whiteColor, size: 3.h)),
                                 ],
                                 child: const SizedBox(),
                               );

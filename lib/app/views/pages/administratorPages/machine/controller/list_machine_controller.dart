@@ -2,7 +2,7 @@ import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_succ
 import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../../../../base/models/machine/machine.dart';
+import '../../../../../../base/models/machine/machine.dart';
 
 class ListMachineController extends GetxController {
   late final RxList<Machine> _machines;

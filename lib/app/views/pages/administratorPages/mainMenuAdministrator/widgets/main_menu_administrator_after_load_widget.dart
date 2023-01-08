@@ -1,7 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:elephant_control/app/views/pages/machine/page/list_machine_page.dart';
-import 'package:elephant_control/app/views/pages/recallMoney/page/recallmoney_page.dart';
-import 'package:elephant_control/app/views/pages/user/page/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:im_stepper/stepper.dart';
@@ -9,14 +6,17 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../machine/page/machine_page.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../financialHistoryAdministrator/page/financial_history_administrator_page.dart';
+import '../../machine/page/list_machine_page.dart';
+import '../../machine/page/machine_page.dart';
 import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
 import '../../operatorsVisits/page/operators_visits_page.dart';
+import '../../recallMoney/page/recallmoney_page.dart';
+import '../../users/page/user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widgets/menu_options_widget.dart';
 
@@ -236,15 +236,6 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                           imagePath: Paths.Cofre,
                           onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 2.h),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //     ],
-                        //   ),
-                        // ),
-
                         MenuOptionsWidget(
                           text: "Malotes com Tesouraria",
                           imagePath: Paths.Malote_Com_Tesouraria,
@@ -252,48 +243,16 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                             withOperator: false,
                           )),
                         ),
-                        // MenuOptionsWidget(
-                        //   text: "Novo Usuário",
-                        //   imagePath: Paths.Novo_Usuario,
-                        //   onTap: () => Get.to(() => RegisterUsersPage()),
-                        // ),
                         MenuOptionsWidget(
                           text: "Usuários",
                           imagePath: Paths.Novo_Usuario,
                           onTap: () => Get.to(() => UserPage()),
                         ),
-                        // MenuOptionsWidget(
-                        //   text: "Nova Máquina",
-                        //   imagePath: Paths.Maquina_Pelucia,
-                        //   onTap: () => Get.to(() => RegisterMachinePage()),
-                        // ),
                         MenuOptionsWidget(
                           text: "Máquinas",
                           imagePath: Paths.Maquina_Pelucia,
                           onTap: () => Get.to(() => MachinePage()),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 2.h),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       MenuOptionsWidget(
-                        //         text: "Máquina x Usuário",
-                        //         imagePath: Paths.Maquina_Pelucia,
-                        //         onTap: () => Get.to(() => RegisterUserMachinePage()),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 2.h),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //     ],
-                        //   ),
-                        // ),
-
                         MenuOptionsWidget(
                           text: "Novo Lembrete",
                           imagePath: Paths.Novo_Lembrete,

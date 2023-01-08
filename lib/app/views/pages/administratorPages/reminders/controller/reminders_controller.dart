@@ -9,17 +9,17 @@ import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../base/models/reminderMachine/reminder_machine.dart';
-import '../../widgetsShared/popups/default_popup_widget.dart';
+import '../../../../../../base/models/reminderMachine/reminder_machine.dart';
+import '../../../widgetsShared/popups/default_popup_widget.dart';
 
-class ListReminderController extends GetxController {
+class ReminderController extends GetxController {
   late final RxList<ReminderMachine> _reminders;
   late final MachineService _machineService;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final TextEditingController _searchReminders;
   late final String _machineId;
 
-  ListReminderController(List<ReminderMachine> reminders, this._machineId) {
+  ReminderController(List<ReminderMachine> reminders, this._machineId) {
     _reminders = RxList<ReminderMachine>(reminders);
     _machineService = MachineService();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();

@@ -4,8 +4,8 @@ import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import '../../../../../base/models/machine/machine.dart';
-import '../../administratorPages/registerMachine/page/register_machine_page.dart';
+import '../../../../../../base/models/machine/machine.dart';
+import '../../registerMachine/page/register_machine_page.dart';
 
 class MachineController extends GetxController {
   late TextEditingController searchMachines;

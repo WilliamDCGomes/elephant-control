@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../base/models/reminderMachine/reminder_machine.dart';
-import '../../../stylePages/app_colors.dart';
-import '../../widgetsShared/maintenance_card_widget.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/list_reminders_controller.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/maintenance_card_widget.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/list_machine_controller.dart';
+import '../../reminders/page/reminders_page.dart';
 
-class ListReminderPage extends StatefulWidget {
-  final List<ReminderMachine> reminders;
-  final String machineId;
-  const ListReminderPage({super.key, required this.reminders, required this.machineId});
+class ListMachinePage extends StatefulWidget {
+  const ListMachinePage({super.key});
 
   @override
-  State<ListReminderPage> createState() => _ListReminderPageState();
+  State<ListMachinePage> createState() => _ListMachinePageState();
 }
 
-class _ListReminderPageState extends State<ListReminderPage> {
-  late final ListReminderController controller;
+class _ListMachinePageState extends State<ListMachinePage> {
+  late final ListMachineController controller;
 
   @override
   void initState() {
-    controller = Get.put(ListReminderController(
-      widget.reminders,
-      widget.machineId,
-    ));
+    controller = Get.put(ListMachineController());
     super.initState();
   }
 
@@ -57,30 +51,15 @@ class _ListReminderPageState extends State<ListReminderPage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TitleWithBackButtonWidget(
-                                title: "Lembretes",
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => controller.createOrEditReminder(null),
-                              child: Icon(
-                                Icons.add_circle,
-                                color: AppColors.whiteColor,
-                                size: 3.h,
-                              ),
-                            ),
-                          ],
+                        child: TitleWithBackButtonWidget(
+                          title: "Máquinas",
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchReminders,
-                          hintText: "Pesquisar Lembretes",
+                          controller: controller.searchMachines,
+                          hintText: "Pesquisar Máquinas",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -97,14 +76,13 @@ class _ListReminderPageState extends State<ListReminderPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.reminders.length,
+                            itemCount: controller.machines.length,
                             itemBuilder: (context, index) {
-                              final reminder = controller.reminders[index];
+                              final machine = controller.machines[index];
                               return MaintenanceCardWidget(
-                                machineName: reminder.description,
-                                maxLines: 3,
-                                onTap: () => controller.createOrEditReminder(reminder),
-                                city: "",
+                                machineName: machine.name,
+                                city: machine.city,
+                                onTap: () => Get.to(() => ReminderPage(reminders: machine.reminders ?? [], machineId: machine.id!)),
                                 status: "",
                                 workPriority: "",
                                 priorityColor: 0,
@@ -114,16 +92,6 @@ class _ListReminderPageState extends State<ListReminderPage> {
                                 pouchCollected: false,
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
-                                childMaintenanceHeaderCardWidget: [
-                                  SizedBox(width: 1.h),
-                                  Icon(
-                                    reminder.realized ? Icons.check_box : Icons.check_box_outline_blank_outlined,
-                                    color: AppColors.whiteColor,
-                                    size: 3.h,
-                                  ),
-                                  SizedBox(width: 2.h),
-                                  GestureDetector(onTap: () => controller.deleteReminder(reminder), child: Icon(Icons.delete, color: AppColors.whiteColor, size: 3.h)),
-                                ],
                                 child: const SizedBox(),
                               );
                             },

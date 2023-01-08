@@ -1,31 +1,25 @@
-import 'package:elephant_control/app/views/pages/machine/controller/list_machine_controller.dart';
-import 'package:elephant_control/app/views/pages/machine/page/list_reminders_page.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:get/get.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/recallmoney_controller.dart';
 
-import '../../../stylePages/app_colors.dart';
-import '../../widgetsShared/maintenance_card_widget.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
-
-class ListMachinePage extends StatefulWidget {
-  const ListMachinePage({super.key});
+class RecallMoneyPage extends StatefulWidget {
+  const RecallMoneyPage({super.key});
 
   @override
-  State<ListMachinePage> createState() => _ListMachinePageState();
+  State<RecallMoneyPage> createState() => _RecallMoneyPageState();
 }
 
-class _ListMachinePageState extends State<ListMachinePage> {
-  late final ListMachineController controller;
-
+class _RecallMoneyPageState extends State<RecallMoneyPage> {
+  late final RecallMoneyController controller;
   @override
   void initState() {
-    controller = Get.put(ListMachineController());
+    controller = Get.put(RecallMoneyController());
     super.initState();
   }
 
@@ -56,15 +50,30 @@ class _ListMachinePageState extends State<ListMachinePage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Máquinas",
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TitleWithBackButtonWidget(
+                                title: "Recolher Dinheiro",
+                              ),
+                            ),
+                            // InkWell(
+                            //   onTap: () => controller.editVisit(null),
+                            //   child: Icon(
+                            //     Icons.add_circle,
+                            //     color: AppColors.whiteColor,
+                            //     size: 3.h,
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchMachines,
-                          hintText: "Pesquisar Máquinas",
+                          controller: controller.searchUsers,
+                          hintText: "Pesquisar Usuários",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -81,13 +90,14 @@ class _ListMachinePageState extends State<ListMachinePage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.machines.length,
+                            itemCount: controller.users.length,
                             itemBuilder: (context, index) {
-                              final machine = controller.machines[index];
+                              final user = controller.users[index];
                               return MaintenanceCardWidget(
-                                machineName: machine.name,
-                                city: machine.city,
-                                onTap: () => Get.to(() => ListReminderPage(reminders: machine.reminders ?? [], machineId: machine.id!)),
+                                machineName: user.name + "\n" + FormatNumbers.numbersToMoney(user.totalValue),
+                                onTap: () => controller.finishVisit(user),
+                                maxLines: 3,
+                                city: "",
                                 status: "",
                                 workPriority: "",
                                 priorityColor: 0,
@@ -97,6 +107,16 @@ class _ListMachinePageState extends State<ListMachinePage> {
                                 pouchCollected: false,
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
+                                childMaintenanceHeaderCardWidget: [
+                                  GestureDetector(
+                                    onTap: () async => await controller.finishVisit(user),
+                                    child: Icon(
+                                      Icons.attach_money_rounded,
+                                      color: AppColors.whiteColor,
+                                      size: 3.h,
+                                    ),
+                                  ),
+                                ],
                                 child: const SizedBox(),
                               );
                             },

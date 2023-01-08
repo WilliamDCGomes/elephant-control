@@ -4,9 +4,9 @@ import 'package:elephant_control/app/views/pages/widgetsShared/popups/informatio
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import '../../../../../base/models/user/user.dart';
-import '../../../../../base/services/user_service.dart';
-import '../../administratorPages/registerUsers/page/register_user_page.dart';
+import '../../../../../../base/models/user/user.dart';
+import '../../../../../../base/services/user_service.dart';
+import '../../registerUsers/page/register_user_page.dart';
 
 class UserController extends GetxController {
   late TextEditingController searchUsers;

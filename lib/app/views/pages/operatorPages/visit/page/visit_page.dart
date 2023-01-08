@@ -1,27 +1,24 @@
-import 'package:elephant_control/app/views/pages/machine/controller/machine_controller.dart';
-import 'package:elephant_control/app/views/pages/machine/page/user_machine_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../../../stylePages/app_colors.dart';
 import 'package:get/get.dart';
-import '../../administratorPages/registerMachine/page/register_machine_page.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/visit_controller.dart';
 
-class MachinePage extends StatefulWidget {
-  const MachinePage({super.key});
+class VisitPage extends StatefulWidget {
+  const VisitPage({super.key});
 
   @override
-  State<MachinePage> createState() => _MachinePageState();
+  State<VisitPage> createState() => _VisitPageState();
 }
 
-class _MachinePageState extends State<MachinePage> {
-  late final MachineController controller;
+class _VisitPageState extends State<VisitPage> {
+  late final VisitController controller;
   @override
   void initState() {
-    controller = Get.put(MachineController());
+    controller = Get.put(VisitController());
     super.initState();
   }
 
@@ -57,25 +54,25 @@ class _MachinePageState extends State<MachinePage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Máquinas",
+                                title: "Atendimentos",
                               ),
                             ),
-                            InkWell(
-                              onTap: () => controller.editMachine(null),
-                              child: Icon(
-                                Icons.add_circle,
-                                color: AppColors.whiteColor,
-                                size: 3.h,
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () => controller.editVisit(null),
+                            //   child: Icon(
+                            //     Icons.add_circle,
+                            //     color: AppColors.whiteColor,
+                            //     size: 3.h,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchMachines,
-                          hintText: "Pesquisar Máquinas",
+                          controller: controller.searchVisits,
+                          hintText: "Pesquisar Atendimentos",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -92,12 +89,12 @@ class _MachinePageState extends State<MachinePage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.machines.length,
+                            itemCount: controller.visits.length,
                             itemBuilder: (context, index) {
-                              final machine = controller.machines[index];
+                              final visit = controller.visits[index];
                               return MaintenanceCardWidget(
-                                machineName: machine.name,
-                                city: machine.city,
+                                machineName: visit.machine!.name,
+                                city: "",
                                 status: "",
                                 workPriority: "",
                                 priorityColor: 0,
@@ -108,17 +105,17 @@ class _MachinePageState extends State<MachinePage> {
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
-                                  GestureDetector(
-                                    onTap: () async => await controller.editMachine(machine),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () async => await controller.editVisit(visit),
+                                  //   child: Icon(
+                                  //     Icons.edit,
+                                  //     color: AppColors.whiteColor,
+                                  //     size: 3.h,
+                                  //   ),
+                                  // ),
                                   SizedBox(width: 2.w),
                                   GestureDetector(
-                                    onTap: () async => await controller.deleteMachine(machine),
+                                    onTap: () async => await controller.deleteVisit(visit),
                                     child: Icon(
                                       Icons.delete,
                                       color: AppColors.whiteColor,
@@ -126,14 +123,14 @@ class _MachinePageState extends State<MachinePage> {
                                     ),
                                   ),
                                   SizedBox(width: 2.w),
-                                  GestureDetector(
-                                    onTap: () async => Get.to(() => UserMachinePage(machineId: machine.id!)),
-                                    child: Icon(
-                                      Icons.person_add,
-                                      color: AppColors.whiteColor,
-                                      size: 3.h,
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () async => await controller.resetPassword(visit),
+                                  //   child: Icon(
+                                  //     Icons.key,
+                                  //     color: AppColors.whiteColor,
+                                  //     size: 3.h,
+                                  //   ),
+                                  // ),
                                 ],
                                 child: const SizedBox(),
                               );

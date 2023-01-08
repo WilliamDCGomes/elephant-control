@@ -1,26 +1,25 @@
-import 'package:elephant_control/app/utils/format_numbers.dart';
+import 'package:elephant_control/app/views/pages/administratorPages/userMachine/page/user_machine_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../stylePages/app_colors.dart';
 import 'package:get/get.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/machine_controller.dart';
 
-import '../controller/recallmoney_controller.dart';
-
-class RecallMoneyPage extends StatefulWidget {
-  const RecallMoneyPage({super.key});
+class MachinePage extends StatefulWidget {
+  const MachinePage({super.key});
 
   @override
-  State<RecallMoneyPage> createState() => _RecallMoneyPageState();
+  State<MachinePage> createState() => _MachinePageState();
 }
 
-class _RecallMoneyPageState extends State<RecallMoneyPage> {
-  late final RecallMoneyController controller;
+class _MachinePageState extends State<MachinePage> {
+  late final MachineController controller;
   @override
   void initState() {
-    controller = Get.put(RecallMoneyController());
+    controller = Get.put(MachineController());
     super.initState();
   }
 
@@ -56,25 +55,25 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Recolher Dinheiro",
+                                title: "Máquinas",
                               ),
                             ),
-                            // InkWell(
-                            //   onTap: () => controller.editVisit(null),
-                            //   child: Icon(
-                            //     Icons.add_circle,
-                            //     color: AppColors.whiteColor,
-                            //     size: 3.h,
-                            //   ),
-                            // ),
+                            InkWell(
+                              onTap: () => controller.editMachine(null),
+                              child: Icon(
+                                Icons.add_circle,
+                                color: AppColors.whiteColor,
+                                size: 3.h,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchUsers,
-                          hintText: "Pesquisar Usuários",
+                          controller: controller.searchMachines,
+                          hintText: "Pesquisar Máquinas",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -91,14 +90,12 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.users.length,
+                            itemCount: controller.machines.length,
                             itemBuilder: (context, index) {
-                              final user = controller.users[index];
+                              final machine = controller.machines[index];
                               return MaintenanceCardWidget(
-                                machineName: user.name + "\n" + FormatNumbers.numbersToMoney(user.totalValue),
-                                onTap: () => controller.finishVisit(user),
-                                maxLines: 3,
-                                city: "",
+                                machineName: machine.name,
+                                city: machine.city,
                                 status: "",
                                 workPriority: "",
                                 priorityColor: 0,
@@ -110,9 +107,27 @@ class _RecallMoneyPageState extends State<RecallMoneyPage> {
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
                                   GestureDetector(
-                                    onTap: () async => await controller.finishVisit(user),
+                                    onTap: () async => await controller.editMachine(machine),
                                     child: Icon(
-                                      Icons.attach_money_rounded,
+                                      Icons.edit,
+                                      color: AppColors.whiteColor,
+                                      size: 3.h,
+                                    ),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  GestureDetector(
+                                    onTap: () async => await controller.deleteMachine(machine),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: AppColors.whiteColor,
+                                      size: 3.h,
+                                    ),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  GestureDetector(
+                                    onTap: () async => Get.to(() => UserMachinePage(machineId: machine.id!)),
+                                    child: Icon(
+                                      Icons.person_add,
                                       color: AppColors.whiteColor,
                                       size: 3.h,
                                     ),

@@ -1,24 +1,24 @@
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../stylePages/app_colors.dart';
 import 'package:get/get.dart';
-import '../../widgetsShared/text_field_widget.dart';
-import '../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/visit_controller.dart';
+import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/text_field_widget.dart';
+import '../../../widgetsShared/title_with_back_button_widget.dart';
+import '../controller/user_controller.dart';
 
-class VisitPage extends StatefulWidget {
-  const VisitPage({super.key});
+class UserPage extends StatefulWidget {
+  const UserPage({super.key});
 
   @override
-  State<VisitPage> createState() => _VisitPageState();
+  State<UserPage> createState() => _UserPageState();
 }
 
-class _VisitPageState extends State<VisitPage> {
-  late final VisitController controller;
+class _UserPageState extends State<UserPage> {
+  late final UserController controller;
   @override
   void initState() {
-    controller = Get.put(VisitController());
+    controller = Get.put(UserController());
     super.initState();
   }
 
@@ -54,25 +54,25 @@ class _VisitPageState extends State<VisitPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Atendimentos",
+                                title: "Usuários",
                               ),
                             ),
-                            // InkWell(
-                            //   onTap: () => controller.editVisit(null),
-                            //   child: Icon(
-                            //     Icons.add_circle,
-                            //     color: AppColors.whiteColor,
-                            //     size: 3.h,
-                            //   ),
-                            // ),
+                            InkWell(
+                              onTap: () => controller.editUser(null),
+                              child: Icon(
+                                Icons.add_circle,
+                                color: AppColors.whiteColor,
+                                size: 3.h,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(2.h, 2.h, 2.h, 0),
                         child: TextFieldWidget(
-                          controller: controller.searchVisits,
-                          hintText: "Pesquisar Atendimentos",
+                          controller: controller.searchUsers,
+                          hintText: "Pesquisar Usuários",
                           height: 9.h,
                           width: double.infinity,
                           iconTextField: Icon(
@@ -89,11 +89,11 @@ class _VisitPageState extends State<VisitPage> {
                         () => Padding(
                           padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                           child: ListView.builder(
-                            itemCount: controller.visits.length,
+                            itemCount: controller.users.length,
                             itemBuilder: (context, index) {
-                              final visit = controller.visits[index];
+                              final user = controller.users[index];
                               return MaintenanceCardWidget(
-                                machineName: visit.machine!.name,
+                                machineName: user.name,
                                 city: "",
                                 status: "",
                                 workPriority: "",
@@ -105,17 +105,17 @@ class _VisitPageState extends State<VisitPage> {
                                 showPriorityAndStatus: false,
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
-                                  // GestureDetector(
-                                  //   onTap: () async => await controller.editVisit(visit),
-                                  //   child: Icon(
-                                  //     Icons.edit,
-                                  //     color: AppColors.whiteColor,
-                                  //     size: 3.h,
-                                  //   ),
-                                  // ),
+                                  GestureDetector(
+                                    onTap: () async => await controller.editUser(user),
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: AppColors.whiteColor,
+                                      size: 3.h,
+                                    ),
+                                  ),
                                   SizedBox(width: 2.w),
                                   GestureDetector(
-                                    onTap: () async => await controller.deleteVisit(visit),
+                                    onTap: () async => await controller.deleteUser(user),
                                     child: Icon(
                                       Icons.delete,
                                       color: AppColors.whiteColor,
@@ -123,14 +123,14 @@ class _VisitPageState extends State<VisitPage> {
                                     ),
                                   ),
                                   SizedBox(width: 2.w),
-                                  // GestureDetector(
-                                  //   onTap: () async => await controller.resetPassword(visit),
-                                  //   child: Icon(
-                                  //     Icons.key,
-                                  //     color: AppColors.whiteColor,
-                                  //     size: 3.h,
-                                  //   ),
-                                  // ),
+                                  GestureDetector(
+                                    onTap: () async => await controller.resetPassword(user),
+                                    child: Icon(
+                                      Icons.key,
+                                      color: AppColors.whiteColor,
+                                      size: 3.h,
+                                    ),
+                                  ),
                                 ],
                                 child: const SizedBox(),
                               );

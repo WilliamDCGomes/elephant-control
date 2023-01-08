@@ -1,10 +1,8 @@
 import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
-import 'package:elephant_control/app/views/pages/widgetsShared/popups/information_popup.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import '../../../../../base/models/visit/visit.dart';
-import '../../../../../base/services/visit_service.dart';
+import '../../../../../../base/models/visit/visit.dart';
+import '../../../../../../base/services/visit_service.dart';
 
 class VisitController extends GetxController {
   late TextEditingController searchVisits;
