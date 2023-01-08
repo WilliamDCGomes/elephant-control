@@ -11,6 +11,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 
 class OperatorPouchController extends GetxController {
   final bool withOperator;
+  late RxBool screenLoading;
   late RxString userSelected;
   late RxInt pouchQuantity;
   late RxDouble fullValue;
@@ -27,13 +28,12 @@ class OperatorPouchController extends GetxController {
 
   @override
   void onInit() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUsers();
     super.onInit();
   }
 
   _initializeVariables(){
+    screenLoading = true.obs;
     userSelected = "".obs;
     pouchQuantity= 0.obs;
     fullValue = 0.0.obs;
@@ -78,10 +78,9 @@ class OperatorPouchController extends GetxController {
       userSelected.value = usersName.first;
       await getPouchUser(loadingEnabled: false);
 
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      screenLoading.value = false;
     }
     catch(_){
-      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

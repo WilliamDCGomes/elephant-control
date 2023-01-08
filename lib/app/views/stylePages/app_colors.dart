@@ -10,10 +10,13 @@ class AppColors {
   static final Color greenColor = const Color(0XFF008001);
   static final Color blueLinkColor = Color(0XFF5797AF);
   static final Color orangeColor = const Color(0XFFEA6F55);
+  static final Color grayStepColor = const Color(0XFFC9C9C9);
   static final Color redColor = const Color(0XFFC81B1B);
   static final Color grayTextColor = const Color(0XFFA9A9A9);
   static final Color yellowDarkColor = const Color(0XFFE2CE1C);
   static final Color defaultColor = const Color(0XFF1E4767);
+  static final Color shimmerColor = const Color(0XFFBDBDBD);
+  static final Color grayColor = const Color(0XFFE1E1E1);
   static final Color backgroundColor = const Color(0XFFE7E3E3);
   static final Color grayBackgroundPictureColor = Color(0XFFB2B1B2);
   //static final Color defaultColor = const Color(0XFFED028C);

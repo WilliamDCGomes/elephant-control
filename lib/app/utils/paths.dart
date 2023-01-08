@@ -17,6 +17,7 @@ class Paths{
   static final String Background = "${imagesPath}Background.png";
   static final String Edit_Photo = "${imagesPath}Edit_Photo.png";
   static final String Icon_Preto = "${imagesPath}Icon_Preto.png";
+  static final String Icone_Home = "${imagesPath}icone_home.png";
   static final String Icone_Sair = "${imagesPath}Icone_Sair.png";
   static final String Manutencao = "${imagesPath}Manutencao.png";
   static final String Ocorrencia = "${imagesPath}Ocorrencia.png";

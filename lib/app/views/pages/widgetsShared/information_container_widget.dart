@@ -15,6 +15,7 @@ class InformationContainerWidget extends StatelessWidget {
   final Color backgroundColor;
   final bool? iconInLeft;
   final bool isLoading;
+  final bool showBorder;
 
   const InformationContainerWidget({
     Key? key,
@@ -28,6 +29,7 @@ class InformationContainerWidget extends StatelessWidget {
     required this.textColor,
     required this.backgroundColor,
     this.isLoading = false,
+    this.showBorder = false,
   }) : super(key: key);
 
   @override
@@ -37,16 +39,20 @@ class InformationContainerWidget extends StatelessWidget {
         Container(
           width: double.infinity,
           margin: marginContainer ??
-              EdgeInsets.only(
-                left: 2.h,
-                top: PlatformType.isTablet(context) ? 9.h : 7.h,
-                right: 2.h,
-                bottom: 1.h,
-              ),
+          EdgeInsets.only(
+            left: 2.h,
+            top: PlatformType.isTablet(context) ? 9.h : 7.h,
+            right: 2.h,
+            bottom: 1.h,
+          ),
           padding: padding ?? EdgeInsets.fromLTRB(5.w, 4.h, 5.w, 3.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(1.h),
             color: backgroundColor,
+            border: showBorder ? Border.all(
+              width: 1.w,
+              color: AppColors.backgroundColor,
+            ) : null,
           ),
           child: Visibility(
             visible: !isLoading,
@@ -62,25 +68,36 @@ class InformationContainerWidget extends StatelessWidget {
                 ),
           ),
         ),
-        Align(
-          alignment: iconInLeft ?? false ? Alignment.topLeft : Alignment.topRight,
-          child: Container(
-            padding: EdgeInsets.all(2.h),
-            margin: marginIcon ??
-                EdgeInsets.only(
-                  top: PlatformType.isTablet(context) ? 4.h : 2.h,
-                  right: iconInLeft ?? false ? 0 : 1.w,
-                  left: iconInLeft ?? false ? 1.w : 0,
+        Padding(
+          padding: marginIcon ??
+          EdgeInsets.only(
+            top: 3.h,
+            right: iconInLeft ?? false ? 0 : 1.w,
+            left: iconInLeft ?? false ? 1.w : 0,
+          ),
+          child: Align(
+            alignment: iconInLeft ?? false ? Alignment.topLeft : Alignment.topRight,
+            child: SizedBox(
+              height: 10.h,
+              width: 10.h,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.h),
+                  color: backgroundColor,
+                  border: showBorder ? Border.all(
+                    width: 1.w,
+                    color: AppColors.backgroundColor,
+                  ) : null,
                 ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.5.h),
-              color: backgroundColor,
-            ),
-            child: Image.asset(
-              iconPath,
-              height: 5.h,
-              width: 5.h,
-              color: AppColors.whiteColor,
+                child: Center(
+                  child: Image.asset(
+                    iconPath,
+                    height: 5.h,
+                    width: 5.h,
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
