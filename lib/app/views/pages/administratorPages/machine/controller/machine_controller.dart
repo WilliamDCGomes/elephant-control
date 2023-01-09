@@ -8,39 +8,51 @@ import '../../../../../../base/models/machine/machine.dart';
 import '../../registerMachine/page/register_machine_page.dart';
 
 class MachineController extends GetxController {
+  late RxBool screenLoading;
   late TextEditingController searchMachines;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final MachineService _machineService;
   late final RxList<Machine> _machines;
 
   MachineController() {
+    _initializeVariables();
+  }
+
+  @override
+  onInit() async {
+    await _getMachines();
+    super.onInit();
+  }
+
+  _initializeVariables(){
+    screenLoading = true.obs;
     searchMachines = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _machineService = MachineService();
     _machines = <Machine>[].obs;
   }
-  @override
-  onInit() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    await getMachines();
-    super.onInit();
-  }
 
   //Getters
   List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines.where((p0) => p0.active == true).toList() : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true).toList();
 
-  Future<void> getMachines() async {
+  Future<void> _getMachines() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 200));
-      await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       _machines.addAll(await _machineService.getAll());
-    } catch (e) {
-      print(e);
-    } finally {
       _machines.refresh();
       _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      screenLoading.value = false;
+    } catch (e) {
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro buscar as máquinas! Tente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
     }
   }
 
@@ -67,7 +79,7 @@ class MachineController extends GetxController {
     } catch (_) {
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar a máquina"));
     } finally {
-      await getMachines();
+      await _getMachines();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
@@ -82,7 +94,7 @@ class MachineController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final editted = await _machineService.createOrUpdateMachine(_machine);
       if (!editted) throw Exception();
-      await getMachines();
+      await _getMachines();
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
     } catch (_) {

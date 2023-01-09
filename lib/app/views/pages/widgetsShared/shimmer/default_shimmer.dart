@@ -116,6 +116,14 @@ class DefaultShimmer extends StatelessWidget {
                                 color: AppColors.blackColor,
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 2.h, right: 2.h, bottom: 2.h),
+                              child: Container(
+                                height: cardsSize ?? 15.h,
+                                width: 90.w,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
                           ],
                         ),
                       ),

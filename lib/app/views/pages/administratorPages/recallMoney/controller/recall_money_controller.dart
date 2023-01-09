@@ -11,6 +11,7 @@ import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/services/visit_service.dart';
 
 class RecallMoneyController extends GetxController {
+  late RxBool screenLoading;
   late TextEditingController searchUsers;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final VisitService _visitService;
@@ -18,33 +19,44 @@ class RecallMoneyController extends GetxController {
   late final RxList<RecallMoneyViewController> _users;
 
   RecallMoneyController() {
+    _initializeVariables();
+  }
+  @override
+  onInit() async {
+    await _getTreasuryUsersWithMoneyPouchLaunched();
+    super.onInit();
+  }
+
+  _initializeVariables(){
+    screenLoading = true.obs;
     searchUsers = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _visitService = VisitService();
     _userService = UserService();
     _users = <RecallMoneyViewController>[].obs;
   }
-  @override
-  onInit() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    await getTreasuryUsersWithMoneyPouchLaunched();
-    super.onInit();
-  }
 
   //Getters
   List<RecallMoneyViewController> get users => searchUsers.text.toLowerCase().trim().isEmpty ? _users.toList() : _users.where((p0) => p0.name.toLowerCase().trim().contains(searchUsers.text.toLowerCase().trim())).toList();
 
-  Future<void> getTreasuryUsersWithMoneyPouchLaunched() async {
+  Future<void> _getTreasuryUsersWithMoneyPouchLaunched() async {
     try {
-      await loadingWithSuccessOrErrorWidget.startAnimation();
       _users.clear();
       _users.addAll(await _userService.getTreasuryUsersWithMoneyPouchLaunched());
-    } catch (e) {
-      print(e);
-    } finally {
       _users.refresh();
       _users.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      screenLoading.value = false;
+    } catch (e) {
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro buscar os usuários! Tente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
     }
   }
 
@@ -71,7 +83,7 @@ class RecallMoneyController extends GetxController {
     } catch (_) {
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível recolher o dinheiro"));
     } finally {
-      if (confirm == true) await getTreasuryUsersWithMoneyPouchLaunched();
+      if (confirm == true) await _getTreasuryUsersWithMoneyPouchLaunched();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }

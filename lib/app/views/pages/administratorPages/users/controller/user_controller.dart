@@ -9,39 +9,51 @@ import '../../../../../../base/services/user_service.dart';
 import '../../registerUsers/page/register_user_page.dart';
 
 class UserController extends GetxController {
+  late RxBool screenLoading;
   late TextEditingController searchUsers;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final UserService _userService;
   late final RxList<User> _users;
 
   UserController() {
+    _initializeVariables();
+  }
+  @override
+  onInit() async {
+    await _getUsers();
+    super.onInit();
+  }
+
+  _initializeVariables(){
+    screenLoading = true.obs;
     searchUsers = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _users = <User>[].obs;
   }
-  @override
-  onInit() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    await getUsers();
-    super.onInit();
-  }
 
   //Getters
   List<User> get users => searchUsers.text.toLowerCase().trim().isEmpty ? _users.where((p0) => p0.active == true).toList() : _users.where((p0) => p0.name.toLowerCase().trim().contains(searchUsers.text.toLowerCase().trim()) && p0.active == true).toList();
 
-  Future<void> getUsers() async {
+  Future<void> _getUsers() async {
     try {
-      await loadingWithSuccessOrErrorWidget.startAnimation();
       _users.clear();
       _users.addAll(await _userService.getAll());
-    } catch (e) {
-      print(e);
-    } finally {
       _users.refresh();
       users.removeWhere((element) => element.id == LoggedUser.id);
       _users.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      screenLoading.value = false;
+    } catch (e) {
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro buscar os usuários! Tente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
     }
   }
 
@@ -68,7 +80,7 @@ class UserController extends GetxController {
     } catch (_) {
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar o usuário"));
     } finally {
-      await getUsers();
+      await _getUsers();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
@@ -96,7 +108,7 @@ class UserController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final editted = user != null ? await _userService.editUser(_user) : await _userService.createUser(_user);
       if (!editted) throw Exception();
-      await getUsers();
+      await _getUsers();
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário ${user != null ? "editado" : "criado"} com sucesso"));
     } catch (_) {

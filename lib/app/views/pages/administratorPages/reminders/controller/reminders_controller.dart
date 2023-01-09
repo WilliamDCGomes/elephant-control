@@ -13,6 +13,7 @@ import '../../../../../../base/models/reminderMachine/reminder_machine.dart';
 import '../../../widgetsShared/popups/default_popup_widget.dart';
 
 class ReminderController extends GetxController {
+  late RxBool screenLoading;
   late final RxList<ReminderMachine> _reminders;
   late final MachineService _machineService;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -20,11 +21,11 @@ class ReminderController extends GetxController {
   late final String _machineId;
 
   ReminderController(List<ReminderMachine> reminders, this._machineId) {
+    screenLoading = false.obs;
     _reminders = RxList<ReminderMachine>(reminders);
     _machineService = MachineService();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _searchReminders = TextEditingController();
-    // getReminders();
   }
 
   List<ReminderMachine> get reminders => searchReminders.text.toLowerCase().trim().isEmpty ? _reminders.where((p0) => p0.active == true).toList() : _reminders.where((p0) => p0.description.toLowerCase().trim().contains(searchReminders.text.toLowerCase().trim()) && p0.active == true).toList();

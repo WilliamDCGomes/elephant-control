@@ -31,7 +31,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/snackbar_widget.dart';
-import '../widget/user_profile_tabs_widget.dart';
+import '../widgets/user_profile_tabs_widget.dart';
 
 class UserProfileController extends GetxController {
   late bool imageChanged;
@@ -40,6 +40,7 @@ class UserProfileController extends GetxController {
   late RxString ufSelected;
   late RxString buttonText;
   late RxString genderSelected;
+  late RxBool screenLoading;
   late RxBool currentPasswordFieldEnabled;
   late RxBool newPasswordFieldEnabled;
   late RxBool confirmNewPasswordFieldEnabled;
@@ -105,11 +106,10 @@ class UserProfileController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getUfsNames();
     _user = await _userService.getUserInformation();
     await _getUserInformation();
-    await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    screenLoading.value = false;
     super.onInit();
   }
 
@@ -120,6 +120,7 @@ class UserProfileController extends GetxController {
     ufSelected = "".obs;
     buttonText = "EDITAR".obs;
     genderSelected = "".obs;
+    screenLoading = true.obs;
     profileIsDisabled = true.obs;
     currentPasswordFieldEnabled = true.obs;
     newPasswordFieldEnabled = true.obs;
