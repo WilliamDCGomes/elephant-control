@@ -183,8 +183,8 @@ class MainMenuAdministratorController extends GetxController {
       if(moneyPouchOperator != null && moneyPouchFinancial != null){
         fullValuePouchOperators = moneyPouchOperator.fullValue;
         pouchQuantityWithOperators = moneyPouchOperator.moneyPouchValueList.length;
-        fullValuePouchFinancial = moneyPouchOperator.fullValue;
-        pouchQuantityWithFinancial = moneyPouchOperator.moneyPouchValueList.length;
+        fullValuePouchFinancial = moneyPouchFinancial.fullValue;
+        pouchQuantityWithFinancial = moneyPouchFinancial.moneyPouchValueList.length;
       }
     }
     catch(_){
