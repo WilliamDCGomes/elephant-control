@@ -47,16 +47,24 @@ class InitialPageController extends GetxController {
 
         if (authenticate) {
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
-          await _doLoginServerKeepConnected();
-          _goToNextPage();
+          if(!await _doLoginServerKeepConnected()){
+            _resetLogin("Tente fazer o login novamente");
+          }
+          else{
+            _goToNextPage();
+          }
         }
         else{
           Get.offAll(() => LoginPage());
         }
       }
       else{
-        await _doLoginServerKeepConnected();
-        _goToNextPage();
+        if(!await _doLoginServerKeepConnected()){
+          _resetLogin("Tente fazer o login novamente");
+        }
+        else{
+          _goToNextPage();
+        }
       }
     }
     else{
@@ -74,16 +82,16 @@ class InitialPageController extends GetxController {
     } else if (LoggedUser.userType == UserType.stockist) {}
   }
 
-  Future<void> _doLoginServerKeepConnected() async {
+  Future<bool> _doLoginServerKeepConnected() async {
     try{
       LoggedUser.nameAndLastName = await sharedPreferences.getString("user_name_and_last_name") ?? "";
       LoggedUser.name = await sharedPreferences.getString("user_name",) ?? "";
       LoggedUser.userType = await UserType.values[sharedPreferences.getInt("user_type") ?? 4];
       LoggedUser.id = await sharedPreferences.getString("user_id") ?? "";
-      await _doLoginServer();
+      return await _doLoginServer();
     }
     catch(_){
-
+      return false;
     }
   }
 

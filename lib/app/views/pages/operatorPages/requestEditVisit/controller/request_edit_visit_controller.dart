@@ -103,7 +103,7 @@ class RequestEditVisitController extends GetxController {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await Future.delayed(Duration(seconds: 2));
-      _mainMenuController = Get.find(tag: "main_menu_controller");
+      _mainMenuController = Get.find(tag: "main-menu-operator-controller");
       int teddy = clock2.text == "" ? 0 : int.parse(teddyAddMachine.text);
       if (yes.value) {
         _mainMenuController.amountPouch.value++;

@@ -198,7 +198,7 @@ class MaintenanceController extends GetxController {
           );
         },
       );
-      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main_menu_controller").getOperatorInformation());
+      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);

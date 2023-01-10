@@ -11,6 +11,7 @@ import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 
 class MainMenuOperatorController extends GetxController {
+  late RxBool screenLoading;
   late RxBool hasPicture;
   late RxBool loadingPicture;
   late RxString profileImagePath;
@@ -43,10 +44,12 @@ class MainMenuOperatorController extends GetxController {
     );
     await _checkFingerPrintUser();
     await getOperatorInformation();
+    screenLoading.value = false;
     super.onInit();
   }
 
   _initializeVariables() {
+    screenLoading = true.obs;
     hasPicture = false.obs;
     visitsUser = [];
     visitsWithMoneydrawal = [];
