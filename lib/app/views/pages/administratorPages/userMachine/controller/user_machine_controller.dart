@@ -54,25 +54,26 @@ class UserMachineController extends GetxController {
       users.removeWhere((element) => _users.any((user) => user.id == element.id));
       int? indexSelecionado;
       await showDialog(
-          context: Get.context!,
-          builder: (context) => DefaultPopupWidget(
-                title: "Selecione o usuário",
-                children: [
-                  SizedBox(
-                    height: 40.h,
-                    child: ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (context, index) => TextButtonWidget(
-                        widgetCustom: Text(users[index].name),
-                        onTap: () async {
-                          indexSelecionado = index;
-                          Get.back();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ));
+        context: Get.context!,
+        builder: (context) => DefaultPopupWidget(
+          title: "Selecione o usuário",
+          children: [
+            SizedBox(
+              height: 40.h,
+              child: ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) => TextButtonWidget(
+                  widgetCustom: Text(users[index].name),
+                  onTap: () async {
+                    indexSelecionado = index;
+                    Get.back();
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
       if (indexSelecionado != null) {
         final user = users[indexSelecionado!];
         final added = await UserMachineService().createuserMachine(UserMachineViewController(userId: user.id!, machineId: _machineId));

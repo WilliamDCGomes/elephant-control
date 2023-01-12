@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/user_machine_controller.dart';
 
@@ -61,9 +64,28 @@ class _UserMachinePageState extends State<UserMachinePage> {
                           ],
                         ),
                       ),
+                      InformationContainerWidget(
+                        iconPath: Paths.Icone_Perfil,
+                        textColor: AppColors.whiteColor,
+                        backgroundColor: AppColors.defaultColor,
+                        informationText: "",
+                        customContainer: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextWidget(
+                              "Usuários que conseguem visualizar a máquina",
+                              textColor: AppColors.whiteColor,
+                              fontSize: 16.sp,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                          padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.h),
                           child: Obx(
                             () => ListView.builder(
                               itemCount: controller.users.length,

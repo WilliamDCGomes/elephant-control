@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../utils/paths.dart';
 import '../../../widgetsShared/shimmer/default_menu_shimmer.dart';
 import '../controller/main_menu_operator_controller.dart';
 import '../widget/main_menu_operator_after_load_widget.dart';
@@ -27,6 +28,10 @@ class _MainMenuOperatorPageState extends State<MainMenuOperatorPage> {
         () => controller.screenLoading.value ?
         DefaultMenuShimmer(
           pageTitle: "CENTRAL OPERADOR",
+          firstCardIconPath: Paths.Malote,
+          firstCardText: "Quantidade de Malote(s): ",
+          secondCardIconPath: Paths.Pelucia,
+          secondCardText: "Saldo de Pelúcias: ",
         ) :
         MainMenuOperatorAfterLoadWidget(),
       ),

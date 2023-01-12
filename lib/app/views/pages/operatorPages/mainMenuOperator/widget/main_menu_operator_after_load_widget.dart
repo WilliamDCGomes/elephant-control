@@ -353,7 +353,6 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                     ],
                   ),
                 ),
-                controller.loadingWithSuccessOrErrorWidget,
               ],
             ),
           ),

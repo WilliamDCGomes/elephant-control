@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/views/pages/widgetsShared/loading_with_success_or_error_widget.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/services/user_service.dart';
@@ -23,7 +22,6 @@ class MainMenuOperatorController extends GetxController {
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
   late SharedPreferences sharedPreferences;
-  late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late List<Visit> visitsUser;
   late List<Visit> visitsWithMoneydrawal;
 
@@ -61,7 +59,6 @@ class MainMenuOperatorController extends GetxController {
     amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
     pouchLastChange = LoggedUser.pouchLastUpdate ?? DateTime.now();
     teddyLastChange = LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now();
-    loadingWithSuccessOrErrorWidget = loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
 
   _getNameUser() {
@@ -125,7 +122,6 @@ class MainMenuOperatorController extends GetxController {
 
   Future<void> getOperatorInformation() async {
     try {
-      await loadingWithSuccessOrErrorWidget.startAnimation();
       final operatorInformations = await UserService().getOperatorInformation();
       if (operatorInformations == null) throw Exception();
       amountPouch.value = operatorInformations.balanceMoney;
@@ -135,8 +131,6 @@ class MainMenuOperatorController extends GetxController {
       visitsUser = operatorInformations.visitsUser;
       visitsWithMoneydrawal = operatorInformations.visitsWithMoneydrawal;
     } catch (_) {
-    } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 }
