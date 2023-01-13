@@ -77,7 +77,9 @@ enum VisitStatus {
   @JsonValue(3)
   finished("Finalizada"),
   @JsonValue(4)
-  noStatus("Não Informado");
+  noStatus("Não Informado"),
+  @JsonValue(5)
+  solicitationPending("Solicitação para retirada de dinheiro pendente");
 
   final String description;
   const VisitStatus(this.description);

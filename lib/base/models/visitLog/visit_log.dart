@@ -8,6 +8,7 @@ part 'visit_log.g.dart';
 @JsonSerializable()
 class VisitLog extends ElephantUserCore {
   late String visitId;
+  String? moneyPouchId;
   late String title;
   late String? description;
   late VisitStatus oldStatus;
@@ -19,6 +20,7 @@ class VisitLog extends ElephantUserCore {
     required this.description,
     required this.oldStatus,
     required this.newStatus,
+    this.moneyPouchId,
   });
 
   static String get tableName => "VISITLOG";
@@ -26,8 +28,10 @@ class VisitLog extends ElephantUserCore {
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
        VisitId TEXT, Title TEXT, Description TEXT, OldStatus INTEGER,
-       NewStatus INTEGER, Inclusion TEXT, IncludeUserId TEXT)""";
+       NewStatus INTEGER, Inclusion TEXT, IncludeUserId TEXT, MoneyPouchId TEXT)""";
 
+  static String get migrationVersion2 => """
+      ALTER TABLE $tableName ADD COLUMN MoneyPouchId TEXT""";
   factory VisitLog.fromJson(Map<String, dynamic> json) => _$VisitLogFromJson(json);
 
   Map<String, dynamic> toJson() => _$VisitLogToJson(this);

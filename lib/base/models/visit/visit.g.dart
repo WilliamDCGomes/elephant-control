@@ -68,4 +68,5 @@ const _$VisitStatusEnumMap = {
   VisitStatus.moneyPouchLaunched: 2,
   VisitStatus.finished: 3,
   VisitStatus.noStatus: 4,
+  VisitStatus.solicitationPending: 5,
 };

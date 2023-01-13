@@ -25,7 +25,7 @@ import '../models/visitMedia/visit_media.dart';
 
 class ElephantContext {
   static Database? _database;
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2;
   static const String queryElephantModelBase = "Id TEXT PRIMARY KEY NOT NULL, Alteration TEXT, Active BOOLEAN";
 
   static final ElephantContext _elephantContext = ElephantContext._internal();
@@ -114,7 +114,7 @@ class ElephantContext {
       },
     ];
 
-    for(var table in tables){
+    for (var table in tables) {
       try {
         await db.execute(table["scriptCreateTable"] as String);
       } catch (e) {
@@ -133,7 +133,7 @@ class ElephantContext {
       int oldVersionAux = oldVersion;
       while (oldVersionAux < newVersion) {
         switch (oldVersionAux) {
-          case 0:
+          case 1:
             await Migration1(db).executeMigrations();
             break;
           default:
@@ -177,8 +177,8 @@ class ElephantContext {
   Future<bool> importDb() async {
     try {
       FilePickerResult? bancoImportar = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['db'],
+        type: FileType.custom,
+        allowedExtensions: ['db'],
       );
 
       return bancoImportar != null;
@@ -221,7 +221,8 @@ class ElephantContext {
       _database = await database;
       var result = await _database!.query(
         tableName,
-        where: "Id = ?", whereArgs: [id],
+        where: "Id = ?",
+        whereArgs: [id],
       );
       if (result.isNotEmpty) return result.first;
       return null;
