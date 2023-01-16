@@ -28,7 +28,7 @@ class _OperatorsVisitsPageState extends State<OperatorsVisitsPage> {
         () => controller.screenLoading.value ?
         DefaultShimmer(
           pageTitle: "Visitas dos Operadores",
-          showSecondFilterFild: true,
+          showSecondFilterField: true,
           showButton: true,
           mainCardSize: 18.h,
           cardsSize: 10.h,

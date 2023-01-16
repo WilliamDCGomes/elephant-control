@@ -10,6 +10,8 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class MaintenanceHistoryController extends GetxController {
+  late RxBool screenLoading;
+  late RxBool nextScreenLoading;
   late TextEditingController searchMachines;
   late final RxList<VisitListViewController> _visits;
   late final RxList<Machine> _machines;
@@ -25,18 +27,13 @@ class MaintenanceHistoryController extends GetxController {
 
   @override
   void onInit() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    await getVisitsOperatorByUserId();
+    await getVisitsOperatorByUserId(showLoad: false);
+    screenLoading.value = false;
     super.onInit();
   }
 
   //Getters
-  List<VisitListViewController> get visits => _visits
-      // .where(
-      //   (p0) => p0.inclusion?.day == DateTime.now().day && p0.inclusion?.month == DateTime.now().month && p0.inclusion?.year == DateTime.now().year,
-      // )
-      // .toList();
-      ;
+  List<VisitListViewController> get visits => _visits;
   List<Machine> get machines {
     if (searchMachines.text.isNotEmpty) {
       return _machines.where((p0) => p0.name.toLowerCase().startsWith(searchMachines.text.toLowerCase())).toList();
@@ -46,6 +43,8 @@ class MaintenanceHistoryController extends GetxController {
   }
 
   _initializeVariables() {
+    screenLoading = true.obs;
+    nextScreenLoading = true.obs;
     searchMachines = TextEditingController();
     _visits = <VisitListViewController>[].obs;
     _machines = <Machine>[].obs;
@@ -59,42 +58,42 @@ class MaintenanceHistoryController extends GetxController {
 
   void updateList() => _machines.refresh();
 
-  Future<void> getVisitsOperatorByUserId() async {
+  Future<void> getVisitsOperatorByUserId({bool showLoad = true}) async {
     try {
-      await loadingWithSuccessOrErrorWidget.startAnimation();
+      if(showLoad){
+        await loadingWithSuccessOrErrorWidget.startAnimation();
+      }
+      else{
+        screenLoading.value = true;
+      }
       _visits.clear();
       _visits.addAll(await _visitService.getVisitsOperatorByUserId());
     } catch (_) {
       _visits.clear();
     } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      if(showLoad){
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
+      else{
+        screenLoading.value = false;
+      }
     }
   }
 
-  // searchMachinesByName(String machineName) {
-  //   try {
-  //     _machines.clear();
-  //     if (machineName.isNotEmpty) {
-  //       _machines.addAll(_machines.where((p0) => p0.name.toLowerCase().startsWith(machineName.toLowerCase())));
-  //     } else {
-  //       _machines.addAll(_machines);
-  //     }
-  //     _machines.sort((a, b) => a.name.compareTo(b.name));
-  //   } catch (_) {
-  //     _machines.value = <Machine>[];
-  //   }
-  // }
-
-  Future<void> getMachineVisitByUserId() async {
+  Future<void> getMachineVisitByUserId({bool showLoad = true}) async {
     try {
-      await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
+      if(showLoad) {
+        await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
+      }
       _machines.clear();
       _machines.addAll(await _machineService.getMachineVisitByUserId());
       if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
     } catch (_) {
       _machines.clear();
     } finally {
-      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
+      if(showLoad) {
+        await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
+      }
     }
   }
 

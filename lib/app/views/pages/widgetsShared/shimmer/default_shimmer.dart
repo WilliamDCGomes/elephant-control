@@ -8,7 +8,8 @@ import '../title_with_back_button_widget.dart';
 
 class DefaultShimmer extends StatelessWidget {
   final String pageTitle;
-  final bool showSecondFilterFild;
+  final bool showSearchField;
+  final bool showSecondFilterField;
   final bool showButton;
   final double? mainCardSize;
   final double? cardsSize;
@@ -16,7 +17,8 @@ class DefaultShimmer extends StatelessWidget {
   const DefaultShimmer({
     Key? key,
     required this.pageTitle,
-    this.showSecondFilterFild = false,
+    this.showSearchField = true,
+    this.showSecondFilterField = false,
     this.showButton = false,
     this.mainCardSize,
     this.cardsSize,
@@ -61,16 +63,19 @@ class DefaultShimmer extends StatelessWidget {
                           height: mainCardSize ?? 12.h,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 3.h),
-                        child: Container(
-                          height: 6.5.h,
-                          width: 90.w,
-                          color: AppColors.blackColor,
+                      Visibility(
+                        visible: showSearchField,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 3.h),
+                          child: Container(
+                            height: 6.5.h,
+                            width: 90.w,
+                            color: AppColors.blackColor,
+                          ),
                         ),
                       ),
                       Visibility(
-                        visible: showSecondFilterFild,
+                        visible: showSecondFilterField,
                         child: Padding(
                           padding: EdgeInsets.only(left: 2.h, right: 2.h, bottom: 3.h),
                           child: Container(

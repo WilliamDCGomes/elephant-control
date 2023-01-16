@@ -150,6 +150,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                     teddy: visit.stuffedAnimalsReplaceQuantity.toString(),
                                     pouchCollected: visit.moneyWithdrawalQuantity != null,
                                     showPriorityAndStatus: false,
+                                    showRadius: false,
+                                    setHeight: false,
                                   );
                                 },
                               ),
