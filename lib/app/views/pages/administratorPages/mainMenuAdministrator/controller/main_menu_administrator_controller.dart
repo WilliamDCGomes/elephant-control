@@ -161,7 +161,7 @@ class MainMenuAdministratorController extends GetxController {
         DateTime.now(),
       );
 
-      operatorVisitList.sort((a, b) => a.visitDate.compareTo(b.visitDate));
+      operatorVisitList.sort((a, b) => a.vInclusion.compareTo(b.vInclusion));
 
       visitsQuantity = operatorVisitList.length;
     }

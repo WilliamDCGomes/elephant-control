@@ -16,6 +16,7 @@ class VisitOfOperatorsViewController {
   late int? periodDaysToVisit;
   late DateTime? lastMachineVisit;
   late String visitedMachine;
+  late DateTime vInclusion;
 
   VisitOfOperatorsViewController();
 

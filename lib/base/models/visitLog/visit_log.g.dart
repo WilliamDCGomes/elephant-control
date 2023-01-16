@@ -12,6 +12,7 @@ VisitLog _$VisitLogFromJson(Map<String, dynamic> json) => VisitLog(
       description: json['description'] as String?,
       oldStatus: $enumDecode(_$VisitStatusEnumMap, json['oldStatus']),
       newStatus: $enumDecode(_$VisitStatusEnumMap, json['newStatus']),
+      moneyPouchId: json['moneyPouchId'] as String?,
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -30,6 +31,7 @@ Map<String, dynamic> _$VisitLogToJson(VisitLog instance) => <String, dynamic>{
       'active': instance.active,
       'includeUserId': instance.includeUserId,
       'visitId': instance.visitId,
+      'moneyPouchId': instance.moneyPouchId,
       'title': instance.title,
       'description': instance.description,
       'oldStatus': _$VisitStatusEnumMap[instance.oldStatus]!,

@@ -21,7 +21,8 @@ VisitOfOperatorsViewController _$VisitOfOperatorsViewControllerFromJson(
       ..lastMachineVisit = json['lastMachineVisit'] == null
           ? null
           : DateTime.parse(json['lastMachineVisit'] as String)
-      ..visitedMachine = json['visitedMachine'] as String;
+      ..visitedMachine = json['visitedMachine'] as String
+      ..vInclusion = DateTime.parse(json['vInclusion'] as String);
 
 Map<String, dynamic> _$VisitOfOperatorsViewControllerToJson(
         VisitOfOperatorsViewController instance) =>
@@ -37,6 +38,7 @@ Map<String, dynamic> _$VisitOfOperatorsViewControllerToJson(
       'periodDaysToVisit': instance.periodDaysToVisit,
       'lastMachineVisit': instance.lastMachineVisit?.toIso8601String(),
       'visitedMachine': instance.visitedMachine,
+      'vInclusion': instance.vInclusion.toIso8601String(),
     };
 
 const _$VisitStatusEnumMap = {
