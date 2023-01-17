@@ -23,6 +23,7 @@ class Paths{
   static final String Ocorrencia = "${imagesPath}Ocorrencia.png";
   static final String Icon_Branco = "${imagesPath}Icon_Branco.png";
   static final String Logo_Branca = "${imagesPath}Logo_Branca.png";
+  static final String Pelucia_Add = "${imagesPath}Pelucia_Add.png";
   static final String Icon_Amarelo = "${imagesPath}Icon_Amarelo.png";
   static final String Icone_Perfil = "${imagesPath}Icone_Perfil.png";
   static final String Solicitacoes = "${imagesPath}Solicitacoes.png";
@@ -31,6 +32,7 @@ class Paths{
   static final String Logo_Colorida = "${imagesPath}Logo_Colorida.png";
   static final String Novo_Lembrete = "${imagesPath}Novo_Lembrete.png";
   static final String Icone_Endereco = "${imagesPath}Icone_Endereco.png";
+  static final String Pelucia_Remove = "${imagesPath}Pelucia_Remove.png";
   static final String Background_Azul = "${imagesPath}Background_Azul.png";
   static final String Maquina_Pelucia = "${imagesPath}Maquina_Pelucia.png";
   static final String Recolher_Dinheiro = "${imagesPath}Recolher_Dinheiro.png";

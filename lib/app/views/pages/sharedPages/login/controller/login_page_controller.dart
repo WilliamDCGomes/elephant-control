@@ -15,6 +15,7 @@ import '../../../../../../base/models/user/user.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
+import '../../../stockistPages/mainMenuStokist/page/main_menu_stokist_page.dart';
 import '../../../widgetsShared/loading_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
@@ -304,7 +305,9 @@ class LoginPageController extends GetxController {
       Get.offAll(() => MainMenuFinancialPage());
     } else if (userLogged!.userType == UserType.admin) {
       Get.offAll(() => MainMenuAdministratorPage());
-    } else if (userLogged!.userType == UserType.stockist) {}
+    } else if (userLogged!.userType == UserType.stockist) {
+      Get.offAll(() => MainMenuStokistPage());
+    }
   }
 
   _resetLogin(String message) async {

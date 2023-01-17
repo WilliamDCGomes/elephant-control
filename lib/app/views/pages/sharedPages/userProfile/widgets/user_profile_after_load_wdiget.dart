@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:elephant_control/app/views/pages/stockistPages/mainMenuStokist/controller/main_menu_stokist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -22,12 +23,14 @@ class UserProfileAfterLoadWidget extends StatefulWidget {
   late final MainMenuOperatorController? mainMenuOperatorController;
   late final MainMenuFinancialController? mainMenuFinancialController;
   late final MainMenuAdministratorController? mainMenuAdministratorController;
+  late final MainMenuStokistController? mainMenuStokistController;
 
   UserProfileAfterLoadWidget({
     Key? key,
     required this.mainMenuOperatorController,
     required this.mainMenuFinancialController,
     required this.mainMenuAdministratorController,
+    required this.mainMenuStokistController,
   }) : super(key: key);
 
   @override
@@ -141,10 +144,16 @@ class _UserProfileAfterLoadWidgetState extends State<UserProfileAfterLoadWidget>
                                   loadingPicture: widget.mainMenuFinancialController!.loadingPicture,
                                   profileImagePath: widget.mainMenuFinancialController!.profileImagePath,
                                 ) :
+                                widget.mainMenuAdministratorController != null ?
                                 ProfilePictureWidget(
                                   hasPicture: widget.mainMenuAdministratorController!.hasPicture,
                                   loadingPicture: widget.mainMenuAdministratorController!.loadingPicture,
                                   profileImagePath: widget.mainMenuAdministratorController!.profileImagePath,
+                                ) :
+                                ProfilePictureWidget(
+                                  hasPicture: widget.mainMenuStokistController!.hasPicture,
+                                  loadingPicture: widget.mainMenuStokistController!.loadingPicture,
+                                  profileImagePath: widget.mainMenuStokistController!.profileImagePath,
                                 ),
                               ),
                               Align(

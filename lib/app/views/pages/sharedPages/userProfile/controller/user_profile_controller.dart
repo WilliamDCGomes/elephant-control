@@ -26,6 +26,7 @@ import '../../../financialPages/mainMenuFinancial/controller/main_menu_financial
 import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
+import '../../../stockistPages/mainMenuStokist/controller/main_menu_stokist_controller.dart';
 import '../../../widgetsShared/loading_profile_picture_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
@@ -94,11 +95,12 @@ class UserProfileController extends GetxController {
   late MainMenuOperatorController? mainMenuOperatorController;
   late MainMenuFinancialController? mainMenuFinancialController;
   late MainMenuAdministratorController? mainMenuAdministratorController;
+  late MainMenuStokistController? mainMenuStokistController;
   late SharedPreferences sharedPreferences;
   late IConsultCepService _consultCepService;
   late IUserService _userService;
 
-  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController, this.mainMenuAdministratorController) {
+  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController, this.mainMenuAdministratorController, this.mainMenuStokistController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -169,7 +171,9 @@ class UserProfileController extends GetxController {
           ? mainMenuOperatorController!.loadingPicture
           : mainMenuFinancialController != null
               ? mainMenuFinancialController!.loadingPicture
-              : mainMenuAdministratorController!.loadingPicture,
+              : mainMenuAdministratorController != null
+      ? mainMenuAdministratorController!.loadingPicture
+      : mainMenuStokistController!.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _user = User.emptyConstructor();
@@ -501,8 +505,11 @@ class UserProfileController extends GetxController {
         mainMenuOperatorController!.loadingPicture.value = true;
       } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = true;
-      } else {
+      } else if(mainMenuAdministratorController != null){
         mainMenuAdministratorController!.loadingPicture.value = true;
+      }
+      else{
+        mainMenuStokistController!.loadingPicture.value = true;
       }
 
       final ImageSource source = origin == imageOrigin.camera ? ImageSource.camera : ImageSource.gallery;
@@ -538,8 +545,11 @@ class UserProfileController extends GetxController {
         mainMenuOperatorController!.loadingPicture.value = false;
       } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = false;
-      } else {
+      } else if(mainMenuAdministratorController != null){
         mainMenuAdministratorController!.loadingPicture.value = false;
+      }
+      else{
+        mainMenuStokistController!.loadingPicture.value = false;
       }
     }
   }
@@ -558,9 +568,16 @@ class UserProfileController extends GetxController {
           "profile_picture",
           profilePicture!.path,
         );
-      } else {
+      } else if(mainMenuAdministratorController != null){
         mainMenuAdministratorController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuAdministratorController!.sharedPreferences.setString(
+          "profile_picture",
+          profilePicture!.path,
+        );
+      }
+      else{
+        mainMenuStokistController!.profileImagePath.value = profilePicture!.path;
+        return await mainMenuStokistController!.sharedPreferences.setString(
           "profile_picture",
           profilePicture!.path,
         );
@@ -617,8 +634,13 @@ class UserProfileController extends GetxController {
         imageChanged = await mainMenuFinancialController!.sharedPreferences.remove(
           "profile_picture",
         );
-      } else {
+      } else if(mainMenuAdministratorController != null){
         imageChanged = await mainMenuAdministratorController!.sharedPreferences.remove(
+          "profile_picture",
+        );
+      }
+      else{
+        imageChanged = await mainMenuStokistController!.sharedPreferences.remove(
           "profile_picture",
         );
       }
@@ -648,12 +670,20 @@ class UserProfileController extends GetxController {
           mainMenuFinancialController!.profileImagePath,
           mainMenuFinancialController!.sharedPreferences,
         );
-      } else {
+      } else if(mainMenuAdministratorController != null){
         await GetProfilePictureController.loadProfilePicture(
           mainMenuAdministratorController!.loadingPicture,
           mainMenuAdministratorController!.hasPicture,
           mainMenuAdministratorController!.profileImagePath,
           mainMenuAdministratorController!.sharedPreferences,
+        );
+      }
+      else{
+        await GetProfilePictureController.loadProfilePicture(
+          mainMenuStokistController!.loadingPicture,
+          mainMenuStokistController!.hasPicture,
+          mainMenuStokistController!.profileImagePath,
+          mainMenuStokistController!.sharedPreferences,
         );
       }
     } catch (_) {
