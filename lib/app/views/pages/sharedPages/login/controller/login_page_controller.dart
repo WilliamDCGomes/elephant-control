@@ -136,11 +136,7 @@ class LoginPageController extends GetxController {
           await _saveOptions();
           await sharedPreferences.setString("password", passwordInputController.text);
 
-          if (keepConected.value) {
-            await sharedPreferences.setBool("keep-connected", true);
-          } else {
-            await sharedPreferences.setBool("keep-connected", false);
-          }
+          await sharedPreferences.setBool("keep-connected", keepConected.value);
 
           await loadingWidget.stopAnimation();
           _goToNextPage();
@@ -179,6 +175,7 @@ class LoginPageController extends GetxController {
       await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
     } else if (oldUser != userInputController.text.replaceAll('.', '').replaceAll('-', '')) {
       // await sharedPreferences.clear();
+      await sharedPreferences.remove("user_finger_print");
       await sharedPreferences.setString("user_logged", userInputController.text.replaceAll('.', '').replaceAll('-', ''));
     }
 

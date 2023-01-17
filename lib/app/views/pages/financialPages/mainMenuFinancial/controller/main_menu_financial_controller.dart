@@ -11,6 +11,7 @@ import '../../../widgetsShared/popups/confirmation_popup.dart';
 class MainMenuFinancialController extends GetxController {
   late RxBool hasPicture;
   late RxBool loadingPicture;
+  late RxBool screenLoading;
   late RxString profileImagePath;
   late RxString nameProfile;
   late RxString nameInitials;
@@ -24,9 +25,6 @@ class MainMenuFinancialController extends GetxController {
 
   MainMenuFinancialController() {
     _initializeVariables();
-    _getNameUser();
-    _getWelcomePhrase();
-    getQuantityData();
   }
   //Getters
   bool get isLoadingQuantity => _isLoadingQuantity.value;
@@ -34,12 +32,16 @@ class MainMenuFinancialController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    _getNameUser();
+    _getWelcomePhrase();
+    await getQuantityData();
     await GetProfilePictureController.loadProfilePicture(
       loadingPicture,
       hasPicture,
       profileImagePath,
       sharedPreferences,
     );
+    screenLoading.value = false;
     await _checkFingerPrintUser();
     super.onInit();
   }
@@ -47,6 +49,7 @@ class MainMenuFinancialController extends GetxController {
   _initializeVariables() {
     hasPicture = false.obs;
     loadingPicture = true.obs;
+    screenLoading = true.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
