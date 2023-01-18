@@ -224,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                                       visible: controller.appVersion.value.isNotEmpty,
                                       child: TextWidget(
                                         "Versão: ${controller.appVersion.value}",
-                                        textColor: AppColors.blackColor,
+                                        textColor: AppColors.defaultColor,
                                         fontSize: 16.sp,
                                         textAlign: TextAlign.center,
                                       ),

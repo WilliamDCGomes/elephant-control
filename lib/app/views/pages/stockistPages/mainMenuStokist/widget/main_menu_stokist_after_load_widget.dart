@@ -11,6 +11,7 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
+import '../../addRemoveOperatorBalancePlush/page/add_remove_operator_balance_pluch_page.dart';
 import '../controller/main_menu_stokist_controller.dart';
 
 class MainMenuStokistAfterLoadWidget extends StatefulWidget {
@@ -245,9 +246,9 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () {
-
-                        },
+                        onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
+                          addPluch: true,
+                        )),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -269,9 +270,9 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () {
-
-                          },
+                          onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
+                            addPluch: false,
+                          )),
                         ),
                       ),
                     ],
