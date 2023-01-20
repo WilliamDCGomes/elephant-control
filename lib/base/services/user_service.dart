@@ -16,7 +16,8 @@ class UserService extends BaseService implements IUserService {
       password ??= sharedPreferences.getString('password');
       if (username == null || password == null) throw Exception();
       final url = baseUrlApi + 'User/Authenticate';
-      final response = await super.post(url, null, query: {"username": username, "password": password}).timeout(Duration(seconds: 30));
+      final response =
+          await super.post(url, null, query: {"username": username, "password": password}).timeout(Duration(seconds: 30));
       if (hasErrorResponse(response)) throw Exception();
       return AuthenticateResponse.fromJson(response.body);
     } catch (_) {
@@ -99,7 +100,8 @@ class UserService extends BaseService implements IUserService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'User/ForgetPasswordInternal';
-      final response = await super.post(url, null, query: {"Password": password}, headers: {"Authorization": 'Bearer ' + token});
+      final response =
+          await super.post(url, null, query: {"Password": password}, headers: {"Authorization": 'Bearer ' + token});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
     } catch (_) {
@@ -262,6 +264,24 @@ class UserService extends BaseService implements IUserService {
       return response.body.map<RecallMoneyViewController>((e) => RecallMoneyViewController.fromJson(e)).toList();
     } catch (_) {
       return [];
+    }
+  }
+
+  @override
+  Future<bool> addOrRemoveBalanceStuffedAnimalsOperator(
+      String userOperatorId, int balanceStuffedAnimals, String observation, bool addStuffedAnimals) async {
+    try {
+      final url = baseUrlApi + 'User/AddOrRemoveBalanceStuffedAnimalsOperator';
+      final response = await super.post(url, null, query: {
+        "UserOperatorId": userOperatorId,
+        "BalanceStuffedAnimals": balanceStuffedAnimals.toString(),
+        "Observation": observation,
+        "AddStuffedAnimals": addStuffedAnimals.toString(),
+      });
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,8 +75,8 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                             children: [
                               TextButtonWidget(
                                 onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuOperatorController: controller,
-                                )),
+                                      mainMenuOperatorController: controller,
+                                    )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -180,7 +181,7 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                               Padding(
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: Obx(
-                                                      () => TextWidget(
+                                                  () => TextWidget(
                                                     controller.amountPouch.value.toString(),
                                                     fontWeight: FontWeight.bold,
                                                     maxLines: 1,
@@ -206,10 +207,10 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                         ),
                                         InkWell(
                                           onTap: () => Get.to(() => HistoryPage(
-                                            title: "Histórico de Malotes",
-                                            pageTitle: "Visitas",
-                                            visits: controller.visitsWithMoneydrawal,
-                                          )),
+                                                title: "Histórico de Malotes",
+                                                pageTitle: "Visitas",
+                                                visits: controller.visitsWithMoneydrawal,
+                                              )),
                                           child: TextWidget(
                                             "Clique aqui para ver o histórico de malotes!",
                                             maxLines: 1,
@@ -252,15 +253,13 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                               ),
                                               Padding(
                                                 padding: EdgeInsets.only(left: 1.w),
-                                                child: Obx(
-                                                      () => TextWidget(
-                                                    controller.amountTeddy.value.toString(),
-                                                    fontWeight: FontWeight.bold,
-                                                    maxLines: 1,
-                                                    textColor: AppColors.whiteColor,
-                                                    fontSize: 20.sp,
-                                                    textAlign: TextAlign.start,
-                                                  ),
+                                                child: TextWidget(
+                                                  (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
+                                                  fontWeight: FontWeight.bold,
+                                                  maxLines: 1,
+                                                  textColor: AppColors.whiteColor,
+                                                  fontSize: 20.sp,
+                                                  textAlign: TextAlign.start,
                                                 ),
                                               ),
                                             ],
@@ -279,10 +278,10 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                         ),
                                         InkWell(
                                           onTap: () => Get.to(() => HistoryPage(
-                                            title: "Histórico de Pelúcias",
-                                            pageTitle: "Visitas",
-                                            visits: controller.visitsUser,
-                                          )),
+                                                title: "Histórico de Pelúcias",
+                                                pageTitle: "Visitas",
+                                                visits: controller.visitsUser,
+                                              )),
                                           child: TextWidget(
                                             "Clique aqui para ver as pelúcias!",
                                             maxLines: 1,
