@@ -10,6 +10,7 @@ import '../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget
 import '../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
 
 class MaintenanceCardWidget extends StatefulWidget {
+  final String visitId;
   final String machineName;
   final String city;
   final String workPriority;
@@ -37,6 +38,7 @@ class MaintenanceCardWidget extends StatefulWidget {
 
   const MaintenanceCardWidget({
     super.key,
+    required this.visitId,
     required this.machineName,
     required this.city,
     required this.status,
@@ -90,6 +92,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                         widget.priorityColor,
                         widget.pouchCollected,
                         widget.responsibleName,
+                        widget.visitId,
                       ),
                     );
                   }),

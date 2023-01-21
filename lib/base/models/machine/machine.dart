@@ -1,5 +1,6 @@
 import 'package:elephant_control/base/models/reminderMachine/reminder_machine.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
 part 'machine.g.dart';
@@ -38,6 +39,12 @@ class Machine extends ElephantUserCore {
     this.lastVisit,
     this.reminders,
   });
+
+  Machine.emptyConstructor() {
+    id = const Uuid().v4();
+    inclusion = DateTime.now();
+    active = true;
+  }
 
   static String get tableName => "MACHINE";
 

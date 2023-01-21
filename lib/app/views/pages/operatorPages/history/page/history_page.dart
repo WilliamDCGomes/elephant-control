@@ -152,6 +152,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     showPriorityAndStatus: false,
                                     showRadius: false,
                                     setHeight: false,
+                                    visitId: visit.id ?? "",
                                   );
                                 },
                               ),

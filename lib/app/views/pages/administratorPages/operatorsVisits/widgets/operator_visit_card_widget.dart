@@ -67,6 +67,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               _getColorPriority(),
               widget.visitOfOperatorsViewController.visitStatus == VisitStatus.moneyWithdrawal,
               widget.visitOfOperatorsViewController.operatorName,
+              widget.visitOfOperatorsViewController.visitId,
             ),
           );
         },

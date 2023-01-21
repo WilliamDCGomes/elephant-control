@@ -105,6 +105,9 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             showRadius: false,
                                             setHeight: false,
                                             machineAddOtherList: visit.active == false,
+                                            visitId: controller.visits.firstWhere(
+                                              (element) => controller.machines[index].name == element.machineName
+                                            ).id ?? "",
                                           ),
                                           if (visit.realizedVisit == false && visit.active == true)
                                             Padding(
