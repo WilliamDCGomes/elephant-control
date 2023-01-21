@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
 
   @override
   void initState() {
-    controller = Get.put(AddRemoveOperatorBalancePlushController());
+    controller = Get.put(AddRemoveOperatorBalancePlushController(widget.addPluch));
     super.initState();
   }
 
@@ -61,8 +62,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: (widget.addPluch ? "Adicionar " : "Remover ") +
-                              "Pelúcias",
+                          title: (widget.addPluch ? "Adicionar " : "Remover ") + "Pelúcias",
                         ),
                       ),
                       Expanded(
@@ -79,8 +79,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    (widget.addPluch ? "Adicionar " : "Remover ") +
-                                        "Pelúcias no Saldo do Operador",
+                                    (widget.addPluch ? "Adicionar " : "Remover ") + "Pelúcias no Saldo do Operador",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,
@@ -124,7 +123,8 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                     hintText: "Operadores",
                                     height: 6.5.h,
                                     width: 85.w,
-                                    listItems: controller.operators.map((element) => DropdownItem(item: element.name, value: element.id)),
+                                    listItems: controller.operators
+                                        .map((element) => DropdownItem(item: element.name, value: element.id)),
                                     onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                   ),
                                   Padding(
@@ -137,6 +137,16 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                       height: 9.h,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                       keyboardType: TextInputType.number,
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: (value) {
+                                        if (!widget.addPluch) return null;
+                                        if (value?.isEmpty ?? true) return "Preencha a quantida de pelúcias";
+                                        final intValue = int.parse(value!);
+                                        if (intValue <= 0) return "A quantidade de pelúcias deve ser maior que 0";
+                                        if (intValue > (LoggedUser.balanceStuffedAnimals ?? 0))
+                                          return "A quantidade de pelúcias deve ser menor ou igual ao saldo atual";
+                                        return null;
+                                      },
                                     ),
                                   ),
                                   Padding(
@@ -192,9 +202,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () {
-
-                                },
+                                onPressed: () => controller.addOrRemoveBalanceStuffedAnimalsOperator(),
                               ),
                             ),
                           ],

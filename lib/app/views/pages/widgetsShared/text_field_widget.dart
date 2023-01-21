@@ -35,45 +35,47 @@ class TextFieldWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextCapitalization? textCapitalization;
   final TextEditingController controller;
+  final AutovalidateMode? autovalidateMode;
 
-  const TextFieldWidget(
-      { Key? key,
-        this.hintText,
-        this.maxLength,
-        this.maxLines,
-        this.ableField,
-        this.justRead,
-        this.isPassword,
-        this.enableSuggestions,
-        this.hasError,
-        this.height,
-        this.width,
-        this.fontSize,
-        this.iconTextField,
-        this.textColor,
-        this.hintTextColor,
-        this.borderColor,
-        this.textStyle,
-        this.textAlign,
-        this.textAlignVertical,
-        this.focusNode,
-        this.keyboardType,
-        this.decoration,
-        this.maskTextInputFormatter,
-        this.filteringTextInputFormatter,
-        this.textInputAction,
-        this.onTap,
-        this.onEditingComplete,
-        this.onChanged,
-        this.onSaved,
-        this.validator,
-        this.textCapitalization,
-        required this.controller,
-      }) : super(key: key);
+  const TextFieldWidget({
+    Key? key,
+    this.hintText,
+    this.maxLength,
+    this.maxLines,
+    this.ableField,
+    this.justRead,
+    this.isPassword,
+    this.enableSuggestions,
+    this.hasError,
+    this.height,
+    this.width,
+    this.fontSize,
+    this.iconTextField,
+    this.textColor,
+    this.hintTextColor,
+    this.borderColor,
+    this.textStyle,
+    this.textAlign,
+    this.textAlignVertical,
+    this.focusNode,
+    this.keyboardType,
+    this.decoration,
+    this.maskTextInputFormatter,
+    this.filteringTextInputFormatter,
+    this.textInputAction,
+    this.onTap,
+    this.onEditingComplete,
+    this.onChanged,
+    this.onSaved,
+    this.validator,
+    this.textCapitalization,
+    required this.controller,
+    this.autovalidateMode,
+  }) : super(key: key);
 
-  InputDecoration standardDecoration(){
+  InputDecoration standardDecoration() {
     double heightInput = height ?? 65;
-    if(height != null) {
+    if (height != null) {
       heightInput = height!;
     }
     return InputDecoration(
@@ -83,28 +85,25 @@ class TextFieldWidget extends StatelessWidget {
         fontSize: 16.sp,
         color: hasError != null && hasError! ? AppColors.redColor : hintTextColor ?? AppColors.defaultColor,
       ),
+      errorMaxLines: 3,
       suffixIcon: iconTextField,
       enabledBorder: _getBorderLayout(),
       border: _getBorderLayout(),
       focusedBorder: _getBorderLayout(),
       errorBorder: _getErrorBorderLayout(),
       focusedErrorBorder: _getErrorBorderLayout(),
-      contentPadding: EdgeInsets.only(
-        bottom: heightInput / 2,
-        left: 10,
-        right: 10
-      ),
+      contentPadding: EdgeInsets.only(bottom: heightInput / 2, left: 10, right: 10),
     );
   }
 
-  TextStyle standardTextStyle(){
+  TextStyle standardTextStyle() {
     return TextStyle(
       color: textColor ?? AppColors.defaultColor,
       fontSize: fontSize ?? 16.sp,
     );
   }
 
-  OutlineInputBorder _getBorderLayout(){
+  OutlineInputBorder _getBorderLayout() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
@@ -114,7 +113,7 @@ class TextFieldWidget extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _getErrorBorderLayout(){
+  OutlineInputBorder _getErrorBorderLayout() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
@@ -132,6 +131,7 @@ class TextFieldWidget extends StatelessWidget {
         height: height ?? 65,
         width: width ?? 200,
         child: TextFormField(
+          autovalidateMode: autovalidateMode,
           validator: validator,
           textCapitalization: textCapitalization ?? TextCapitalization.none,
           obscureText: isPassword ?? false,

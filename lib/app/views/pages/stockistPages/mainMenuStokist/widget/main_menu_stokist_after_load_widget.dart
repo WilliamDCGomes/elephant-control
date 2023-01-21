@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -73,8 +74,8 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             children: [
                               TextButtonWidget(
                                 onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuStokistController: controller,
-                                )),
+                                      mainMenuStokistController: controller,
+                                    )),
                                 borderRadius: 1.h,
                                 componentPadding: EdgeInsets.zero,
                                 widgetCustom: Row(
@@ -170,12 +171,12 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                                           Padding(
                                             padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
                                             child: Obx(
-                                                  () => RichTextTwoDifferentWidget(
+                                              () => RichTextTwoDifferentWidget(
                                                 firstText: "Quantidade de Pelúcias: ",
                                                 firstTextColor: AppColors.whiteColor,
                                                 firstTextFontWeight: FontWeight.normal,
                                                 firstTextSize: 18.sp,
-                                                secondText: controller.safeBoxAmount.value.toString(),
+                                                secondText: (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
                                                 secondTextColor: AppColors.whiteColor,
                                                 secondTextFontWeight: FontWeight.bold,
                                                 secondTextSize: 20.sp,
@@ -186,7 +187,7 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                                             ),
                                           ),
                                           TextWidget(
-                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.valueLastUpdate)}",
+                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(LoggedUser.stuffedAnimalsLastUpdate)}",
                                             maxLines: 1,
                                             textColor: AppColors.whiteColor,
                                             fontWeight: FontWeight.bold,
@@ -228,28 +229,29 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                   floatingActionButton: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      FloatingActionButton.extended(
-                        heroTag: "firstFloatingActionButton",
-                        backgroundColor: AppColors.defaultColor,
-                        foregroundColor: AppColors.backgroundColor,
-                        elevation: 3,
-                        icon: Image.asset(
-                          Paths.Pelucia_Add,
-                          height: 3.h,
-                          color: AppColors.whiteColor,
+                      if ((LoggedUser.balanceStuffedAnimals ?? 0) > 0)
+                        FloatingActionButton.extended(
+                          heroTag: "firstFloatingActionButton",
+                          backgroundColor: AppColors.defaultColor,
+                          foregroundColor: AppColors.backgroundColor,
+                          elevation: 3,
+                          icon: Image.asset(
+                            Paths.Pelucia_Add,
+                            height: 3.h,
+                            color: AppColors.whiteColor,
+                          ),
+                          label: TextWidget(
+                            "Adicionar Pelúcia no Saldo do Operador",
+                            maxLines: 1,
+                            textColor: AppColors.whiteColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            textAlign: TextAlign.center,
+                          ),
+                          onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
+                                addPluch: true,
+                              )),
                         ),
-                        label: TextWidget(
-                          "Adicionar Pelúcia no Saldo do Operador",
-                          maxLines: 1,
-                          textColor: AppColors.whiteColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          textAlign: TextAlign.center,
-                        ),
-                        onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
-                          addPluch: true,
-                        )),
-                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
                         child: FloatingActionButton.extended(
@@ -271,8 +273,8 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             textAlign: TextAlign.center,
                           ),
                           onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
-                            addPluch: false,
-                          )),
+                                addPluch: false,
+                              )),
                         ),
                       ),
                     ],
