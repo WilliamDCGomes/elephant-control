@@ -6,32 +6,28 @@ import 'package:elephant_control/app/views/pages/operatorPages/occurrence/contro
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
-import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/services/machine_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
-import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 
-class MaintenanceController extends GetxController {
-  Machine? machineSelected;
+class VisitDetailsController extends GetxController {
+  final String visitId;
   late RxString priority;
-  late RxString machineSelectedListener;
   late RxString lastMaintenance;
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
-  late RxBool _showReminders;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
   late TextEditingController clock1;
@@ -43,30 +39,28 @@ class MaintenanceController extends GetxController {
   late ImagesPictureWidget afterMaintenanceImageClock;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final VisitService _visitService;
+  late final MachineService _machineService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
-  late final RxList<Machine> _machines;
   late final Visit _visit;
-  late final String visitId;
+  late final Machine _machine;
   late final List<IncidentObject> _incidents;
 
-  MaintenanceController() {
+  VisitDetailsController(this.visitId) {
     _initializeVariables();
   }
 
   _initializeVariables() {
-    visitId = const Uuid().v4();
-    _showReminders = false.obs;
     _incidents = <IncidentObject>[];
     _visitService = VisitService();
+    _machineService = MachineService();
     _visitMediaService = VisitMediaService();
-    _machines = <Machine>[].obs;
     _incidentService = IncidentService();
-    machineSelectedListener = "".obs;
+    _visit = Visit.emptyConstructor();
+    _machine = Machine.emptyConstructor();
     priority = "ALTA".obs;
     priorityColor = AppColors.redColor.value.obs;
     lastMaintenance = "".obs;
-    _visit = Visit.emptyConstructor();
 
     yes = false.obs;
     no = false.obs;
@@ -86,67 +80,20 @@ class MaintenanceController extends GetxController {
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
-    _initializeMethods();
   }
-
-  @override
-  void onInit() async {
-    //await _getUsers();
-    super.onInit();
-  }
-
-  //Getters
-  List<Machine> get machines => _machines;
-  bool get showReminders => _showReminders.value;
-
-  onDropdownButtonWidgetChanged(String? machineId) {
-    machineSelected = _machines.firstWhere((element) => element.id == machineId);
-    machineSelectedListener.value = machineSelected?.name ?? "";
-    lastMaintenance.value = DateFormatToBrazil.formatDate(machineSelected?.lastVisit);
-  }
-
-  Future<void> _initializeMethods() async {
-    try {
-      await getMachines();
-    } catch (_) {
-    }
-  }
-
-  Future<void> getMachines() async {
-    try {
-      _machines.clear();
-      final listTodayMachine = await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
-      _machines.addAll(listTodayMachine
-          .map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
-      if (_machines.isNotEmpty) {
-        _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
-        onDropdownButtonWidgetChanged(_machines.first.id);
-        update(["dropdown-button"]);
-      }
-    } catch (_) {
-      _machines.clear();
-    }
-  }
-
-  void setShowReminders() => _showReminders.value = !_showReminders.value;
 
   openIncident(BuildContext context) async {
-    if (machineSelected == null) {
-      return await showDialog(
-          context: context,
-          builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
-    }
-    final incident = await Get.to(() => OccurrencePage(machine: machineSelected!, visitId: visitId));
+    final incident = await Get.to(() => OccurrencePage(machine: _machine, visitId: visitId));
     if (incident is IncidentObject) _incidents.add(incident);
   }
 
-  saveMaintenance() async {
+  editMaintenance() async {
     try {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
       int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
       _visit.stuffedAnimalsQuantity = teddy;
-      _visit.machineId = machineSelected!.id!;
+      _visit.machineId = _machine.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
       _visit.moneyWithDrawal = yes.isTrue;
       if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
@@ -202,8 +149,7 @@ class MaintenanceController extends GetxController {
           );
         },
       );
-      await Future.microtask(
-          () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
@@ -220,19 +166,7 @@ class MaintenanceController extends GetxController {
   }
 
   bool fieldsValidate() {
-    if (machineSelected == null) {
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return InformationPopup(
-            warningMessage: "Selecione a Máquina da Visita!",
-          );
-        },
-      );
-      return false;
-    }
-    if (!kDebugMode && (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty)) {
+    if (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -244,7 +178,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if (!kDebugMode && (imageClock.picture == null || imageClock.picture!.path.isEmpty)) {
+    if (imageClock.picture == null || imageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -304,7 +238,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if (!kDebugMode && (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty)) {
+    if (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

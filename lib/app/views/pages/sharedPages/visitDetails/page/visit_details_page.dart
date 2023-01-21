@@ -6,27 +6,31 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
-import '../../../widgetsShared/dropdown_button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/maintenance_controller.dart';
+import '../controller/visit_details_controller.dart';
 
-class MaintenancePage extends StatefulWidget {
-  const MaintenancePage({Key? key}) : super(key: key);
+class VisitDetailsPage extends StatefulWidget {
+  final String visitId;
+
+  const VisitDetailsPage({
+    Key? key,
+    required this.visitId,
+  }) : super(key: key);
 
   @override
-  State<MaintenancePage> createState() => _MaintenancePageState();
+  State<VisitDetailsPage> createState() => _VisitDetailsPageState();
 }
 
-class _MaintenancePageState extends State<MaintenancePage> {
-  late MaintenanceController controller;
+class _VisitDetailsPageState extends State<VisitDetailsPage> {
+  late VisitDetailsController controller;
 
   @override
   void initState() {
-    controller = Get.put(MaintenanceController());
+    controller = Get.put(VisitDetailsController(widget.visitId));
     super.initState();
   }
 
@@ -61,7 +65,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Novo Atendimento",
+                                title: "Detalhes do Atendimento",
                               ),
                             ),
                             InkWell(
@@ -92,7 +96,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TextWidget(
-                                      "Máquina visitada: ${controller.machineSelectedListener.value}",
+                                      "",//"Máquina visitada: ${controller.machineSelectedListener.value}",
                                       textColor: AppColors.whiteColor,
                                       fontSize: 18.sp,
                                       textAlign: TextAlign.center,
@@ -136,88 +140,9 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 shrinkWrap: true,
                                 padding: EdgeInsets.symmetric(horizontal: 2.h),
                                 children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: TextWidget(
-                                      "Preencha os dados",
-                                      textColor: AppColors.blackColor,
-                                      fontSize: 18.sp,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: TextWidget(
-                                        "Máquina visitada",
-                                        textColor: AppColors.defaultColor,
-                                        fontSize: 16.sp,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  GetBuilder(
-                                    id: "dropdown-button",
-                                    init: controller,
-                                    builder: (value) => DropdownButtonWidget(
-                                      itemSelected: controller.machineSelected?.id,
-                                      hintText: controller.machineSelected == null ? "Máquina Atendida" : controller.machineSelected?.name,
-                                      height: 6.5.h,
-                                      width: 85.w,
-                                      listItems: controller.machines.map((e) => DropdownItem(item: e.name, value: e.id)),
-                                      onChanged: (selectedState) => setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
-                                    ),
-                                  ),
-                                  if ((controller.machineSelected?.reminders ?? []).isNotEmpty)
-                                    Obx(
-                                      () => Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 1.h),
-                                          GestureDetector(
-                                            onTap: () => controller.setShowReminders(),
-                                            child: Row(
-                                              children: [
-                                                Icon(controller.showReminders ? Icons.visibility : Icons.visibility_off, color: AppColors.defaultColor, size: 3.h),
-                                                SizedBox(width: 1.w),
-                                                TextWidget("Visualizar lembretes", textColor: AppColors.defaultColor),
-                                              ],
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: controller.showReminders,
-                                            child: Container(
-                                              color: AppColors.defaultColor.withOpacity(0.6),
-                                              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 0.5.w),
-                                              child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: (controller.machineSelected?.reminders ?? []).length,
-                                                  itemBuilder: (context, index) {
-                                                    final reminder = (controller.machineSelected?.reminders ?? [])[index];
-                                                    return Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 0.5.w),
-                                                      child: TextWidget(
-                                                        "- " + reminder.description,
-                                                        textColor: AppColors.blackColor,
-                                                        maxLines: 3,
-                                                        textAlign: TextAlign.start,
-                                                        fontSize: 17.sp,
-                                                      ),
-                                                    );
-                                                  }),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      top: 3.5.h,
+                                      top: 2.h,
                                     ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -321,7 +246,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       ),
                                       Expanded(
                                         child: Obx(
-                                          () => CheckboxListTileWidget(
+                                              () => CheckboxListTileWidget(
                                             radioText: "Sim",
                                             size: 4.h,
                                             checked: controller.yes.value,
@@ -337,7 +262,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                       ),
                                       Expanded(
                                         child: Obx(
-                                          () => CheckboxListTileWidget(
+                                              () => CheckboxListTileWidget(
                                             radioText: "Não",
                                             size: 4.h,
                                             spaceBetween: 1.w,
@@ -428,7 +353,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                 hintText: "SALVAR",
                                 fontWeight: FontWeight.bold,
                                 widthButton: 100.w,
-                                onPressed: () => controller.saveMaintenance(),
+                                onPressed: () {}//=> controller.saveMaintenance(),
                               ),
                             ),
                           ],

@@ -103,6 +103,7 @@ class _VisitPageState extends State<VisitPage> {
                                 teddy: "0",
                                 pouchCollected: false,
                                 showPriorityAndStatus: false,
+                                visitId: visit.id ?? "",
                                 machineContainerColor: AppColors.defaultColor,
                                 childMaintenanceHeaderCardWidget: [
                                   // GestureDetector(

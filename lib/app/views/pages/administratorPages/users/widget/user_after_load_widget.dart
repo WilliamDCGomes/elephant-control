@@ -123,6 +123,7 @@ class _UserAfterLoadWidgetState extends State<UserAfterLoadWidget> {
                                     clock1: "0",
                                     clock2: "0",
                                     teddy: "0",
+                                    visitId: "",
                                     pouchCollected: false,
                                     showPriorityAndStatus: false,
                                     machineContainerColor: AppColors.defaultColor,

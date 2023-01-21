@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../sharedPages/visitDetails/page/visit_details_page.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
@@ -21,6 +22,7 @@ class MaintenanceInformationPopup {
       final int priorityColor,
       final bool pouchCollected,
       final String? responsibleName,
+      final String visitId,
       ){
     return [
       Center(
@@ -275,6 +277,15 @@ class MaintenanceInformationPopup {
             ),
           ),
         ],
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 2.h),
+        child: ButtonWidget(
+          hintText: "VER DETALHES",
+          fontWeight: FontWeight.bold,
+          widthButton: 75.w,
+          onPressed: () => Get.to(() => VisitDetailsPage(visitId: visitId,)),
+        ),
       ),
       Padding(
         padding: EdgeInsets.only(top: 2.h),
