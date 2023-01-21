@@ -74,7 +74,7 @@ enum UserType {
   @JsonValue(3)
   admin("Administrativo"),
   @JsonValue(4)
-  none("Nenhum");
+  adminPrivileges("Adm Privilégios");
 
   final String description;
   const UserType(this.description);

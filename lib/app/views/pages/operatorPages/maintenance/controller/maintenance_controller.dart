@@ -9,6 +9,7 @@ import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -115,7 +116,8 @@ class MaintenanceController extends GetxController {
       // await loadingWithSuccessOrErrorWidget.startAnimation();
       _machines.clear();
       final listTodayMachine = await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
-      _machines.addAll(listTodayMachine.map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
+      _machines.addAll(listTodayMachine
+          .map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
       if (_machines.isNotEmpty) {
         _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
         onDropdownButtonWidgetChanged(_machines.first.id);
@@ -130,7 +132,9 @@ class MaintenanceController extends GetxController {
 
   openIncident(BuildContext context) async {
     if (machineSelected == null) {
-      return await showDialog(context: context, builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
+      return await showDialog(
+          context: context,
+          builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
     }
     final incident = await Get.to(() => OccurrencePage(machine: machineSelected!, visitId: visitId));
     if (incident is IncidentObject) _incidents.add(incident);
@@ -198,7 +202,8 @@ class MaintenanceController extends GetxController {
           );
         },
       );
-      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      await Future.microtask(
+          () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
@@ -227,7 +232,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty) {
+    if (!kDebugMode && (beforeMaintenanceImageClock.picture == null || beforeMaintenanceImageClock.picture!.path.isEmpty)) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -239,7 +244,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if (imageClock.picture == null || imageClock.picture!.path.isEmpty) {
+    if (!kDebugMode && (imageClock.picture == null || imageClock.picture!.path.isEmpty)) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -299,7 +304,7 @@ class MaintenanceController extends GetxController {
       );
       return false;
     }
-    if (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty) {
+    if (!kDebugMode && (afterMaintenanceImageClock.picture == null || afterMaintenanceImageClock.picture!.path.isEmpty)) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -1,5 +1,7 @@
 import 'package:elephant_control/base/viewControllers/operator_information_viewcontroller.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../models/roles/role.dart';
+import '../../models/roles/user_role.dart';
 import '../../models/user/user.dart';
 import '../../viewControllers/authenticate_response.dart';
 import '../../viewControllers/recall_money_viewcontroller.dart';
@@ -47,5 +49,9 @@ abstract class IUserService {
 
   Future<bool> deleteProfilePicture();
   Future<List<RecallMoneyViewController>> getTreasuryUsersWithMoneyPouchLaunched();
-  Future<bool> addOrRemoveBalanceStuffedAnimalsOperator(String userOperatorId, int balanceStuffedAnimals, String observation, bool addStuffedAnimals);
+  Future<bool> addOrRemoveBalanceStuffedAnimalsOperator(
+      String userOperatorId, int balanceStuffedAnimals, String observation, bool addStuffedAnimals);
+  Future<List<Role>> getRoles();
+  Future<List<UserRole>> getUserRoles(String userId);
+  Future<bool> addOrRemoveRoleByUserId(UserRole userRole);
 }

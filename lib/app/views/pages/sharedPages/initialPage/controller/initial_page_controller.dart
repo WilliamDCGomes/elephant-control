@@ -10,6 +10,7 @@ import '../../../../../utils/logged_user.dart';
 import '../../../administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import '../../../financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
+import '../../../stockistPages/mainMenuStokist/page/main_menu_stokist_page.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../login/page/login_page_page.dart';
@@ -20,7 +21,7 @@ class InitialPageController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late IUserService _userService;
 
-  InitialPageController(){
+  InitialPageController() {
     _initializeVariables();
   }
 
@@ -31,7 +32,7 @@ class InitialPageController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     fingerPrintAuth = LocalAuthentication();
     _userService = UserService();
@@ -39,58 +40,60 @@ class InitialPageController extends GetxController {
 
   _loadFirstScreen() async {
     await Future.delayed(Duration(seconds: 2));
-    if(await sharedPreferences.getBool("keep-connected") ?? false){
-      if(await fingerPrintAuth.canCheckBiometrics && (await sharedPreferences.getBool("always_request_finger_print") ?? false)){
+    if (await sharedPreferences.getBool("keep-connected") ?? false) {
+      if (await fingerPrintAuth.canCheckBiometrics &&
+          (await sharedPreferences.getBool("always_request_finger_print") ?? false)) {
         var authenticate = await fingerPrintAuth.authenticate(
           localizedReason: "Utilize a sua digital para fazer o login.",
         );
 
         if (authenticate) {
           await loadingWithSuccessOrErrorWidget.stopAnimation(duration: 2);
-          if(!await _doLoginServerKeepConnected()){
+          if (!await _doLoginServerKeepConnected()) {
             _resetLogin("Tente fazer o login novamente");
-          }
-          else{
+          } else {
             _goToNextPage();
           }
-        }
-        else{
+        } else {
           Get.offAll(() => LoginPage());
         }
-      }
-      else{
-        if(!await _doLoginServerKeepConnected()){
+      } else {
+        if (!await _doLoginServerKeepConnected()) {
           _resetLogin("Tente fazer o login novamente");
-        }
-        else{
+        } else {
           _goToNextPage();
         }
       }
-    }
-    else{
+    } else {
       Get.offAll(() => LoginPage());
     }
   }
 
-  _goToNextPage(){
+  _goToNextPage() {
     if (LoggedUser.userType == UserType.operator) {
       Get.offAll(() => MainMenuOperatorPage());
     } else if (LoggedUser.userType == UserType.treasury) {
       Get.offAll(() => MainMenuFinancialPage());
     } else if (LoggedUser.userType == UserType.admin) {
-      Get.offAll(() => MainMenuAdministratorPage());
-    } else if (LoggedUser.userType == UserType.stockist) {}
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: false));
+    } else if (LoggedUser.userType == UserType.stockist) {
+      Get.offAll(() => MainMenuStokistPage());
+    } else if (LoggedUser.userType == UserType.adminPrivileges) {
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: true));
+    }
   }
 
   Future<bool> _doLoginServerKeepConnected() async {
-    try{
+    try {
       LoggedUser.nameAndLastName = await sharedPreferences.getString("user_name_and_last_name") ?? "";
-      LoggedUser.name = await sharedPreferences.getString("user_name",) ?? "";
+      LoggedUser.name = await sharedPreferences.getString(
+            "user_name",
+          ) ??
+          "";
       LoggedUser.userType = await UserType.values[sharedPreferences.getInt("user_type") ?? 4];
       LoggedUser.id = await sharedPreferences.getString("user_id") ?? "";
       return await _doLoginServer();
-    }
-    catch(_){
+    } catch (_) {
       return false;
     }
   }
@@ -106,10 +109,11 @@ class InitialPageController extends GetxController {
       }
 
       var userLogged = await _userService
-      .authenticate(
-        username: username,
-        password: password,
-      ).timeout(Duration(seconds: 30));
+          .authenticate(
+            username: username,
+            password: password,
+          )
+          .timeout(Duration(seconds: 30));
 
       if (userLogged?.success == false) {
         await _resetLogin("Usuário e/ou senha incorretos");

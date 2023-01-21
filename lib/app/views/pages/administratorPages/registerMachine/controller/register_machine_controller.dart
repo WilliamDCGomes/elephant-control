@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/services/machine_service.dart';
+import 'package:elephant_control/base/viewControllers/return_machine_viewcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/addressInformation/address_information.dart';
@@ -14,6 +15,8 @@ class RegisterMachineController extends GetxController {
   late bool edit;
   late RxString ufSelected;
   late RxList<String> ufsList;
+  late RxList<ReturnMachineViewController> returnMachineViewControllers;
+  ReturnMachineViewController? returnMachineViewControllerSelected;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late TextEditingController machineNameTextController;
   late TextEditingController machineTypeTextController;
@@ -28,33 +31,47 @@ class RegisterMachineController extends GetxController {
   late TextEditingController houseNumberTextController;
   late TextEditingController neighborhoodTextController;
   late TextEditingController complementTextController;
+  late TextEditingController externalCodeMachineController;
   late IConsultCepService consultCepService;
   Machine? _machine;
   late IMachineService _machineService;
+  late final List<int> _externalIds;
 
-  RegisterMachineController(this._machine, this.edit) {
+  RegisterMachineController(this._machine, this.edit, this._externalIds) {
     _initializeVariables();
   }
 
   @override
   void onInit() async {
     await _getUfsNames();
-    if (_machine != null) {
+    await getMachinesVmPay();
+    if (_machine == null) {
+    } else {
+      returnMachineViewControllerSelected =
+          returnMachineViewControllers.firstWhereOrNull((element) => element.id == _machine!.externalId!);
       await searchAddressInformation();
     }
+
     super.onInit();
   }
 
   _initializeVariables() {
     ufSelected = "".obs;
     ufsList = [""].obs;
+    returnMachineViewControllers =
+        <ReturnMachineViewController>[ReturnMachineViewController(asset_number: "Não encontrado", id: -1)].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     machineNameTextController = TextEditingController(text: _machine?.name);
     machineTypeTextController = TextEditingController();
-    minAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.minimumAverageValue.toInt().toString());
-    maxAverageTextController = TextEditingController(text: _machine == null ? null : _machine?.maximumAverageValue.toInt().toString());
-    firstClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.prize ?? 0.0).toStringAsFixed(0));
-    secondClockTextController = TextEditingController(text: _machine == null ? null : (_machine?.balanceStuffedAnimals ?? 0.0).toStringAsFixed(0));
+    externalCodeMachineController = TextEditingController(text: _machine?.externalId?.toString());
+    minAverageTextController =
+        TextEditingController(text: _machine == null ? null : _machine?.minimumAverageValue.toInt().toString());
+    maxAverageTextController =
+        TextEditingController(text: _machine == null ? null : _machine?.maximumAverageValue.toInt().toString());
+    firstClockTextController =
+        TextEditingController(text: _machine == null ? null : (_machine?.prize ?? 0.0).toStringAsFixed(0));
+    secondClockTextController =
+        TextEditingController(text: _machine == null ? null : (_machine?.balanceStuffedAnimals ?? 0.0).toStringAsFixed(0));
     periodVisitsTextController = TextEditingController(text: _machine == null ? null : _machine?.daysToNextVisit.toString());
     cepTextController = TextEditingController(text: _machine == null ? null : _machine?.cep);
     cityTextController = TextEditingController(text: _machine == null ? null : _machine?.city);
@@ -123,6 +140,33 @@ class RegisterMachineController extends GetxController {
     }
   }
 
+  getMachinesVmPay() async {
+    try {
+      returnMachineViewControllers.insertAll(1, await _machineService.getMachinesReturn(_externalIds));
+    } catch (_) {
+      returnMachineViewControllers.clear();
+    } finally {
+      returnMachineViewControllers.refresh();
+    }
+  }
+
+  onChangedUfSelected(String? selectedState) {
+    if (selectedState == null) {
+      return;
+    }
+    ufSelected.value = selectedState;
+  }
+
+  void onChangedRegisterMachineSelected(String? id) {
+    if (id == null) {
+      returnMachineViewControllerSelected = returnMachineViewControllers.firstWhere((element) => element.id == -1);
+    } else {
+      returnMachineViewControllerSelected =
+          returnMachineViewControllers.firstWhere((element) => element.id == int.parse(id));
+    }
+    update(['returnMachineViewControllerSelected']);
+  }
+
   saveNewMachine() async {
     try {
       if (!_validFields()) {
@@ -133,7 +177,8 @@ class RegisterMachineController extends GetxController {
       _machine!.name = machineNameTextController.text;
       _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
       _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
-      _machine!.balanceStuffedAnimals = firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
+      _machine!.balanceStuffedAnimals =
+          firstClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
       _machine!.selected = false;
       _machine!.localization = "";
       _machine!.longitude = "";
@@ -147,6 +192,12 @@ class RegisterMachineController extends GetxController {
       _machine!.complement = complementTextController.text;
       _machine!.minimumAverageValue = double.tryParse(minAverageTextController.text) ?? 0.0;
       _machine!.maximumAverageValue = double.tryParse(maxAverageTextController.text) ?? 0.0;
+      _machine!.externalId = returnMachineViewControllerSelected?.id == -1
+          ? externalCodeMachineController.text.isEmpty
+              ? null
+              : int.parse(externalCodeMachineController.text)
+          : returnMachineViewControllerSelected?.id;
+
       Get.back(result: _machine);
       /*if (await _machineService.createOrUpdateMachine(_machine!)) {
         await loadingWithSuccessOrErrorWidget.stopAnimation();
@@ -201,7 +252,9 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
-    if (minAverageTextController.text.isNotEmpty && maxAverageTextController.text.isNotEmpty && int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {
+    if (minAverageTextController.text.isNotEmpty &&
+        maxAverageTextController.text.isNotEmpty &&
+        int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -5,7 +5,7 @@ import '../models/visit/visit.dart';
 import '../viewControllers/money_pouch_get_viewcontroller.dart';
 import 'interfaces/imoney_pouch_service.dart';
 
-class MoneyPouchService extends BaseService implements IMoneyPouchService{
+class MoneyPouchService extends BaseService implements IMoneyPouchService {
   /// Se não enviar userId vai pegar do usuário que está logado
   Future<MoneyPouchValueViewController?> getMoneyPouchValue() async {
     try {
@@ -75,7 +75,8 @@ class MoneyPouchService extends BaseService implements IMoneyPouchService{
     try {
       final token = await getToken();
       final url = baseUrlApi + 'MoneyPouch/GetMoneyPouchMoneyWithdrawal';
-      final response = await get(url, query: {"OperatorUserId": operatorUserId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response =
+          await get(url, query: {"OperatorUserId": operatorUserId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((e) => Visit.fromJson(e)).toList();
     } catch (_) {

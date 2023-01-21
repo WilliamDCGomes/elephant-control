@@ -26,6 +26,7 @@ class Machine extends ElephantUserCore {
   late String complement;
   late double minimumAverageValue;
   late double maximumAverageValue;
+  int? externalId;
   bool? machineAddOtherList;
   List<ReminderMachine>? reminders;
   @JsonKey(ignore: true)
@@ -49,7 +50,7 @@ class Machine extends ElephantUserCore {
       City TEXT, Complement TEXT, District TEXT, Latitude TEXT,
       Localization TEXT, Longitude TEXT, Number TEXT,
       Uf TEXT, MaximumAverageValue DECIMAL, MinimumAverageValue DECIMAL,
-      LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL)""";
+      LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL, ExternalId INTEGER)""";
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 

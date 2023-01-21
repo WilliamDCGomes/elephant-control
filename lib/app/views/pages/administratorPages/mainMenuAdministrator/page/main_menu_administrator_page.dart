@@ -5,7 +5,8 @@ import '../shimmer/main_menu_administrator_shimmer.dart';
 import '../widgets/main_menu_administrator_after_load_widget.dart';
 
 class MainMenuAdministratorPage extends StatefulWidget {
-  const MainMenuAdministratorPage({Key? key}) : super(key: key);
+  final bool accessValidate;
+  const MainMenuAdministratorPage({Key? key, required this.accessValidate}) : super(key: key);
 
   @override
   State<MainMenuAdministratorPage> createState() => _MainMenuAdministratorPageState();
@@ -24,9 +25,9 @@ class _MainMenuAdministratorPageState extends State<MainMenuAdministratorPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Obx(
-        () => controller.screenLoading.value ?
-        MainMenuAdministratorShimmer() :
-        MainMenuAdministratorAfterLoadWidget(),
+        () => controller.screenLoading.value
+            ? MainMenuAdministratorShimmer()
+            : MainMenuAdministratorAfterLoadWidget(accessValidate: widget.accessValidate),
       ),
     );
   }

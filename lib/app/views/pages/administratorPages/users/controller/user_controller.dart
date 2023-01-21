@@ -24,7 +24,7 @@ class UserController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     screenLoading = true.obs;
     searchUsers = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
@@ -33,7 +33,11 @@ class UserController extends GetxController {
   }
 
   //Getters
-  List<User> get users => searchUsers.text.toLowerCase().trim().isEmpty ? _users.where((p0) => p0.active == true).toList() : _users.where((p0) => p0.name.toLowerCase().trim().contains(searchUsers.text.toLowerCase().trim()) && p0.active == true).toList();
+  List<User> get users => searchUsers.text.toLowerCase().trim().isEmpty
+      ? _users.where((p0) => p0.active == true).toList()
+      : _users
+          .where((p0) => p0.name.toLowerCase().trim().contains(searchUsers.text.toLowerCase().trim()) && p0.active == true)
+          .toList();
 
   Future<void> _getUsers() async {
     try {
@@ -76,9 +80,12 @@ class UserController extends GetxController {
       user.active = false;
       final deleted = await _userService.editUser(user);
       if (!deleted) throw Exception();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário deletado com sucesso"));
+      await showDialog(
+          context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário deletado com sucesso"));
     } catch (_) {
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar o usuário"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar o usuário"));
     } finally {
       await _getUsers();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -90,9 +97,13 @@ class UserController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final reseted = await _userService.forgetPassword("Elephant@${DateTime.now().year}", user.document!);
       if (!reseted) throw Exception();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "A senha de ${user.name} foi resetada com sucesso para\nElephant@${DateTime.now().year}"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) => InformationPopup(
+              warningMessage: "A senha de ${user.name} foi resetada com sucesso para\nElephant@${DateTime.now().year}"));
     } catch (_) {
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível resetar a senha"));
+      await showDialog(
+          context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível resetar a senha"));
     } finally {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
@@ -101,7 +112,6 @@ class UserController extends GetxController {
   Future<void> editUser(User? user) async {
     final _user = await Get.to(() => RegisterUsersPage(
           user: user,
-          edit: user != null,
         ));
     if (_user is! User) return;
     try {
@@ -110,10 +120,16 @@ class UserController extends GetxController {
       if (!editted) throw Exception();
       await _getUsers();
       await loadingWithSuccessOrErrorWidget.stopAnimation();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário ${user != null ? "editado" : "criado"} com sucesso"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) =>
+              InformationPopup(warningMessage: "Usuário ${user != null ? "editado" : "criado"} com sucesso"));
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível  ${user != null ? "editar" : "criar"} o usuário"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) =>
+              InformationPopup(warningMessage: "Não foi possível  ${user != null ? "editar" : "criar"} o usuário"));
     }
   }
 }

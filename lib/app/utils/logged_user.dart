@@ -1,8 +1,10 @@
+import 'package:elephant_control/base/models/roles/user_role.dart';
+
 import '../../base/models/user/user.dart';
 
 class LoggedUser {
   static String id = "";
-  static UserType userType = UserType.none;
+  static UserType? userType;
   static String userTypeName = "";
   static String name = "";
   static String nameInitials = "";
@@ -27,4 +29,6 @@ class LoggedUser {
   static DateTime? pouchLastUpdate;
   static int? balanceStuffedAnimals;
   static DateTime? stuffedAnimalsLastUpdate;
+  static List<UserRole> roles = [];
+  static List<String> get nameRoles => roles.where((element) => element.name != null).map((e) => e.name!).toList();
 }

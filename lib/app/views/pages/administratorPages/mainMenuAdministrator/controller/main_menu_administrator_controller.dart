@@ -43,7 +43,7 @@ class MainMenuAdministratorController extends GetxController {
   late IVisitService _visitService;
   late IMoneyPouchService _moneyPouchService;
 
-  MainMenuAdministratorController(){
+  MainMenuAdministratorController() {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
@@ -68,7 +68,7 @@ class MainMenuAdministratorController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     activeStep = 0;
     visitsQuantity = 0;
     pouchQuantityWithOperators = 0;
@@ -126,8 +126,7 @@ class MainMenuAdministratorController extends GetxController {
         firstText: "Total Visitas no dia: ",
         secondText: visitsQuantity.toString(),
         thirdText: "Última Máquina Visitada: ",
-        fourthText: operatorVisitList.isNotEmpty ?
-        operatorVisitList.last.machineName : "Sem Registro",
+        fourthText: operatorVisitList.isNotEmpty ? operatorVisitList.last.machineName : "Sem Registro",
         imagePath: Paths.Manutencao,
       ),
       CardMainMenuAdministratorWidget(
@@ -153,7 +152,7 @@ class MainMenuAdministratorController extends GetxController {
   }
 
   _getVisitsUser() async {
-    try{
+    try {
       visitsQuantity = 0;
 
       operatorVisitList = await _visitService.getVisitsOfOperatorsByUserId(
@@ -164,14 +163,13 @@ class MainMenuAdministratorController extends GetxController {
       operatorVisitList.sort((a, b) => a.vInclusion.compareTo(b.vInclusion));
 
       visitsQuantity = operatorVisitList.length;
-    }
-    catch(_){
+    } catch (_) {
       visitsQuantity = 0;
     }
   }
 
   _getPouchUser() async {
-    try{
+    try {
       fullValuePouchOperators = 0.0;
       fullValuePouchFinancial = 0.0;
       pouchQuantityWithOperators = 0;
@@ -180,14 +178,13 @@ class MainMenuAdministratorController extends GetxController {
       var moneyPouchOperator = await _moneyPouchService.getAllPouchInformation(UserType.operator);
       var moneyPouchFinancial = await _moneyPouchService.getAllPouchInformation(UserType.treasury);
 
-      if(moneyPouchOperator != null && moneyPouchFinancial != null){
+      if (moneyPouchOperator != null && moneyPouchFinancial != null) {
         fullValuePouchOperators = moneyPouchOperator.fullValue;
         pouchQuantityWithOperators = moneyPouchOperator.moneyPouchValueList.length;
         fullValuePouchFinancial = moneyPouchFinancial.fullValue;
         pouchQuantityWithFinancial = moneyPouchFinancial.moneyPouchValueList.length;
       }
-    }
-    catch(_){
+    } catch (_) {
       fullValuePouchOperators = 0.0;
       fullValuePouchFinancial = 0.0;
       pouchQuantityWithOperators = 0;
@@ -196,7 +193,7 @@ class MainMenuAdministratorController extends GetxController {
   }
 
   _getSafeBoxValue() async {
-    try{
+    try {
       allSafeBoxAmount = 0.0;
 
       List<SafeBoxFinancialViewController> safeBoxHistoryList = await _visitService.getVisitsOfFinancialByUserId(
@@ -206,19 +203,15 @@ class MainMenuAdministratorController extends GetxController {
       safeBoxHistoryList.forEach((element) {
         allSafeBoxAmount += element.moneyWithDrawalQuantity ?? 0;
       });
-    }
-    catch(_){
+    } catch (_) {
       allSafeBoxAmount = 0.0;
     }
   }
 
-  _getNameUser(){
-    switch(LoggedUser.userType){
+  _getNameUser() {
+    switch (LoggedUser.userType) {
       case UserType.admin:
         LoggedUser.userTypeName = "ADMINISTRATIVO";
-        break;
-      case UserType.operator:
-        LoggedUser.userTypeName = "OPERADOR";
         break;
       case UserType.treasury:
         LoggedUser.userTypeName = "TESOURARIA";
@@ -226,16 +219,18 @@ class MainMenuAdministratorController extends GetxController {
       case UserType.stockist:
         LoggedUser.userTypeName = "ESTOQUISTA";
         break;
-      case UserType.none:
+      case UserType.operator:
+      default:
+        LoggedUser.userTypeName = "OPERADOR";
         break;
     }
     var names = LoggedUser.name.trim().split(" ");
 
-    if(names.isNotEmpty && names.first != ""){
+    if (names.isNotEmpty && names.first != "") {
       nameProfile.value = names[0];
       LoggedUser.nameAndLastName = names[0];
       nameInitials.value = nameProfile.value[0];
-      if(names.length > 1 && names.last != ""){
+      if (names.length > 1 && names.last != "") {
         nameInitials.value += names.last[0];
         LoggedUser.nameAndLastName += " ${names.last}";
       }
@@ -245,9 +240,9 @@ class MainMenuAdministratorController extends GetxController {
 
   _getWelcomePhrase() {
     int currentHour = DateTime.now().hour;
-    if(currentHour >= 0 && currentHour < 12)
+    if (currentHour >= 0 && currentHour < 12)
       welcomePhrase = "Bom dia!".obs;
-    else if(currentHour >= 12 && currentHour < 18)
+    else if (currentHour >= 12 && currentHour < 18)
       welcomePhrase = "Boa tarde!".obs;
     else
       welcomePhrase = "Boa noite!".obs;
@@ -255,7 +250,7 @@ class MainMenuAdministratorController extends GetxController {
 
   _checkFingerPrintUser() async {
     bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
-    if(useFingerPrint == null && await LocalAuthentication().canCheckBiometrics){
+    if (useFingerPrint == null && await LocalAuthentication().canCheckBiometrics) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

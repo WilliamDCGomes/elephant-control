@@ -24,6 +24,11 @@ class Visit extends ElephantUserCore {
   MoneyPouch? moneyPouch;
   Machine? machine;
   String? responsibleUserId;
+  DateTime? lastVisitMachineCurrentDay;
+  @JsonKey(toJson: toJsonNull)
+  double? debit;
+  @JsonKey(toJson: toJsonNull)
+  double? credit;
   @JsonKey(ignore: true)
   bool checked = false;
 
@@ -44,6 +49,8 @@ class Visit extends ElephantUserCore {
     required this.machine,
     required this.responsibleUserId,
     required this.stuffedAnimalsReplaceQuantity,
+    required this.moneyPouchId,
+    required this.lastVisitMachineCurrentDay,
   });
 
   Visit.emptyConstructor() {
@@ -60,7 +67,7 @@ class Visit extends ElephantUserCore {
       Longitude TEXT, Status INTEGER, ResponsibleUserId TEXT, MachineId TEXT,
       Inclusion TEXT, IncludeUserId TEXT, MoneyWithdrawalQuantity DECIMAL,
       MoneyPouchId TEXT, Code INTEGER, StuffedAnimalsReplaceQuantity INTEGER,
-      Observation TEXT)""";
+      Observation TEXT, MoneyWithDrawal INTEGER, LastVisitMachineCurrentDay TEXT)""";
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 
