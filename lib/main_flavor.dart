@@ -4,6 +4,7 @@ import 'package:elephant_control/app/utils/position_util.dart';
 import 'package:elephant_control/base/services/user_location_service.dart';
 import 'package:elephant_control/base/viewControllers/user_location_view_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'app.dart';
 import 'app/enums/enums.dart';
@@ -11,7 +12,6 @@ import 'app/views/stylePages/app_colors.dart';
 import 'base/context/elephant_context.dart';
 import 'base/models/user/user.dart';
 import 'flavors.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:collection/collection.dart';
 
 buildFlavor(Flavor flavor) async {
