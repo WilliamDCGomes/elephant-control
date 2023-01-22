@@ -1,3 +1,5 @@
+import 'package:elephant_control/base/models/roles/role.dart';
+import 'package:elephant_control/base/models/roles/user_role.dart';
 import 'package:elephant_control/base/viewControllers/operator_information_viewcontroller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -282,6 +284,44 @@ class UserService extends BaseService implements IUserService {
       return response.body;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<bool> addOrRemoveRoleByUserId(UserRole userRole) async {
+    try {
+      final url = baseUrlApi + 'User/AddOrRemoveRoleByUserId';
+      final response = await super.post(url, null, query: {"UserId": userRole.userId, "RoleId": userRole.roleId});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<List<Role>> getRoles() async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetRoles';
+      final response = await super.get(url, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<Role>((e) => Role.fromJson(e)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<UserRole>> getUserRoles(String userId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetUserRoles';
+      final response = await super.get(url, query: {"UserId": userId}, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return response.body.map<UserRole>((e) => UserRole.fromJson(e)).toList();
+    } catch (_) {
+      return [];
     }
   }
 }

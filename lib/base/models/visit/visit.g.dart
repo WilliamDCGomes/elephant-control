@@ -27,6 +27,10 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       responsibleUserId: json['responsibleUserId'] as String?,
       stuffedAnimalsReplaceQuantity:
           json['stuffedAnimalsReplaceQuantity'] as int,
+      moneyPouchId: json['moneyPouchId'] as String?,
+      lastVisitMachineCurrentDay: json['lastVisitMachineCurrentDay'] == null
+          ? null
+          : DateTime.parse(json['lastVisitMachineCurrentDay'] as String),
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -37,7 +41,8 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?
-      ..moneyPouchId = json['moneyPouchId'] as String?;
+      ..debit = (json['debit'] as num?)?.toDouble()
+      ..credit = (json['credit'] as num?)?.toDouble();
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'id': instance.id,
@@ -60,6 +65,10 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'moneyPouch': instance.moneyPouch,
       'machine': instance.machine,
       'responsibleUserId': instance.responsibleUserId,
+      'lastVisitMachineCurrentDay':
+          instance.lastVisitMachineCurrentDay?.toIso8601String(),
+      'debit': Visit.toJsonNull(instance.debit),
+      'credit': Visit.toJsonNull(instance.credit),
     };
 
 const _$VisitStatusEnumMap = {

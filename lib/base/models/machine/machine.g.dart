@@ -44,6 +44,7 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       ..complement = json['complement'] as String
       ..minimumAverageValue = (json['minimumAverageValue'] as num).toDouble()
       ..maximumAverageValue = (json['maximumAverageValue'] as num).toDouble()
+      ..externalId = json['externalId'] as int?
       ..machineAddOtherList = json['machineAddOtherList'] as bool?;
 
 Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
@@ -72,6 +73,7 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'complement': instance.complement,
       'minimumAverageValue': instance.minimumAverageValue,
       'maximumAverageValue': instance.maximumAverageValue,
+      'externalId': instance.externalId,
       'machineAddOtherList': instance.machineAddOtherList,
       'reminders': instance.reminders,
     };

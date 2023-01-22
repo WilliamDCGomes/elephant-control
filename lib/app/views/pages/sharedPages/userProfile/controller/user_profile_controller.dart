@@ -1,5 +1,6 @@
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/views/pages/stockistPages/mainMenuStokist/page/main_menu_stokist_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/images_picture_widget.dart';
 import 'package:elephant_control/base/services/consult_cep_service.dart';
 import 'package:elephant_control/base/services/user_service.dart';
@@ -100,7 +101,8 @@ class UserProfileController extends GetxController {
   late IConsultCepService _consultCepService;
   late IUserService _userService;
 
-  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController, this.mainMenuAdministratorController, this.mainMenuStokistController) {
+  UserProfileController(this.mainMenuOperatorController, this.mainMenuFinancialController,
+      this.mainMenuAdministratorController, this.mainMenuStokistController) {
     _initializeVariables();
     _initializeLists();
   }
@@ -172,8 +174,8 @@ class UserProfileController extends GetxController {
           : mainMenuFinancialController != null
               ? mainMenuFinancialController!.loadingPicture
               : mainMenuAdministratorController != null
-      ? mainMenuAdministratorController!.loadingPicture
-      : mainMenuStokistController!.loadingPicture,
+                  ? mainMenuAdministratorController!.loadingPicture
+                  : mainMenuStokistController!.loadingPicture,
     );
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _user = User.emptyConstructor();
@@ -215,7 +217,9 @@ class UserProfileController extends GetxController {
     emailTextController.text = await sharedPreferences.getString("email") ?? "";
     confirmEmailTextController.text = await sharedPreferences.getString("email") ?? "";
     ufSelected.value = await sharedPreferences.getString("uf") ?? "";
-    controllerCode.text = int.tryParse(await sharedPreferences.getString("code").toString()) == null ? "Não Informado" : await sharedPreferences.getString("code").toString();
+    controllerCode.text = int.tryParse(await sharedPreferences.getString("code").toString()) == null
+        ? "Não Informado"
+        : await sharedPreferences.getString("code").toString();
   }
 
   _saveInformations() async {
@@ -377,14 +381,18 @@ class UserProfileController extends GetxController {
     }
   }
 
-  _goToNextPage(){
+  _goToNextPage() {
     if (LoggedUser.userType == UserType.operator) {
       Get.offAll(() => MainMenuOperatorPage());
     } else if (LoggedUser.userType == UserType.treasury) {
       Get.offAll(() => MainMenuFinancialPage());
     } else if (LoggedUser.userType == UserType.admin) {
-      Get.offAll(() => MainMenuAdministratorPage());
-    } else if (LoggedUser.userType == UserType.stockist) {}
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: false));
+    } else if (LoggedUser.userType == UserType.stockist) {
+      Get.offAll(() => MainMenuStokistPage());
+    } else if (LoggedUser.userType == UserType.adminPrivileges) {
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: true));
+    }
   }
 
   bool _validProfile() {
@@ -437,7 +445,8 @@ class UserProfileController extends GetxController {
         streetInputHasError.value = false;
       }
 
-      String? neighborhoodValidation = TextFieldValidators.standardValidation(neighborhoodTextController.text, "Informe o Bairro");
+      String? neighborhoodValidation =
+          TextFieldValidators.standardValidation(neighborhoodTextController.text, "Informe o Bairro");
       if (neighborhoodValidation != null && neighborhoodValidation != "") {
         neighborhoodInputHasError.value = true;
         tabController.index = 1;
@@ -505,10 +514,9 @@ class UserProfileController extends GetxController {
         mainMenuOperatorController!.loadingPicture.value = true;
       } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = true;
-      } else if(mainMenuAdministratorController != null){
+      } else if (mainMenuAdministratorController != null) {
         mainMenuAdministratorController!.loadingPicture.value = true;
-      }
-      else{
+      } else {
         mainMenuStokistController!.loadingPicture.value = true;
       }
 
@@ -545,10 +553,9 @@ class UserProfileController extends GetxController {
         mainMenuOperatorController!.loadingPicture.value = false;
       } else if (mainMenuFinancialController != null) {
         mainMenuFinancialController!.loadingPicture.value = false;
-      } else if(mainMenuAdministratorController != null){
+      } else if (mainMenuAdministratorController != null) {
         mainMenuAdministratorController!.loadingPicture.value = false;
-      }
-      else{
+      } else {
         mainMenuStokistController!.loadingPicture.value = false;
       }
     }
@@ -568,14 +575,13 @@ class UserProfileController extends GetxController {
           "profile_picture",
           profilePicture!.path,
         );
-      } else if(mainMenuAdministratorController != null){
+      } else if (mainMenuAdministratorController != null) {
         mainMenuAdministratorController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuAdministratorController!.sharedPreferences.setString(
           "profile_picture",
           profilePicture!.path,
         );
-      }
-      else{
+      } else {
         mainMenuStokistController!.profileImagePath.value = profilePicture!.path;
         return await mainMenuStokistController!.sharedPreferences.setString(
           "profile_picture",
@@ -634,12 +640,11 @@ class UserProfileController extends GetxController {
         imageChanged = await mainMenuFinancialController!.sharedPreferences.remove(
           "profile_picture",
         );
-      } else if(mainMenuAdministratorController != null){
+      } else if (mainMenuAdministratorController != null) {
         imageChanged = await mainMenuAdministratorController!.sharedPreferences.remove(
           "profile_picture",
         );
-      }
-      else{
+      } else {
         imageChanged = await mainMenuStokistController!.sharedPreferences.remove(
           "profile_picture",
         );
@@ -670,15 +675,14 @@ class UserProfileController extends GetxController {
           mainMenuFinancialController!.profileImagePath,
           mainMenuFinancialController!.sharedPreferences,
         );
-      } else if(mainMenuAdministratorController != null){
+      } else if (mainMenuAdministratorController != null) {
         await GetProfilePictureController.loadProfilePicture(
           mainMenuAdministratorController!.loadingPicture,
           mainMenuAdministratorController!.hasPicture,
           mainMenuAdministratorController!.profileImagePath,
           mainMenuAdministratorController!.sharedPreferences,
         );
-      }
-      else{
+      } else {
         await GetProfilePictureController.loadProfilePicture(
           mainMenuStokistController!.loadingPicture,
           mainMenuStokistController!.hasPicture,

@@ -1,8 +1,13 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/views/pages/administratorPages/registerUsers/popups/role_user_popup.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/snackbar_widget.dart';
+import 'package:elephant_control/app/views/stylePages/app_colors.dart';
+import 'package:elephant_control/base/models/roles/user_role.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/addressInformation/address_information.dart';
+import '../../../../../../base/models/roles/role.dart';
 import '../../../../../../base/services/consult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iconsult_cep_service.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
@@ -58,7 +63,8 @@ class RegisterUsersController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     userNameTextController = TextEditingController(text: _user?.name);
     documentTextController = TextEditingController(text: _user?.document);
-    birthDayTextController = TextEditingController(text: _user?.birthdayDate != null ? DateFormatToBrazil.formatDate(_user!.birthdayDate!) : "");
+    birthDayTextController =
+        TextEditingController(text: _user?.birthdayDate != null ? DateFormatToBrazil.formatDate(_user!.birthdayDate!) : "");
     emailTextController = TextEditingController(text: _user?.email);
     phoneTextController = TextEditingController(text: _user?.tellphone);
     cellPhoneTextController = TextEditingController(text: _user?.cellphone);
@@ -77,6 +83,7 @@ class RegisterUsersController extends GetxController {
   _initializeList() {
     userTypeList.addAll([
       "Administrativo",
+      "Adm Privilégios",
       "Estoquista",
       "Operador",
       "Tesouraria",
@@ -141,6 +148,43 @@ class RegisterUsersController extends GetxController {
     }
   }
 
+  addRoles() async {
+    try {
+      loadingWithSuccessOrErrorWidget.startAnimation();
+      final roles = await UserService().getRoles();
+      final userRoles = await UserService().getUserRoles(_user!.id!);
+      for (var element in roles) {
+        element.checked = userRoles.any((element2) => element2.roleId == element.id);
+      }
+      bool success = await showDialog(
+          barrierDismissible: false, context: Get.context!, builder: (context) => RoleUserPopup(roles: roles));
+      if (!success) return;
+      final notSelectds =
+          roles.where((element) => !element.checked && userRoles.any((element2) => element2.roleId == element.id)).toList();
+      final selectds =
+          roles.where((element) => element.checked && !notSelectds.any((element2) => element2.id == element.id)).toList();
+
+      for (var element in [...notSelectds, ...selectds]) {
+        success = await UserService().addOrRemoveRoleByUserId(UserRole(userId: _user!.id!, roleId: element.id));
+        if (!success) {
+          SnackbarWidget(
+              warningText: "Aviso",
+              informationText: "Acesso ${element.name} não incluído",
+              backgrondColor: AppColors.defaultColor);
+        }
+      }
+      if (success) {
+        SnackbarWidget(
+            warningText: "Aviso",
+            informationText: "Acessos atualizados com sucesso",
+            backgrondColor: AppColors.defaultColor);
+      }
+    } catch (_) {
+    } finally {
+      loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    }
+  }
+
   saveNewUser() async {
     try {
       if (_validFields()) {
@@ -150,20 +194,21 @@ class RegisterUsersController extends GetxController {
         late TypeGender typeGender;
 
         switch (userTypeSelected.value) {
+          case "Adm Privilégios":
+            userType = UserType.adminPrivileges;
+            break;
           case "Administrativo":
             userType = UserType.admin;
             break;
           case "Estoquista":
             userType = UserType.stockist;
             break;
-          case "Operador":
-            userType = UserType.operator;
-            break;
           case "Tesouraria":
             userType = UserType.treasury;
             break;
+          case "Operador":
           default:
-            userType = UserType.none;
+            userType = UserType.operator;
             break;
         }
 

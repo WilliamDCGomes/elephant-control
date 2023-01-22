@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/money_pouch_viewcontroller.dart';
 import 'package:flutter/material.dart';
@@ -53,12 +54,11 @@ class RegisterPouchController extends GetxController {
   }
 
   Future<void> _getMoneyPouchReceived() async {
-    try{
+    try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       pouchs.addAll(await MoneyPouchService().getMoneyPouchReceived());
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       showDialog(
         context: Get.context!,
@@ -77,23 +77,23 @@ class RegisterPouchController extends GetxController {
     pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
     if (pouchSelected != null) {
       estimateValue.value = pouchSelected!.moneyQuantity;
-      lastVisit.value = DateFormatToBrazil.formatDateAndHour(
-        pouchSelected?.machine?.lastVisit
-      );
-
-      inclusionVisit.value = DateFormatToBrazil.formatDateAndHour(
-        pouchSelected?.inclusion
-      );
+      lastVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.machine?.lastVisit);
+      inclusionVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.inclusion);
+      debtCardValue.text = pouchSelected?.debit == null ? "" : FormatNumbers.numbersToMoney(pouchSelected!.debit);
+      credCardValue.text = pouchSelected?.credit == null ? "" : FormatNumbers.numbersToMoney(pouchSelected!.credit);
     }
+    calculeNewValue();
   }
 
   calculeNewValue() {
     fullValue.value = 0;
     if (credCardValue.text.isNotEmpty) {
-      fullValue.value += double.parse(credCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
+      fullValue.value += FormatNumbers.stringToNumber(credCardValue.text);
+      // double.parse(credCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
     if (debtCardValue.text.isNotEmpty) {
-      fullValue.value += double.parse(debtCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
+      fullValue.value += FormatNumbers.stringToNumber(debtCardValue
+          .text); //double.parse(debtCardValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
     }
     if (pixValue.text.isNotEmpty) {
       fullValue.value += double.parse(pixValue.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', ''));
@@ -116,12 +116,18 @@ class RegisterPouchController extends GetxController {
   Future<void> save() async {
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      final moneyPouchViewController = MoneyPouchViewController(pouchValue: fullValue.value, differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value, cardValue: 0, observation: observations.text, visitId: pouchSelected!.id!);
+      final moneyPouchViewController = MoneyPouchViewController(
+          pouchValue: fullValue.value,
+          differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value,
+          cardValue: 0,
+          observation: observations.text,
+          visitId: pouchSelected!.id!);
       moneyPouchViewController.valueMatch = false;
       final result = await VisitService().changeStatusMoneyPouchReceivedToMoneyPouchLaunched(moneyPouchViewController);
       if (result) {
         await loadingWithSuccessOrErrorWidget.stopAnimation();
-        Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
+        Future.microtask(() async =>
+            await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
         Get.back();
         showDialog(
           context: Get.context!,

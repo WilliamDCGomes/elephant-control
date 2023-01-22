@@ -37,5 +37,5 @@ const _$UserTypeEnumMap = {
   UserType.treasury: 1,
   UserType.stockist: 2,
   UserType.admin: 3,
-  UserType.none: 4,
+  UserType.adminPrivileges: 4,
 };

@@ -65,16 +65,15 @@ class MainMenuFinancialController extends GetxController {
       case UserType.admin:
         LoggedUser.userTypeName = "ADMINISTRATIVO";
         break;
-      case UserType.operator:
-        LoggedUser.userTypeName = "OPERADOR";
-        break;
       case UserType.treasury:
         LoggedUser.userTypeName = "TESOURARIA";
         break;
       case UserType.stockist:
         LoggedUser.userTypeName = "ESTOQUISTA";
         break;
-      case UserType.none:
+      case UserType.operator:
+      default:
+        LoggedUser.userTypeName = "OPERADOR";
         break;
     }
     var names = LoggedUser.name.trim().split(" ");

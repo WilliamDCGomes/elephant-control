@@ -25,15 +25,15 @@ class _MainMenuStokistPageState extends State<MainMenuStokistPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Obx(
-        () => controller.screenLoading.value ?
-        DefaultMenuShimmer(
-          pageTitle: "CENTRAL ESTOQUISTA",
-          firstCardIconPath: Paths.Money,
-          firstCardText: "Quantidade no Cofre: ",
-          secondCardIconPath: Paths.Malote,
-          secondCardText: "Quantidade de Malotes: ",
-        ) :
-        MainMenuStokistAfterLoadWidget(),
+        () => controller.screenLoading.value
+            ? DefaultMenuShimmer(
+                pageTitle: "CENTRAL ESTOQUISTA",
+                firstCardIconPath: Paths.Money,
+                firstCardText: "Quantidade no Cofre: ",
+                secondCardIconPath: Paths.Malote,
+                secondCardText: "Quantidade de Malotes: ",
+              )
+            : MainMenuStokistAfterLoadWidget(),
       ),
     );
   }

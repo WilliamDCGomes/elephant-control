@@ -14,17 +14,17 @@ class DropdownButtonRxListWidget extends StatelessWidget {
   final RxList<String>? rxListItems;
   final Function(String?)? onChanged;
 
-  const DropdownButtonRxListWidget(
-      { Key? key,
-        this.listItems,
-        this.rxListItems,
-        this.hintText,
-        this.height,
-        this.width,
-        this.justRead,
-        this.itemSelected,
-        required this.onChanged,
-      }) : super(key: key);
+  const DropdownButtonRxListWidget({
+    Key? key,
+    this.listItems,
+    this.rxListItems,
+    this.hintText,
+    this.height,
+    this.width,
+    this.justRead,
+    this.itemSelected,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class DropdownButtonRxListWidget extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(1.h),
           child: DropdownButtonHideUnderline(
-            child:DropdownButton(
+            child: DropdownButton(
               elevation: 8,
               dropdownColor: AppColors.whiteColor,
               value: itemSelected,

@@ -52,7 +52,9 @@ class VisitService extends BaseService implements IVisitService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetVisitsOfOperatorsByUserId';
-      final response = await get(url, query: {"UserId": userId, "filterDate": filterDate != null ? filterDate.toString() : ""}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url,
+          query: {"UserId": userId, "filterDate": filterDate != null ? filterDate.toString() : ""},
+          headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();
     } catch (_) {
@@ -108,7 +110,8 @@ class VisitService extends BaseService implements IVisitService {
     }
   }
 
-  Future<bool> changeStatusMoneyWithdrawalToMoneyPouchReceived(AddMoneyPouchViewController addMoneyPouchViewController) async {
+  Future<bool> changeStatusMoneyWithdrawalToMoneyPouchReceived(
+      AddMoneyPouchViewController addMoneyPouchViewController) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/ChangeStatusMoneyWithdrawalToMoneyPouchReceived';
@@ -184,7 +187,8 @@ class VisitService extends BaseService implements IVisitService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/RecallMoneyVisitsByUserId';
-      final response = await post(url, null, query: {"TreasuryUserId": treasuryUserId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response =
+          await post(url, null, query: {"TreasuryUserId": treasuryUserId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
     } catch (_) {

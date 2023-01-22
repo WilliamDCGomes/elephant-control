@@ -50,7 +50,7 @@ class LoginPageController extends GetxController {
     appVersion.value = (await PackageInfo.fromPlatform()).version;
     userInputController.text = FormatNumbers.stringToCpf(await sharedPreferences.getString("user_logged") ?? "");
     if (kDebugMode) {
-      passwordInputController.text = "Elephant@2022";
+      passwordInputController.text = "Elephant@2023";
     }
     await _getKeepConnected();
     if (!_cancelFingerPrint) {
@@ -100,7 +100,7 @@ class LoginPageController extends GetxController {
             LoggedUser.userType = userLogged!.userType!;
             await _saveOptions();
 
-            await loadingWidget.stopAnimation();
+            if (LoggedUser.userType != UserType.adminPrivileges) await loadingWidget.stopAnimation();
             _goToNextPage();
           }
         }
@@ -235,6 +235,7 @@ class LoginPageController extends GetxController {
       LoggedUser.pouchLastUpdate = _user!.pouchLastUpdate;
       LoggedUser.balanceStuffedAnimals = _user!.balanceStuffedAnimals;
       LoggedUser.stuffedAnimalsLastUpdate = _user!.stuffedAnimalsLastUpdate;
+      LoggedUser.roles = [];
     }
 
     if (userLogged != null) {
@@ -246,7 +247,7 @@ class LoginPageController extends GetxController {
 
       await sharedPreferences.setString("user_name_and_last_name", userLogged!.name!);
       await sharedPreferences.setString("user_name", userLogged!.name!.split(' ').first);
-      await sharedPreferences.setInt("user_type", LoggedUser.userType.index);
+      await sharedPreferences.setInt("user_type", LoggedUser.userType?.index ?? 0);
       await sharedPreferences.setString("user_id", userLogged!.id!);
     }
   }
@@ -268,11 +269,13 @@ class LoginPageController extends GetxController {
 
       userLogged = await _userService
           .authenticate(
-            username: fromBiometric ? username : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
+            username: fromBiometric
+                ? username
+                : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
             password: fromBiometric ? password : passwordInputController.text.trim(),
           )
           .timeout(Duration(seconds: 30));
-      if(!fromBiometric) {
+      if (!fromBiometric) {
         await sharedPreferences.setString("password", passwordInputController.text);
       }
       if (userLogged?.success == false) {
@@ -298,15 +301,18 @@ class LoginPageController extends GetxController {
     }
   }
 
-  _goToNextPage() {
+  _goToNextPage() async {
     if (userLogged!.userType == UserType.operator) {
       Get.offAll(() => MainMenuOperatorPage());
     } else if (userLogged!.userType == UserType.treasury) {
       Get.offAll(() => MainMenuFinancialPage());
     } else if (userLogged!.userType == UserType.admin) {
-      Get.offAll(() => MainMenuAdministratorPage());
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: false));
     } else if (userLogged!.userType == UserType.stockist) {
       Get.offAll(() => MainMenuStokistPage());
+    } else if (userLogged!.userType == UserType.adminPrivileges) {
+      LoggedUser.roles.addAll(await _userService.getUserRoles(LoggedUser.id));
+      Get.offAll(() => MainMenuAdministratorPage(accessValidate: true));
     }
   }
 

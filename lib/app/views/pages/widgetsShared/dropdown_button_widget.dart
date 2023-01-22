@@ -11,6 +11,7 @@ class DropdownButtonWidget extends StatelessWidget {
   final bool? justRead;
   final Iterable<DropdownItem> listItems;
   final Function(String?)? onChanged;
+  final int? maxLines;
 
   const DropdownButtonWidget({
     Key? key,
@@ -21,6 +22,7 @@ class DropdownButtonWidget extends StatelessWidget {
     this.justRead,
     this.itemSelected,
     required this.onChanged,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -64,21 +66,14 @@ class DropdownButtonWidget extends StatelessWidget {
                   value: e.value,
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
-                    width: (width ?? 200) - 6.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: TextWidget(
-                            e.item,
-                            fontSize: 16.sp,
-                            textAlign: TextAlign.start,
-                            textColor: AppColors.defaultColor,
-                            textOverflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
+                    // width: (width ?? 200) - 6.h,
+                    child: TextWidget(
+                      e.item,
+                      fontSize: 16.sp,
+                      textAlign: TextAlign.start,
+                      textColor: AppColors.defaultColor,
+                      textOverflow: TextOverflow.ellipsis,
+                      maxLines: maxLines ?? 1,
                     ),
                   ),
                 );

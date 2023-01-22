@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/views/pages/widgetsShared/dropdown_button_widget.dart';
 import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,11 +20,13 @@ import '../controller/register_machine_controller.dart';
 class RegisterMachinePage extends StatefulWidget {
   final Machine? machine;
   final bool edit;
+  final List<int> externalIds;
 
   const RegisterMachinePage({
     Key? key,
     this.machine,
     this.edit = false,
+    required this.externalIds,
   }) : super(key: key);
 
   @override
@@ -35,7 +38,7 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
 
   @override
   void initState() {
-    controller = Get.put(RegisterMachineController(widget.machine, widget.edit));
+    controller = Get.put(RegisterMachineController(widget.machine, widget.edit, widget.externalIds));
     super.initState();
   }
 
@@ -215,6 +218,46 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
+                                        right: 2.w,
+                                        // bottom: PlatformType.isTablet(context) ? 1.7.h : 2.6.h,
+                                      ),
+                                      child: GetBuilder<RegisterMachineController>(
+                                          id: 'returnMachineViewControllerSelected',
+                                          init: controller,
+                                          builder: (_) {
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                                              children: [
+                                                DropdownButtonWidget(
+                                                    hintText: "Selecione a máquina na VM Pay",
+                                                    maxLines: 3,
+                                                    height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                                    width: 23.w,
+                                                    itemSelected:
+                                                        controller.returnMachineViewControllerSelected?.id?.toString(),
+                                                    listItems: controller.returnMachineViewControllers.map((element) =>
+                                                        DropdownItem(
+                                                            item: element.asset_number, value: element.id.toString())),
+                                                    onChanged: (selectedState) =>
+                                                        controller.onChangedRegisterMachineSelected(selectedState)),
+                                                SizedBox(height: PlatformType.isTablet(context) ? 1.7.h : 2.6.h),
+                                                Visibility(
+                                                  visible: controller.returnMachineViewControllerSelected?.id == -1,
+                                                  child: TextFieldWidget(
+                                                    controller: controller.externalCodeMachineController,
+                                                    hintText: "Código Externo Manual",
+                                                    height: 9.h,
+                                                    maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                                    keyboardType: TextInputType.number,
+                                                    textInputAction: TextInputAction.next,
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
                                         top: 1.h,
                                       ),
                                       child: Align(
@@ -265,12 +308,14 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                                   bottom: PlatformType.isTablet(context) ? 1.7.h : 2.6.h,
                                                 ),
                                                 child: DropdownButtonRxListWidget(
-                                                  itemSelected: controller.ufSelected.value == "" ? null : controller.ufSelected.value,
+                                                  itemSelected:
+                                                      controller.ufSelected.value == "" ? null : controller.ufSelected.value,
                                                   hintText: "Uf",
                                                   height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                                                   width: 23.w,
                                                   rxListItems: controller.ufsList,
-                                                  onChanged: (selectedState) {},
+                                                  onChanged: (selectedState) =>
+                                                      controller.onChangedUfSelected(selectedState),
                                                 ),
                                               ),
                                               Expanded(

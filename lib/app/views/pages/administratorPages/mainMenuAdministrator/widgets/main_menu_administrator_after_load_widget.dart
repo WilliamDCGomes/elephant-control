@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:im_stepper/stepper.dart';
@@ -21,7 +22,8 @@ import '../controller/main_menu_administrator_controller.dart';
 import '../widgets/menu_options_widget.dart';
 
 class MainMenuAdministratorAfterLoadWidget extends StatefulWidget {
-  const MainMenuAdministratorAfterLoadWidget({Key? key}) : super(key: key);
+  final bool accessValidate;
+  const MainMenuAdministratorAfterLoadWidget({Key? key, required this.accessValidate}) : super(key: key);
 
   @override
   State<MainMenuAdministratorAfterLoadWidget> createState() => _MainMenuAdministratorAfterLoadWidgetState();
@@ -32,7 +34,7 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         controller.activeStep = 0;
       });
@@ -40,6 +42,8 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
     controller = Get.find(tag: "main_menu_administrator_controller");
     super.initState();
   }
+
+  bool get accessValidate => widget.accessValidate;
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +73,8 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                       children: [
                         TextButtonWidget(
                           onTap: () => Get.to(() => UserProfilePage(
-                            mainMenuAdministratorController: controller,
-                          )),
+                                mainMenuAdministratorController: controller,
+                              )),
                           borderRadius: 1.h,
                           componentPadding: EdgeInsets.zero,
                           widgetCustom: Row(
@@ -154,7 +158,7 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                       ),
                       Center(
                         child: Obx(
-                              () => Column(
+                          () => Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
@@ -168,12 +172,11 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                                       enlargeStrategy: CenterPageEnlargeStrategy.height,
                                       enlargeCenterPage: true,
                                       enableInfiniteScroll: false,
-                                      onPageChanged: (itemIndex, reason){
+                                      onPageChanged: (itemIndex, reason) {
                                         setState(() {
                                           controller.activeStep = itemIndex;
                                         });
-                                      }
-                                  ),
+                                      }),
                                   itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
                                     return controller.cardMainMenuAdministratorList[itemIndex];
                                   },
@@ -218,57 +221,67 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                       ),
                       padding: EdgeInsets.all(2.h),
                       children: [
-                        MenuOptionsWidget(
-                          text: "Malotes com Operadores",
-                          imagePath: Paths.Malote,
-                          onTap: () => Get.to(() => OperatorFinancialPouchPage(
-                            withOperator: true,
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("MalotesComOperadores")))
+                          MenuOptionsWidget(
+                            text: "Malotes com Operadores",
+                            imagePath: Paths.Malote,
+                            onTap: () => Get.to(
+                              () => OperatorFinancialPouchPage(
+                                withOperator: true,
+                              ),
+                            ),
                           ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("VisitasOperadores")))
+                          MenuOptionsWidget(
+                            text: "Visitas dos Operadores",
+                            imagePath: Paths.Manutencao,
+                            onTap: () => Get.to(() => OperatorsVisitsPage()),
                           ),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Visitas dos Operadores",
-                          imagePath: Paths.Manutencao,
-                          onTap: () => Get.to(() => OperatorsVisitsPage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Histórico Cofre da Tesouraria",
-                          imagePath: Paths.Cofre,
-                          onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Malotes com Tesouraria",
-                          imagePath: Paths.Malote_Com_Tesouraria,
-                          onTap: () => Get.to(() => OperatorFinancialPouchPage(
-                            withOperator: false,
-                          )),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Usuários",
-                          imagePath: Paths.Novo_Usuario,
-                          onTap: () => Get.to(() => UserPage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Máquinas",
-                          imagePath: Paths.Maquina_Pelucia,
-                          onTap: () => Get.to(() => MachinePage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Novo Lembrete",
-                          imagePath: Paths.Novo_Lembrete,
-                          onTap: () => Get.to(() => NewReminderPage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Recolher Dinheiro",
-                          imagePath: Paths.Recolher_Dinheiro,
-                          onTap: () => Get.to(() => RecallMoneyPage()),
-                        ),
-                        MenuOptionsWidget(
-                          text: "Solicitações",
-                          imagePath: Paths.Solicitacoes,
-                          disable: true,
-                          onTap: () {},
-                        ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("HistoricoCofreTesouraria")))
+                          MenuOptionsWidget(
+                            text: "Histórico Cofre da Tesouraria",
+                            imagePath: Paths.Cofre,
+                            onTap: () => Get.to(() => FinancialHistoryAdministratorPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("MalotesTesouraria")))
+                          MenuOptionsWidget(
+                            text: "Malotes com Tesouraria",
+                            imagePath: Paths.Malote_Com_Tesouraria,
+                            onTap: () => Get.to(() => OperatorFinancialPouchPage(
+                                  withOperator: false,
+                                )),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Usuarios")))
+                          MenuOptionsWidget(
+                            text: "Usuários",
+                            imagePath: Paths.Novo_Usuario,
+                            onTap: () => Get.to(() => UserPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Maquinas")))
+                          MenuOptionsWidget(
+                            text: "Máquinas",
+                            imagePath: Paths.Maquina_Pelucia,
+                            onTap: () => Get.to(() => MachinePage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("NovoLembrete")))
+                          MenuOptionsWidget(
+                            text: "Novo Lembrete",
+                            imagePath: Paths.Novo_Lembrete,
+                            onTap: () => Get.to(() => NewReminderPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("RecolherDinheiro")))
+                          MenuOptionsWidget(
+                            text: "Recolher Dinheiro",
+                            imagePath: Paths.Recolher_Dinheiro,
+                            onTap: () => Get.to(() => RecallMoneyPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Solicitacoes")))
+                          MenuOptionsWidget(
+                            text: "Solicitações",
+                            imagePath: Paths.Solicitacoes,
+                            disable: true,
+                            onTap: () {},
+                          ),
                       ],
                     ),
                   ),

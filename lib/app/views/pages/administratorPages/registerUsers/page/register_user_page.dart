@@ -17,8 +17,10 @@ import '../controller/register_user_controller.dart';
 
 class RegisterUsersPage extends StatefulWidget {
   final User? user;
-  final bool edit;
-  const RegisterUsersPage({Key? key, this.user, required this.edit}) : super(key: key);
+  const RegisterUsersPage({
+    Key? key,
+    this.user,
+  }) : super(key: key);
 
   @override
   State<RegisterUsersPage> createState() => _RegisterUsersPageState();
@@ -32,6 +34,8 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
     controller = Get.put(RegisterUsersController(widget.user));
     super.initState();
   }
+
+  bool get edit => widget.user != null;
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +64,23 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: widget.edit ? "Editar Usuário" : "Cadastrar Usuário",
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TitleWithBackButtonWidget(
+                                title: edit ? "Editar Usuário" : "Cadastrar Usuário",
+                              ),
+                            ),
+                            if (widget.user?.type == UserType.adminPrivileges)
+                              InkWell(
+                                onTap: () => controller.addRoles(),
+                                child: Icon(
+                                  Icons.privacy_tip_outlined,
+                                  color: AppColors.whiteColor,
+                                  size: 3.h,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -74,7 +93,7 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
                               customContainer: TextWidget(
-                                widget.edit ? "Editar Novo Usuário" : "Cadastrar Novo Usuário",
+                                edit ? "Editar Novo Usuário" : "Cadastrar Novo Usuário",
                                 textColor: AppColors.whiteColor,
                                 fontSize: 18.sp,
                                 textAlign: TextAlign.center,
@@ -120,7 +139,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                         children: [
                                           Expanded(
                                             child: DropdownButtonRxListWidget(
-                                              itemSelected: controller.userTypeSelected.value == "" ? null : controller.userTypeSelected.value,
+                                              itemSelected: controller.userTypeSelected.value == ""
+                                                  ? null
+                                                  : controller.userTypeSelected.value,
                                               hintText: "Tipo do Usuário",
                                               height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                                               width: 40.w,
@@ -137,7 +158,9 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                           ),
                                           Expanded(
                                             child: DropdownButtonRxListWidget(
-                                              itemSelected: controller.userGenderSelected.value == "" ? null : controller.userGenderSelected.value,
+                                              itemSelected: controller.userGenderSelected.value == ""
+                                                  ? null
+                                                  : controller.userGenderSelected.value,
                                               hintText: "Gênero",
                                               height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                                               width: 40.w,
@@ -271,7 +294,8 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                                                 bottom: PlatformType.isTablet(context) ? 1.7.h : 2.6.h,
                                               ),
                                               child: DropdownButtonRxListWidget(
-                                                itemSelected: controller.ufSelected.value == "" ? null : controller.ufSelected.value,
+                                                itemSelected:
+                                                    controller.ufSelected.value == "" ? null : controller.ufSelected.value,
                                                 hintText: "Uf",
                                                 height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                                                 width: 23.w,

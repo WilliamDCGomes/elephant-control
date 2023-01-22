@@ -24,7 +24,7 @@ class MachineController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     screenLoading = true.obs;
     searchMachines = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
@@ -33,7 +33,12 @@ class MachineController extends GetxController {
   }
 
   //Getters
-  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines.where((p0) => p0.active == true).toList() : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true).toList();
+  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty
+      ? _machines.where((p0) => p0.active == true).toList()
+      : _machines
+          .where(
+              (p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true)
+          .toList();
 
   Future<void> _getMachines() async {
     try {
@@ -75,9 +80,12 @@ class MachineController extends GetxController {
       machine.active = false;
       final deleted = await _machineService.createOrUpdateMachine(machine);
       if (!deleted) throw Exception();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina deletada com sucesso"));
+      await showDialog(
+          context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina deletada com sucesso"));
     } catch (_) {
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar a máquina"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar a máquina"));
     } finally {
       await _getMachines();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -88,6 +96,7 @@ class MachineController extends GetxController {
     final _machine = await Get.to(() => RegisterMachinePage(
           machine: machine,
           edit: machine != null,
+          externalIds: machines.where((element) => element.externalId != null).map((e) => e.externalId!).toList(),
         ));
     if (_machine is! Machine) return;
     try {
@@ -96,10 +105,13 @@ class MachineController extends GetxController {
       if (!editted) throw Exception();
       await _getMachines();
       await loadingWithSuccessOrErrorWidget.stopAnimation();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
+      await showDialog(
+          context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível editar a máquina"));
+      await showDialog(
+          context: Get.context!,
+          builder: (context) => InformationPopup(warningMessage: "Não foi possível editar a máquina"));
     }
   }
 }
