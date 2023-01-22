@@ -38,5 +38,7 @@ enum MediaType {
   @JsonValue(1)
   moneyWatch,
   @JsonValue(2)
-  machine,
+  machineBefore,
+  @JsonValue(3)
+  machineAfter,
 }

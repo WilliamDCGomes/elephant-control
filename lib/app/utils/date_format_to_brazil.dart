@@ -8,6 +8,12 @@ class DateFormatToBrazil {
     return "";
   }
 
+  static String formatDateWithHour(DateTime? date) {
+    if(date != null)
+      return DateFormat('dd-MM-yyyy HH:mm').format(date).replaceAll('-', '/');
+    return "";
+  }
+
   static String formatDateAmerican(DateTime? date) {
     if(date != null)
       return DateFormat('yyyy-MM-dd HH:mm:ss').format(date);

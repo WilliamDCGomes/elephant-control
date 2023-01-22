@@ -5,6 +5,7 @@ import 'package:elephant_control/base/viewControllers/add_money_pouch_viewcontro
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
 import '../viewControllers/money_pouch_viewcontroller.dart';
 import '../viewControllers/safe_box_financial_viewcontroller.dart';
+import '../viewControllers/visit_viewcontroller.dart';
 import '../viewControllers/visits_of_operators_viewcontroller.dart';
 import 'interfaces/ivisit_service.dart';
 
@@ -19,6 +20,19 @@ class VisitService extends BaseService implements IVisitService {
       return response.body;
     } catch (_) {
       return false;
+    }
+  }
+
+  Future<VisitViewController?> getResumeVisitById(String visitId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetResumeVisitById';
+      final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+
+      return VisitViewController.fromJson(response.body.first);
+    } catch (_) {
+      return null;
     }
   }
 

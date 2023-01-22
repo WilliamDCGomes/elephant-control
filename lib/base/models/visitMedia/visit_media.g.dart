@@ -43,7 +43,8 @@ Map<String, dynamic> _$VisitMediaToJson(VisitMedia instance) =>
 const _$MediaTypeEnumMap = {
   MediaType.stuffedAnimals: 0,
   MediaType.moneyWatch: 1,
-  MediaType.machine: 2,
+  MediaType.machineBefore: 2,
+  MediaType.machineAfter: 3,
 };
 
 const _$MediaExtensionEnumMap = {

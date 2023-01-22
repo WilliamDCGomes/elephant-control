@@ -14,6 +14,7 @@ import 'package:path/path.dart' as p;
 class ImagesPictureWidget extends StatefulWidget {
   late XFile? picture;
   late imageOrigin origin;
+  late ImagesPictureWidgetState imagesPictureWidgetState;
 
   ImagesPictureWidget({
     Key? key,
@@ -64,11 +65,21 @@ class ImagesPictureWidget extends StatefulWidget {
   }
 
   @override
-  State<ImagesPictureWidget> createState() => _ImagesPictureWidgetState();
+  State<ImagesPictureWidget> createState() {
+    imagesPictureWidgetState = ImagesPictureWidgetState();
+    return imagesPictureWidgetState;
+  }
 }
 
-class _ImagesPictureWidgetState extends State<ImagesPictureWidget> {
+class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
+
+  refreshPage(){
+    setState(() {
+      widget.picture = widget.picture;
+    });
+  }
+
   _getImage() async {
     try{
       XFile? picture = await _picker.pickImage(

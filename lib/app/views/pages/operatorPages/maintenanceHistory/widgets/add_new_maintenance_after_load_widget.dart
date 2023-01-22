@@ -164,9 +164,7 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                               clock2: "0",
                                               teddy: "0",
                                               pouchCollected: false,
-                                              visitId: controller.visits.firstWhere(
-                                                (element) => controller.machines[index].name == element.machineName
-                                              ).id ?? "",
+                                              visitId: "",
                                             ),
                                           ),
                                         );

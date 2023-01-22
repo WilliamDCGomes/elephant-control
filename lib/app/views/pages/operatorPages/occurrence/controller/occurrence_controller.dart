@@ -66,7 +66,7 @@ class OccurrenceController extends GetxController {
         medias.add(VisitMedia(
           visitId: _incident.id!,
           base64: base64Encode(bytesBeforeImage),
-          type: MediaType.machine,
+          type: MediaType.machineBefore,
           extension: MediaExtension.jpeg,
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
@@ -74,7 +74,7 @@ class OccurrenceController extends GetxController {
         medias.add(VisitMedia(
           visitId: _incident.id!,
           base64: base64Encode(bytesAfterImage),
-          type: MediaType.machine,
+          type: MediaType.machineAfter,
           extension: MediaExtension.jpeg,
         ));
       await showDialog(

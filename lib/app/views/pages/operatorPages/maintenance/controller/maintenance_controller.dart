@@ -88,12 +88,6 @@ class MaintenanceController extends GetxController {
     _initializeMethods();
   }
 
-  @override
-  void onInit() async {
-    //await _getUsers();
-    super.onInit();
-  }
-
   //Getters
   List<Machine> get machines => _machines;
   bool get showReminders => _showReminders.value;
@@ -169,7 +163,7 @@ class MaintenanceController extends GetxController {
           medias.add(VisitMedia(
             visitId: _visit.id!,
             base64: base64Encode(bytesBeforeImage),
-            type: MediaType.machine,
+            type: MediaType.machineBefore,
             extension: MediaExtension.jpeg,
           ));
         final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
@@ -177,7 +171,7 @@ class MaintenanceController extends GetxController {
           medias.add(VisitMedia(
             visitId: _visit.id!,
             base64: base64Encode(bytesAfterImage),
-            type: MediaType.machine,
+            type: MediaType.machineAfter,
             extension: MediaExtension.jpeg,
           ));
 
