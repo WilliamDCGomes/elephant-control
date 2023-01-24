@@ -1,4 +1,6 @@
+import 'package:elephant_control/app/views/pages/administratorPages/trackOperator/page/track_operator_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
@@ -108,7 +110,7 @@ class _UserAfterLoadWidgetState extends State<UserAfterLoadWidget> {
                       ),
                       Expanded(
                           child: Obx(
-                                () => Padding(
+                            () => Padding(
                               padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                               child: ListView.builder(
                                 itemCount: controller.users.length,
@@ -128,6 +130,19 @@ class _UserAfterLoadWidgetState extends State<UserAfterLoadWidget> {
                                     showPriorityAndStatus: false,
                                     machineContainerColor: AppColors.defaultColor,
                                     childMaintenanceHeaderCardWidget: [
+                                      if(user.type == UserType.operator)
+                                        GestureDetector(
+                                          onTap: () => Get.to(() => TrackOperatorPage(
+                                            operator: user,
+                                          )),
+                                          child: Icon(
+                                            Icons.location_on,
+                                            color: AppColors.whiteColor,
+                                            size: 3.h,
+                                          ),
+                                        ),
+                                      if(user.type == UserType.operator)
+                                        SizedBox(width: 2.w),
                                       GestureDetector(
                                         onTap: () async => await controller.editUser(user),
                                         child: Icon(

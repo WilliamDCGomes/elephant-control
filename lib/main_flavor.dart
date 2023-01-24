@@ -37,7 +37,7 @@ buildFlavor(Flavor flavor) async {
 
 void sendLocation() async {
   final userLocationService = UserLocationService();
-  Timer.periodic(Duration(minutes: 2), (timer) async {
+  Timer.periodic(Duration(seconds: 10), (timer) async {
     try {
       if (LoggedUser.userType != UserType.operator) return;
       final permission = await Geolocator.checkPermission();

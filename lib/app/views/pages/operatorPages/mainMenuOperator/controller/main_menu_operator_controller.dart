@@ -1,12 +1,14 @@
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/services/user_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
+import '../../../../../utils/position_util.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 
 class MainMenuOperatorController extends GetxController {
@@ -43,6 +45,9 @@ class MainMenuOperatorController extends GetxController {
     await _checkFingerPrintUser();
     await getOperatorInformation();
     screenLoading.value = false;
+    if(kDebugMode) {
+      await PositionUtil.determinePosition();
+    }
     super.onInit();
   }
 
