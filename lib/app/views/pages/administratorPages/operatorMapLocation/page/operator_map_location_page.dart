@@ -38,11 +38,31 @@ class _OperatorMapLocationPageState extends State<OperatorMapLocationPage> {
                   Flexible(
                     child: FlutterMap(
                       options: MapOptions(
-                        center: LatLng(
-                          controller.userLocationViewController.value!.longitudeValue,
-                          controller.userLocationViewController.value!.latitudeValue,
-                        ),
+                          center: LatLng(
+                            controller.userLocationViewController.value!.longitudeValue,
+                            controller.userLocationViewController.value!.latitudeValue,
+                          ),
+                          zoom: 8
                       ),
+                      children: [
+                        TileLayer(
+                          urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          subdomains: ['a', 'b', 'c'],
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: LatLng(
+                                controller.userLocationViewController.value!.longitudeValue,
+                                controller.userLocationViewController.value!.latitudeValue,
+                              ),
+                              builder: (_) => Icon(
+                                Icons.pin_drop,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
               ],
