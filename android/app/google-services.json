@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "17679168465",
+    "project_id": "elephant-control",
+    "storage_bucket": "elephant-control.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17679168465:android:7cc4fe5dbfd7a39115a6f0",
+        "android_client_info": {
+          "package_name": "com.black.entertainment.elephant_control"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17679168465-3db2qoo2mdac2h6rc1hi531ruvppqt8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.black.entertainment.elephant_control",
+            "certificate_hash": "175e06c4066a7d2c5c1a80030c68e942284f4036"
+          }
+        },
+        {
+          "client_id": "17679168465-i6bif9lb4kst8ul59ldr9e4q4uum7ahm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbsOxpizfS6sGZMFQITh-yQtE_NhztvZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17679168465-i6bif9lb4kst8ul59ldr9e4q4uum7ahm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -144,9 +144,7 @@ class _TrackOperatorPageState extends State<TrackOperatorPage> {
                       fontSize: 16.sp,
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () {
-
-                    },
+                    onPressed: () => controller.openMap(),
                   ),
                 ),
               ],

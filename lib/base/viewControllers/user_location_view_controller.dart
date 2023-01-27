@@ -24,5 +24,10 @@ class UserLocationViewController {
     this.district,
   });
 
+  double get longitudeValue => longitude != "" ? double.parse(longitude) : 0;
+  double get latitudeValue => latitude != "" ? double.parse(latitude) : 0;
+
+  factory UserLocationViewController.fromJson(Map<String, dynamic> json) => _$UserLocationViewControllerFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserLocationViewControllerToJson(this);
 }

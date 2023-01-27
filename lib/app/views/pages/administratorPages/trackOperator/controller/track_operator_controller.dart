@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/user/user.dart';
 import '../../../../../utils/format_numbers.dart';
+import '../../operatorMapLocation/page/operator_map_location_page.dart';
 
 class TrackOperatorController extends GetxController {
   late final User operator;
@@ -17,5 +18,11 @@ class TrackOperatorController extends GetxController {
     operatorDocumentTextController = TextEditingController();
     operatorNameTextController.text = operator.name;
     operatorDocumentTextController.text = FormatNumbers.stringToCpf(operator.document ?? "");
+  }
+
+  openMap(){
+    Get.to(() => OperatorMapLocationPage(
+      operator: operator,
+    ));
   }
 }
