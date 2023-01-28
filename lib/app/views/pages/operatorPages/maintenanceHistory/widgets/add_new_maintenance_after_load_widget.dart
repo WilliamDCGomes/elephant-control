@@ -128,7 +128,12 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                 child: Obx(
                                       () => Visibility(
                                     visible: controller.machines.isNotEmpty,
-                                    replacement: Center(child: TextWidget("Nenhuma máquina encontrada", textColor: AppColors.blackColor)),
+                                    replacement: Center(
+                                      child: TextWidget(
+                                        "Nenhuma máquina encontrada",
+                                        textColor: AppColors.blackColor,
+                                      ),
+                                    ),
                                     child: ListView.builder(
                                       itemCount: controller.machines.length, //TODO widget.controller.allMaintenanceCardWidgetFilteredList.length,
                                       shrinkWrap: true,

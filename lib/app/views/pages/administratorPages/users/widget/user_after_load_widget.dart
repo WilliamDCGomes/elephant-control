@@ -1,4 +1,4 @@
-import 'package:elephant_control/app/views/pages/administratorPages/trackOperator/page/track_operator_page.dart';
+import 'package:elephant_control/app/views/pages/administratorPages/trackOperator/pages/track_operator_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';

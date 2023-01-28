@@ -34,10 +34,10 @@ class F {
   static String get baseURL {
     switch (appFlavor) {
       case Flavor.HMLG:
-        return 'https://elephantapi.azurewebsites.net/api/';
+        return 'htt0ps://elephantapi.azurewebsites.net/api/';
       case Flavor.PROD:
-        return 'https://elephantapi.azurewebsites.net/api/';
-        //return 'http://172.16.30.131:5002/api/';
+        //return 'https://elephantapi.azurewebsites.net/api/';
+        return 'http://192.168.1.13:5002/api/';
       default:
         //return 'http://10.10.10.36:5002/api/';
         return 'https://elephantapi.azurewebsites.net/api/';

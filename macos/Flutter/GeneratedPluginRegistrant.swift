@@ -10,9 +10,9 @@ import flutter_native_timezone
 import geolocator_apple
 import location
 import package_info_plus
-import path_provider_foundation
+import path_provider_macos
 import share_plus
-import shared_preferences_foundation
+import shared_preferences_macos
 import sqflite
 import video_compress
 
