@@ -36,6 +36,12 @@ class _TrackOperatorPageState extends State<TrackOperatorPage> {
   }
 
   @override
+  void dispose() {
+    controller.timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Material(
@@ -152,6 +158,7 @@ class _TrackOperatorPageState extends State<TrackOperatorPage> {
                                     shrinkWrap: true,
                                     padding: EdgeInsets.symmetric(horizontal: 2.h),
                                     itemCount: controller.userLocationList.length,
+                                    controller: controller.scrollController,
                                     itemBuilder: (context, index){
                                       return Container(
                                         padding: EdgeInsets.all(2.h),

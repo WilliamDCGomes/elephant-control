@@ -17,16 +17,24 @@ class OperatorMapLocationPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<OperatorMapLocationPage> createState() => _OperatorMapLocationPageState();
+  State<OperatorMapLocationPage> createState() => OperatorMapLocationPageState();
 }
 
-class _OperatorMapLocationPageState extends State<OperatorMapLocationPage> {
+class OperatorMapLocationPageState extends State<OperatorMapLocationPage> with TickerProviderStateMixin {
   late TrackOperatorController controller;
 
   @override
   void initState() {
     controller = Get.find(tag: "track-operator-controller");
+    controller.operatorMapLocationPageState = this;
+    controller.isInMapScreen = true;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.isInMapScreen = false;
+    super.dispose();
   }
 
   @override
@@ -60,16 +68,17 @@ class _OperatorMapLocationPageState extends State<OperatorMapLocationPage> {
                       child: Center(
                         child: GetBuilder(
                           init: controller,
-                          id: "map_view",
+                          id: "map-list",
                           builder: (_) => Column(
                             children: [
-                              if(controller.userLocationViewController.value != null)
+                              if(controller.userLocationViewController != null)
                                 Flexible(
                                   child: FlutterMap(
+                                    mapController: controller.mapController,
                                     options: MapOptions(
                                       center: LatLng(
-                                        controller.userLocationViewController.value!.latitudeValue,
-                                        controller.userLocationViewController.value!.longitudeValue,
+                                        controller.userLocationViewController!.latitudeValue,
+                                        controller.userLocationViewController!.longitudeValue,
                                       ),
                                       zoom: 18,
                                     ),
@@ -82,13 +91,13 @@ class _OperatorMapLocationPageState extends State<OperatorMapLocationPage> {
                                         markers: [
                                           Marker(
                                             point: LatLng(
-                                              controller.userLocationViewController.value!.latitudeValue,
-                                              controller.userLocationViewController.value!.longitudeValue,
+                                              controller.userLocationViewController!.latitudeValue,
+                                              controller.userLocationViewController!.longitudeValue,
                                             ),
                                             builder: (_) => Icon(
                                               Icons.pin_drop,
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ],
