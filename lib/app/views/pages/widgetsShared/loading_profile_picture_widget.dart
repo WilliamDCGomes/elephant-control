@@ -54,7 +54,7 @@ class _LoadingProfilePictureWidgetState extends State<LoadingProfilePictureWidge
 
   @override
   Widget build(BuildContext context) {
-    return  WillPopScope(
+    return WillPopScope(
       onWillPop: () async {
         return !widget.loadingAnimation.value;
       },

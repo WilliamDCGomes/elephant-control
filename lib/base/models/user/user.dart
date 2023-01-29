@@ -59,6 +59,21 @@ class User extends ElephantCore {
       Cellphone TEXT, Cep TEXT, City TEXT, Complement TEXT, Gender INTEGER,
       District TEXT, Number TEXT, Uf TEXT, Code INTEGER)""";
 
+  String get typeName {
+    switch(type){
+      case UserType.operator:
+        return "Operador";
+      case UserType.treasury:
+        return "Tesouraria";
+      case UserType.stockist:
+        return "Estoquista";
+      case UserType.admin:
+        return "Administrador";
+      case UserType.adminPrivileges:
+        return "Gerenciamento";
+    }
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);

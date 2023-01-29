@@ -1,4 +1,4 @@
-import 'package:elephant_control/app/views/pages/administratorPages/trackOperator/pages/track_operator_page.dart';
+import 'package:elephant_control/app/views/pages/administratorPages/trackOperator/page/track_operator_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +7,12 @@ import 'package:get/get.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/popups/bottom_sheet_popup.dart';
 import '../../../widgetsShared/text_field_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/user_controller.dart';
+import '../popup/user_information_popup.dart';
 
 class UserAfterLoadWidget extends StatefulWidget {
   const UserAfterLoadWidget({super.key});
@@ -129,6 +131,16 @@ class _UserAfterLoadWidgetState extends State<UserAfterLoadWidget> {
                                     pouchCollected: false,
                                     showPriorityAndStatus: false,
                                     machineContainerColor: AppColors.defaultColor,
+                                    onTap: () {
+                                      BottomSheetPopup.showAlert(
+                                        context,
+                                        UserInformationPopup.getWidgetList(
+                                          context,
+                                          user,
+                                          controller.editUser,
+                                        ),
+                                      );
+                                    },
                                     childMaintenanceHeaderCardWidget: [
                                       if(user.type == UserType.operator)
                                         GestureDetector(
