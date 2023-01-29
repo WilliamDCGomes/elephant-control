@@ -35,6 +35,12 @@ class TrackOperatorPageState extends State<TrackOperatorPage> with TickerProvide
     super.initState();
   }
 
+  @override
+  void dispose() {
+    controller.timer.cancel();
+    super.dispose();
+  }
+
   void animatedMapMove(LatLng destLocation) {
     final latTween = Tween<double>(
       begin: controller.mapController.center.latitude,

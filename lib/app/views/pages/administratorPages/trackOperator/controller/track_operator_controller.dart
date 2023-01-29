@@ -24,6 +24,7 @@ class TrackOperatorController extends GetxController {
   late UserLocationService _userLocationService;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late TrackOperatorPageState _trackOperatorPageState;
+  late Timer timer;
 
   TrackOperatorController(this.operator, this._trackOperatorPageState) {
     _initializeVariables();
@@ -75,7 +76,7 @@ class TrackOperatorController extends GetxController {
         _firstLoad = false;
       }
       await Future.delayed(Duration(milliseconds: 200));
-      Timer.periodic(Duration(seconds: 3), (timer) async {
+      timer = Timer.periodic(Duration(seconds: 3), (timer) async {
         await _localeUser();
       });
     }
