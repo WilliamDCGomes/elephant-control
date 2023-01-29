@@ -92,7 +92,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                               height: 2.h,
                             ),
                             Obx(
-                                  () => RichTextTwoDifferentWidget(
+                              () => RichTextTwoDifferentWidget(
                                 firstText: "Quantidade de Visitas: ",
                                 firstTextColor: AppColors.whiteColor,
                                 firstTextFontWeight: FontWeight.normal,
@@ -109,7 +109,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                         ),
                       ),
                       Obx(
-                            () => Padding(
+                        () => Padding(
                           padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
                           child: DropdownButtonRxListWidget(
                             itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,

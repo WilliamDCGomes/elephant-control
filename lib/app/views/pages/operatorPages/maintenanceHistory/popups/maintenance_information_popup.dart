@@ -23,6 +23,7 @@ class MaintenanceInformationPopup {
       final bool pouchCollected,
       final String? responsibleName,
       final String visitId,
+      final DateTime visitDate,
       ){
     return [
       Center(
@@ -74,7 +75,7 @@ class MaintenanceInformationPopup {
           firstTextColor: AppColors.blackColor,
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
-          secondText: DateFormatToBrazil.formatDate(DateTime.now()),
+          secondText: DateFormatToBrazil.formatDateWithHour(visitDate),
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,
@@ -284,7 +285,10 @@ class MaintenanceInformationPopup {
           hintText: "VER DETALHES",
           fontWeight: FontWeight.bold,
           widthButton: 75.w,
-          onPressed: () => Get.to(() => VisitDetailsPage(visitId: visitId,)),
+          onPressed: () {
+            Get.back();
+            Get.to(() => VisitDetailsPage(visitId: visitId,));
+          },
         ),
       ),
       Padding(

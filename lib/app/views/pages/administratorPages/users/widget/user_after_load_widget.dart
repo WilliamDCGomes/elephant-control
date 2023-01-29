@@ -183,6 +183,7 @@ class _UserAfterLoadWidgetState extends State<UserAfterLoadWidget> {
                                       ),
                                     ],
                                     child: const SizedBox(),
+                                    visitDate: DateTime.now(),
                                   );
                                 },
                               ),

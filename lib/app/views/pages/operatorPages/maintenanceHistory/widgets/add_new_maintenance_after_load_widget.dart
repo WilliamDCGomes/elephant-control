@@ -170,6 +170,7 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                               teddy: "0",
                                               pouchCollected: false,
                                               visitId: "",
+                                              visitDate: DateTime.now(),
                                             ),
                                           ),
                                         );

@@ -13,7 +13,7 @@ VisitOfOperatorsViewController _$VisitOfOperatorsViewControllerFromJson(
       ..machineName = json['machineName'] as String
       ..operatorName = json['operatorName'] as String
       ..visitDate = DateTime.parse(json['visitDate'] as String)
-      ..firstClock = (json['firstClock'] as num).toDouble()
+      ..firstClock = json['firstClock'] as int
       ..secondClock = json['secondClock'] as int?
       ..addedProducts = json['addedProducts'] as int
       ..visitStatus = $enumDecode(_$VisitStatusEnumMap, json['visitStatus'])

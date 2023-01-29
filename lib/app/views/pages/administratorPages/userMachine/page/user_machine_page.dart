@@ -115,6 +115,7 @@ class _UserMachinePageState extends State<UserMachinePage> {
                                       ),
                                     ),
                                   ],
+                                  visitDate: DateTime.now(),
                                 );
                               },
                             ),

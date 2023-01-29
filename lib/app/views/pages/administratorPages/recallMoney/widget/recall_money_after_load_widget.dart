@@ -133,6 +133,7 @@ class _RecallMoneyAfterLoadWidgetState extends State<RecallMoneyAfterLoadWidget>
                                       ),
                                     ],
                                     child: const SizedBox(),
+                                    visitDate: DateTime.now(),
                                   );
                                 },
                               ),

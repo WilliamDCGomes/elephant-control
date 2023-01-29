@@ -120,6 +120,7 @@ class _NewReminderAfterLoadWidgetState extends State<NewReminderAfterLoadWidget>
                                     showPriorityAndStatus: false,
                                     machineContainerColor: AppColors.defaultColor,
                                     child: const SizedBox(),
+                                    visitDate: DateTime.now(),
                                   );
                                 },
                               ),

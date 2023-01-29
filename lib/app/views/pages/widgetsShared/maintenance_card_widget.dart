@@ -30,6 +30,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final String status;
   final bool decoratorLine;
   final bool onTapHabilitate;
+  final DateTime visitDate;
   final dynamic Function()? onTap;
   final Widget? child;
   final List<Widget> childMaintenanceHeaderCardWidget;
@@ -48,6 +49,7 @@ class MaintenanceCardWidget extends StatefulWidget {
     required this.clock2,
     required this.teddy,
     required this.pouchCollected,
+    required this.visitDate,
     this.pouchList = true,
     this.showRadius = true,
     this.setHeight = true,
@@ -93,6 +95,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                         widget.pouchCollected,
                         widget.responsibleName,
                         widget.visitId,
+                        widget.visitDate,
                       ),
                     );
                   }),

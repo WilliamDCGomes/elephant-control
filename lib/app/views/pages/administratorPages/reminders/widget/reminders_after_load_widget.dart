@@ -157,6 +157,7 @@ class _RemindersAfterLoadWidgetState extends State<RemindersAfterLoadWidget> {
                                       GestureDetector(onTap: () => controller.deleteReminder(reminder), child: Icon(Icons.delete, color: AppColors.whiteColor, size: 3.h)),
                                     ],
                                     child: const SizedBox(),
+                                    visitDate: DateTime.now(),
                                   );
                                 },
                               ),

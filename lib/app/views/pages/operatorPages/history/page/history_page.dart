@@ -153,6 +153,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     showRadius: false,
                                     setHeight: false,
                                     visitId: visit.id ?? "",
+                                    visitDate: visit.inclusion ?? DateTime.now(),
                                   );
                                 },
                               ),

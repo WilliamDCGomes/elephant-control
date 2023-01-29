@@ -106,6 +106,7 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             setHeight: false,
                                             machineAddOtherList: visit.active == false,
                                             visitId: "",
+                                            visitDate: visit.inclusion ?? DateTime.now(),
                                           ),
                                           if (visit.realizedVisit == false && visit.active == true)
                                             Padding(

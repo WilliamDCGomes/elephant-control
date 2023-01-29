@@ -134,6 +134,7 @@ class _VisitPageState extends State<VisitPage> {
                                   // ),
                                 ],
                                 child: const SizedBox(),
+                                visitDate: DateTime.now(),
                               );
                             },
                           ),

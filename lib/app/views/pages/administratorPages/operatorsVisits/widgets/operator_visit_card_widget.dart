@@ -68,6 +68,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               widget.visitOfOperatorsViewController.visitStatus == VisitStatus.moneyWithdrawal,
               widget.visitOfOperatorsViewController.operatorName,
               widget.visitOfOperatorsViewController.visitId,
+              widget.visitOfOperatorsViewController.vInclusion,
             ),
           );
         },
