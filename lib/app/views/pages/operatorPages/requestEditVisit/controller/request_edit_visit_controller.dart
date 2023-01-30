@@ -113,7 +113,7 @@ class RequestEditVisitController extends GetxController {
       _mainMenuController.amountTeddy.value -= teddy;
       LoggedUser.balanceStuffedAnimals = _mainMenuController.amountTeddy.value;
 
-      await ValidAverage().valid(visit.machineId, clock1.text, clock2.text);
+      bool showAveragePopup = await ValidAverage().valid(visit.machineId, clock1.text, clock2.text);
 
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(

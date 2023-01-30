@@ -12,6 +12,7 @@ import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
@@ -22,6 +23,7 @@ import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/text_widget.dart';
 import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 
 class MaintenanceController extends GetxController {
@@ -152,6 +154,14 @@ class MaintenanceController extends GetxController {
       final position = await PositionUtil.determinePosition();
       _visit.latitude = position?.latitude == null ? null : position?.latitude.toString();
       _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
+
+      double averageValue = 0;
+      if(clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0){
+        averageValue = int.parse(clock1.text) / int.parse(clock2.text);
+      }
+
+      bool showAveragePopup = await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
+
       bool createdVisit = await _visitService.createVisit(_visit);
       if (createdVisit) {
         List<VisitMedia> medias = [];
@@ -189,7 +199,48 @@ class MaintenanceController extends GetxController {
       }
       await loadingWithSuccessOrErrorWidget.stopAnimation();
 
-      await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
+      if(showAveragePopup){
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue
+                  .toStringAsFixed(2).replaceAll('.', ',')}",
+              fontSize: 18.sp,
+              popupColor: AppColors.redColor,
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 4.h,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  TextWidget(
+                    "AVISO",
+                    textColor: AppColors.whiteColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 4.h,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
 
       await showDialog(
         context: Get.context!,
