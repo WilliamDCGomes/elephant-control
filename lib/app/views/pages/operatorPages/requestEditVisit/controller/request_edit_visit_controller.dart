@@ -2,16 +2,17 @@ import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../../base/models/visit/visit.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
-import '../../../widgetsShared/text_widget.dart';
 import '../../mainMenuOperator/controller/main_menu_operator_controller.dart';
 
 class RequestEditVisitController extends GetxController {
+  late Visit visit;
   late RxString machineSelected;
   late RxString priority;
   late RxString requestTitle;
@@ -32,7 +33,7 @@ class RequestEditVisitController extends GetxController {
   late MainMenuOperatorController _mainMenuController;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
 
-  RequestEditVisitController() {
+  RequestEditVisitController(this.visit) {
     _inicializeList();
     _initializeVariables();
   }
@@ -112,48 +113,7 @@ class RequestEditVisitController extends GetxController {
       _mainMenuController.amountTeddy.value -= teddy;
       LoggedUser.balanceStuffedAnimals = _mainMenuController.amountTeddy.value;
 
-      double averageValue = int.parse(clock1.text) / int.parse(clock2.text);
-      if (averageValue < 25 || averageValue > 40) {
-        await showDialog(
-          context: Get.context!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InformationPopup(
-              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
-              fontSize: 18.sp,
-              popupColor: AppColors.redColor,
-              title: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.warning,
-                    color: AppColors.yellowDarkColor,
-                    size: 4.h,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  TextWidget(
-                    "AVISO",
-                    textColor: AppColors.whiteColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Icon(
-                    Icons.warning,
-                    color: AppColors.yellowDarkColor,
-                    size: 4.h,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }
+      await ValidAverage().valid(visit.machineId, clock1.text, clock2.text);
 
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(

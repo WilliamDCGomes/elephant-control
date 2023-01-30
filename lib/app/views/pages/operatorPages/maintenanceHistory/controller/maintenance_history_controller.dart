@@ -119,20 +119,19 @@ class MaintenanceHistoryController extends GetxController {
       await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       final userMachineCreated = await _userVisitMachineService.createUserVisitMachine(machineId, DateTime.now());
       if (!userMachineCreated) throw Exception();
+      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation();
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Máquina adicionada com sucesso"));
       Get.back();
     } catch (_) {
       if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Erro ao adicionar máquina"));
-    } finally {
-      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
     }
   }
 
   newItem() async {
     Get.to(() => AppNewMaintenancePage(
-          title: "Selecione um atendimento para adicionar a sua lista",
-          controller: this,
-        ));
+      title: "Selecione um atendimento para adicionar a sua lista",
+      controller: this,
+    ));
   }
 }

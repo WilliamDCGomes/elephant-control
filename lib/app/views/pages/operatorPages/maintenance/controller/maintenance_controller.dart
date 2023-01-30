@@ -17,6 +17,7 @@ import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
@@ -187,6 +188,9 @@ class MaintenanceController extends GetxController {
         if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
       }
       await loadingWithSuccessOrErrorWidget.stopAnimation();
+
+      await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
+
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

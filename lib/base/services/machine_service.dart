@@ -19,6 +19,31 @@ class MachineService extends BaseService implements IMachineService {
     }
   }
 
+  Future<Machine?> getMachineById(String machineId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/GetMachineById';
+      final response = await get(url, query: {"MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      var machine = Machine.fromJson(response.body);
+      return machine;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<bool> setAverageMachine(String machineId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/SetAverageMachine';
+      final response = await get(url, query: {"MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<List<Machine>> getMachineVisitByUserId() async {
     try {
       final token = await getToken();

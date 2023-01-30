@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../../base/models/visit/visit.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
@@ -15,7 +16,12 @@ import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/request_edit_visit_controller.dart';
 
 class RequestEditVisitPage extends StatefulWidget {
-  const RequestEditVisitPage({Key? key}) : super(key: key);
+  final Visit visit;
+
+  RequestEditVisitPage({
+    Key? key,
+    required this.visit,
+  }) : super(key: key);
 
   @override
   State<RequestEditVisitPage> createState() => _RequestEditVisitPageState();
@@ -26,7 +32,7 @@ class _RequestEditVisitPageState extends State<RequestEditVisitPage> {
 
   @override
   void initState() {
-    controller = Get.put(RequestEditVisitController());
+    controller = Get.put(RequestEditVisitController(widget.visit));
     super.initState();
   }
 
