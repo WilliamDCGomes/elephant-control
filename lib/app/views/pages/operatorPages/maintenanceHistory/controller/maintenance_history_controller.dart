@@ -123,7 +123,7 @@ class MaintenanceHistoryController extends GetxController {
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Máquina adicionada com sucesso"));
       Get.back();
     } catch (_) {
-      if (!loadingWithSuccessOrErrorWidgetTwo.isLoading.isTrue) await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
+      await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Erro ao adicionar máquina"));
     }
   }
