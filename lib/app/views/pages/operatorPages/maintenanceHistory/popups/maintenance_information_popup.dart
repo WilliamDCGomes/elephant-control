@@ -11,6 +11,13 @@ import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 
 class MaintenanceInformationPopup {
+  static String getAverage(String clock1, String clock2){
+    if(clock1 != "" && clock2 != "" && int.parse(clock2) != 0){
+      return (int.parse(clock1) / int.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
+    }
+    return "0,00";
+  }
+
   static List<Widget> getWidgetList(
       context,
       final String machineName,
@@ -221,7 +228,31 @@ class MaintenanceInformationPopup {
       Padding(
         padding: EdgeInsets.only(bottom: 1.h),
         child: TextWidget(
-          "Pelúcias recolocadas na Máquina:",
+          "Média da Máquina na Visita:",
+          textColor: AppColors.blackColor,
+          fontSize: 16.sp,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+        ),
+      ),
+      Container(
+        height: 5.h,
+        color: AppColors.grayBackgroundPictureColor,
+        padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+        child: Center(
+          child: TextWidget(
+            getAverage(clock1, clock2),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
+            textColor: AppColors.defaultColor,
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 1.h),
+        child: TextWidget(
+          "Pelúcias Recolocadas na Máquina:",
           textColor: AppColors.blackColor,
           fontSize: 16.sp,
           textAlign: TextAlign.start,
