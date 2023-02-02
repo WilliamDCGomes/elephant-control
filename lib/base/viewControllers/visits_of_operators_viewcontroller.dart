@@ -9,7 +9,7 @@ class VisitOfOperatorsViewController {
   late String machineName;
   late String operatorName;
   late DateTime visitDate;
-  late int firstClock;
+  late double firstClock;
   late int? secondClock;
   late int addedProducts;
   late VisitStatus visitStatus;

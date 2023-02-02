@@ -41,6 +41,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?
+      ..monthClosure = json['monthClosure'] as bool
       ..debit = (json['debit'] as num?)?.toDouble()
       ..credit = (json['credit'] as num?)?.toDouble();
 
@@ -59,6 +60,7 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'status': _$VisitStatusEnumMap[instance.status]!,
       'machineId': instance.machineId,
       'moneyWithDrawal': instance.moneyWithDrawal,
+      'monthClosure': instance.monthClosure,
       'code': instance.code,
       'observation': instance.observation,
       'moneyPouchId': instance.moneyPouchId,

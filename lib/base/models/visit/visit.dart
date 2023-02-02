@@ -18,6 +18,7 @@ class Visit extends ElephantUserCore {
   late VisitStatus status;
   late String machineId;
   late bool moneyWithDrawal;
+  late bool monthClosure;
   int? code;
   String? observation;
   String? moneyPouchId;

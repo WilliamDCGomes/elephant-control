@@ -34,6 +34,8 @@ class MaintenanceController extends GetxController {
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
+  late RxBool machineCloseYes;
+  late RxBool machineCloseNo;
   late RxBool _showReminders;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
@@ -73,6 +75,8 @@ class MaintenanceController extends GetxController {
 
     yes = false.obs;
     no = false.obs;
+    machineCloseYes = false.obs;
+    machineCloseNo = false.obs;
 
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
@@ -141,11 +145,19 @@ class MaintenanceController extends GetxController {
     try {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
+
+      if(int.parse(clock2.text) > int.parse(clock1.text)){
+        String clock1Aux = clock1.text;
+        clock1.text = clock2.text;
+        clock2.text = clock1Aux;
+      }
+
       int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
       _visit.stuffedAnimalsQuantity = teddy;
       _visit.machineId = machineSelected!.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
       _visit.moneyWithDrawal = yes.isTrue;
+      _visit.monthClosure = machineCloseYes.isTrue;
       if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
       _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
       _visit.stuffedAnimalsReplaceQuantity = int.parse(teddyAddMachine.text);
@@ -348,6 +360,18 @@ class MaintenanceController extends GetxController {
         builder: (BuildContext context) {
           return InformationPopup(
             warningMessage: "Informe se o malote foi retirado da máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (!yes.value && !no.value) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe se é o fechamento da máquina!",
           );
         },
       );

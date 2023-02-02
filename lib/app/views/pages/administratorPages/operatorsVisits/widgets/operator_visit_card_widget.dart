@@ -59,7 +59,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
             MaintenanceInformationPopup.getWidgetList(
               context,
               widget.visitOfOperatorsViewController.machineName,
-              widget.visitOfOperatorsViewController.firstClock.toString(),
+              widget.visitOfOperatorsViewController.firstClock.toStringAsFixed(0),
               (widget.visitOfOperatorsViewController.secondClock ?? 0).toString(),
               widget.visitOfOperatorsViewController.addedProducts.toString(),
               getStatus(),

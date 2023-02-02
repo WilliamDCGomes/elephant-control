@@ -352,6 +352,54 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     ],
                                   ),
                                   Padding(
+                                    padding: EdgeInsets.only(top: 1.h),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextWidget(
+                                            "Fechamento da Máquina?",
+                                            textColor: AppColors.defaultColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Obx(
+                                            () => CheckboxListTileWidget(
+                                              radioText: "Sim",
+                                              size: 4.h,
+                                              checked: controller.machineCloseYes.value,
+                                              onChanged: () {
+                                                controller.machineCloseYes.value = !controller.machineCloseYes.value;
+                                                if (controller.machineCloseYes.value) controller.machineCloseNo.value = !controller.machineCloseYes.value;
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: .5.w,
+                                        ),
+                                        Expanded(
+                                          child: Obx(
+                                            () => CheckboxListTileWidget(
+                                              radioText: "Não",
+                                              size: 4.h,
+                                              spaceBetween: 1.w,
+                                              checked: controller.machineCloseNo.value,
+                                              onChanged: () {
+                                                controller.machineCloseNo.value = !controller.machineCloseNo.value;
+                                                if (controller.machineCloseNo.value) controller.machineCloseYes.value = !controller.machineCloseNo.value;
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
                                     padding: EdgeInsets.only(
                                       top: 1.5.h,
                                     ),
