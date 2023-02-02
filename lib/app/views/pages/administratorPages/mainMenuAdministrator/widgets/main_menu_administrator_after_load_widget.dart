@@ -11,6 +11,7 @@ import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
+import '../../adminReport/page/admin_report_page.dart';
 import '../../financialHistoryAdministrator/page/financial_history_administrator_page.dart';
 import '../../machine/page/machine_page.dart';
 import '../../newReminder/page/new_reminder_page.dart';
@@ -274,6 +275,12 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                             text: "Recolher Dinheiro",
                             imagePath: Paths.Recolher_Dinheiro,
                             onTap: () => Get.to(() => RecallMoneyPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Relatorio")))
+                          MenuOptionsWidget(
+                            text: "Relatórios",
+                            imagePath: Paths.Relatorio,
+                            onTap: () => Get.to(() => AdminReportPage()),
                           ),
                         if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Solicitacoes")))
                           MenuOptionsWidget(

@@ -8,12 +8,6 @@ class DateFormatToBrazil {
     return "";
   }
 
-  static String formatDateWithHour(DateTime? date) {
-    if(date != null)
-      return DateFormat('dd-MM-yyyy HH:mm').format(date).replaceAll('-', '/');
-    return "";
-  }
-
   static String formatDateAmerican(DateTime? date) {
     if(date != null)
       return DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
@@ -82,6 +76,16 @@ class DateFormatToBrazil {
       return DateFormat('MMMM').format(date).replaceAll('-', ' ');
     }
     return "";
+  }
+
+  static DateTime firstDateOfMonth() {
+    DateTime _todayDate = DateTime.now();
+    return DateTime(_todayDate.year, _todayDate.month, 1);
+  }
+
+  static DateTime lastDateOfMonth() {
+    DateTime _todayDate = DateTime.now();
+    return DateTime(_todayDate.year, _todayDate.month + 1, 0);
   }
 
   static String weekDay(DateTime? date) {

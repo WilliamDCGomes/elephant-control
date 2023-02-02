@@ -10,6 +10,7 @@ class DefaultShimmer extends StatelessWidget {
   final String pageTitle;
   final bool showSearchField;
   final bool showSecondFilterField;
+  final bool showThirdFilterField;
   final bool showButton;
   final double? mainCardSize;
   final double? cardsSize;
@@ -19,6 +20,7 @@ class DefaultShimmer extends StatelessWidget {
     required this.pageTitle,
     this.showSearchField = true,
     this.showSecondFilterField = false,
+    this.showThirdFilterField = false,
     this.showButton = false,
     this.mainCardSize,
     this.cardsSize,
@@ -76,6 +78,17 @@ class DefaultShimmer extends StatelessWidget {
                       ),
                       Visibility(
                         visible: showSecondFilterField,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 2.h, right: 2.h, bottom: 3.h),
+                          child: Container(
+                            height: 6.5.h,
+                            width: 90.w,
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: showThirdFilterField,
                         child: Padding(
                           padding: EdgeInsets.only(left: 2.h, right: 2.h, bottom: 3.h),
                           child: Container(

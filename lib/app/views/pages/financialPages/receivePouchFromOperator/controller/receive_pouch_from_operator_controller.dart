@@ -104,14 +104,15 @@ class ReceivePouchFromOperatorController extends GetxController {
       );
       return;
     }
-    if (!formKey.currentState!.validate()) return;
+    /*if (!formKey.currentState!.validate()) return;
     if (int.parse(operatorCode.text) != operatorSelected?.code) {
       SnackbarWidget(
         warningText: "Código de operador inválido",
         informationText: "Por favor, verifique o código digitado",
         backgrondColor: AppColors.defaultColor,
       );
-    } else {
+    }
+    else {*/
       showDialog(
         context: Get.context!,
         builder: (BuildContext context) {
@@ -120,7 +121,7 @@ class ReceivePouchFromOperatorController extends GetxController {
           );
         },
       );
-    }
+    //}
   }
 
   void onDropdownButtonWidgetChanged(String? selectedState) async {
@@ -191,7 +192,7 @@ class ReceivePouchFromOperatorController extends GetxController {
         //TODO buscar localização aqui
         final addMoneyPouchViewController = AddMoneyPouchViewController(
           userOperatorId: operatorSelected!.id!,
-          code: int.parse(operatorCode.text),
+          code: int.parse(operatorCode.text == "" ? "0" : operatorCode.text),
           visitId: moneyPouch.id!,
           observation: observations.text,
           latitude: latitude,

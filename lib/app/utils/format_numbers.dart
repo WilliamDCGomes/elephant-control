@@ -5,6 +5,14 @@ class FormatNumbers {
     return ((firstValue + secondValue)/2).toStringAsFixed(2).replaceAll('.', ',');
   }
 
+  static String scoreIntNumber(int? value) {
+    if(value == null){
+      return "0";
+    }
+    var formatter = NumberFormat.decimalPattern();
+    return formatter.format(value).replaceAll(',', '*').replaceAll('.', ',').replaceAll('*', '.');
+  }
+
   static String numbersToString(double? value) {
     if(value != null) {
       return value.toStringAsFixed(2).replaceAll('.', ',');
@@ -13,6 +21,17 @@ class FormatNumbers {
   }
 
   static String numbersToMoney(double? value) {
+    if(value == null)
+      return "";
+
+    return NumberFormat.currency(
+      name: 'R\$',
+      locale: 'pt_BR',
+      decimalDigits: 2,
+    ).format(value);
+  }
+
+  static String intToMoney(int? value) {
     if(value == null)
       return "";
 

@@ -82,7 +82,7 @@ class MaintenanceInformationPopup {
           firstTextColor: AppColors.blackColor,
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
-          secondText: DateFormatToBrazil.formatDateWithHour(visitDate),
+          secondText: DateFormatToBrazil.formatDateAndHour(visitDate),
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,

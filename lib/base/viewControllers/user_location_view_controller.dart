@@ -47,7 +47,7 @@ class UserLocationViewController extends ElephantCore{
     return "Cidade: " + city! + "/" + uf!;
   }
   String get dateRegisterName {
-    return "Data do registro: " + DateFormatToBrazil.formatDateWithHour(inclusion);
+    return "Data do registro: " + DateFormatToBrazil.formatDateAndHour(inclusion);
   }
 
   factory UserLocationViewController.fromJson(Map<String, dynamic> json) => _$UserLocationViewControllerFromJson(json);

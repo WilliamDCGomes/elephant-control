@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
-import '../../../../../../base/services/machine_service.dart';
 import '../../../../../../base/viewControllers/visit_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/files_helper.dart';
@@ -42,7 +41,6 @@ class VisitDetailsController extends GetxController {
   late ImagesPictureWidget afterMaintenanceImageClock;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late VisitViewController? visitViewController;
-  late final MachineService _machineService;
   late final VisitService _visitService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
@@ -67,7 +65,6 @@ class VisitDetailsController extends GetxController {
     _incidents = <IncidentObject>[];
     visitViewController = null;
     _visitService = VisitService();
-    _machineService = MachineService();
     _visitMediaService = VisitMediaService();
     _incidentService = IncidentService();
     _visit = Visit.emptyConstructor();
@@ -98,7 +95,7 @@ class VisitDetailsController extends GetxController {
       if(visitViewController == null){
         throw Exception();
       }
-      maintenanceDate = DateFormatToBrazil.formatDateWithHour(visitViewController!.inclusion);
+      maintenanceDate = DateFormatToBrazil.formatDateAndHour(visitViewController!.inclusion);
       clock1.text = visitViewController!.firstClock.ceil().toString();
       clock2.text = (visitViewController!.secondClock ?? 0).toString();
       teddyAddMachine.text = visitViewController!.replacedPlush.toString();

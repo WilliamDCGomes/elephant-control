@@ -126,9 +126,9 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                       top: 3.5.h,
                                     ),
                                     child: Form(
-                                      key: controller.formKey,
+                                      //key: controller.formKey,
                                       child: TextFieldWidget(
-                                        validator: (value) => TextFieldValidators.defaultValidator(value, errorMessage: "Preencha o código do operador"),
+                                        //validator: (value) => TextFieldValidators.defaultValidator(value, errorMessage: "Preencha o código do operador"),
                                         controller: controller.operatorCode,
                                         hintText: "Código do Operador",
                                         height: 9.h,
