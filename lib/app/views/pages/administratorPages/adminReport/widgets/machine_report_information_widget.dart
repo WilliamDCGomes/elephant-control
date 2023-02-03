@@ -184,15 +184,43 @@ class MachineReportInformationWidget extends StatelessWidget {
                         itemBuilder: (context, index){
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
-                            child: TextWidget(
-                              DateFormatToBrazil.formatDateAndHour(
-                                reportViewController.visitDays![index],
-                              ) + " - Operador: " + reportViewController.operatorsWhoVisitMachines![index],
-                              textColor: AppColors.blackColor,
-                              fontSize: 18.sp,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.bold,
-                              maxLines: 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 2.h,
+                                      width: 2.h,
+                                      margin: EdgeInsets.only(right: 2.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.defaultColor,
+                                        borderRadius: BorderRadius.circular(
+                                          1.h,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextWidget(
+                                        DateFormatToBrazil.formatDateAndHour(
+                                          reportViewController.visitDays![index],
+                                        ) + " - Operador: " + reportViewController.operatorsWhoVisitMachines![index],
+                                        textColor: AppColors.blackColor,
+                                        fontSize: 18.sp,
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.bold,
+                                        maxLines: 3,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: .5.h),
+                                  child: Divider(
+                                    color: AppColors.defaultColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -249,15 +277,43 @@ class MachineReportInformationWidget extends StatelessWidget {
                         itemBuilder: (context, index){
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
-                            child: TextWidget(
-                              DateFormatToBrazil.formatDateAndHour(
-                                reportViewController.pouchCollectedDates![index],
-                              ) + " - Operador: " + reportViewController.operatorsWhoCollectedPouchsList![index],
-                              textColor: AppColors.blackColor,
-                              fontSize: 18.sp,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.bold,
-                              maxLines: 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 2.h,
+                                      width: 2.h,
+                                      margin: EdgeInsets.only(right: 2.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.defaultColor,
+                                        borderRadius: BorderRadius.circular(
+                                          1.h,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextWidget(
+                                        DateFormatToBrazil.formatDateAndHour(
+                                          reportViewController.pouchCollectedDates![index],
+                                        ) + " - Operador: " + reportViewController.operatorsWhoCollectedPouchsList![index],
+                                        textColor: AppColors.blackColor,
+                                        fontSize: 18.sp,
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.bold,
+                                        maxLines: 3,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: .5.h),
+                                  child: Divider(
+                                    color: AppColors.defaultColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -314,18 +370,46 @@ class MachineReportInformationWidget extends StatelessWidget {
                         itemBuilder: (context, index){
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
-                            child: TextWidget(
-                              DateFormatToBrazil.formatDateAndHour(
-                                reportViewController.outOffAverageDates![index],
-                              ) + " - Valor: " +
-                                  FormatNumbers.numbersToString(
-                                    reportViewController.outOffAverageValues![index],
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 2.h,
+                                      width: 2.h,
+                                      margin: EdgeInsets.only(right: 2.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.defaultColor,
+                                        borderRadius: BorderRadius.circular(
+                                          1.h,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextWidget(
+                                        DateFormatToBrazil.formatDateAndHour(
+                                          reportViewController.outOffAverageDates![index],
+                                        ) + " - Valor: " +
+                                        FormatNumbers.numbersToString(
+                                          reportViewController.outOffAverageValues![index],
+                                        ),
+                                        textColor: AppColors.blackColor,
+                                        fontSize: 18.sp,
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.bold,
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: .5.h),
+                                  child: Divider(
+                                    color: AppColors.defaultColor,
                                   ),
-                              textColor: AppColors.blackColor,
-                              fontSize: 18.sp,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.bold,
-                              maxLines: 2,
+                                ),
+                              ],
                             ),
                           );
                         },
