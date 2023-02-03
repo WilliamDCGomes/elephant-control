@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/user_machine_controller.dart';
@@ -60,7 +61,13 @@ class _UserMachinePageState extends State<UserMachinePage> {
                                 title: "Usuários da máquina",
                               ),
                             ),
-                            GestureDetector(onTap: () => controller.addUser(), child: Icon(Icons.add_circle, color: AppColors.whiteColor)),
+                            GestureDetector(
+                              onTap: () async => await controller.addUser(),
+                              child: Icon(
+                                Icons.add_circle,
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -107,7 +114,18 @@ class _UserMachinePageState extends State<UserMachinePage> {
                                   child: const SizedBox(),
                                   childMaintenanceHeaderCardWidget: [
                                     GestureDetector(
-                                      onTap: () async => await controller.deleteMachine(user),
+                                      onTap: () async => showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return ConfirmationPopup(
+                                            title: "Aviso",
+                                            subTitle: "Tem certeza que deseja apagar o operador?",
+                                            firstButton: () {},
+                                            secondButton: () async => await controller.deleteMachine(user),
+                                          );
+                                        },
+                                      ),
                                       child: Icon(
                                         Icons.delete,
                                         color: AppColors.whiteColor,

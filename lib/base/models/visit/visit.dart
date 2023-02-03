@@ -30,7 +30,10 @@ class Visit extends ElephantUserCore {
   double? debit;
   @JsonKey(toJson: toJsonNull)
   double? credit;
-  @JsonKey(ignore: true)
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: false,
+  )
   bool checked = false;
 
   static String? toJsonNull(dynamic value) => null;

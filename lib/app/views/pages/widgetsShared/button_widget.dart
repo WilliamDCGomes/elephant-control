@@ -5,6 +5,7 @@ import 'text_widget.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String? hintText;
+  final double? textSize;
   final double? heightButton;
   final double? widthButton;
   final double? radioButton;
@@ -18,6 +19,7 @@ class ButtonWidget extends StatelessWidget {
   const ButtonWidget(
       { Key? key,
         this.hintText,
+        this.textSize,
         this.heightButton,
         this.widthButton,
         this.radioButton,
@@ -51,8 +53,9 @@ class ButtonWidget extends StatelessWidget {
         child: TextWidget(
           hintText ?? "",
           textColor: textColor ?? AppColors.whiteColor,
-          fontSize: MediaQuery.of(context).orientation == Orientation.portrait ?
-          16.sp : 13.sp,
+          fontSize: textSize ?? (
+          MediaQuery.of(context).orientation == Orientation.portrait ?
+          16.sp : 13.sp),
           fontWeight: fontWeight ?? FontWeight.normal,
         ),
       ),

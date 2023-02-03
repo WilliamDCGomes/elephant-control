@@ -11,6 +11,8 @@ import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/models/user/user.dart';
+import '../../../widgetsShared/button_widget.dart';
+import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 
 class UserMachineController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
@@ -35,86 +37,167 @@ class UserMachineController extends GetxController {
 
   Future<void> getUserMachines() async {
     try {
-      await loadingWithSuccessOrErrorWidget.startAnimation();
       _users.clear();
       _users.addAll(await _machineService.getUsersByMachineId(_machineId));
-    } catch (e) {
-      print(e);
-    } finally {
       _users.sort((a, b) => a.name.compareTo(b.name));
       _users.refresh();
-      loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    } catch (e) {
+
     }
   }
 
-  Future<void> addUser() async {
+  addUser() async {
     try {
+      bool allUsersSelected = false;
+      bool doSelection = false;
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      final users = await UserService().getAllUserByType(UserType.operator);
+      List<User> users = await UserService().getAllUserByType(UserType.operator);
+
       users.removeWhere((element) => _users.any((user) => user.id == element.id));
-      int? indexSelecionado;
+
       await showDialog(
         context: Get.context!,
-        builder: (context) => DefaultPopupWidget(
-          title: "Selecione o usuário",
-          children: [
-            SizedBox(
-              height: 40.h,
-              child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) => TextButtonWidget(
-                  widgetCustom: Text(users[index].name),
-                  onTap: () async {
-                    indexSelecionado = index;
+        builder: (context) => StatefulBuilder(
+          builder: (context, setState) => DefaultPopupWidget(
+            title: "Selecione o usuário",
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextButtonWidget(
+                widgetCustom: Align(
+                  alignment: Alignment.centerLeft,
+                  child: CheckboxListTileWidget(
+                    radioText: "Selecionar todos",
+                    size: 4.h,
+                    checked: allUsersSelected,
+                    justRead: true,
+                    onChanged: () {},
+                  ),
+                ),
+                onTap: () async {
+                  setState(() {
+                    allUsersSelected = !allUsersSelected;
+                    users.forEach((user) {
+                      user.selected = allUsersSelected;
+                    });
+                  });
+                },
+              ),
+              SizedBox(
+                height: 40.h,
+                child: ListView.builder(
+                  itemCount: users.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) => TextButtonWidget(
+                    widgetCustom: Align(
+                      alignment: Alignment.centerLeft,
+                      child: CheckboxListTileWidget(
+                        radioText: users[index].name,
+                        size: 4.h,
+                        checked: users[index].selected,
+                        justRead: true,
+                        onChanged: () {},
+                      ),
+                    ),
+                    onTap: () async {
+                      setState(() {
+                        users[index].selected = !users[index].selected;
+                        if(allUsersSelected && !users[index].selected){
+                          allUsersSelected = users[index].selected;
+                        }
+                        else if(!allUsersSelected && users[index].selected && users.length == 1){
+                          allUsersSelected = true;
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(2.h),
+                child: ButtonWidget(
+                  hintText: "SELECIONAR",
+                  textSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  widthButton: double.infinity,
+                  onPressed: () {
+                    doSelection = true;
                     Get.back();
                   },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
-      if (indexSelecionado != null) {
-        final user = users[indexSelecionado!];
-        final added = await UserMachineService().createuserMachine(UserMachineViewController(userId: user.id!, machineId: _machineId));
-        if (!added) throw Exception();
-        await getUserMachines();
-        await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário adicionado com sucesso"));
+
+      if(doSelection){
+        for(var user in users.where((user) => user.selected).toList()){
+          final added = await UserMachineService().createuserMachine(
+            UserMachineViewController(
+              userId: user.id!,
+              machineId: _machineId,
+            ),
+          );
+
+          if (!added) throw Exception();
+        }
       }
-    } catch (_) {
-    } finally {
+
+      await getUserMachines();
+
+      if (doSelection && users.any((user) => user.selected)) {
+        await loadingWithSuccessOrErrorWidget.stopAnimation();
+        await showDialog(
+          context: Get.context!,
+          builder: (context) => InformationPopup(
+            warningMessage: "Usuário(s) adicionado(s) com sucesso",
+          ),
+        );
+      }
+      else{
+        await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      }
+    }
+    catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      await showDialog(
+        context: Get.context!,
+        builder: (context) => InformationPopup(
+          warningMessage: "Não foi possível adicionar o(s) usuário(s)",
+        ),
+      );
     }
   }
 
-  Future<void> deleteMachine(User user) async {
+  deleteMachine(User user) async {
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       user.active = false;
-      final deleted = await UserMachineService().deleteUserMachine(UserMachineViewController(userId: user.id!, machineId: _machineId));
+      final deleted = await UserMachineService().deleteUserMachine(
+        UserMachineViewController(
+          userId: user.id!,
+          machineId: _machineId,
+        ),
+      );
+
       if (!deleted) throw Exception();
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Usuário deletado com sucesso"));
-    } catch (_) {
-      await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível deletar o usuário"));
-    } finally {
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+
       await getUserMachines();
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
+      await showDialog(
+        context: Get.context!,
+        builder: (context) => InformationPopup(
+          warningMessage: "Usuário deletado com sucesso",
+        ),
+      );
+    } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      await showDialog(
+        context: Get.context!,
+        builder: (context) => InformationPopup(
+          warningMessage: "Não foi possível deletar o usuário",
+        ),
+      );
     }
   }
-
-  // Future<void> editMachine(Machine machine) async {
-  //   final _machine = await Get.to(() => RegisterMachinePage(machine: machine));
-  //   if (_machine is! Machine) return;
-  //   try {
-  //     await loadingWithSuccessOrErrorWidget.startAnimation();
-  //     final editted = await _machineService.createOrUpdateMachine(machine);
-  //     if (!editted) throw Exception();
-  //     await getMachines();
-  //     await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Máquina editada com sucesso"));
-  //   } catch (_) {
-  //     await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível editar a máquina"));
-  //   } finally {
-  //     await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-  //   }
-  // }
 }

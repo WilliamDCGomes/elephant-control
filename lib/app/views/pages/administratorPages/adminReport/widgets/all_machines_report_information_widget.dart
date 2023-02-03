@@ -19,7 +19,7 @@ class AllMachinesReportInformationWidget extends StatelessWidget {
       trackVisibility: true,
       thumbVisibility: true,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        padding: EdgeInsets.only(right: 3.w),
         child: ListView(
           shrinkWrap: true,
           children: [

@@ -9,12 +9,15 @@ class DefaultPopupWidget extends StatefulWidget {
   final double? fontSize;
   final Color? popupColor;
   final List<Widget>? children;
+  final CrossAxisAlignment? crossAxisAlignment;
+
   const DefaultPopupWidget({
     Key? key,
     this.title,
     this.fontSize,
     this.popupColor,
     this.children,
+    this.crossAxisAlignment,
   }) : super(key: key);
 
   @override
@@ -56,10 +59,11 @@ class _DefaultPopupWidgetState extends State<DefaultPopupWidget> {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
                 children: [
                   Container(
                     width: 90.w,
-                    padding: EdgeInsets.all(1.h),
+                    padding: EdgeInsets.all(2.h),
                     decoration: BoxDecoration(
                       color: widget.popupColor ?? AppColors.defaultColor,
                       borderRadius: BorderRadius.only(

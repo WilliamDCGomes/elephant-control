@@ -26,6 +26,12 @@ class User extends ElephantCore {
   String? email;
   int? code;
 
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: false,
+  )
+  late bool selected;
+
   User({
     required this.name,
     required this.tellphone,
@@ -35,7 +41,9 @@ class User extends ElephantCore {
     required this.type,
     required this.pouchLastUpdate,
     required this.stuffedAnimalsLastUpdate,
-  });
+  }){
+    selected = false;
+  }
 
   User.emptyConstructor() {
     name = "";
@@ -44,6 +52,7 @@ class User extends ElephantCore {
     balanceMoney = 0;
     balanceStuffedAnimals = 0;
     type = UserType.operator;
+    selected = false;
   }
 
   static String get tableName => "USER";

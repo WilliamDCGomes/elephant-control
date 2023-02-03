@@ -620,7 +620,7 @@ class UserProfileController extends GetxController {
       builder: (BuildContext context) {
         return ConfirmationPopup(
           title: "Aviso",
-          subTitle: "Tem certeza que deseja apagar a foto de perfil",
+          subTitle: "Tem certeza que deseja apagar a foto de perfil?",
           firstButton: () {},
           secondButton: () => _deleteProfilePicture(),
         );

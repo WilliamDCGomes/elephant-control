@@ -3,7 +3,6 @@ import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
-import 'package:elephant_control/app/views/pages/sharedPages/login/page/login_page_page.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -125,7 +124,10 @@ class LoginPageController extends GetxController {
       if (formKey.currentState!.validate()) {
         await loadingWidget.startAnimation();
 
-        if (!await _doLoginServer(false) || !await _getUserInformations()) {
+        if(!await _doLoginServer(false)){
+          return;
+        }
+        if (!await _getUserInformations()) {
           throw Exception();
         }
 
@@ -328,8 +330,8 @@ class LoginPageController extends GetxController {
         );
       },
     );
-    Get.offAll(LoginPage(
+    /*Get.offAll(LoginPage(
       cancelFingerPrint: true,
-    ));
+    ));*/
   }
 }
