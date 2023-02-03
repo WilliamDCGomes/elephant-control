@@ -142,7 +142,7 @@ class AdminReportController extends GetxController {
       cancelText: "Cancelar",
       initialDate: finalDateFilter,
       firstDate: DateTime(finalDateFilter.year - 2, finalDateFilter.month, finalDateFilter.day),
-      lastDate: finalDateFilter,
+      lastDate: DateTime.now(),
     );
 
     if (picked != null && picked != finalDateFilter) {

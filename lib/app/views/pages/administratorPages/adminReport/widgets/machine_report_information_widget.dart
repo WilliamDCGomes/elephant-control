@@ -154,7 +154,9 @@ class MachineReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.visitDays != null)
+            if(reportViewController.visitDays != null && reportViewController.visitDays!.isNotEmpty &&
+                reportViewController.operatorsWhoVisitMachines != null &&
+                reportViewController.visitDays!.length == reportViewController.operatorsWhoVisitMachines!.length)
               Padding(
                 padding: EdgeInsets.only(top: 1.5.h),
                 child: Container(
@@ -185,11 +187,12 @@ class MachineReportInformationWidget extends StatelessWidget {
                             child: TextWidget(
                               DateFormatToBrazil.formatDateAndHour(
                                 reportViewController.visitDays![index],
-                              ),
+                              ) + " - Operador: " + reportViewController.operatorsWhoVisitMachines![index],
                               textColor: AppColors.blackColor,
                               fontSize: 18.sp,
                               textAlign: TextAlign.start,
                               fontWeight: FontWeight.bold,
+                              maxLines: 3,
                             ),
                           );
                         },
@@ -216,7 +219,9 @@ class MachineReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.pouchCollectedDates != null)
+            if(reportViewController.pouchCollectedDates != null && reportViewController.pouchCollectedDates!.isNotEmpty &&
+               reportViewController.operatorsWhoCollectedPouchsList != null &&
+               reportViewController.operatorsWhoCollectedPouchsList!.length == reportViewController.pouchCollectedDates!.length)
               Padding(
                 padding: EdgeInsets.only(top: 1.5.h),
                 child: Container(
@@ -247,11 +252,12 @@ class MachineReportInformationWidget extends StatelessWidget {
                             child: TextWidget(
                               DateFormatToBrazil.formatDateAndHour(
                                 reportViewController.pouchCollectedDates![index],
-                              ),
+                              ) + " - Operador: " + reportViewController.operatorsWhoCollectedPouchsList![index],
                               textColor: AppColors.blackColor,
                               fontSize: 18.sp,
                               textAlign: TextAlign.start,
                               fontWeight: FontWeight.bold,
+                              maxLines: 3,
                             ),
                           );
                         },
@@ -278,7 +284,9 @@ class MachineReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.outOffAverageDates != null)
+            if(reportViewController.outOffAverageDates != null && reportViewController.outOffAverageDates!.isNotEmpty &&
+               reportViewController.outOffAverageValues != null &&
+               reportViewController.outOffAverageValues!.length == reportViewController.outOffAverageDates!.length)
               Padding(
                 padding: EdgeInsets.only(top: 1.5.h),
                 child: Container(

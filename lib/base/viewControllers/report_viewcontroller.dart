@@ -18,6 +18,8 @@ class ReportViewController {
   late List<double?>? outOffAverageValues;
   late List<DateTime>? outOffAverageDates;
   late List<DateTime>? visitDays;
+  late List<String>? operatorsWhoVisitMachines;
+  late List<String>? operatorsWhoCollectedPouchsList;
 
   ReportViewController();
 

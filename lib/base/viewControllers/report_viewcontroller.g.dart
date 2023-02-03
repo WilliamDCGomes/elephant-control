@@ -30,7 +30,15 @@ ReportViewController _$ReportViewControllerFromJson(
           .toList()
       ..visitDays = (json['visitDays'] as List<dynamic>?)
           ?.map((e) => DateTime.parse(e as String))
-          .toList();
+          .toList()
+      ..operatorsWhoVisitMachines =
+          (json['operatorsWhoVisitMachines'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList()
+      ..operatorsWhoCollectedPouchsList =
+          (json['operatorsWhoCollectedPouchsList'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList();
 
 Map<String, dynamic> _$ReportViewControllerToJson(
         ReportViewController instance) =>
@@ -52,4 +60,7 @@ Map<String, dynamic> _$ReportViewControllerToJson(
       'outOffAverageDates':
           instance.outOffAverageDates?.map((e) => e.toIso8601String()).toList(),
       'visitDays': instance.visitDays?.map((e) => e.toIso8601String()).toList(),
+      'operatorsWhoVisitMachines': instance.operatorsWhoVisitMachines,
+      'operatorsWhoCollectedPouchsList':
+          instance.operatorsWhoCollectedPouchsList,
     };

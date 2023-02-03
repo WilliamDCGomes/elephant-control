@@ -200,7 +200,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                           Expanded(
                                             child: TextFieldWidget(
                                               controller: controller.clock1,
-                                              hintText: "Relógio 1",
+                                              hintText: "Relógio Numeração",
                                               height: 9.h,
                                               keyboardType: TextInputType.number,
                                               maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
@@ -212,7 +212,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                           Expanded(
                                             child: TextFieldWidget(
                                               controller: controller.clock2,
-                                              hintText: "Relógio 2",
+                                              hintText: "Relógio de Prêmios",
                                               height: 9.h,
                                               keyboardType: TextInputType.number,
                                               maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],

@@ -148,77 +148,49 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             padding: EdgeInsets.only(
                               top: 8.h,
                             ),
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                Obx(
-                                  () => InformationContainerWidget(
-                                    iconPath: Paths.Pelucia,
-                                    textColor: AppColors.whiteColor,
-                                    backgroundColor: AppColors.defaultColor,
-                                    informationText: "",
-                                    iconInLeft: true,
-                                    isLoading: controller.isLoadingQuantity,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w,
-                                      vertical: 4.h,
-                                    ),
-                                    customContainer: SizedBox(
-                                      width: 73.w,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                            child: Obx(
-                                              () => RichTextTwoDifferentWidget(
-                                                firstText: "Quantidade de Pelúcias: ",
-                                                firstTextColor: AppColors.whiteColor,
-                                                firstTextFontWeight: FontWeight.normal,
-                                                firstTextSize: 18.sp,
-                                                secondText: (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
-                                                secondTextColor: AppColors.whiteColor,
-                                                secondTextFontWeight: FontWeight.bold,
-                                                secondTextSize: 20.sp,
-                                                secondTextDecoration: TextDecoration.none,
-                                                maxLines: 2,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ),
-                                          TextWidget(
-                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(LoggedUser.stuffedAnimalsLastUpdate)}",
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.sp,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(
-                                            height: 2.h,
-                                          ),
-                                          // InkWell(
-                                          //   onTap: () => Get.to(() => FinancialHistoryPage(
-                                          //         title: "Histórico do Cofre",
-                                          //         pageTitle: "Cofre",
-                                          //         pouchHistory: false,
-                                          //         safeBoxAmount: controller.safeBoxAmount.value,
-                                          //       )),
-                                          //   child: TextWidget(
-                                          //     "Clique aqui para ver o histórico do cofre!",
-                                          //     maxLines: 1,
-                                          //     textColor: AppColors.whiteColor,
-                                          //     fontSize: 16.sp,
-                                          //     textAlign: TextAlign.center,
-                                          //     textDecoration: TextDecoration.underline,
-                                          //   ),
-                                          // ),
-                                        ],
+                            child: InformationContainerWidget(
+                              iconPath: Paths.Pelucia,
+                              textColor: AppColors.whiteColor,
+                              backgroundColor: AppColors.defaultColor,
+                              informationText: "",
+                              iconInLeft: true,
+                              isLoading: controller.isLoadingQuantity,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 5.w,
+                                vertical: 4.h,
+                              ),
+                              customContainer: SizedBox(
+                                width: 73.w,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                      child: RichTextTwoDifferentWidget(
+                                        firstText: "Quantidade de Pelúcias: ",
+                                        firstTextColor: AppColors.whiteColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 18.sp,
+                                        secondText: (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
+                                        secondTextColor: AppColors.whiteColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 20.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  ),
+                                    TextWidget(
+                                      "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(LoggedUser.stuffedAnimalsLastUpdate)}",
+                                      maxLines: 1,
+                                      textColor: AppColors.whiteColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -229,28 +201,53 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                   floatingActionButton: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      FloatingActionButton.extended(
+                        heroTag: "firstFloatingActionButton",
+                        backgroundColor: AppColors.defaultColor,
+                        foregroundColor: AppColors.backgroundColor,
+                        elevation: 3,
+                        icon: Image.asset(
+                          Paths.Pelucia_Add,
+                          height: 3.h,
+                          color: AppColors.whiteColor,
+                        ),
+                        label: TextWidget(
+                          "Adicionar Pelúcia ao Estoque",
+                          maxLines: 1,
+                          textColor: AppColors.whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {
+
+                        },
+                      ),
                       if ((LoggedUser.balanceStuffedAnimals ?? 0) > 0)
-                        FloatingActionButton.extended(
-                          heroTag: "firstFloatingActionButton",
-                          backgroundColor: AppColors.defaultColor,
-                          foregroundColor: AppColors.backgroundColor,
-                          elevation: 3,
-                          icon: Image.asset(
-                            Paths.Pelucia_Add,
-                            height: 3.h,
-                            color: AppColors.whiteColor,
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.h),
+                          child: FloatingActionButton.extended(
+                            heroTag: "firstFloatingActionButton",
+                            backgroundColor: AppColors.defaultColor,
+                            foregroundColor: AppColors.backgroundColor,
+                            elevation: 3,
+                            icon: Image.asset(
+                              Paths.Pelucia_Add,
+                              height: 3.h,
+                              color: AppColors.whiteColor,
+                            ),
+                            label: TextWidget(
+                              "Adicionar Pelúcia no Saldo do Operador",
+                              maxLines: 1,
+                              textColor: AppColors.whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                              textAlign: TextAlign.center,
+                            ),
+                            onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
+                                  addPluch: true,
+                                )),
                           ),
-                          label: TextWidget(
-                            "Adicionar Pelúcia no Saldo do Operador",
-                            maxLines: 1,
-                            textColor: AppColors.whiteColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
-                                addPluch: true,
-                              )),
                         ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),

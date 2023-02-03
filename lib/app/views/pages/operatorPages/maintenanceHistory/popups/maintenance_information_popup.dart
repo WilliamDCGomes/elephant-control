@@ -169,7 +169,7 @@ class MaintenanceInformationPopup {
                 Padding(
                   padding: EdgeInsets.only(bottom: .5.h),
                   child: TextWidget(
-                    "Relógio 1:",
+                    "Relógio Numeração:",
                     textColor: AppColors.blackColor,
                     fontSize: 16.sp,
                     textAlign: TextAlign.center,
@@ -199,7 +199,7 @@ class MaintenanceInformationPopup {
                 Padding(
                   padding: EdgeInsets.only(bottom: .5.h),
                   child: TextWidget(
-                    "Relógio 2:",
+                    "Relógio de Prêmios:",
                     textColor: AppColors.blackColor,
                     fontSize: 16.sp,
                     textAlign: TextAlign.center,
