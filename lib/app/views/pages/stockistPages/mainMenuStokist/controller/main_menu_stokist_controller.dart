@@ -1,9 +1,10 @@
 import 'package:elephant_control/base/models/user/user.dart';
-import 'package:elephant_control/base/services/money_pouch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../../base/models/stokistPlush/stokist_plush.dart';
+import '../../../../../../base/services/stokist_plush_service.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
@@ -12,16 +13,16 @@ class MainMenuStokistController extends GetxController {
   late RxBool hasPicture;
   late RxBool loadingPicture;
   late RxBool screenLoading;
+  late RxInt plushQuantity;
   late RxString profileImagePath;
   late RxString nameProfile;
   late RxString nameInitials;
   late RxString welcomePhrase;
-  late RxDouble safeBoxAmount;
-  late RxInt pouchQuantity;
-  late DateTime quantityLastUpdate;
-  late DateTime valueLastUpdate;
+  late Rx<DateTime> quantityLastUpdate;
   late SharedPreferences sharedPreferences;
   late RxBool _isLoadingQuantity;
+  late StokistPlush? stokistPlush;
+  late StokistPlushService _stokistPlushService;
 
   MainMenuStokistController() {
     _initializeVariables();
@@ -50,14 +51,14 @@ class MainMenuStokistController extends GetxController {
     hasPicture = false.obs;
     loadingPicture = true.obs;
     screenLoading = true.obs;
+    plushQuantity = 0.obs;
     profileImagePath = "".obs;
     nameProfile = "".obs;
     nameInitials = "".obs;
-    safeBoxAmount = 0.0.obs;
-    pouchQuantity = 0.obs;
-    quantityLastUpdate = DateTime.now();
-    valueLastUpdate = DateTime.now();
+    quantityLastUpdate = DateTime.now().obs;
     _isLoadingQuantity = false.obs;
+    stokistPlush = null;
+    _stokistPlushService = StokistPlushService();
   }
 
   _getNameUser() {
@@ -121,12 +122,13 @@ class MainMenuStokistController extends GetxController {
   Future<void> getQuantityData() async {
     try {
       _isLoadingQuantity.value = true;
-      final moneyPouch = await MoneyPouchService().getMoneyPouchValue();
-      if (moneyPouch == null) throw Exception();
-      pouchQuantity.value = moneyPouch.quantity;
-      quantityLastUpdate = moneyPouch.lastUpdateQuantity;
-      valueLastUpdate = moneyPouch.lastUpdateValue;
-      safeBoxAmount.value = moneyPouch.value;
+      stokistPlush = await _stokistPlushService.getPlushies();
+      if(stokistPlush != null){
+        plushQuantity.value = stokistPlush!.balanceStuffedAnimals;
+        if(stokistPlush!.alteration != null) {
+          quantityLastUpdate.value = stokistPlush!.alteration!;
+        }
+      }
     } catch (_) {
     } finally {
       _isLoadingQuantity.value = false;

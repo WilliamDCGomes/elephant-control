@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
@@ -161,34 +162,40 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                               ),
                               customContainer: SizedBox(
                                 width: 73.w,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                      child: RichTextTwoDifferentWidget(
-                                        firstText: "Quantidade de Pelúcias: ",
-                                        firstTextColor: AppColors.whiteColor,
-                                        firstTextFontWeight: FontWeight.normal,
-                                        firstTextSize: 18.sp,
-                                        secondText: (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
-                                        secondTextColor: AppColors.whiteColor,
-                                        secondTextFontWeight: FontWeight.bold,
-                                        secondTextSize: 20.sp,
-                                        secondTextDecoration: TextDecoration.none,
-                                        maxLines: 2,
+                                child: Obx(
+                                  () => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                        child: RichTextTwoDifferentWidget(
+                                          firstText: "Quantidade de Pelúcias: ",
+                                          firstTextColor: AppColors.whiteColor,
+                                          firstTextFontWeight: FontWeight.normal,
+                                          firstTextSize: 18.sp,
+                                          secondText: FormatNumbers.scoreIntNumber(
+                                            controller.plushQuantity.value,
+                                          ),
+                                          secondTextColor: AppColors.whiteColor,
+                                          secondTextFontWeight: FontWeight.bold,
+                                          secondTextSize: 20.sp,
+                                          secondTextDecoration: TextDecoration.none,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      TextWidget(
+                                        "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(
+                                          controller.quantityLastUpdate.value,
+                                        )}",
+                                        maxLines: 1,
+                                        textColor: AppColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
                                         textAlign: TextAlign.center,
                                       ),
-                                    ),
-                                    TextWidget(
-                                      "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(LoggedUser.stuffedAnimalsLastUpdate)}",
-                                      maxLines: 1,
-                                      textColor: AppColors.whiteColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

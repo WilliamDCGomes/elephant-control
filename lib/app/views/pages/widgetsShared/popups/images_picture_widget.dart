@@ -25,6 +25,18 @@ class ImagesPictureWidget extends StatefulWidget {
 
   bool checkFileType(String fileName) => fileName.contains('jpg') || fileName.contains('png') || fileName.contains('jpeg');
 
+  CompressFormat _getFormat(String format){
+    switch(format){
+      case "png":
+        return CompressFormat.png;
+      case "jpeg":
+        return CompressFormat.jpeg;
+      case "jpg":
+        return CompressFormat.jpeg;
+    }
+    return CompressFormat.jpeg;
+  }
+
   Future<XFile?> compressFile(XFile? file) async {
     try {
       if(file == null){
@@ -51,6 +63,7 @@ class ImagesPictureWidget extends StatefulWidget {
           file.path,
           newPath,
           quality: 30,
+          format: _getFormat(targetPath[targetPath.length - 1]),
         );
 
         if (imageLowQuality != null) {

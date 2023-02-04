@@ -73,7 +73,11 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
     try {
       if (operatorSelected == null) {
         return showDialog(
-            context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Selecione um usuário operador"));
+          context: Get.context!,
+          builder: (context) => InformationPopup(
+            warningMessage: "Selecione um usuário operador",
+          ),
+        );
       }
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final addOrRemoveStuffedAnimals = await userService.addOrRemoveBalanceStuffedAnimalsOperator(

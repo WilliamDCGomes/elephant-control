@@ -8,12 +8,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../flavors.dart';
 import '../migrations/migration_1.dart';
+import '../migrations/migration_2.dart';
 import '../models/incident/incident.dart';
 import '../models/incidentMedia/incident_media.dart';
 import '../models/machine/machine.dart';
 import '../models/media/media.dart';
 import '../models/moneyPouch/money_pouch.dart';
 import '../models/reminderMachine/reminder_machine.dart';
+import '../models/stokistPlush/stokist_plush.dart';
 import '../models/store/store.dart';
 import '../models/storeUser/store_user.dart';
 import '../models/user/user.dart';
@@ -25,7 +27,7 @@ import '../models/visitMedia/visit_media.dart';
 
 class ElephantContext {
   static Database? _database;
-  static const int _databaseVersion = 2;
+  static const int _databaseVersion = 3;
   static const String queryElephantModelBase = "Id TEXT PRIMARY KEY NOT NULL, Alteration TEXT, Active BOOLEAN";
 
   static final ElephantContext _elephantContext = ElephantContext._internal();
@@ -112,6 +114,10 @@ class ElephantContext {
         "scriptCreateTable": VisitMedia.scriptCreateTable,
         "tableName": VisitMedia.tableName,
       },
+      {
+        "scriptCreateTable": StokistPlush.scriptCreateTable,
+        "tableName": StokistPlush.tableName,
+      },
     ];
 
     for (var table in tables) {
@@ -135,6 +141,9 @@ class ElephantContext {
         switch (oldVersionAux) {
           case 1:
             await Migration1(db).executeMigrations();
+            break;
+          case 2:
+            await Migration2(db).executeMigrations();
             break;
           default:
             log("Sem migrations");
