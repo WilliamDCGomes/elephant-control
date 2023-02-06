@@ -5,6 +5,7 @@ import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/user/user.dart';
+import '../../../../../../base/services/stokist_plush_service.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
 class AddRemoveOperatorBalancePlushController extends GetxController {
@@ -14,6 +15,7 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late User? operatorSelected;
   late final IUserService userService;
+  late StokistPlushService _stokistPlushService;
   final bool addPluch;
 
   AddRemoveOperatorBalancePlushController(this.addPluch) {
@@ -28,6 +30,7 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
   }
 
   _initializeVariables() {
+    _stokistPlushService = StokistPlushService();
     userService = UserService();
     operatorSelected = null;
     plushQuantity = TextEditingController();
@@ -80,18 +83,45 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
         );
       }
       await loadingWithSuccessOrErrorWidget.startAnimation();
+      if(!addPluch){
+        var operator = await userService.getUserById(operatorSelected!.id!);
+        if(operator != null && operator.balanceStuffedAnimals != null && operator.balanceStuffedAnimals! < int.parse(plushQuantity.text)){
+          loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+          return showDialog(
+            context: Get.context!,
+            builder: (context) => InformationPopup(
+              warningMessage: "Saldo do operador é menor do que o você está "
+                  "tentando remover!\nSaldo atual do operador: " +
+                  operator.balanceStuffedAnimals!.toString(),
+            ),
+          );
+        }
+      }
+
       final addOrRemoveStuffedAnimals = await userService.addOrRemoveBalanceStuffedAnimalsOperator(
         operatorSelected!.id!,
         int.parse(plushQuantity.text),
         observations.text,
         addPluch,
       );
+
+      if(addOrRemoveStuffedAnimals){
+        await _stokistPlushService.insertOrRemovePlushies(
+          addPluch ? (-1 * int.parse(plushQuantity.text)) : int.parse(plushQuantity.text),
+        );
+      }
+
       if (!addOrRemoveStuffedAnimals) throw Exception();
+
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: false);
       await showDialog(
-          context: Get.context!,
-          builder: (context) =>
-              InformationPopup(warningMessage: "Pelúcias ${addPluch ? "adicionadas" : "removidas"} com sucesso"));
+        context: Get.context!,
+        builder: (context) =>
+          InformationPopup(
+            warningMessage: "Pelúcias ${addPluch ? "adicionadas" : "removidas"} com sucesso",
+          ),
+      );
+
       await Future.microtask(() async {
         final user = await UserService().getUserInformation();
         LoggedUser.balanceStuffedAnimals = user?.balanceStuffedAnimals;
@@ -101,9 +131,11 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       return showDialog(
-          context: Get.context!,
-          builder: (context) => InformationPopup(
-              warningMessage: "Não foi possível ${addPluch ? "adicionar" : "remover"} o saldo de pelúcias do operador"));
+        context: Get.context!,
+        builder: (context) => InformationPopup(
+          warningMessage: "Não foi possível ${addPluch ? "adicionar" : "remover"} o saldo de pelúcias do operador",
+        ),
+      );
     }
   }
 }

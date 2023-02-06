@@ -27,6 +27,18 @@ class UserService extends BaseService implements IUserService {
     }
   }
 
+  Future<User?> getUserById(String userId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'User/GetUserById';
+      final response = await super.get(url, query: {"UserId": userId}, headers: {"Authorization": 'Bearer ' + token});
+      if (hasErrorResponse(response)) throw Exception();
+      return User.fromJson(response.body);
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<User?> getUserInformation() async {
     try {
       final token = await getToken();

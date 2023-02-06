@@ -48,6 +48,7 @@ abstract class IUserService {
   Future<String> getUserProfilePicture();
 
   Future<bool> deleteProfilePicture();
+  Future<User?> getUserById(String userId);
   Future<List<RecallMoneyViewController>> getTreasuryUsersWithMoneyPouchLaunched();
   Future<bool> addOrRemoveBalanceStuffedAnimalsOperator(
       String userOperatorId, int balanceStuffedAnimals, String observation, bool addStuffedAnimals);

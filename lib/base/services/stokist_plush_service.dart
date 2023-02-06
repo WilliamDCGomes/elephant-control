@@ -1,18 +1,16 @@
 import '../models/stokistPlush/stokist_plush.dart';
-import '../viewControllers/authenticate_response.dart';
 import 'base/base_service.dart';
 
 class StokistPlushService extends BaseService {
-  Future<AuthenticateResponse?> insertOrRemovePlushies(int plushies) async {
+  Future<bool> insertOrRemovePlushies(int plushies) async {
     try {
       httpClient.timeout = Duration(seconds: 30);
       final url = baseUrlApi + 'StokistPlush/InsertOrRemovePlushies';
-      final response =
-      await super.post(url, null, query: {"plushies": plushies}).timeout(Duration(seconds: 30));
+      final response = await super.post(url, null, query: {"plushies": plushies.toString()}).timeout(Duration(seconds: 30));
       if (hasErrorResponse(response)) throw Exception();
-      return AuthenticateResponse.fromJson(response.body);
+      return response.body;
     } catch (_) {
-      return null;
+      return false;
     }
   }
 

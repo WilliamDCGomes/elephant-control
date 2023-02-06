@@ -125,6 +125,7 @@ class MainMenuStokistController extends GetxController {
       stokistPlush = await _stokistPlushService.getPlushies();
       if(stokistPlush != null){
         plushQuantity.value = stokistPlush!.balanceStuffedAnimals;
+        LoggedUser.balanceStuffedAnimals = plushQuantity.value;
         if(stokistPlush!.alteration != null) {
           quantityLastUpdate.value = stokistPlush!.alteration!;
         }

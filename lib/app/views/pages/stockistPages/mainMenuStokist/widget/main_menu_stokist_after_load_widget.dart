@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,7 +12,8 @@ import '../../../widgetsShared/profile_picture_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../../addRemoveOperatorBalancePlush/page/add_remove_operator_balance_pluch_page.dart';
+import '../../addPlushInStock/page/add_plush_in_stock_page.dart';
+import '../../addRemoveOperatorBalancePlush/page/add_remove_operator_balance_plush_page.dart';
 import '../controller/main_menu_stokist_controller.dart';
 
 class MainMenuStokistAfterLoadWidget extends StatefulWidget {
@@ -226,40 +226,43 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () {
-
+                        onPressed: () async {
+                          await Get.to(() => AddPlushInStockPage());
+                          await controller.getQuantityData();
                         },
                       ),
-                      if ((LoggedUser.balanceStuffedAnimals ?? 0) > 0)
-                        Padding(
-                          padding: EdgeInsets.only(top: 2.h),
-                          child: FloatingActionButton.extended(
-                            heroTag: "firstFloatingActionButton",
-                            backgroundColor: AppColors.defaultColor,
-                            foregroundColor: AppColors.backgroundColor,
-                            elevation: 3,
-                            icon: Image.asset(
-                              Paths.Pelucia_Add,
-                              height: 3.h,
-                              color: AppColors.whiteColor,
-                            ),
-                            label: TextWidget(
-                              "Adicionar Pelúcia no Saldo do Operador",
-                              maxLines: 1,
-                              textColor: AppColors.whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.sp,
-                              textAlign: TextAlign.center,
-                            ),
-                            onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
-                                  addPluch: true,
-                                )),
-                          ),
-                        ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
                         child: FloatingActionButton.extended(
                           heroTag: "secondFloatingActionButton",
+                          backgroundColor: AppColors.defaultColor,
+                          foregroundColor: AppColors.backgroundColor,
+                          elevation: 3,
+                          icon: Image.asset(
+                            Paths.Pelucia_Add,
+                            height: 3.h,
+                            color: AppColors.whiteColor,
+                          ),
+                          label: TextWidget(
+                            "Adicionar Pelúcia no Saldo do Operador",
+                            maxLines: 1,
+                            textColor: AppColors.whiteColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            textAlign: TextAlign.center,
+                          ),
+                          onPressed: () async {
+                            await Get.to(() => AddRemoveOperatorBalancePlushPage(
+                              addPluch: true,
+                            ));
+                            await controller.getQuantityData();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.h),
+                        child: FloatingActionButton.extended(
+                          heroTag: "thirdFloatingActionButton",
                           backgroundColor: AppColors.defaultColor,
                           foregroundColor: AppColors.backgroundColor,
                           elevation: 3,
@@ -276,9 +279,12 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () => Get.to(() => AddRemoveOperatorBalancePlushPage(
-                                addPluch: false,
-                              )),
+                          onPressed: () async {
+                            await Get.to(() => AddRemoveOperatorBalancePlushPage(
+                              addPluch: false,
+                            ));
+                            await controller.getQuantityData();
+                          },
                         ),
                       ),
                     ],
