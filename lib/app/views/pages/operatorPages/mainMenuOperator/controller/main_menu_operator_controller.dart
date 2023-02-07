@@ -21,8 +21,8 @@ class MainMenuOperatorController extends GetxController {
   late RxString welcomePhrase;
   late RxInt amountPouch;
   late RxInt amountTeddy;
-  late DateTime pouchLastChange;
-  late DateTime teddyLastChange;
+  late Rx<DateTime> pouchLastChange;
+  late Rx<DateTime> teddyLastChange;
   late SharedPreferences sharedPreferences;
   late List<Visit> visitsUser;
   late List<Visit> visitsWithMoneydrawal;
@@ -62,8 +62,8 @@ class MainMenuOperatorController extends GetxController {
     nameInitials = "".obs;
     amountPouch = (LoggedUser.balanceMoney ?? 0).obs;
     amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
-    pouchLastChange = LoggedUser.pouchLastUpdate ?? DateTime.now();
-    teddyLastChange = LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now();
+    pouchLastChange = (LoggedUser.pouchLastUpdate ?? DateTime.now()).obs;
+    teddyLastChange = (LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now()).obs;
   }
 
   _getNameUser() {
@@ -130,10 +130,12 @@ class MainMenuOperatorController extends GetxController {
       if (operatorInformations == null) throw Exception();
       amountPouch.value = operatorInformations.balanceMoney;
       amountTeddy.value = operatorInformations.balanceStuffedAnimals;
-      pouchLastChange = operatorInformations.pouchLastUpdate ?? DateTime.now();
-      teddyLastChange = operatorInformations.stuffedAnimalsLastUpdate ?? DateTime.now();
+      pouchLastChange.value = operatorInformations.pouchLastUpdate ?? DateTime.now();
+      teddyLastChange.value = operatorInformations.stuffedAnimalsLastUpdate ?? DateTime.now();
       visitsUser = operatorInformations.visitsUser;
       visitsWithMoneydrawal = operatorInformations.visitsWithMoneydrawal;
+      LoggedUser.pouchLastUpdate = operatorInformations.pouchLastUpdate ?? DateTime.now();
+      LoggedUser.stuffedAnimalsLastUpdate = operatorInformations.stuffedAnimalsLastUpdate ?? DateTime.now();
     } catch (_) {}
   }
 }

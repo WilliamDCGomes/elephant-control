@@ -18,6 +18,7 @@ import '../../newReminder/page/new_reminder_page.dart';
 import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
 import '../../operatorsVisits/page/operators_visits_page.dart';
 import '../../recallMoney/page/recall_money_page.dart';
+import '../../stockControl/page/stock_control_page.dart';
 import '../../users/page/user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widgets/menu_options_widget.dart';
@@ -281,6 +282,12 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                             text: "Relatórios",
                             imagePath: Paths.Relatorio,
                             onTap: () => Get.to(() => AdminReportPage()),
+                          ),
+                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Estoque")))
+                          MenuOptionsWidget(
+                            text: "Estoque",
+                            imagePath: Paths.Pelucia,
+                            onTap: () => Get.to(() => StockControlPage()),
                           ),
                         if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Solicitacoes")))
                           MenuOptionsWidget(

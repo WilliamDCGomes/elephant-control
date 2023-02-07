@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/user/user.dart';
 import '../../../../../../base/services/stokist_plush_service.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 
 class AddRemoveOperatorBalancePlushController extends GetxController {
@@ -92,7 +93,7 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
             builder: (context) => InformationPopup(
               warningMessage: "Saldo do operador é menor do que o você está "
                   "tentando remover!\nSaldo atual do operador: " +
-                  operator.balanceStuffedAnimals!.toString(),
+                  FormatNumbers.scoreIntNumber(operator.balanceStuffedAnimals),
             ),
           );
         }

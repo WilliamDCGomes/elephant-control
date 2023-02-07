@@ -219,7 +219,7 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                           color: AppColors.whiteColor,
                         ),
                         label: TextWidget(
-                          "Adicionar Pelúcia ao Estoque",
+                          "Adicionar Pelúcias ao Estoque",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,
@@ -244,7 +244,7 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             color: AppColors.whiteColor,
                           ),
                           label: TextWidget(
-                            "Adicionar Pelúcia no Saldo do Operador",
+                            "Adicionar Pelúcias no Saldo do Operador",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
@@ -272,7 +272,7 @@ class _MainMenuStokistAfterLoadWidgetState extends State<MainMenuStokistAfterLoa
                             color: AppColors.whiteColor,
                           ),
                           label: TextWidget(
-                            "Retirar Pelúcia do Saldo do Operador",
+                            "Retirar Pelúcias do Saldo do Operador",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,

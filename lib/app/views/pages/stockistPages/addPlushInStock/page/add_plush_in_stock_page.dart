@@ -12,7 +12,12 @@ import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/add_plush_in_stock_controller.dart';
 
 class AddPlushInStockPage extends StatefulWidget {
-  const AddPlushInStockPage({Key? key}) : super(key: key);
+  final bool removePlush;
+
+  const AddPlushInStockPage({
+    Key? key,
+    this.removePlush = false,
+  }) : super(key: key);
 
   @override
   State<AddPlushInStockPage> createState() => _AddPlushInStockPageState();
@@ -23,7 +28,7 @@ class _AddPlushInStockPageState extends State<AddPlushInStockPage> {
 
   @override
   void initState() {
-    controller = Get.put(AddPlushInStockController());
+    controller = Get.put(AddPlushInStockController(widget.removePlush));
     super.initState();
   }
 
@@ -55,7 +60,7 @@ class _AddPlushInStockPageState extends State<AddPlushInStockPage> {
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Adicionar Pelúcias",
+                          title: (widget.removePlush ? "Remover " : "Adicionar ") + "Pelúcias",
                         ),
                       ),
                       Expanded(
@@ -63,7 +68,7 @@ class _AddPlushInStockPageState extends State<AddPlushInStockPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InformationContainerWidget(
-                              iconPath: Paths.Pelucia_Add,
+                              iconPath: widget.removePlush ? Paths.Pelucia_Remove : Paths.Pelucia_Add,
                               textColor: AppColors.whiteColor,
                               backgroundColor: AppColors.defaultColor,
                               informationText: "",
@@ -72,7 +77,7 @@ class _AddPlushInStockPageState extends State<AddPlushInStockPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    "Adicionar Pelúcias no Estoque",
+                                    (widget.removePlush ? "Remover " : "Adicionar ") + "Pelúcias no Estoque",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,

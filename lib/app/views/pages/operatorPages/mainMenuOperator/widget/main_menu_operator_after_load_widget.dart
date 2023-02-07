@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
@@ -182,7 +183,9 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: Obx(
                                                   () => TextWidget(
-                                                    controller.amountPouch.value.toString(),
+                                                    FormatNumbers.scoreIntNumber(
+                                                      controller.amountPouch.value,
+                                                    ),
                                                     fontWeight: FontWeight.bold,
                                                     maxLines: 1,
                                                     textColor: AppColors.whiteColor,
@@ -194,13 +197,17 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                             ],
                                           ),
                                         ),
-                                        TextWidget(
-                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.pouchLastChange)}",
-                                          maxLines: 1,
-                                          textColor: AppColors.whiteColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.sp,
-                                          textAlign: TextAlign.center,
+                                        Obx(
+                                          () => TextWidget(
+                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(
+                                                controller.pouchLastChange.value,
+                                            )}",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 2.h,
@@ -254,7 +261,9 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                               Padding(
                                                 padding: EdgeInsets.only(left: 1.w),
                                                 child: TextWidget(
-                                                  (LoggedUser.balanceStuffedAnimals ?? 0).toString(),
+                                                  FormatNumbers.scoreIntNumber(
+                                                    LoggedUser.balanceStuffedAnimals,
+                                                  ),
                                                   fontWeight: FontWeight.bold,
                                                   maxLines: 1,
                                                   textColor: AppColors.whiteColor,
@@ -265,13 +274,17 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                             ],
                                           ),
                                         ),
-                                        TextWidget(
-                                          "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.teddyLastChange)}",
-                                          maxLines: 1,
-                                          textColor: AppColors.whiteColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.sp,
-                                          textAlign: TextAlign.center,
+                                        Obx(
+                                          () => TextWidget(
+                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(
+                                              controller.teddyLastChange.value,
+                                            )}",
+                                            maxLines: 1,
+                                            textColor: AppColors.whiteColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 2.h,
