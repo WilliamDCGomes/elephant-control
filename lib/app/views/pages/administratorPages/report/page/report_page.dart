@@ -1,29 +1,27 @@
-import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
-import '../../../stockistPages/addPlushInStock/page/add_plush_in_stock_page.dart';
 import '../../../widgetsShared/information_container_widget.dart';
-import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/stock_control_controller.dart';
+import '../../adminReport/page/admin_report_page.dart';
+import '../../closingReport/page/closing_report_page.dart';
+import '../controller/report_controller.dart';
 
-class StockControlAfterLoadWidget extends StatefulWidget {
-  const StockControlAfterLoadWidget({Key? key}) : super(key: key);
+class ReportPage extends StatefulWidget {
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
-  State<StockControlAfterLoadWidget> createState() => _StockControlAfterLoadWidgetState();
+  State<ReportPage> createState() => _ReportPageState();
 }
 
-class _StockControlAfterLoadWidgetState extends State<StockControlAfterLoadWidget> {
-  late final StockControlController controller;
+class _ReportPageState extends State<ReportPage> {
+  late final ReportController controller;
   @override
   void initState() {
-    controller = Get.find(tag: "stock-control-controller");
+    controller = Get.put(ReportController());
     super.initState();
   }
 
@@ -59,55 +57,17 @@ class _StockControlAfterLoadWidgetState extends State<StockControlAfterLoadWidge
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Controle de Estoque",
+                                title: "Relatórios",
                               ),
                             ),
                           ],
                         ),
                       ),
                       InformationContainerWidget(
-                        iconPath: Paths.Pelucia,
+                        iconPath: Paths.Relatorio,
                         textColor: AppColors.whiteColor,
                         backgroundColor: AppColors.defaultColor,
-                        informationText: "",
-                        customContainer: Obx(
-                          () => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 2.h),
-                                child: RichTextTwoDifferentWidget(
-                                  firstText: "Total de pelúcias no estoque: ",
-                                  firstTextColor: AppColors.whiteColor,
-                                  firstTextFontWeight: FontWeight.normal,
-                                  firstTextSize: 18.sp,
-                                  secondText: FormatNumbers.scoreIntNumber(
-                                    controller.plushQuantity.value,
-                                  ),
-                                  secondTextColor: AppColors.whiteColor,
-                                  secondTextFontWeight: FontWeight.bold,
-                                  secondTextSize: 18.sp,
-                                  secondTextDecoration: TextDecoration.none,
-                                  maxLines: 2,
-                                ),
-                              ),
-                              RichTextTwoDifferentWidget(
-                                firstText: "Última atualização: ",
-                                firstTextColor: AppColors.whiteColor,
-                                firstTextFontWeight: FontWeight.normal,
-                                firstTextSize: 18.sp,
-                                secondText: DateFormatToBrazil.formatDateAndHour(
-                                  controller.quantityLastUpdate.value
-                                ),
-                                secondTextColor: AppColors.whiteColor,
-                                secondTextFontWeight: FontWeight.bold,
-                                secondTextSize: 18.sp,
-                                secondTextDecoration: TextDecoration.none,
-                                maxLines: 2,
-                              ),
-                            ],
-                          ),
-                        ),
+                        informationText: "Selecione uma das opções para visualizar os relatórios",
                       ),
                     ],
                   ),
@@ -126,17 +86,14 @@ class _StockControlAfterLoadWidgetState extends State<StockControlAfterLoadWidge
                           color: AppColors.whiteColor,
                         ),
                         label: TextWidget(
-                          "Adicionar Pelúcias ao Estoque",
+                          "Relatório Geral",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () async {
-                          await Get.to(() => AddPlushInStockPage());
-                          await controller.getQuantityData();
-                        },
+                        onPressed: () => Get.to(() => AdminReportPage()),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -151,25 +108,19 @@ class _StockControlAfterLoadWidgetState extends State<StockControlAfterLoadWidge
                             color: AppColors.whiteColor,
                           ),
                           label: TextWidget(
-                            "Remover Pelúcias ao Estoque",
+                            "Relatório de Fechamento",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () async {
-                            await Get.to(() => AddPlushInStockPage(
-                              removePlush: true,
-                            ));
-                            await controller.getQuantityData();
-                          },
+                          onPressed: () => Get.to(() => ClosingReportPage()),
                         ),
                       ),
                     ],
                   ),
                 ),
-                controller.loadingWithSuccessOrErrorWidget,
               ],
             ),
           ),

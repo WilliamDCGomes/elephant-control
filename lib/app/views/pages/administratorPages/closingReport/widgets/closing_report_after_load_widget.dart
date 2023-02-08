@@ -11,23 +11,23 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/admin_report_controller.dart';
-import 'all_machines_report_information_widget.dart';
-import 'machine_report_information_widget.dart';
+import '../controller/closing_report_controller.dart';
+import 'all_machines_closing_report_information_widget.dart';
+import 'machine_closing_report_information_widget.dart';
 
-class AdminReportAfterLoadWidget extends StatefulWidget {
-  const AdminReportAfterLoadWidget({Key? key}) : super(key: key);
+class ClosingReportAfterLoadWidget extends StatefulWidget {
+  const ClosingReportAfterLoadWidget({Key? key}) : super(key: key);
 
   @override
-  State<AdminReportAfterLoadWidget> createState() => _AdminReportAfterLoadWidgetState();
+  State<ClosingReportAfterLoadWidget> createState() => _ClosingReportAfterLoadWidgetState();
 }
 
-class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget> {
-  late AdminReportController controller;
+class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWidget> {
+  late ClosingReportController controller;
 
   @override
   void initState() {
-    controller = Get.find(tag: "admin-report-controller");
+    controller = Get.find(tag: "closing-report-controller");
     super.initState();
   }
 
@@ -59,27 +59,15 @@ class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget>
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: TitleWithBackButtonWidget(
-                          title: "Relatório Geral",
+                          title: "Relatório de Fechamento",
                         ),
                       ),
                       InformationContainerWidget(
                         iconPath: Paths.Relatorio,
                         textColor: AppColors.whiteColor,
                         backgroundColor: AppColors.defaultColor,
-                        informationText: "",
-                        customContainer: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextWidget(
-                              "Selecione uma máquina para visualizar um relatório sobre ela em específico.",
-                              textColor: AppColors.whiteColor,
-                              fontSize: 16.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ],
-                        ),
+                        informationText: "Selecione uma máquina para visualizar um relatório sobre ela em específico.",
+                        fontText: 16.sp,
                       ),
                       Obx(
                         () => Padding(
@@ -100,76 +88,40 @@ class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget>
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () async => await controller.filterPerInitialDate(),
-                              child: Container(
-                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: AppColors.defaultColor,
-                                    width: .25.h,
+                        child: InkWell(
+                          onTap: () async => await controller.filterPerInitialDate(),
+                          child: Container(
+                            height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: AppColors.defaultColor,
+                                width: .25.h,
+                              ),
+                            ),
+                            padding: EdgeInsets.all(.5.h),
+                            margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: GetBuilder(
+                                id: "initial-date-filter",
+                                init: controller,
+                                builder: (_) => RichTextTwoDifferentWidget(
+                                  firstText: "Mês do fechamento: ",
+                                  firstTextColor: AppColors.blackColor,
+                                  firstTextFontWeight: FontWeight.normal,
+                                  firstTextSize: 16.sp,
+                                  secondText: DateFormatToBrazil.formatDate(
+                                    controller.closingReportDateFilter,
                                   ),
-                                ),
-                                padding: EdgeInsets.all(.5.h),
-                                margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GetBuilder(
-                                    id: "initial-date-filter",
-                                    init: controller,
-                                    builder: (_) => RichTextTwoDifferentWidget(
-                                      firstText: "Data Inicial: ",
-                                      firstTextColor: AppColors.blackColor,
-                                      firstTextFontWeight: FontWeight.normal,
-                                      firstTextSize: 16.sp,
-                                      secondText: DateFormatToBrazil.formatDate(controller.initialDateFilter),
-                                      secondTextColor: AppColors.blackColor,
-                                      secondTextFontWeight: FontWeight.bold,
-                                      secondTextSize: 16.sp,
-                                      secondTextDecoration: TextDecoration.none,
-                                    ),
-                                  ),
+                                  secondTextColor: AppColors.blackColor,
+                                  secondTextFontWeight: FontWeight.bold,
+                                  secondTextSize: 16.sp,
+                                  secondTextDecoration: TextDecoration.none,
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () async => await controller.filterPerFinalDate(),
-                              child: Container(
-                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: AppColors.defaultColor,
-                                    width: .25.h,
-                                  ),
-                                ),
-                                padding: EdgeInsets.all(.5.h),
-                                margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GetBuilder(
-                                    id: "final-date-filter",
-                                    init: controller,
-                                    builder: (_) => RichTextTwoDifferentWidget(
-                                      firstText: "Data Final: ",
-                                      firstTextColor: AppColors.blackColor,
-                                      firstTextFontWeight: FontWeight.normal,
-                                      firstTextSize: 16.sp,
-                                      secondText: DateFormatToBrazil.formatDate(controller.finalDateFilter),
-                                      secondTextColor: AppColors.blackColor,
-                                      secondTextFontWeight: FontWeight.bold,
-                                      secondTextSize: 16.sp,
-                                      secondTextDecoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                       Expanded(
@@ -183,10 +135,10 @@ class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget>
                               padding: EdgeInsets.symmetric(horizontal: 2.h),
                               child: Visibility(
                                 visible: controller.machineSelected.value == "Todas",
-                                child: AllMachinesReportInformationWidget(
+                                child: AllMachinesClosingReportInformationWidget(
                                   reportViewController: controller.reportViewController!,
                                 ),
-                                replacement: MachineReportInformationWidget(
+                                replacement: MachineClosingReportInformationWidget(
                                   reportViewController: controller.reportViewController!,
                                 ),
                               ),

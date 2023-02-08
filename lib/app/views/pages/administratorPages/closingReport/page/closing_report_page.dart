@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../widgetsShared/shimmer/default_shimmer.dart';
-import '../controller/admin_report_controller.dart';
-import '../widgets/admin_report_after_load_widget.dart';
+import '../controller/closing_report_controller.dart';
+import '../widgets/closing_report_after_load_widget.dart';
 
-class AdminReportPage extends StatefulWidget {
-  const AdminReportPage({Key? key}) : super(key: key);
+class ClosingReportPage extends StatefulWidget {
+  const ClosingReportPage({Key? key}) : super(key: key);
 
   @override
-  State<AdminReportPage> createState() => _AdminReportPageState();
+  State<ClosingReportPage> createState() => _ClosingReportPageState();
 }
 
-class _AdminReportPageState extends State<AdminReportPage> {
-  late AdminReportController controller;
+class _ClosingReportPageState extends State<ClosingReportPage> {
+  late ClosingReportController controller;
 
   @override
   void initState() {
-    controller = Get.put(AdminReportController(), tag: "admin-report-controller");
+    controller = Get.put(ClosingReportController(), tag: "closing-report-controller");
     super.initState();
   }
 
@@ -27,14 +27,14 @@ class _AdminReportPageState extends State<AdminReportPage> {
       child: Obx(
         () => controller.screenLoading.value ?
         DefaultShimmer(
-          pageTitle: "Relatório Geral",
+          pageTitle: "Relatório de Fechamento",
           showSecondFilterField: true,
           showThirdFilterField: true,
           showButton: true,
           mainCardSize: 4.h,
           cardsSize: 10.h,
         ) :
-        AdminReportAfterLoadWidget(),
+        ClosingReportAfterLoadWidget(),
       ),
     );
   }

@@ -11,6 +11,7 @@ class InformationContainerWidget extends StatelessWidget {
   final EdgeInsets? padding;
   final String iconPath;
   final String informationText;
+  final double? fontText;
   final Color textColor;
   final Color backgroundColor;
   final bool? iconInLeft;
@@ -24,6 +25,7 @@ class InformationContainerWidget extends StatelessWidget {
     this.marginIcon,
     this.padding,
     this.iconInLeft,
+    this.fontText,
     required this.iconPath,
     required this.informationText,
     required this.textColor,
@@ -61,7 +63,7 @@ class InformationContainerWidget extends StatelessWidget {
                 TextWidget(
                   informationText,
                   textColor: textColor,
-                  fontSize: 18.sp,
+                  fontSize: fontText ?? 18.sp,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   fontWeight: FontWeight.bold,
