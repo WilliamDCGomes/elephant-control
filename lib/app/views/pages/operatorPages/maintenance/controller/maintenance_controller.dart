@@ -17,6 +17,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/services/user_service.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
@@ -48,6 +49,7 @@ class MaintenanceController extends GetxController {
   late ImagesPictureWidget afterMaintenanceImageClock;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final VisitService _visitService;
+  late final UserService _userService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
   late final RxList<Machine> _machines;
@@ -64,6 +66,7 @@ class MaintenanceController extends GetxController {
     _showReminders = false.obs;
     _incidents = <IncidentObject>[];
     _visitService = VisitService();
+    _userService = UserService();
     _visitMediaService = VisitMediaService();
     _machines = <Machine>[].obs;
     _incidentService = IncidentService();
@@ -209,6 +212,25 @@ class MaintenanceController extends GetxController {
         final bool createdIncident = await _incidentService.createIncident(_incident.incident);
         if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
       }
+
+      await _userService.AddOrRemoveBalanceStuffedAnimalsJustOperator(
+        LoggedUser.id,
+        int.parse(teddyAddMachine.text),
+        observations.text,
+        false,
+      );
+
+      if(LoggedUser.balanceStuffedAnimals == null){
+        LoggedUser.balanceStuffedAnimals = 0;
+      }
+      else{
+        LoggedUser.balanceStuffedAnimals = LoggedUser.balanceStuffedAnimals! - int.parse(teddyAddMachine.text);
+        if(LoggedUser.balanceStuffedAnimals! < 0){
+          LoggedUser.balanceStuffedAnimals = 0;
+        }
+      }
+      LoggedUser.stuffedAnimalsLastUpdate = DateTime.now();
+
       await loadingWithSuccessOrErrorWidget.stopAnimation();
 
       if(showAveragePopup){

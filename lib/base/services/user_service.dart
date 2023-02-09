@@ -300,6 +300,24 @@ class UserService extends BaseService implements IUserService {
   }
 
   @override
+  Future<bool> AddOrRemoveBalanceStuffedAnimalsJustOperator(
+      String userOperatorId, int balanceStuffedAnimals, String observation, bool addStuffedAnimals) async {
+    try {
+      final url = baseUrlApi + 'User/AddOrRemoveBalanceStuffedAnimalsJustOperator';
+      final response = await super.post(url, null, query: {
+        "UserOperatorId": userOperatorId,
+        "BalanceStuffedAnimals": balanceStuffedAnimals.toString(),
+        "Observation": observation,
+        "AddStuffedAnimals": addStuffedAnimals.toString(),
+      });
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
   Future<bool> addOrRemoveRoleByUserId(UserRole userRole) async {
     try {
       final url = baseUrlApi + 'User/AddOrRemoveRoleByUserId';

@@ -79,9 +79,14 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                             ),
                             Expanded(
                               child: Obx(
-                                    () => Visibility(
+                                () => Visibility(
                                   visible: controller.visits.isNotEmpty,
-                                  replacement: Center(child: TextWidget("Nenhuma visita encontrada", textColor: AppColors.blackColor)),
+                                  replacement: Center(
+                                    child: TextWidget(
+                                      "Nenhuma visita encontrada",
+                                      textColor: AppColors.blackColor,
+                                    ),
+                                  ),
                                   child: ListView.builder(
                                     itemCount: controller.visits.length,
                                     shrinkWrap: true,

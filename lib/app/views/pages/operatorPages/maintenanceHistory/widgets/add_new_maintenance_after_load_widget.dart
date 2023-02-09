@@ -61,25 +61,8 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TitleWithBackButtonWidget(
-                                title: "Visitas Pendentes",
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15.w,
-                            ),
-                            InkWell(
-                              //onTap: () => widget.controller.callFilterMaintenanceList(),
-                              child: Icon(
-                                Icons.filter_alt,
-                                color: AppColors.whiteColor,
-                                size: 3.h,
-                              ),
-                            ),
-                          ],
+                        child: TitleWithBackButtonWidget(
+                          title: "Visitas Pendentes",
                         ),
                       ),
                       Expanded(

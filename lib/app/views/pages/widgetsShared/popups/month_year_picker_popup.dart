@@ -67,7 +67,7 @@ class _MonthYearPickerPopupState extends State<MonthYearPickerPopup> {
     Picker? pickedValue = null;
 
     Picker(
-      selecteds: [DateTime.now().month - 1],
+      selecteds: [datePicker.value.month - 1],
       onSelect: (value, _, _2){
         pickedValue = value;
       },
@@ -183,7 +183,7 @@ class _MonthYearPickerPopupState extends State<MonthYearPickerPopup> {
     Picker? pickedValue = null;
 
     Picker(
-      selecteds: [allYears.firstWhere((element) => element == DateTime.now().year)],
+      selecteds: [allYears.indexOf(datePicker.value.year)],
       onSelect: (value, _, _2){
         pickedValue = value;
       },
