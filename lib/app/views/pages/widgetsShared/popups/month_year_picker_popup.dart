@@ -51,7 +51,7 @@ class _MonthYearPickerPopupState extends State<MonthYearPickerPopup> {
       "Dezembro",
     ];
     allYears = <int>[];
-    for(int i = 2023; i <= DateTime.now().year; i++){
+    for(int i = 2022; i <= DateTime.now().year; i++){
       allYears.add(i);
     }
     super.initState();
@@ -196,7 +196,6 @@ class _MonthYearPickerPopupState extends State<MonthYearPickerPopup> {
         maxLines: 2,
       ),
       headerColor: AppColors.defaultColor,
-      looping: true,
       footer: Container(
         padding: EdgeInsets.all(1.h),
         child: Row(

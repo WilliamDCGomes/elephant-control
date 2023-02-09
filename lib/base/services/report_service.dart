@@ -17,7 +17,7 @@ class ReportService extends BaseService {
   Future<ReportViewController?> getClosingReport(DateTime closingReportDateFilter, String? machineId) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'Report/GetDefaultReport';
+      final url = baseUrlApi + 'Report/GetClosingReport';
       final response = await get(url, query: {"ClosingReportDateFilter": closingReportDateFilter.toString(), "MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return ReportViewController.fromJson(response.body);
