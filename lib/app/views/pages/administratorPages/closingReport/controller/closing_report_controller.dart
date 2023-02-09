@@ -6,8 +6,11 @@ import '../../../../../../base/services/report_service.dart';
 import '../../../../../../base/viewControllers/report_viewcontroller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/popups/month_year_picker_popup.dart';
 
 class ClosingReportController extends GetxController {
+  late int month;
+  late int year;
   late DateTime closingReportDateFilter;
   late RxBool screenLoading;
   late RxString machineSelected;
@@ -30,6 +33,8 @@ class ClosingReportController extends GetxController {
   }
 
   _initializeVariables() {
+    month = DateTime.now().month;
+    year = DateTime.now().year;
     closingReportDateFilter = DateTime.now();
     screenLoading = true.obs;
     machineSelected = "".obs;
@@ -111,20 +116,26 @@ class ClosingReportController extends GetxController {
     }
   }
 
-  filterPerInitialDate() async {
-    DateTime auxDate = DateTime.now();
-
-    final DateTime? picked = await showDatePicker(
+  filterPerDate() async {
+    await showDialog(
       context: Get.context!,
-      helpText: "SELECIONE UMA DATA",
-      confirmText: "Selecionar",
-      cancelText: "Cancelar",
-      initialDate: closingReportDateFilter,
-      firstDate: DateTime(auxDate.year - 2, auxDate.month, auxDate.day),
-      lastDate: auxDate,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return MonthYearPickerPopup(
+          initialDate: closingReportDateFilter,
+          returnFunction: (int returnMonth, int returnYear) =>
+              returnFunction(returnMonth, returnYear),
+        );
+      },
     );
+  }
 
-    if (picked != null && picked != closingReportDateFilter) {
+  returnFunction(int returnMonth, int returnYear) async {
+    late DateTime picked;
+
+    picked = DateTime(returnYear, returnMonth);
+
+    if (picked != closingReportDateFilter) {
       closingReportDateFilter = picked;
       update(["initial-date-filter"]);
     }

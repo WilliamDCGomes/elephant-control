@@ -89,7 +89,7 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: InkWell(
-                          onTap: () async => await controller.filterPerInitialDate(),
+                          onTap: () async => await controller.filterPerDate(),
                           child: Container(
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
                             decoration: BoxDecoration(
@@ -107,11 +107,11 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                                 id: "initial-date-filter",
                                 init: controller,
                                 builder: (_) => RichTextTwoDifferentWidget(
-                                  firstText: "Mês do fechamento: ",
+                                  firstText: "Data do fechamento: ",
                                   firstTextColor: AppColors.blackColor,
                                   firstTextFontWeight: FontWeight.normal,
                                   firstTextSize: 16.sp,
-                                  secondText: DateFormatToBrazil.formatDate(
+                                  secondText: DateFormatToBrazil.mounthAndYear(
                                     controller.closingReportDateFilter,
                                   ),
                                   secondTextColor: AppColors.blackColor,
