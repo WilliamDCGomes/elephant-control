@@ -62,7 +62,7 @@ class RegisterMachineController extends GetxController {
         <ReturnMachineViewController>[ReturnMachineViewController(asset_number: "Não encontrado", id: -1)].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     machineNameTextController = TextEditingController(text: _machine?.name);
-    machineTypeTextController = TextEditingController();
+    machineTypeTextController = TextEditingController(text: _machine?.machineType ?? "");
     externalCodeMachineController = TextEditingController(text: _machine?.externalId?.toString());
     minAverageTextController =
         TextEditingController(text: _machine == null ? null : _machine?.minimumAverageValue.toInt().toString());
@@ -175,6 +175,7 @@ class RegisterMachineController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       _machine ??= Machine(name: machineNameTextController.text);
       _machine!.name = machineNameTextController.text;
+      _machine!.machineType = machineTypeTextController.text;
       _machine!.daysToNextVisit = int.parse(periodVisitsTextController.text);
       _machine!.prize = secondClockTextController.text.isNotEmpty ? double.tryParse(firstClockTextController.text) : null;
       _machine!.balanceStuffedAnimals =
@@ -240,7 +241,7 @@ class RegisterMachineController extends GetxController {
       );
       return false;
     }
-    if (machineTypeTextController.text.isEmpty) {
+    /*if (machineTypeTextController.text.isEmpty) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -251,7 +252,7 @@ class RegisterMachineController extends GetxController {
         },
       );
       return false;
-    }
+    }*/
     if (minAverageTextController.text.isNotEmpty &&
         maxAverageTextController.text.isNotEmpty &&
         int.parse(minAverageTextController.text) > int.parse(maxAverageTextController.text)) {

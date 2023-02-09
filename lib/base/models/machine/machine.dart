@@ -8,6 +8,7 @@ part 'machine.g.dart';
 @JsonSerializable()
 class Machine extends ElephantUserCore {
   late String name;
+  late String? machineType;
   DateTime? lastVisit;
   int? daysToNextVisit;
   double? prize;
@@ -30,7 +31,14 @@ class Machine extends ElephantUserCore {
   int? externalId;
   bool? machineAddOtherList;
   List<ReminderMachine>? reminders;
-  @JsonKey(ignore: true)
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: false,
+  )
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: false,
+  )
   late bool selected;
 
   Machine({
@@ -51,13 +59,16 @@ class Machine extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Name TEXT, StoreId TEXT, Inclusion TEXT, IncludeUserId TEXT,
+      Name TEXT, MachineType TEXT, StoreId TEXT, Inclusion TEXT, IncludeUserId TEXT,
       LastBalanceStuffedAnimals DECIMAL, DaysToNextVisit INTEGER,
       LastVisit TEXT, Prize DECIMAL, Address TEXT, Cep TEXT,
       City TEXT, Complement TEXT, District TEXT, Latitude TEXT,
       Localization TEXT, Longitude TEXT, Number TEXT,
       Uf TEXT, MaximumAverageValue DECIMAL, MinimumAverageValue DECIMAL,
       LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL, ExternalId INTEGER)""";
+
+  static String get addColumnMachineType => """
+      ALTER TABLE $tableName ADD COLUMN MachineType TEXT""";
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 

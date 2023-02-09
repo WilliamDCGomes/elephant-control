@@ -158,9 +158,7 @@ class _MachineAfterLoadWidgetState extends State<MachineAfterLoadWidget> {
                                     ],
                                     child: const SizedBox(),
                                     visitDate: DateTime.now(),
-                                    onTap: (){
-
-                                    },
+                                    onTap: (){},
                                   );
                                 },
                               ),

@@ -24,6 +24,7 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?
+      ..machineType = json['machineType'] as String?
       ..daysToNextVisit = json['daysToNextVisit'] as int?
       ..prize = (json['prize'] as num?)?.toDouble()
       ..lastPrize = (json['lastPrize'] as num?)?.toDouble()
@@ -54,6 +55,7 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'active': instance.active,
       'includeUserId': instance.includeUserId,
       'name': instance.name,
+      'machineType': instance.machineType,
       'lastVisit': instance.lastVisit?.toIso8601String(),
       'daysToNextVisit': instance.daysToNextVisit,
       'prize': instance.prize,
