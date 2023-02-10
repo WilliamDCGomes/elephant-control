@@ -12,8 +12,8 @@ import '../../../widgetsShared/text_widget.dart';
 
 class MaintenanceInformationPopup {
   static String getAverage(String clock1, String clock2){
-    if(clock1 != "" && clock2 != "" && int.parse(clock2) != 0){
-      return (int.parse(clock1) / int.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
+    if(clock1 != "" && clock2 != "" && double.parse(clock2) != 0.0){
+      return (double.parse(clock1) / double.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
     }
     return "0,00";
   }
@@ -182,7 +182,7 @@ class MaintenanceInformationPopup {
                   padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                   child: Center(
                     child: TextWidget(
-                      clock1,
+                      double.parse(clock1).toStringAsFixed(0),
                       textColor: AppColors.defaultColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16.sp,
@@ -212,7 +212,7 @@ class MaintenanceInformationPopup {
                   padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                   child: Center(
                     child: TextWidget(
-                      clock2,
+                      double.parse(clock2).toStringAsFixed(0),
                       textColor: AppColors.defaultColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16.sp,

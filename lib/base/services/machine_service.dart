@@ -32,18 +32,6 @@ class MachineService extends BaseService implements IMachineService {
     }
   }
 
-  Future<bool> setAverageMachine(String machineId) async {
-    try {
-      final token = await getToken();
-      final url = baseUrlApi + 'Machine/SetAverageMachine';
-      final response = await get(url, query: {"MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
-      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
-      return response.body;
-    } catch (_) {
-      return false;
-    }
-  }
-
   Future<List<Machine>> getMachineVisitByUserId() async {
     try {
       final token = await getToken();
@@ -127,6 +115,41 @@ class MachineService extends BaseService implements IMachineService {
       final token = await getToken();
       final url = baseUrlApi + 'Machine/CreateOrUpdateMachine';
       final response = await post(url, machine.toJson(), headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> setAverageMachine(String machineId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/SetAverageMachine';
+      final response = await get(url, query: {"MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> setMachineLocation(String machineId, double latitude, double longitude) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/SetMachineLocation';
+      final response = await post(
+        url,
+        null,
+        query: {
+          "MachineId": machineId,
+          "Latitude": latitude.toString(),
+          "Longitude": longitude.toString(),
+        },
+        headers: {
+          'Authorization': 'Bearer ${token}',
+        },
+      );
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
     } catch (_) {

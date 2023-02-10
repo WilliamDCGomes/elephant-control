@@ -14,6 +14,8 @@ class MaintenanceCardWidget extends StatefulWidget {
   final String machineName;
   final String city;
   final String workPriority;
+  final double? latitude;
+  final double? longitude;
   final int priorityColor;
   final bool showRadius;
   final String clock1;
@@ -29,7 +31,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final bool operatorDeletedMachine;
   final String status;
   final bool decoratorLine;
-  final bool onTapHabilitate;
+  final bool onTapDesabilitate;
   final DateTime visitDate;
   final dynamic Function()? onTap;
   final Widget? child;
@@ -56,10 +58,12 @@ class MaintenanceCardWidget extends StatefulWidget {
     this.showPriorityAndStatus = true,
     this.showMap,
     this.responsibleName,
+    this.latitude,
+    this.longitude,
     this.machineAddOtherList = false,
     this.operatorDeletedMachine = false,
     this.decoratorLine = false,
-    this.onTapHabilitate = true,
+    this.onTapDesabilitate = true,
     this.child,
     this.machineContainerColor,
     this.childMaintenanceHeaderCardWidget = const [],
@@ -78,7 +82,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
       padding: EdgeInsets.only(bottom: 2.h),
       child: TextButtonWidget(
         onTap: widget.onTap ??
-            (!widget.onTapHabilitate
+            (!widget.onTapDesabilitate
                 ? null
                 : () {
                     BottomSheetPopup.showAlert(
@@ -111,6 +115,8 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                 done: widget.machineAddOtherList, //widget.status == "Realizada" || widget.status == "Malote retirado",
                 operatorDeletedMachine: widget.operatorDeletedMachine,
                 decoratorLine: widget.decoratorLine,
+                latitude: widget.latitude,
+                longitude: widget.longitude,
                 decoration: BoxDecoration(
                   color: widget.machineContainerColor ?? Color(widget.priorityColor),
                   borderRadius: widget.showRadius ? BorderRadius.circular(2.h) : null,

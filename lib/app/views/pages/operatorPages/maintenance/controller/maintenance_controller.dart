@@ -6,6 +6,7 @@ import 'package:elephant_control/app/views/pages/operatorPages/occurrence/contro
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
+import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
@@ -50,6 +51,7 @@ class MaintenanceController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final VisitService _visitService;
   late final UserService _userService;
+  late final MachineService _machineService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
   late final RxList<Machine> _machines;
@@ -67,6 +69,7 @@ class MaintenanceController extends GetxController {
     _incidents = <IncidentObject>[];
     _visitService = VisitService();
     _userService = UserService();
+    _machineService = MachineService();
     _visitMediaService = VisitMediaService();
     _machines = <Machine>[].obs;
     _incidentService = IncidentService();
@@ -219,6 +222,14 @@ class MaintenanceController extends GetxController {
         observations.text,
         false,
       );
+
+      if(position != null){
+        await _machineService.setMachineLocation(
+          machineSelected!.id!,
+          position.latitude,
+          position.longitude,
+        );
+      }     
 
       if(LoggedUser.balanceStuffedAnimals == null){
         LoggedUser.balanceStuffedAnimals = 0;

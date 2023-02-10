@@ -19,6 +19,8 @@ VisitListViewController _$VisitListViewControllerFromJson(
       moneyPouchRetired: json['moneyPouchRetired'] as bool,
       machineName: json['machineName'] as String,
       realizedVisit: json['realizedVisit'] as bool?,
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -46,6 +48,8 @@ Map<String, dynamic> _$VisitListViewControllerToJson(
       'moneyPouchRetired': instance.moneyPouchRetired,
       'machineName': instance.machineName,
       'realizedVisit': instance.realizedVisit,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };
 
 const _$VisitStatusEnumMap = {

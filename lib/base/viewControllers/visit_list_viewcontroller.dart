@@ -14,6 +14,8 @@ class VisitListViewController extends ElephantCore {
   final bool moneyPouchRetired;
   final String machineName;
   bool? realizedVisit;
+  String? latitude;
+  String? longitude;
 
   VisitListViewController({
     required this.priority,
@@ -24,6 +26,8 @@ class VisitListViewController extends ElephantCore {
     required this.moneyPouchRetired,
     required this.machineName,
     this.realizedVisit,
+    this.latitude,
+    this.longitude,
   });
 
   factory VisitListViewController.fromJson(Map<String, dynamic> json) => _$VisitListViewControllerFromJson(json);

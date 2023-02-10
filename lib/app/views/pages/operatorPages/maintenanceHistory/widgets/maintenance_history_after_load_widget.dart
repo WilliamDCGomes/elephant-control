@@ -96,7 +96,7 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                       return Stack(
                                         children: [
                                           MaintenanceCardWidget(
-                                            onTapHabilitate: (visit.active == true && visit.realizedVisit == true),
+                                            onTapDesabilitate: (visit.active == true && visit.realizedVisit == true),
                                             machineName: visit.machineName,
                                             decoratorLine: visit.active == false,
                                             city: "",
@@ -109,6 +109,8 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             pouchCollected: visit.moneyPouchRetired,
                                             showRadius: false,
                                             setHeight: false,
+                                            latitude: double.tryParse((visit.latitude ?? "").replaceAll(',', '.')),
+                                            longitude: double.tryParse((visit.longitude ?? "").replaceAll(',', '.')),
                                             machineAddOtherList: visit.active == false,
                                             visitId: "",
                                             visitDate: visit.inclusion ?? DateTime.now(),

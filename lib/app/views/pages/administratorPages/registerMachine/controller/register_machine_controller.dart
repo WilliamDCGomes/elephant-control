@@ -48,7 +48,7 @@ class RegisterMachineController extends GetxController {
     if (_machine == null) {
     } else {
       returnMachineViewControllerSelected =
-          returnMachineViewControllers.firstWhereOrNull((element) => element.id == _machine!.externalId!);
+          returnMachineViewControllers.firstWhereOrNull((element) => element.id == _machine!.externalId);
       await searchAddressInformation();
     }
 
