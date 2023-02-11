@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/models/visitMedia/visit_media.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/files_helper.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
@@ -15,8 +16,8 @@ import '../../../widgetsShared/popups/videos_picture_widget.dart';
 
 class OccurrenceController extends GetxController {
   late RxString machineSelected;
-  late TextEditingController operatorName;
-  late TextEditingController maintenanceDate;
+  late String operatorName;
+  late String maintenanceDate;
   late TextEditingController observations;
   late ImagesPictureWidget machineOccurrencePicture;
   late ImagesPictureWidget extraMachineOccurrencePicture;
@@ -24,15 +25,25 @@ class OccurrenceController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final Machine _machine;
   late final String _visitId;
+  late IncidentObject? _incident;
 
-  OccurrenceController(this._machine, this._visitId) {
+  OccurrenceController(this._machine, this._visitId, this._incident) {
     _initializeVariables();
+  }
+
+  @override
+  void onInit() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    await loadingWithSuccessOrErrorWidget.startAnimation();
+    await getOccurrenceInformations();
+    await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    super.onInit();
   }
 
   _initializeVariables() {
     machineSelected = _machine.name.obs;
-    operatorName = TextEditingController();
-    maintenanceDate = TextEditingController();
+    operatorName = "";
+    maintenanceDate = "";
     observations = TextEditingController();
     machineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
     extraMachineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
@@ -40,8 +51,70 @@ class OccurrenceController extends GetxController {
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
 
-    operatorName.text = LoggedUser.name;
-    maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
+    operatorName = LoggedUser.name;
+    maintenanceDate = DateFormatToBrazil.formatDate(DateTime.now());
+  }
+
+  getOccurrenceInformations() async {
+    try{
+      if(_incident != null){
+        observations.text = _incident!.incident.description ?? "";
+
+        for(var media in _incident!.medias){
+          if(media.base64 != null && media.base64 != ""){
+            switch(media.type){
+              case MediaType.firstOccurrencePicture:
+                machineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
+                  media.base64!,
+                );
+                break;
+              case MediaType.secondOccurrencePicture:
+                extraMachineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
+                  media.base64!,
+                );
+                break;
+              case MediaType.occurrenceVideo:
+                machineOccurrenceVideo.picture = await FilesHelper.createXFileFromBase64(
+                  media.base64!,
+                );
+                break;
+              case MediaType.stuffedAnimals:
+                break;
+              case MediaType.moneyWatch:
+                break;
+              case MediaType.machineBefore:
+                break;
+              case MediaType.machineAfter:
+                break;
+            }
+          }
+        }
+        update(["informations"]);
+
+        if(machineOccurrencePicture.picture != null){
+          machineOccurrencePicture.imagesPictureWidgetState.refreshPage();
+        }
+        if(extraMachineOccurrencePicture.picture != null){
+          extraMachineOccurrencePicture.imagesPictureWidgetState.refreshPage();
+        }
+        if(machineOccurrenceVideo.picture != null){
+          machineOccurrenceVideo.videosPictureWidgetState.refreshPage();
+        }
+      }
+    }
+    catch(_){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao abrir a ocorrência! Tente novamente mais tarde.",
+          );
+        },
+      );
+      Get.back();
+    }
   }
 
   onDropdownButtonWidgetChanged(String? selectedState) {
@@ -58,7 +131,7 @@ class OccurrenceController extends GetxController {
         medias.add(VisitMedia(
           visitId: _incident.id!,
           base64: base64Encode(bytesClockImage),
-          type: MediaType.moneyWatch,
+          type: MediaType.firstOccurrencePicture,
           extension: MediaExtension.jpeg,
         ));
       final bytesBeforeImage = await extraMachineOccurrencePicture.picture?.readAsBytes();
@@ -66,7 +139,7 @@ class OccurrenceController extends GetxController {
         medias.add(VisitMedia(
           visitId: _incident.id!,
           base64: base64Encode(bytesBeforeImage),
-          type: MediaType.machineBefore,
+          type: MediaType.secondOccurrencePicture,
           extension: MediaExtension.jpeg,
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
@@ -74,8 +147,8 @@ class OccurrenceController extends GetxController {
         medias.add(VisitMedia(
           visitId: _incident.id!,
           base64: base64Encode(bytesAfterImage),
-          type: MediaType.machineAfter,
-          extension: MediaExtension.jpeg,
+          type: MediaType.occurrenceVideo,
+          extension: MediaExtension.mp4,
         ));
       await showDialog(
         context: Get.context!,
@@ -86,7 +159,7 @@ class OccurrenceController extends GetxController {
           );
         },
       );
-      await Get.delete<OccurrenceController>(force: true);
+      //await Get.delete<OccurrenceController>(force: true);
       Get.back(result: IncidentObject(_incident, medias));
     } catch (_) {
       showDialog(

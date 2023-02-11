@@ -7,6 +7,7 @@ part 'visit_list_viewcontroller.g.dart';
 @JsonSerializable()
 class VisitListViewController extends ElephantCore {
   final String priority;
+  final String responsibleName;
   VisitStatus? status;
   final double moneyQuantity;
   final double stuffedAnimalsReplaceQuantity;
@@ -19,6 +20,7 @@ class VisitListViewController extends ElephantCore {
 
   VisitListViewController({
     required this.priority,
+    required this.responsibleName,
     required this.status,
     required this.moneyQuantity,
     required this.stuffedAnimalsReplaceQuantity,

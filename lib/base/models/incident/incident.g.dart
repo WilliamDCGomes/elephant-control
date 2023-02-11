@@ -21,7 +21,6 @@ Incident _$IncidentFromJson(Map<String, dynamic> json) => Incident(
           : DateTime.parse(json['alteration'] as String)
       ..active = json['active'] as bool?
       ..includeUserId = json['includeUserId'] as String?
-      ..code = json['code'] as int
       ..responsibleUserId = json['responsibleUserId'] as String
       ..operatorUserId = json['operatorUserId'] as String;
 
@@ -32,7 +31,6 @@ Map<String, dynamic> _$IncidentToJson(Incident instance) => <String, dynamic>{
       'active': instance.active,
       'includeUserId': instance.includeUserId,
       'description': instance.description,
-      'code': instance.code,
       'status': _$IncidentStatusEnumMap[instance.status]!,
       'responsibleUserId': instance.responsibleUserId,
       'operatorUserId': instance.operatorUserId,

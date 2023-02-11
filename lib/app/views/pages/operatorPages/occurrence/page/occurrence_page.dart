@@ -14,7 +14,14 @@ import '../controller/occurrence_controller.dart';
 class OccurrencePage extends StatefulWidget {
   final Machine machine;
   final String visitId;
-  const OccurrencePage({Key? key, required this.machine, required this.visitId}) : super(key: key);
+  final IncidentObject? incident;
+
+  const OccurrencePage({
+    Key? key,
+    required this.machine,
+    required this.visitId,
+    required this.incident,
+  }) : super(key: key);
 
   @override
   State<OccurrencePage> createState() => _OccurrencePageState();
@@ -25,7 +32,15 @@ class _OccurrencePageState extends State<OccurrencePage> {
 
   @override
   void initState() {
-    controller = Get.put(OccurrenceController(widget.machine, widget.visitId), permanent: true);
+    controller = Get.put(
+      OccurrenceController(
+        widget.machine,
+        widget.visitId,
+        widget.incident,
+      ),
+      //permanent: true,
+    );
+
     super.initState();
   }
 
@@ -61,189 +76,193 @@ class _OccurrencePageState extends State<OccurrencePage> {
                         ),
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InformationContainerWidget(
-                              iconPath: Paths.Pelucia,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "",
-                              customContainer: TextWidget(
-                                "Preencha as informações para abrir uma ocorrência",
+                        child: GetBuilder(
+                          id: "informations",
+                          init: controller,
+                          builder:(_) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InformationContainerWidget(
+                                iconPath: Paths.Pelucia,
                                 textColor: AppColors.whiteColor,
-                                fontSize: 18.sp,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                fontWeight: FontWeight.bold,
+                                backgroundColor: AppColors.defaultColor,
+                                informationText: "",
+                                customContainer: TextWidget(
+                                  "Preencha as informações para abrir uma ocorrência",
+                                  textColor: AppColors.whiteColor,
+                                  fontSize: 18.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: ListView(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: TextWidget(
-                                        "Máquina da Ocorrência",
-                                        textColor: AppColors.defaultColor,
-                                        fontSize: 16.sp,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                      height: 5.h,
-                                      width: 80.w,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: AppColors.defaultColor,
-                                          width: .25.h,
+                              Expanded(
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextWidget(
+                                          "Máquina da Ocorrência",
+                                          textColor: AppColors.defaultColor,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
                                         ),
                                       ),
-                                      child: Padding(
-                                          padding: EdgeInsets.all(1.h),
-                                          child: TextWidget(
-                                            widget.machine.name,
+                                    ),
+                                    Container(
+                                        height: 5.h,
+                                        width: 80.w,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: AppColors.defaultColor,
+                                            width: .25.h,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                            padding: EdgeInsets.all(1.h),
+                                            child: TextWidget(
+                                              widget.machine.name,
+                                              fontSize: 16.sp,
+                                              textColor: AppColors.defaultColor,
+                                            ))),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 3.5.h,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 1.h),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: TextWidget(
+                                                    "Foto da Máquina",
+                                                    textColor: AppColors.defaultColor,
+                                                    fontSize: 16.sp,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller.machineOccurrencePicture,
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 1.h),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: TextWidget(
+                                                    "Foto Extra",
+                                                    textColor: AppColors.defaultColor,
+                                                    fontSize: 16.sp,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller.extraMachineOccurrencePicture,
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 3.5.h,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(bottom: 1.h),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: TextWidget(
+                                                "Vídeo",
+                                                textColor: AppColors.defaultColor,
+                                                fontSize: 16.sp,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+                                          ),
+                                          controller.machineOccurrenceVideo,
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 3.5.h,
+                                        bottom: 3.h,
+                                      ),
+                                      child: TextFieldWidget(
+                                        controller: controller.observations,
+                                        height: 19.h,
+                                        keyboardType: TextInputType.text,
+                                        textCapitalization: TextCapitalization.sentences,
+                                        textAlignVertical: TextAlignVertical.top,
+                                        maxLines: 6,
+                                        decoration: InputDecoration(
+                                          label: TextWidget(
+                                            "Ocorrido",
                                             fontSize: 16.sp,
                                             textColor: AppColors.defaultColor,
-                                          ))),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.5.h,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(bottom: 1.h),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: TextWidget(
-                                                  "Foto da Máquina",
-                                                  textColor: AppColors.defaultColor,
-                                                  fontSize: 16.sp,
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 1,
-                                                ),
-                                              ),
-                                            ),
-                                            controller.machineOccurrencePicture,
-                                          ],
-                                        ),
-                                        Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(bottom: 1.h),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: TextWidget(
-                                                  "Foto Extra",
-                                                  textColor: AppColors.defaultColor,
-                                                  fontSize: 16.sp,
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 1,
-                                                ),
-                                              ),
-                                            ),
-                                            controller.extraMachineOccurrencePicture,
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.5.h,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(bottom: 1.h),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: TextWidget(
-                                              "Vídeo",
-                                              textColor: AppColors.defaultColor,
-                                              fontSize: 16.sp,
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
+                                          ),
+                                          alignLabelWithHint: true,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                              color: AppColors.defaultColor,
+                                              width: .25.h,
                                             ),
                                           ),
-                                        ),
-                                        controller.machineOccurrenceVideo,
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.5.h,
-                                      bottom: 3.h,
-                                    ),
-                                    child: TextFieldWidget(
-                                      controller: controller.observations,
-                                      height: 19.h,
-                                      keyboardType: TextInputType.text,
-                                      textCapitalization: TextCapitalization.sentences,
-                                      textAlignVertical: TextAlignVertical.top,
-                                      maxLines: 6,
-                                      decoration: InputDecoration(
-                                        label: TextWidget(
-                                          "Ocorrido",
-                                          fontSize: 16.sp,
-                                          textColor: AppColors.defaultColor,
-                                        ),
-                                        alignLabelWithHint: true,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                            color: AppColors.defaultColor,
-                                            width: .25.h,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                              color: AppColors.defaultColor,
+                                              width: .25.h,
+                                            ),
                                           ),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                            color: AppColors.defaultColor,
-                                            width: .25.h,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                              color: AppColors.defaultColor,
+                                              width: .25.h,
+                                            ),
                                           ),
+                                          contentPadding: EdgeInsets.all(1.5.h),
                                         ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                            color: AppColors.defaultColor,
-                                            width: .25.h,
-                                          ),
-                                        ),
-                                        contentPadding: EdgeInsets.all(1.5.h),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
-                              child: ButtonWidget(
-                                hintText: "SALVAR",
-                                fontWeight: FontWeight.bold,
-                                widthButton: 100.w,
-                                onPressed: () => controller.saveOccurrence(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
+                                child: ButtonWidget(
+                                  hintText: "SALVAR",
+                                  fontWeight: FontWeight.bold,
+                                  widthButton: 100.w,
+                                  onPressed: () => controller.saveOccurrence(),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

@@ -23,6 +23,19 @@ class VisitService extends BaseService implements IVisitService {
     }
   }
 
+  Future<bool> updateVisit(Visit visit) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/UpdateVisit';
+      final data = visit.toJson();
+      final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<VisitViewController?> getResumeVisitById(String visitId) async {
     try {
       final token = await getToken();
@@ -78,7 +91,7 @@ class VisitService extends BaseService implements IVisitService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetVisitsOperatorByUserId';
-      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 1));
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitListViewController.fromJson(visit)).toList();
     } catch (_) {

@@ -45,6 +45,9 @@ const _$MediaTypeEnumMap = {
   MediaType.moneyWatch: 1,
   MediaType.machineBefore: 2,
   MediaType.machineAfter: 3,
+  MediaType.firstOccurrencePicture: 4,
+  MediaType.secondOccurrencePicture: 5,
+  MediaType.occurrenceVideo: 6,
 };
 
 const _$MediaExtensionEnumMap = {

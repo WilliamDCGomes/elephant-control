@@ -12,6 +12,7 @@ import 'information_popup.dart';
 //ignore: must_be_immutable
 class VideosPictureWidget extends StatefulWidget {
   late XFile? picture;
+  late VideosPictureWidgetState videosPictureWidgetState;
 
   VideosPictureWidget({
     Key? key,
@@ -20,10 +21,19 @@ class VideosPictureWidget extends StatefulWidget {
   }
 
   @override
-  State<VideosPictureWidget> createState() => _VideosPictureWidgetState();
+  State<VideosPictureWidget> createState() {
+    videosPictureWidgetState = VideosPictureWidgetState();
+    return videosPictureWidgetState;
+  }
 }
 
-class _VideosPictureWidgetState extends State<VideosPictureWidget> {
+class VideosPictureWidgetState extends State<VideosPictureWidget> {
+  refreshPage(){
+    setState(() {
+      widget.picture = widget.picture;
+    });
+  }
+
   late final ImagePicker _picker;
   _getVideo() async {
     try{

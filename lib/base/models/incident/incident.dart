@@ -6,7 +6,6 @@ part 'incident.g.dart';
 @JsonSerializable()
 class Incident extends ElephantUserCore {
   String? description;
-  late int code;
   late IncidentStatus status;
   late String responsibleUserId;
   late String operatorUserId;

@@ -57,7 +57,7 @@ class MaintenanceController extends GetxController {
   late final RxList<Machine> _machines;
   late final Visit _visit;
   late final String visitId;
-  late final List<IncidentObject> _incidents;
+  late IncidentObject? _incident;
 
   MaintenanceController() {
     _initializeVariables();
@@ -66,7 +66,7 @@ class MaintenanceController extends GetxController {
   _initializeVariables() {
     visitId = const Uuid().v4();
     _showReminders = false.obs;
-    _incidents = <IncidentObject>[];
+    _incident = null;
     _visitService = VisitService();
     _userService = UserService();
     _machineService = MachineService();
@@ -140,11 +140,18 @@ class MaintenanceController extends GetxController {
   openIncident(BuildContext context) async {
     if (machineSelected == null) {
       return await showDialog(
-          context: context,
-          builder: ((context) => InformationPopup(warningMessage: "Selecione uma máquina para criar uma ocorrência")));
+        context: context,
+        builder: ((context) => InformationPopup(
+          warningMessage: "Selecione uma máquina para criar uma ocorrência",
+        )),
+      );
     }
-    final incident = await Get.to(() => OccurrencePage(machine: machineSelected!, visitId: visitId));
-    if (incident is IncidentObject) _incidents.add(incident);
+    final incident = await Get.to(() => OccurrencePage(
+      machine: machineSelected!,
+      visitId: visitId,
+      incident: _incident,
+    ));
+    if (incident is IncidentObject) _incident = incident;
   }
 
   saveMaintenance() async {
@@ -211,9 +218,17 @@ class MaintenanceController extends GetxController {
         if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
       }
       if (!createdVisit) throw Exception();
-      for (var _incident in _incidents) {
-        final bool createdIncident = await _incidentService.createIncident(_incident.incident);
-        if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
+
+      if(_incident != null){
+        _incident!.incident.responsibleUserId = LoggedUser.id;
+        _incident!.incident.operatorUserId = LoggedUser.id;
+        final bool createdIncident = await _incidentService.createIncident(_incident!.incident);
+        if (createdIncident) {
+          for(var media in _incident!.medias){
+            media.incidentId = _incident!.incident.id;
+          }
+          await _incidentService.createIncidentMedia(_incident!.medias);
+        };
       }
 
       await _userService.AddOrRemoveBalanceStuffedAnimalsJustOperator(

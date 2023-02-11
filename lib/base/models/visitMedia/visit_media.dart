@@ -41,4 +41,10 @@ enum MediaType {
   machineBefore,
   @JsonValue(3)
   machineAfter,
+  @JsonValue(4)
+  firstOccurrencePicture,
+  @JsonValue(5)
+  secondOccurrencePicture,
+  @JsonValue(6)
+  occurrenceVideo,
 }

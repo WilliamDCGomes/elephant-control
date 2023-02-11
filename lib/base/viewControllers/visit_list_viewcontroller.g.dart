@@ -10,6 +10,7 @@ VisitListViewController _$VisitListViewControllerFromJson(
         Map<String, dynamic> json) =>
     VisitListViewController(
       priority: json['priority'] as String,
+      responsibleName: json['responsibleName'] as String,
       status: $enumDecodeNullable(_$VisitStatusEnumMap, json['status']),
       moneyQuantity: (json['moneyQuantity'] as num).toDouble(),
       stuffedAnimalsReplaceQuantity:
@@ -41,6 +42,7 @@ Map<String, dynamic> _$VisitListViewControllerToJson(
       'active': instance.active,
       'includeUserId': instance.includeUserId,
       'priority': instance.priority,
+      'responsibleName': instance.responsibleName,
       'status': _$VisitStatusEnumMap[instance.status],
       'moneyQuantity': instance.moneyQuantity,
       'stuffedAnimalsReplaceQuantity': instance.stuffedAnimalsReplaceQuantity,

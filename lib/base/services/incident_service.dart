@@ -19,7 +19,7 @@ class IncidentService extends BaseService {
   Future<bool> createIncidentMedia(List<VisitMedia> incidentsMedia) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'IncidentMedia/CreateIncidentMedia';
+      final url = baseUrlApi + 'Incident/CreateIncidentMedia';
       for (var element in incidentsMedia) {
         final data = element.toJson();
         final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
@@ -32,15 +32,15 @@ class IncidentService extends BaseService {
   }
 
   ///Retorna visitMedia, mas tem um incidentId nullable dentro
-  Future<List<Incident>> getIncidentByVisitId(String visitId) async {
+  Future<Incident?> getIncidentByVisitId(String visitId) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/GetIncidentByVisitId';
       final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
-      return (response.body as List).map((visitMedia) => Incident.fromJson(visitMedia)).toList();
+      return Incident.fromJson(response.body);
     } catch (_) {
-      return [];
+      return null;
     }
   }
 
@@ -49,7 +49,7 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/GetIncidentMediaByIncidentId';
-      final response = await get(url, query: {"IncidentId": incidentId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {"IncidentId": incidentId}, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visitMedia) => VisitMedia.fromJson(visitMedia)).toList();
     } catch (_) {

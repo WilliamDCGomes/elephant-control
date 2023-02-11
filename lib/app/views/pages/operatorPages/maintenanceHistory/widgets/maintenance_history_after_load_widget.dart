@@ -3,13 +3,17 @@ import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/map_utils.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
+import '../../../widgetsShared/popups/bottom_sheet_popup.dart';
+import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/maintenance_history_controller.dart';
+import '../popups/maintenance_information_popup.dart';
 
 class MaintenanceHistoryAfterLoadWidget extends StatefulWidget {
   const MaintenanceHistoryAfterLoadWidget({Key? key}) : super(key: key);
@@ -109,27 +113,89 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             pouchCollected: visit.moneyPouchRetired,
                                             showRadius: false,
                                             setHeight: false,
-                                            latitude: double.tryParse((visit.latitude ?? "").replaceAll(',', '.')),
-                                            longitude: double.tryParse((visit.longitude ?? "").replaceAll(',', '.')),
                                             machineAddOtherList: visit.active == false,
-                                            visitId: "",
+                                            visitId: visit.id ?? "",
                                             visitDate: visit.inclusion ?? DateTime.now(),
+                                            onTap: () async {
+                                              if((visit.active == true && visit.realizedVisit == true)){
+                                                await BottomSheetPopup.showAlert(
+                                                  context,
+                                                  MaintenanceInformationPopup.getWidgetList(
+                                                    context,
+                                                    visit.machineName,
+                                                    visit.moneyQuantity.toString(),
+                                                    visit.stuffedAnimalsQuantity.toString(),
+                                                    visit.stuffedAnimalsReplaceQuantity.toString(),
+                                                    visit.status?.description ?? "Pendente",
+                                                    "NORMAL",
+                                                    AppColors.greenColor.value,
+                                                    visit.moneyPouchRetired,
+                                                    visit.responsibleName,
+                                                    visit.id ?? "",
+                                                    visit.inclusion ?? DateTime.now(),
+                                                  ),
+                                                );
+                                                await controller.getVisitsOperatorByUserId(showLoad: false);
+                                              }
+                                            },
                                           ),
-                                          if (visit.realizedVisit == false && visit.active == true)
-                                            Padding(
-                                              padding: EdgeInsets.all(1.h),
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: InkWell(
-                                                  onTap: () async => await controller.deleteOrUndeleteVisitDay(visit),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: AppColors.backgroundColor,
-                                                    size: 3.h,
+                                          Center(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Visibility(
+                                                  visible: visit.latitude != null && visit.latitude != "" && visit.longitude != null && visit.longitude != "",
+                                                  child: Align(
+                                                    alignment: Alignment.centerRight,
+                                                    child: InkWell(
+                                                      onTap: () => MapUtils.openMap(
+                                                        double.tryParse((visit.latitude ?? "").replaceAll(',', '.')),
+                                                        double.tryParse((visit.longitude ?? "").replaceAll(',', '.')),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.symmetric(horizontal: .2.h, vertical: 1.h),
+                                                        child: Icon(
+                                                          Icons.map,
+                                                          color: AppColors.whiteColor,
+                                                          size: 3.h,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                                Visibility(
+                                                  visible: visit.realizedVisit == false && visit.active == true,
+                                                  replacement: SizedBox(width: .8.h,),
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(1.h),
+                                                    child: Align(
+                                                      alignment: Alignment.topRight,
+                                                      child: InkWell(
+                                                        onTap: () async => await showDialog(
+                                                          context: context,
+                                                          barrierDismissible: false,
+                                                          builder: (BuildContext context) {
+                                                            return ConfirmationPopup(
+                                                              title: "Aviso",
+                                                              subTitle: "Tem certeza que deseja apagar essa máquina das suas visitas pendentes?",
+                                                              firstButton: () {},
+                                                              secondButton: () async => await controller.deleteOrUndeleteVisitDay(visit),
+                                                            );
+                                                          },
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.close,
+                                                          color: AppColors.backgroundColor,
+                                                          size: 3.h,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
+                                          ),
                                         ],
                                       );
                                     },

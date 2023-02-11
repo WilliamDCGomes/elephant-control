@@ -13,24 +13,32 @@ import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/services/machine_service.dart';
+import '../../../../../../base/services/user_service.dart';
 import '../../../../../../base/viewControllers/visit_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/files_helper.dart';
+import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/text_widget.dart';
 
 class VisitDetailsController extends GetxController {
+  late int plushQuantity;
   final String visitId;
   late String maintenanceDate;
   late RxInt priorityColor;
   late RxBool yes;
   late RxBool no;
+  late RxBool machineCloseYes;
+  late RxBool machineCloseNo;
   late TextEditingController operatorName;
   late TextEditingController clock1;
   late TextEditingController clock2;
@@ -42,11 +50,13 @@ class VisitDetailsController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late VisitViewController? visitViewController;
   late final VisitService _visitService;
+  late final UserService _userService;
+  late final MachineService _machineService;
   late final VisitMediaService _visitMediaService;
   late final IncidentService _incidentService;
   late final Visit _visit;
-  late final Machine _machine;
-  late final List<IncidentObject> _incidents;
+  late Machine _machine;
+  late IncidentObject? incident;
 
   VisitDetailsController(this.visitId) {
     _initializeVariables();
@@ -57,14 +67,19 @@ class VisitDetailsController extends GetxController {
     await Future.delayed(Duration(milliseconds: 200));
     await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getVisitInformation();
+    await _getIncidentInformation();
+    await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     super.onInit();
   }
 
   _initializeVariables() {
+    plushQuantity = 0;
     maintenanceDate = "";
-    _incidents = <IncidentObject>[];
+    incident = null;
     visitViewController = null;
     _visitService = VisitService();
+    _userService = UserService();
+    _machineService = MachineService();
     _visitMediaService = VisitMediaService();
     _incidentService = IncidentService();
     _visit = Visit.emptyConstructor();
@@ -73,6 +88,8 @@ class VisitDetailsController extends GetxController {
 
     yes = false.obs;
     no = false.obs;
+    machineCloseYes = false.obs;
+    machineCloseNo = false.obs;
 
     operatorName = TextEditingController();
     clock1 = TextEditingController();
@@ -82,9 +99,9 @@ class VisitDetailsController extends GetxController {
 
     operatorName.text = LoggedUser.name;
 
+    afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
-    afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
@@ -95,15 +112,27 @@ class VisitDetailsController extends GetxController {
       if(visitViewController == null){
         throw Exception();
       }
+
+      var machineReturn = await _machineService.getMachineById(visitViewController!.machineId);
+      if(machineReturn != null){
+        _machine = machineReturn;
+      }
+
       maintenanceDate = DateFormatToBrazil.formatDateAndHour(visitViewController!.inclusion);
       clock1.text = visitViewController!.firstClock.ceil().toString();
       clock2.text = (visitViewController!.secondClock ?? 0).toString();
       teddyAddMachine.text = visitViewController!.replacedPlush.toString();
+      if(teddyAddMachine.text != ""){
+        plushQuantity = int.parse(teddyAddMachine.text);
+      }
       observations.text = visitViewController!.observation ?? "";
       yes.value = visitViewController!.collectedDrawal;
       no.value = !visitViewController!.collectedDrawal;
+      machineCloseYes.value = visitViewController!.visitMonthClosure;
+      machineCloseNo.value = !visitViewController!.visitMonthClosure;
 
       bool after = true;
+
       for(var media in visitViewController!.mediasList){
         switch(media.visitType){
           case MediaType.moneyWatch:
@@ -131,13 +160,22 @@ class VisitDetailsController extends GetxController {
             break;
           case MediaType.stuffedAnimals:
             break;
+          case MediaType.firstOccurrencePicture:
+            break;
+          case MediaType.secondOccurrencePicture:
+            break;
+          case MediaType.occurrenceVideo:
+            break;
         }
       }
       update(["visit-details"]);
-      imageClock.imagesPictureWidgetState.refreshPage();
-      beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
-      afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+
+      if(imageClock.picture != null){
+        imageClock.imagesPictureWidgetState.refreshPage();
+      }
+      if(beforeMaintenanceImageClock.picture != null){
+        beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
+      }
     }
     catch(e){
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
@@ -151,24 +189,66 @@ class VisitDetailsController extends GetxController {
         },
       );
       Get.back();
+    }
+  }
+
+  _getIncidentInformation() async {
+    try{
+      var _incident = await _incidentService.getIncidentByVisitId(visitId);
+      if(_incident != null && _incident.id != null && _incident.id != ""){
+        var _midias = await _incidentService.getIncidentMediaByIncidentId(_incident.id!);
+        if(_midias.isNotEmpty){
+          var incidentObject = IncidentObject(
+            _incident,
+            _midias,
+          );
+          incident = incidentObject;
+          update(["incident"]);
+        }
+      }
+    }
+    catch(e){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao carregar visita. Tente novamente mais tarde.",
+          );
+        },
+      );
       Get.back();
     }
   }
 
   openIncident(BuildContext context) async {
-    final incident = await Get.to(() => OccurrencePage(machine: _machine, visitId: visitId));
-    if (incident is IncidentObject) _incidents.add(incident);
+    final newIncident = await Get.to(() => OccurrencePage(
+      machine: _machine,
+      visitId: visitId,
+      incident: incident,
+    ));
+
+    if (newIncident is IncidentObject) incident = newIncident;
   }
 
   editMaintenance() async {
     try {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
+
+      if(int.parse(clock2.text) > int.parse(clock1.text)){
+        String clock1Aux = clock1.text;
+        clock1.text = clock2.text;
+        clock2.text = clock1Aux;
+      }
+
       int teddy = clock2.text == "" ? 0 : int.parse(clock2.text);
       _visit.stuffedAnimalsQuantity = teddy;
-      _visit.machineId = _machine.id!;
+      _visit.machineId = visitViewController!.machineId;
       _visit.moneyQuantity = double.parse(clock1.text);
       _visit.moneyWithDrawal = yes.isTrue;
+      _visit.monthClosure = machineCloseYes.isTrue;
       if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
       _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
       _visit.stuffedAnimalsReplaceQuantity = int.parse(teddyAddMachine.text);
@@ -177,7 +257,15 @@ class VisitDetailsController extends GetxController {
       final position = await PositionUtil.determinePosition();
       _visit.latitude = position?.latitude == null ? null : position?.latitude.toString();
       _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
-      bool createdVisit = await _visitService.createVisit(_visit);
+
+      double averageValue = 0;
+      if(clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0){
+        averageValue = int.parse(clock1.text) / int.parse(clock2.text);
+      }
+
+      bool showAveragePopup = await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
+
+      bool createdVisit = await _visitService.updateVisit(_visit);
       if (createdVisit) {
         List<VisitMedia> medias = [];
         final bytesClockImage = await imageClock.picture?.readAsBytes();
@@ -205,24 +293,104 @@ class VisitDetailsController extends GetxController {
             extension: MediaExtension.jpeg,
           ));
 
-        if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
+        if((await _visitMediaService.deleteVisitMedia(visitId)) && medias.isNotEmpty){
+          createdVisit = await _visitMediaService.createVisitMedia(medias);
+        }
       }
       if (!createdVisit) throw Exception();
-      for (var _incident in _incidents) {
-        final bool createdIncident = await _incidentService.createIncident(_incident.incident);
-        if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
+
+      if(incident != null){
+        final bool createdIncident = await _incidentService.createIncident(incident!.incident);
+        if (createdIncident) await _incidentService.createIncidentMedia(incident!.medias);
       }
+
+      int quantity = plushQuantity - int.parse(teddyAddMachine.text);
+      if(quantity < 0){
+        quantity *= -1;
+      }
+
+      await _userService.AddOrRemoveBalanceStuffedAnimalsJustOperator(
+        LoggedUser.id,
+        quantity,
+        observations.text,
+        plushQuantity - int.parse(teddyAddMachine.text) < 0,
+      );
+
+      if(position != null){
+        await _machineService.setMachineLocation(
+          visitViewController!.machineId,
+          position.latitude,
+          position.longitude,
+        );
+      }
+
+      if(LoggedUser.balanceStuffedAnimals == null){
+        LoggedUser.balanceStuffedAnimals = 0;
+      }
+      else{
+        LoggedUser.balanceStuffedAnimals = LoggedUser.balanceStuffedAnimals! - int.parse(teddyAddMachine.text);
+        if(LoggedUser.balanceStuffedAnimals! < 0){
+          LoggedUser.balanceStuffedAnimals = 0;
+        }
+      }
+      LoggedUser.stuffedAnimalsLastUpdate = DateTime.now();
+
       await loadingWithSuccessOrErrorWidget.stopAnimation();
+
+      if(showAveragePopup){
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue
+                  .toStringAsFixed(2).replaceAll('.', ',')}",
+              fontSize: 18.sp,
+              popupColor: AppColors.redColor,
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 4.h,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  TextWidget(
+                    "AVISO",
+                    textColor: AppColors.whiteColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Icon(
+                    Icons.warning,
+                    color: AppColors.yellowDarkColor,
+                    size: 4.h,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
+
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return InformationPopup(
-            warningMessage: "Atendimento salvo com sucesso!",
+            warningMessage: "Visita editada com sucesso!",
           );
         },
       );
-      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      await Future.microtask(
+              () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
@@ -231,7 +399,7 @@ class VisitDetailsController extends GetxController {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return InformationPopup(
-            warningMessage: "Erro ao salvar o atendimento!",
+            warningMessage: "Erro ao editar a visita!",
           );
         },
       );
@@ -306,6 +474,18 @@ class VisitDetailsController extends GetxController {
         builder: (BuildContext context) {
           return InformationPopup(
             warningMessage: "Informe se o malote foi retirado da máquina!",
+          );
+        },
+      );
+      return false;
+    }
+    if (!yes.value && !no.value) {
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Informe se é o fechamento da máquina!",
           );
         },
       );

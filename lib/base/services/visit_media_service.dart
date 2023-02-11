@@ -17,6 +17,18 @@ class VisitMediaService extends BaseService {
     }
   }
 
+  Future<bool> deleteVisitMedia(String visitId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'VisitMedia/DeleteVisitMedia';
+      final response = await post(url, null, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<List<VisitMedia>> getVisitMediaByVisitId(String visitId) async {
     try {
       final token = await getToken();
