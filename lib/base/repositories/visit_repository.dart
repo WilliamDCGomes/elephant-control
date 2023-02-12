@@ -15,6 +15,11 @@ class VisitRepository extends BaseRepository {
       visit.alteration = DateTime.now();
       visit.inclusion = DateTime.now();
       visit.active = true;
+      final machine = await _database.query(Machine.tableName, where: "Id = ?", whereArgs: [visit.machineId]);
+      if (machine.isNotEmpty) {
+        final _machine = Machine.fromJsonRepository(machine.first);
+        visit.lastPrizeMachine = _machine.lastPrize;
+      }
       await context.insert(Visit.tableName, visit.toJsonRepository(false));
       final userVisitMachineDb = await _database.query(UserVisitMachine.tableName,
           where: "MachineId = ? AND DATE(VisitDay) = DATE(?) AND VisitId IS NULL",

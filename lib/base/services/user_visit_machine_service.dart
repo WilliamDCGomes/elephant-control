@@ -27,6 +27,7 @@ class UserVisitMachineService extends BaseService with MixinService {
           query: {"MachineId": machineId, "VisitDay": visitDay.toIso8601String()},
           headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      await getOffline();
       return response.body;
     } catch (_) {
       return false;

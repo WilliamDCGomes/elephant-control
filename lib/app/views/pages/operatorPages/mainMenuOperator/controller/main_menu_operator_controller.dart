@@ -173,6 +173,7 @@ class MainMenuOperatorController extends GetxController {
     }
     if (!error) {
       sharedPreferences.setBool("SincronismExecuted", true);
+      sharedPreferences.setString("LastSincronism", DateTime.now().toIso8601String());
       if (!_offlineCompleter.isCompleted) _offlineCompleter.complete(true);
     } else {
       if (!_offlineCompleter.isCompleted) _offlineCompleter.complete(false);

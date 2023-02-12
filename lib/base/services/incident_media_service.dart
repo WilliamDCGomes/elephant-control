@@ -10,7 +10,7 @@ class IncidentMediaService extends BaseService with MixinService {
   Future<bool> createIncidentMedia(List<VisitMediaHViewController> incidentsMedia) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'IncidentMedia/CreateIncidentMedia';
+      final url = baseUrlApi + 'Incident/CreateIncidentMedia';
       for (var element in incidentsMedia) {
         final data = element.toJson();
         final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
@@ -48,7 +48,7 @@ class IncidentMediaService extends BaseService with MixinService {
       for (var item in itens) {
         final itemConvertido = IncidentMedia.fromJsonRepository(item);
         final token = await getToken();
-        final url = baseUrlApi + 'IncidentMedia/CreateIncidentMedia';
+        final url = baseUrlApi + 'Incident/CreateIncidentMedia';
         final data = VisitMediaHViewController(
             type: itemConvertido.type,
             visitId: itemConvertido.incidentId,

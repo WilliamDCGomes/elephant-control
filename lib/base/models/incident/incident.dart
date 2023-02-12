@@ -7,7 +7,6 @@ part 'incident.g.dart';
 @JsonSerializable()
 class Incident extends ElephantUserCore {
   String? description;
-  late int code;
   late IncidentStatus status;
   late String responsibleUserId;
   late String operatorUserId;
@@ -16,7 +15,7 @@ class Incident extends ElephantUserCore {
   @JsonKey(fromJson: fromJsonSent)
   late bool sent;
 
-  static bool fromJsonSent(dynamic value) => value ?? true;
+  static bool fromJsonSent(dynamic value) => value is int ? value == 1 : value ?? true;
 
   Incident({
     this.description,
@@ -30,7 +29,7 @@ class Incident extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Description TEXT, Code INTEGER, Status INTEGER, ResponsibleUserId TEXT,
+      Description TEXT, Status INTEGER, ResponsibleUserId TEXT,
       OperatorUserId TEXT, MachineId TEXT, VisitId TEXT, Sent BOOLEAN,
       IncludeUserId TEXT)""";
 

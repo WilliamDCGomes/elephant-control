@@ -299,11 +299,8 @@ class ElephantContext {
   Future<List<Map<String, Object?>>> getNotSent(String tableName) async {
     try {
       _database = await database;
-      List<Map<String, Object?>> results = await _database!.query(
-        tableName,
-        where: "Sent = ?",
-        whereArgs: [0],
-      );
+      List<Map<String, Object?>> results =
+          await _database!.query(tableName, where: "Sent = ?", whereArgs: [0], orderBy: "Inclusion ASC");
       if (results.isEmpty) throw Exception();
       return results;
     } catch (e) {

@@ -74,7 +74,7 @@ class IncidentService extends BaseService with MixinService {
         final itemConvertido = Incident.fromJsonRepository(item);
         final token = await getToken();
         final url = baseUrlApi + 'Incident/CreateIncident';
-        final response = await post(url, itemConvertido.toJson(), headers: {'Authorization': 'Bearer ${token}'});
+        final response = await post(url, itemConvertido.toJsonRepository(), headers: {'Authorization': 'Bearer ${token}'});
         if (hasErrorResponse(response)) continue;
         userVisitMachines.add(itemConvertido);
         await context.removeTrully(Incident.tableName, itemConvertido.id!);

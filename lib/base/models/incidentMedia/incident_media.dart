@@ -16,7 +16,7 @@ class IncidentMedia extends ElephantUserCore {
   @JsonKey(fromJson: fromJsonSent)
   late bool sent;
 
-  static bool fromJsonSent(dynamic value) => value ?? true;
+  static bool fromJsonSent(dynamic value) => value is int ? value == 1 : value ?? true;
 
   IncidentMedia({
     required this.incidentId,

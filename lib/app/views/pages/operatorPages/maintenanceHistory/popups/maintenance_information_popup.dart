@@ -11,9 +11,9 @@ import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 
 class MaintenanceInformationPopup {
-  static String getAverage(String clock1, String clock2){
-    if(clock1 != "" && clock2 != "" && int.parse(clock2) != 0){
-      return (int.parse(clock1) / int.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
+  static String getAverage(String clock1, String clock2) {
+    if (clock1 != "" && clock2 != "" && double.parse(clock2) != 0) {
+      return (double.parse(clock1) / double.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
     }
     return "0,00";
   }
@@ -31,7 +31,7 @@ class MaintenanceInformationPopup {
       final String? responsibleName,
       final String visitId,
       final DateTime visitDate,
-      ){
+      {bool offline = false}) {
     return [
       Center(
         child: Container(
@@ -292,7 +292,7 @@ class MaintenanceInformationPopup {
               size: 4.h,
               checked: pouchCollected,
               justRead: true,
-              onChanged: () {  },
+              onChanged: () {},
             ),
           ),
           SizedBox(
@@ -305,23 +305,26 @@ class MaintenanceInformationPopup {
               spaceBetween: 1.w,
               checked: !pouchCollected,
               justRead: true,
-              onChanged: () { },
+              onChanged: () {},
             ),
           ),
         ],
       ),
-      Padding(
-        padding: EdgeInsets.only(top: 2.h),
-        child: ButtonWidget(
-          hintText: "VER DETALHES",
-          fontWeight: FontWeight.bold,
-          widthButton: 75.w,
-          onPressed: () {
-            Get.back();
-            Get.to(() => VisitDetailsPage(visitId: visitId,));
-          },
+      if (!offline)
+        Padding(
+          padding: EdgeInsets.only(top: 2.h),
+          child: ButtonWidget(
+            hintText: "VER DETALHES",
+            fontWeight: FontWeight.bold,
+            widthButton: 75.w,
+            onPressed: () {
+              Get.back();
+              Get.to(() => VisitDetailsPage(
+                    visitId: visitId,
+                  ));
+            },
+          ),
         ),
-      ),
       Padding(
         padding: EdgeInsets.only(top: 2.h),
         child: ButtonWidget(

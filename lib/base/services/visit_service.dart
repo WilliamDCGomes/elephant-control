@@ -1,8 +1,10 @@
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
+import 'package:elephant_control/base/repositories/user_visit_machine_repository.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/add_money_pouch_viewcontroller.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../viewControllers/money_pouch_viewcontroller.dart';
 import '../viewControllers/safe_box_financial_viewcontroller.dart';
 import '../viewControllers/visit_viewcontroller.dart';
@@ -211,10 +213,15 @@ class VisitService extends BaseService with MixinService implements IVisitServic
         final itemConvertido = Visit.fromJsonRepository(item);
         final token = await getToken();
         final url = baseUrlApi + 'Visit/CreateVisit';
-        final response = await post(url, itemConvertido.toJson(), headers: {'Authorization': 'Bearer ${token}'});
+        sharedPreferences ??= await SharedPreferences.getInstance();
+        final response = await post(url, itemConvertido.toJson(),
+            query: {"LastSincronism": sharedPreferences?.getString("LastSincronism")},
+            headers: {'Authorization': 'Bearer ${token}'});
         if (hasErrorResponse(response)) continue;
         userVisitMachines.add(itemConvertido);
-        await context.removeTrully(Visit.tableName, itemConvertido.id!);
+        if (await UserVisitMachineRepository().deleteUserVisitMachineByVisitId(itemConvertido.id!)) {
+          await context.removeTrully(Visit.tableName, itemConvertido.id!);
+        }
       }
       return userVisitMachines;
     } catch (_) {

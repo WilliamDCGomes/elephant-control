@@ -31,6 +31,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       lastVisitMachineCurrentDay: json['lastVisitMachineCurrentDay'] == null
           ? null
           : DateTime.parse(json['lastVisitMachineCurrentDay'] as String),
+      offline: ElephantCore.fromJsonActive(json['offline']),
       sent: json['sent'] == null ? true : Visit.fromJsonSent(json['sent']),
     )
       ..id = json['id'] as String?
@@ -42,6 +43,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
           : DateTime.parse(json['alteration'] as String)
       ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
+      ..lastPrizeMachine = (json['lastPrizeMachine'] as num?)?.toDouble()
       ..monthClosure = ElephantCore.fromJsonActive(json['monthClosure'])
       ..debit = (json['debit'] as num?)?.toDouble()
       ..credit = (json['credit'] as num?)?.toDouble();
@@ -64,6 +66,8 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'lastVisitMachineCurrentDay':
           instance.lastVisitMachineCurrentDay?.toIso8601String(),
       'responsibleUserId': instance.responsibleUserId,
+      'offline': instance.offline,
+      'lastPrizeMachine': instance.lastPrizeMachine,
       'machineId': instance.machineId,
       'machine': instance.machine,
       'moneyPouchId': instance.moneyPouchId,

@@ -85,7 +85,7 @@ class UserVisitMachineRepository extends BaseRepository {
 
   Future<bool> deleteUserVisitMachine(String id) async {
     try {
-      final query = "UPDATE ${UserVisitMachine.tableName} SET Active = 0 WHERE Id = '$id'";
+      final query = "DELETE FROM ${UserVisitMachine.tableName} WHERE VisitId = '$id'";
       final _database = await database;
       final result = await _database.rawUpdate(query);
       return result == 1;
@@ -100,6 +100,18 @@ class UserVisitMachineRepository extends BaseRepository {
       final _database = await database;
       final result = await _database.rawUpdate(query);
       return result == 1;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteUserVisitMachineByVisitId(String visitId) async {
+    try {
+      final query = "DELETE FROM ${UserVisitMachine.tableName} WHERE VisitId = '$visitId'";
+      final _database = await database;
+      final result = await _database.rawDelete(query);
+      if (result == 0) throw Exception();
+      return true;
     } catch (_) {
       return false;
     }

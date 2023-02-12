@@ -177,9 +177,9 @@ class MaintenanceController extends GetxController {
       if (clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0) {
         averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       }
-
+      _visit.sent = !offline;
       bool showAveragePopup = offline ? false : await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
-
+      _visit.offline = offline;
       bool createdVisit = offline ? await VisitRepository().createVisit(_visit) : await _visitService.createVisit(_visit);
       if (createdVisit) {
         List<VisitMediaHViewController> medias = [];
@@ -219,7 +219,7 @@ class MaintenanceController extends GetxController {
             : await _incidentService.createIncident(_incident.incident);
         if (createdIncident)
           offline
-              ? await IncidentRepository().createIncidentMedia(_incident.medias)
+              ? await IncidentRepository().createIncidentMedia(_incident.medias, _incident.incident.id!)
               : await _incidentService.createIncidentMedia(_incident.medias);
       }
       await loadingWithSuccessOrErrorWidget.stopAnimation();
