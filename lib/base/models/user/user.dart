@@ -1,4 +1,5 @@
 import 'package:elephant_control/base/models/base/elephant_core.dart';
+import 'package:elephant_control/base/models/base/elephant_user_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 part 'user.g.dart';
@@ -7,13 +8,8 @@ part 'user.g.dart';
 class User extends ElephantCore {
   late String name;
   String? tellphone;
-  String? document;
-  int? balanceMoney;
-  DateTime? pouchLastUpdate;
-  int? balanceStuffedAnimals;
-  DateTime? stuffedAnimalsLastUpdate;
-  late UserType type;
   DateTime? birthdayDate;
+  String? document;
   late TypeGender gender;
   String? cep;
   String? uf;
@@ -23,13 +19,17 @@ class User extends ElephantCore {
   String? district;
   String? complement;
   String? cellphone;
+  late UserType type;
   String? email;
   int? code;
+  int? balanceStuffedAnimals;
+  DateTime? stuffedAnimalsLastUpdate;
+  DateTime? pouchLastUpdate;
+  int? balanceMoney;
+  late String userName;
+  String? password;
 
-  @JsonKey(
-    includeFromJson: false,
-    includeToJson: false,
-  )
+  @JsonKey(ignore: true)
   late bool selected;
 
   User({
@@ -41,7 +41,9 @@ class User extends ElephantCore {
     required this.type,
     required this.pouchLastUpdate,
     required this.stuffedAnimalsLastUpdate,
-  }){
+    required this.userName,
+    required this.password,
+  }) {
     selected = false;
   }
 
@@ -59,17 +61,19 @@ class User extends ElephantCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Inclusion TEXT, Name TEXT, Tellphone TEXT, Document TEXT, Type INTEGER,
+      Name TEXT, Tellphone TEXT, Document TEXT, Type INTEGER,
       UserName TEXT, NormalizedUserName TEXT, Email TEXT, NormalizedEmail TEXT,
       EmailConfirmed BOOLEAN, PasswordHash TEXT, SecurityStamp TEXT,
       ConcurrencyStamp TEXT, PhoneNumber TEXT, PhoneNumberConfirmed BOOLEAN,
       TwoFactorEnabled BOOLEAN, LockoutEnd TEXT, LockoutEnabled BOOLEAN,
       AccessFailedCount INTEGER, Address TEXT, BirthdayDate TEXT,
       Cellphone TEXT, Cep TEXT, City TEXT, Complement TEXT, Gender INTEGER,
-      District TEXT, Number TEXT, Uf TEXT, Code INTEGER)""";
+      District TEXT, Number TEXT, Uf TEXT, Code INTEGER, BalanceStuffedAnimals INTEGER,
+      StuffedAnimalsLastUpdate TEXT, PouchLastUpdate TEXT, BalanceMoney INTEGER, Password TEXT)
+      """;
 
   String get typeName {
-    switch(type){
+    switch (type) {
       case UserType.operator:
         return "Operador";
       case UserType.treasury:
@@ -85,7 +89,10 @@ class User extends ElephantCore {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
+  factory User.fromJsonRepository(Map<String, dynamic> json) => _$UserFromJson(ElephantUserCore.fromJsonRepository((json)));
+
   Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJsonRepository() => ElephantUserCore.toJsonCapitalize(_$UserToJson(this));
 }
 
 enum UserType {

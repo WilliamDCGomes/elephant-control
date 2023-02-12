@@ -16,9 +16,9 @@ VisitListViewController _$VisitListViewControllerFromJson(
           (json['stuffedAnimalsReplaceQuantity'] as num).toDouble(),
       stuffedAnimalsQuantity:
           (json['stuffedAnimalsQuantity'] as num).toDouble(),
-      moneyPouchRetired: json['moneyPouchRetired'] as bool,
+      moneyPouchRetired: ElephantCore.fromJsonActive(json['moneyPouchRetired']),
       machineName: json['machineName'] as String,
-      realizedVisit: json['realizedVisit'] as bool?,
+      realizedVisit: ElephantCore.fromJsonActive(json['realizedVisit']),
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -27,7 +27,7 @@ VisitListViewController _$VisitListViewControllerFromJson(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$VisitListViewControllerToJson(

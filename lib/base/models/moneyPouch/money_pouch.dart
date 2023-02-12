@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 
 part 'money_pouch.g.dart';
 
@@ -28,7 +29,7 @@ class MoneyPouch extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      PouchValue DECIMAL, CardValue DECIMAL, ValueMatch BOOLEAN, Inclusion TEXT,
+      PouchValue DECIMAL, CardValue DECIMAL, ValueMatch BOOLEAN,
       IncludeUserId TEXT, Code INTEGER, Observation TEXT, DifferenceValue DECIMAL,
       Latitude TEXT, Longitude TEXT)""";
 

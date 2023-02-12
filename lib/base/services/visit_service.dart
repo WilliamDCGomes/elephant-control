@@ -7,9 +7,10 @@ import '../viewControllers/money_pouch_viewcontroller.dart';
 import '../viewControllers/safe_box_financial_viewcontroller.dart';
 import '../viewControllers/visit_viewcontroller.dart';
 import '../viewControllers/visits_of_operators_viewcontroller.dart';
+import 'base/iservice_post.dart';
 import 'interfaces/ivisit_service.dart';
 
-class VisitService extends BaseService implements IVisitService {
+class VisitService extends BaseService with MixinService implements IVisitService {
   Future<bool> createVisit(Visit visit) async {
     try {
       final token = await getToken();
@@ -193,6 +194,31 @@ class VisitService extends BaseService implements IVisitService {
       return response.body;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<List> getOffline() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Visit>> postOffline() async {
+    try {
+      List<Visit> userVisitMachines = [];
+      final itens = await context.getNotSent(Visit.tableName);
+      for (var item in itens) {
+        final itemConvertido = Visit.fromJsonRepository(item);
+        final token = await getToken();
+        final url = baseUrlApi + 'Visit/CreateVisit';
+        final response = await post(url, itemConvertido.toJson(), headers: {'Authorization': 'Bearer ${token}'});
+        if (hasErrorResponse(response)) continue;
+        userVisitMachines.add(itemConvertido);
+        await context.removeTrully(Visit.tableName, itemConvertido.id!);
+      }
+      return userVisitMachines;
+    } catch (_) {
+      return [];
     }
   }
 }

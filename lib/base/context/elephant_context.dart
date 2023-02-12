@@ -2,13 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../flavors.dart';
 import '../migrations/migration_1.dart';
-import '../migrations/migration_2.dart';
 import '../models/incident/incident.dart';
 import '../models/incidentMedia/incident_media.dart';
 import '../models/machine/machine.dart';
@@ -27,8 +25,9 @@ import '../models/visitMedia/visit_media.dart';
 
 class ElephantContext {
   static Database? _database;
-  static const int _databaseVersion = 3;
-  static const String queryElephantModelBase = "Id TEXT PRIMARY KEY NOT NULL, Alteration TEXT, Active BOOLEAN";
+  static const int _databaseVersion = 4;
+  static const String queryElephantModelBase =
+      "Id TEXT PRIMARY KEY NOT NULL, Alteration TEXT, Inclusion TEXT, Active BOOLEAN";
 
   static final ElephantContext _elephantContext = ElephantContext._internal();
   factory ElephantContext() => _elephantContext;
@@ -71,24 +70,8 @@ class ElephantContext {
         "tableName": Machine.tableName,
       },
       {
-        "scriptCreateTable": Media.scriptCreateTable,
-        "tableName": Media.tableName,
-      },
-      {
-        "scriptCreateTable": MoneyPouch.scriptCreateTable,
-        "tableName": MoneyPouch.tableName,
-      },
-      {
         "scriptCreateTable": ReminderMachine.scriptCreateTable,
         "tableName": ReminderMachine.tableName,
-      },
-      {
-        "scriptCreateTable": Store.scriptCreateTable,
-        "tableName": Store.tableName,
-      },
-      {
-        "scriptCreateTable": StoreUser.scriptCreateTable,
-        "tableName": StoreUser.tableName,
       },
       {
         "scriptCreateTable": User.scriptCreateTable,
@@ -107,16 +90,8 @@ class ElephantContext {
         "tableName": Visit.tableName,
       },
       {
-        "scriptCreateTable": VisitLog.scriptCreateTable,
-        "tableName": VisitLog.tableName,
-      },
-      {
         "scriptCreateTable": VisitMedia.scriptCreateTable,
         "tableName": VisitMedia.tableName,
-      },
-      {
-        "scriptCreateTable": StokistPlush.scriptCreateTable,
-        "tableName": StokistPlush.tableName,
       },
     ];
 
@@ -140,10 +115,9 @@ class ElephantContext {
       while (oldVersionAux < newVersion) {
         switch (oldVersionAux) {
           case 1:
-            await Migration1(db).executeMigrations();
-            break;
           case 2:
-            await Migration2(db).executeMigrations();
+          case 3:
+            await Migration1(db).executeMigrations();
             break;
           default:
             log("Sem migrations");
@@ -155,7 +129,8 @@ class ElephantContext {
 
   Future<bool> exportDatabase() async {
     try {
-      Directory? docDirectory = Platform.isAndroid ? Directory('/storage/emulated/0/Download') : await getDownloadsDirectory();
+      Directory? docDirectory =
+          Platform.isAndroid ? Directory('/storage/emulated/0/Download') : await getDownloadsDirectory();
       if (docDirectory == null) throw Exception();
       String newDirectory = "${docDirectory.path}/BK_${DateTime.now().microsecondsSinceEpoch}_Elephant_${F.extension}.db";
       File db = File(await pathDatabase);
@@ -178,19 +153,6 @@ class ElephantContext {
       _database = null;
       await deleteDatabase(await pathDatabase);
       return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> importDb() async {
-    try {
-      FilePickerResult? bancoImportar = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['db'],
-      );
-
-      return bancoImportar != null;
     } catch (e) {
       return false;
     }
@@ -309,7 +271,18 @@ class ElephantContext {
     }
   }
 
-  Future<String> getLastUpdate(String tableName) async {
+  Future<int?> removeAllTrully(String tableName) async {
+    try {
+      _database = await database;
+      return await _database!.delete(
+        tableName,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<String> getLastAlteration(String tableName) async {
     try {
       _database = await database;
       List<Map<String, dynamic>> results = await _database!.query(
@@ -320,6 +293,21 @@ class ElephantContext {
       return results.first["Alteration"];
     } catch (e) {
       return "";
+    }
+  }
+
+  Future<List<Map<String, Object?>>> getNotSent(String tableName) async {
+    try {
+      _database = await database;
+      List<Map<String, Object?>> results = await _database!.query(
+        tableName,
+        where: "Sent = ?",
+        whereArgs: [0],
+      );
+      if (results.isEmpty) throw Exception();
+      return results;
+    } catch (e) {
+      return [];
     }
   }
 }

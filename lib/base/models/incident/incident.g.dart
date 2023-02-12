@@ -11,6 +11,7 @@ Incident _$IncidentFromJson(Map<String, dynamic> json) => Incident(
       status: $enumDecode(_$IncidentStatusEnumMap, json['status']),
       machineId: json['machineId'] as String,
       visitId: json['visitId'] as String,
+      sent: json['sent'] == null ? true : Incident.fromJsonSent(json['sent']),
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -19,7 +20,7 @@ Incident _$IncidentFromJson(Map<String, dynamic> json) => Incident(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
       ..code = json['code'] as int
       ..responsibleUserId = json['responsibleUserId'] as String
@@ -38,6 +39,7 @@ Map<String, dynamic> _$IncidentToJson(Incident instance) => <String, dynamic>{
       'operatorUserId': instance.operatorUserId,
       'machineId': instance.machineId,
       'visitId': instance.visitId,
+      'sent': instance.sent,
     };
 
 const _$IncidentStatusEnumMap = {

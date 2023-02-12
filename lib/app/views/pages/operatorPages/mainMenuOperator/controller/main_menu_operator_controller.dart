@@ -1,15 +1,29 @@
+import 'dart:async';
+
+import 'package:elephant_control/app/utils/internet_connection.dart';
+import 'package:elephant_control/app/views/pages/widgetsShared/popups/information_popup.dart';
+import 'package:elephant_control/base/context/elephant_context.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
+import 'package:elephant_control/base/services/machine_service.dart';
+import 'package:elephant_control/base/services/reminder_machine_service.dart';
+import 'package:elephant_control/base/services/user_machine_service.dart';
 import 'package:elephant_control/base/services/user_service.dart';
-import 'package:flutter/foundation.dart';
+import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../../base/services/base/iservice_post.dart';
+import '../../../../../../base/services/incident_media_service.dart';
+import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/services/visit_media_service.dart';
+import '../../../../../../base/services/visit_service.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
-import '../../../../../utils/position_util.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
+import '../../maintenance/page/maintenance_page.dart';
+import '../../maintenanceHistory/pages/maintenance_history_page.dart';
 
 class MainMenuOperatorController extends GetxController {
   late RxBool screenLoading;
@@ -26,6 +40,7 @@ class MainMenuOperatorController extends GetxController {
   late SharedPreferences sharedPreferences;
   late List<Visit> visitsUser;
   late List<Visit> visitsWithMoneydrawal;
+  late Completer<bool> _offlineCompleter;
 
   MainMenuOperatorController() {
     _initializeVariables();
@@ -36,6 +51,8 @@ class MainMenuOperatorController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    _sincronizeData();
+    _sincronizePostData();
     await GetProfilePictureController.loadProfilePicture(
       loadingPicture,
       hasPicture,
@@ -45,9 +62,9 @@ class MainMenuOperatorController extends GetxController {
     await _checkFingerPrintUser();
     await getOperatorInformation();
     screenLoading.value = false;
-    if(kDebugMode) {
-      await PositionUtil.determinePosition();
-    }
+    // if(kDebugMode) {
+    //   await PositionUtil.determinePosition();
+    // }
     super.onInit();
   }
 
@@ -64,7 +81,10 @@ class MainMenuOperatorController extends GetxController {
     amountTeddy = (LoggedUser.balanceStuffedAnimals ?? 0).obs;
     pouchLastChange = (LoggedUser.pouchLastUpdate ?? DateTime.now()).obs;
     teddyLastChange = (LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now()).obs;
+    _offlineCompleter = Completer<bool>();
   }
+
+  bool get sincronismCompleted => _offlineCompleter.isCompleted;
 
   _getNameUser() {
     switch (LoggedUser.userType) {
@@ -124,6 +144,73 @@ class MainMenuOperatorController extends GetxController {
     }
   }
 
+  _sincronizeData() async {
+    if (!(sharedPreferences.getBool("SincronismExecuted") ?? false)) {
+      _offlineCompleter.complete(true);
+    }
+    if (!await InternetConnection.checkConnection()) {
+      if (!_offlineCompleter.isCompleted) _offlineCompleter.complete(false);
+      return;
+    }
+    List<MixinService> services = [
+      MachineService(),
+      UserMachineService(),
+      UserVisitMachineService(),
+      ReminderMachineService(),
+      // IncidentMediaService(),
+      // IncidentService(),
+      // VisitMediaService(),
+      // VisitService(),
+    ];
+    bool error = false;
+    for (var element in services) {
+      try {
+        final response = await element.getOffline();
+        print(response.length);
+      } catch (_) {
+        error = true;
+      }
+    }
+    if (!error) {
+      sharedPreferences.setBool("SincronismExecuted", true);
+      if (!_offlineCompleter.isCompleted) _offlineCompleter.complete(true);
+    } else {
+      if (!_offlineCompleter.isCompleted) _offlineCompleter.complete(false);
+    }
+  }
+
+  _sincronizePostData() async {
+    if (!(sharedPreferences.getBool("SincronismExecuted") ?? false)) {
+      return;
+    }
+    if (!await InternetConnection.checkConnection()) {
+      return;
+    }
+    List<MixinService> services = [
+      // MachineService(),
+      // UserMachineService(),
+      UserVisitMachineService(),
+      // ReminderMachineService(),
+      VisitService(),
+      VisitMediaService(),
+      IncidentService(),
+      IncidentMediaService(),
+    ];
+    bool error = false;
+    for (var element in services) {
+      try {
+        final response = await element.postOffline();
+        print(response.length);
+      } catch (_) {
+        print(_);
+        error = true;
+      }
+    }
+    if (error) {
+      print(error);
+    }
+  }
+
   Future<void> getOperatorInformation() async {
     try {
       final operatorInformations = await UserService().getOperatorInformation();
@@ -138,4 +225,40 @@ class MainMenuOperatorController extends GetxController {
       LoggedUser.stuffedAnimalsLastUpdate = operatorInformations.stuffedAnimalsLastUpdate ?? DateTime.now();
     } catch (_) {}
   }
+
+  void openMaintenancePage(BuildContext context, ScreenOperator screenOperator) async {
+    if (await InternetConnection.checkConnection()) {
+      return screenOperator == ScreenOperator.maintenanceHistory
+          ? Get.to(() => MaintenanceHistoryPage(offline: false))
+          : Get.to(() => MaintenancePage(offline: false));
+    } else {
+      if (sharedPreferences.getBool("SincronismExecuted") ?? false) {
+        return screenOperator == ScreenOperator.maintenanceHistory
+            ? Get.to(() => MaintenanceHistoryPage(offline: true))
+            : Get.to(() => MaintenancePage(offline: true));
+      } else {
+        try {
+          if (!_offlineCompleter.isCompleted) screenLoading.value = true;
+          if (await _offlineCompleter.future) {
+            return screenOperator == ScreenOperator.maintenanceHistory
+                ? Get.to(() => MaintenanceHistoryPage(offline: true))
+                : Get.to(() => MaintenancePage(offline: true));
+          } else {
+            return showDialog(
+                context: context,
+                builder: (context) => InformationPopup(
+                      warningMessage: screenOperator == ScreenOperator.maintenanceHistory
+                          ? "Não foi possível acessar o histórico de visitas. Tente novamente mais tarde."
+                          : "Não foi possível acessar a página de visitas. Tente novamente mais tarde.",
+                    ));
+          }
+        } catch (_) {
+        } finally {
+          screenLoading.value = false;
+        }
+      }
+    }
+  }
 }
+
+enum ScreenOperator { maintenanceHistory, maintenanceCreate }

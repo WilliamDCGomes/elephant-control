@@ -3,9 +3,10 @@ import 'package:elephant_control/base/models/reminderMachine/reminder_machine.da
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/return_machine_viewcontroller.dart';
 import '../models/user/user.dart';
+import 'base/iservice_post.dart';
 import 'interfaces/imachine_service.dart';
 
-class MachineService extends BaseService implements IMachineService {
+class MachineService extends BaseService with MixinService implements IMachineService {
   Future<List<Machine>> getMachinesByUserId() async {
     try {
       final token = await getToken();
@@ -180,5 +181,32 @@ class MachineService extends BaseService implements IMachineService {
     } catch (_) {
       return [];
     }
+  }
+
+  @override
+  Future<List<Machine>> getOffline() async {
+    try {
+      final lastAlteraion = await context.getLastAlteration(Machine.tableName);
+      final token = await getToken();
+      final url = baseUrlApi + 'Machine/GetByAlteration';
+      final response = await get(url, query: {
+        "Alteration": lastAlteraion,
+      }, headers: {
+        'Authorization': 'Bearer ${token}'
+      });
+      if (hasErrorResponse(response)) throw Exception();
+      var machines = (response.body as List).map((e) => Machine.fromJson(e)).toList();
+      for (var element in machines) {
+        await context.insert(Machine.tableName, element.toJsonRepository());
+      }
+      return machines;
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<Machine>> postOffline() {
+    throw UnimplementedError();
   }
 }

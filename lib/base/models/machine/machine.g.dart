@@ -22,7 +22,7 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
       ..daysToNextVisit = json['daysToNextVisit'] as int?
       ..prize = (json['prize'] as num?)?.toDouble()
@@ -45,7 +45,9 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       ..minimumAverageValue = (json['minimumAverageValue'] as num).toDouble()
       ..maximumAverageValue = (json['maximumAverageValue'] as num).toDouble()
       ..externalId = json['externalId'] as int?
-      ..machineAddOtherList = json['machineAddOtherList'] as bool?;
+      ..machineAddOtherList =
+          ElephantCore.fromJsonActive(json['machineAddOtherList'])
+      ..sent = Machine.fromJsonSent(json['sent']);
 
 Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'id': instance.id,
@@ -76,4 +78,5 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'externalId': instance.externalId,
       'machineAddOtherList': instance.machineAddOtherList,
       'reminders': instance.reminders,
+      'sent': instance.sent,
     };

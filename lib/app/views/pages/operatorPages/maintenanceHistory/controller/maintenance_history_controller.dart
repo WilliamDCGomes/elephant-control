@@ -1,5 +1,8 @@
 import 'package:elephant_control/app/views/pages/operatorPages/maintenanceHistory/pages/add_new_maintenance_page.dart';
 import 'package:elephant_control/base/models/machine/machine.dart';
+import 'package:elephant_control/base/repositories/machine_repository.dart';
+import 'package:elephant_control/base/repositories/user_visit_machine_repository.dart';
+import 'package:elephant_control/base/repositories/visit_repository.dart';
 import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
@@ -20,8 +23,9 @@ class MaintenanceHistoryController extends GetxController {
   late final VisitService _visitService;
   late final MachineService _machineService;
   late final UserVisitMachineService _userVisitMachineService;
+  late final bool offline;
 
-  MaintenanceHistoryController() {
+  MaintenanceHistoryController(this.offline) {
     _initializeVariables();
   }
 
@@ -60,21 +64,20 @@ class MaintenanceHistoryController extends GetxController {
 
   Future<void> getVisitsOperatorByUserId({bool showLoad = true}) async {
     try {
-      if(showLoad){
+      if (showLoad) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
-      }
-      else{
+      } else {
         screenLoading.value = true;
       }
       _visits.clear();
-      _visits.addAll(await _visitService.getVisitsOperatorByUserId());
+      _visits.addAll(
+          offline ? await VisitRepository().getVisitsOperatorByUserId() : await _visitService.getVisitsOperatorByUserId());
     } catch (_) {
       _visits.clear();
     } finally {
-      if(showLoad){
+      if (showLoad) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-      }
-      else{
+      } else {
         screenLoading.value = false;
       }
     }
@@ -82,16 +85,17 @@ class MaintenanceHistoryController extends GetxController {
 
   Future<void> getMachineVisitByUserId({bool showLoad = true}) async {
     try {
-      if(showLoad) {
+      if (showLoad) {
         await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       }
       _machines.clear();
-      _machines.addAll(await _machineService.getMachineVisitByUserId());
+      _machines.addAll(
+          offline ? await MachineRepository().getMachineVisitByUserId() : await _machineService.getMachineVisitByUserId());
       if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
     } catch (_) {
       _machines.clear();
     } finally {
-      if(showLoad) {
+      if (showLoad) {
         await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
       }
     }
@@ -101,10 +105,14 @@ class MaintenanceHistoryController extends GetxController {
     try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       if (visit.active == true) {
-        final visitDeletedOrUndelete = await UserVisitMachineService().deleteUserVisitMachine(visit.id!);
+        final visitDeletedOrUndelete = offline
+            ? await UserVisitMachineRepository().deleteUserVisitMachine(visit.id!)
+            : await UserVisitMachineService().deleteUserVisitMachine(visit.id!);
         if (visitDeletedOrUndelete) visit.active = false;
       } else {
-        final visitDeletedOrUndelete = await UserVisitMachineService().unDeleteUserVisitMachine(visit.id!);
+        final visitDeletedOrUndelete = offline
+            ? await UserVisitMachineRepository().unDeleteUserVisitMachine(visit.id!)
+            : await UserVisitMachineService().unDeleteUserVisitMachine(visit.id!);
         if (visitDeletedOrUndelete) visit.active = false;
       }
     } catch (_) {
@@ -117,10 +125,13 @@ class MaintenanceHistoryController extends GetxController {
   Future<void> createuserMachine(String machineId) async {
     try {
       await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
-      final userMachineCreated = await _userVisitMachineService.createUserVisitMachine(machineId, DateTime.now());
+      final userMachineCreated = offline
+          ? await UserVisitMachineRepository().createUserVisitMachine(machineId, DateTime.now())
+          : await _userVisitMachineService.createUserVisitMachine(machineId, DateTime.now());
       if (!userMachineCreated) throw Exception();
       await loadingWithSuccessOrErrorWidgetTwo.stopAnimation();
-      await showDialog(context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Máquina adicionada com sucesso"));
+      await showDialog(
+          context: Get.context!, builder: (_) => InformationPopup(warningMessage: "Máquina adicionada com sucesso"));
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(fail: true);
@@ -130,8 +141,8 @@ class MaintenanceHistoryController extends GetxController {
 
   newItem() async {
     Get.to(() => AppNewMaintenancePage(
-      title: "Selecione um atendimento para adicionar a sua lista",
-      controller: this,
-    ));
+          title: "Selecione um atendimento para adicionar a sua lista",
+          controller: this,
+        ));
   }
 }

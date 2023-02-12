@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/models/visitMedia/visit_media.dart';
+import '../../../../../../base/viewControllers/visit_media_h_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -51,11 +52,12 @@ class OccurrenceController extends GetxController {
   saveOccurrence() async {
     try {
       if (!fieldsValidate()) return;
-      final _incident = Incident(status: IncidentStatus.realized, machineId: _machine.id!, visitId: _visitId, description: observations.text);
-      List<VisitMedia> medias = [];
+      final _incident = Incident(
+          status: IncidentStatus.realized, machineId: _machine.id!, visitId: _visitId, description: observations.text);
+      List<VisitMediaHViewController> medias = [];
       final bytesClockImage = await machineOccurrencePicture.picture?.readAsBytes();
       if (bytesClockImage != null)
-        medias.add(VisitMedia(
+        medias.add(VisitMediaHViewController(
           visitId: _incident.id!,
           base64: base64Encode(bytesClockImage),
           type: MediaType.moneyWatch,
@@ -63,7 +65,7 @@ class OccurrenceController extends GetxController {
         ));
       final bytesBeforeImage = await extraMachineOccurrencePicture.picture?.readAsBytes();
       if (bytesBeforeImage != null)
-        medias.add(VisitMedia(
+        medias.add(VisitMediaHViewController(
           visitId: _incident.id!,
           base64: base64Encode(bytesBeforeImage),
           type: MediaType.machineBefore,
@@ -71,7 +73,7 @@ class OccurrenceController extends GetxController {
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
       if (bytesAfterImage != null)
-        medias.add(VisitMedia(
+        medias.add(VisitMediaHViewController(
           visitId: _incident.id!,
           base64: base64Encode(bytesAfterImage),
           type: MediaType.machineAfter,
@@ -132,7 +134,7 @@ class OccurrenceController extends GetxController {
 
 class IncidentObject {
   final Incident incident;
-  final List<VisitMedia> medias;
+  final List<VisitMediaHViewController> medias;
 
   IncidentObject(this.incident, this.medias);
 }

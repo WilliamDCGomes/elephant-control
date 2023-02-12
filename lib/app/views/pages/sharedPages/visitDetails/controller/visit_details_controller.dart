@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/viewControllers/visit_media_h_viewcontroller.dart';
 import '../../../../../../base/viewControllers/visit_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/files_helper.dart';
@@ -90,9 +91,9 @@ class VisitDetailsController extends GetxController {
   }
 
   _getVisitInformation() async {
-    try{
+    try {
       visitViewController = await _visitService.getResumeVisitById(visitId);
-      if(visitViewController == null){
+      if (visitViewController == null) {
         throw Exception();
       }
       maintenanceDate = DateFormatToBrazil.formatDateAndHour(visitViewController!.inclusion);
@@ -104,21 +105,20 @@ class VisitDetailsController extends GetxController {
       no.value = !visitViewController!.collectedDrawal;
 
       bool after = true;
-      for(var media in visitViewController!.mediasList){
-        switch(media.visitType){
+      for (var media in visitViewController!.mediasList) {
+        switch (media.visitType) {
           case MediaType.moneyWatch:
             imageClock.picture = await FilesHelper.createXFileFromBase64(
               media.image,
             );
             break;
           case MediaType.machineBefore:
-            if(after){
+            if (after) {
               after = false;
               beforeMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 media.image,
               );
-            }
-            else{
+            } else {
               afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 media.image,
               );
@@ -138,8 +138,7 @@ class VisitDetailsController extends GetxController {
       beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
-    }
-    catch(e){
+    } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       await showDialog(
         context: Get.context!,
@@ -179,10 +178,10 @@ class VisitDetailsController extends GetxController {
       _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
       bool createdVisit = await _visitService.createVisit(_visit);
       if (createdVisit) {
-        List<VisitMedia> medias = [];
+        List<VisitMediaHViewController> medias = [];
         final bytesClockImage = await imageClock.picture?.readAsBytes();
         if (bytesClockImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesClockImage),
             type: MediaType.moneyWatch,
@@ -190,7 +189,7 @@ class VisitDetailsController extends GetxController {
           ));
         final bytesBeforeImage = await beforeMaintenanceImageClock.picture?.readAsBytes();
         if (bytesBeforeImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesBeforeImage),
             type: MediaType.machineBefore,
@@ -198,7 +197,7 @@ class VisitDetailsController extends GetxController {
           ));
         final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
         if (bytesAfterImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesAfterImage),
             type: MediaType.machineAfter,
@@ -222,7 +221,8 @@ class VisitDetailsController extends GetxController {
           );
         },
       );
-      await Future.microtask(() => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      await Future.microtask(
+          () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
@@ -326,16 +326,15 @@ class VisitDetailsController extends GetxController {
     return true;
   }
 
-  openImage(XFile? xfile){
-    if(xfile != null){
+  openImage(XFile? xfile) {
+    if (xfile != null) {
       showImageViewer(
         Get.context!,
         Image.memory(
           File(xfile.path).readAsBytesSync(),
         ).image,
       );
-    }
-    else{
+    } else {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,

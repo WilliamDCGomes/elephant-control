@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 
 part 'stokist_plush.g.dart';
 

@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 part 'machine.g.dart';
 
 @JsonSerializable()
@@ -28,10 +29,15 @@ class Machine extends ElephantUserCore {
   late double minimumAverageValue;
   late double maximumAverageValue;
   int? externalId;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
   bool? machineAddOtherList;
   List<ReminderMachine>? reminders;
   @JsonKey(ignore: true)
   late bool selected;
+  @JsonKey(fromJson: fromJsonSent)
+  late bool sent;
+
+  static bool fromJsonSent(dynamic value) => value is int ? value == 1 : value ?? true;
 
   Machine({
     required this.name,
@@ -51,15 +57,25 @@ class Machine extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Name TEXT, StoreId TEXT, Inclusion TEXT, IncludeUserId TEXT,
+      Name TEXT, StoreId TEXT, IncludeUserId TEXT,
       LastBalanceStuffedAnimals DECIMAL, DaysToNextVisit INTEGER,
       LastVisit TEXT, Prize DECIMAL, Address TEXT, Cep TEXT,
       City TEXT, Complement TEXT, District TEXT, Latitude TEXT,
       Localization TEXT, Longitude TEXT, Number TEXT,
-      Uf TEXT, MaximumAverageValue DECIMAL, MinimumAverageValue DECIMAL,
-      LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL, ExternalId INTEGER)""";
+      Uf TEXT, MaximumAverageValue DECIMAL, MinimumAverageValue DECIMAL, Sent BOOLEAN,
+      LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL, ExternalId INTEGER,
+      MachineAddOtherList BOOLEAN)""";
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 
+  factory Machine.fromJsonRepository(Map<String, dynamic> json) =>
+      _$MachineFromJson(ElephantUserCore.fromJsonRepository(json));
+
   Map<String, dynamic> toJson() => _$MachineToJson(this);
+
+  Map<String, dynamic> toJsonRepository() {
+    final json = _$MachineToJson(this);
+    json.remove('reminders');
+    return ElephantUserCore.toJsonCapitalize(json);
+  }
 }

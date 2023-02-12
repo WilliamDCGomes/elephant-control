@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 part 'store_user.g.dart';
 
 @JsonSerializable()
@@ -17,7 +18,7 @@ class StoreUser extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      StoreId TEXT, Inclusion TEXT, UserId TEXT, IncludeUserId TEXT)""";
+      StoreId TEXT, UserId TEXT, IncludeUserId TEXT)""";
 
   factory StoreUser.fromJson(Map<String, dynamic> json) => _$StoreUserFromJson(json);
 

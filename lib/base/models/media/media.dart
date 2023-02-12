@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 part 'media.g.dart';
 
 @JsonSerializable()
@@ -19,7 +20,7 @@ class Media extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Base64 TEXT, Extension INTEGER, Inclusion TEXT, IncludeUserId TEXT,
+      Base64 TEXT, Extension INTEGER, IncludeUserId TEXT,
       Name TEXT)""";
 
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);

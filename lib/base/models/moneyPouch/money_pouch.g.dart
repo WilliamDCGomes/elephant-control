@@ -20,7 +20,7 @@ MoneyPouch _$MoneyPouchFromJson(Map<String, dynamic> json) => MoneyPouch(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
       ..differenceValue = (json['differenceValue'] as num?)?.toDouble()
       ..latitude = json['latitude'] as String?

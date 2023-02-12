@@ -6,6 +6,9 @@ import 'package:elephant_control/app/views/pages/operatorPages/occurrence/contro
 import 'package:elephant_control/app/views/pages/operatorPages/occurrence/page/occurrence_page.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
+import 'package:elephant_control/base/repositories/incident_repository.dart';
+import 'package:elephant_control/base/repositories/user_visit_machine_repository.dart';
+import 'package:elephant_control/base/repositories/visit_repository.dart';
 import 'package:elephant_control/base/services/user_visit_machine_service.dart';
 import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
@@ -17,6 +20,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/services/incident_service.dart';
+import '../../../../../../base/viewControllers/visit_media_h_viewcontroller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
@@ -54,8 +58,9 @@ class MaintenanceController extends GetxController {
   late final Visit _visit;
   late final String visitId;
   late final List<IncidentObject> _incidents;
+  late final bool offline;
 
-  MaintenanceController() {
+  MaintenanceController(this.offline) {
     _initializeVariables();
   }
 
@@ -88,7 +93,7 @@ class MaintenanceController extends GetxController {
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
 
-    imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    imageClock = ImagesPictureWidget(origin: imageOrigin.gallery);
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 
@@ -109,14 +114,15 @@ class MaintenanceController extends GetxController {
   Future<void> _initializeMethods() async {
     try {
       await getMachines();
-    } catch (_) {
-    }
+    } catch (_) {}
   }
 
   Future<void> getMachines() async {
     try {
       _machines.clear();
-      final listTodayMachine = await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
+      final listTodayMachine = offline
+          ? await UserVisitMachineRepository().getUserVisitMachineByUserIdAndVisitDay(DateTime.now())
+          : await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
       _machines.addAll(listTodayMachine
           .map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
       if (_machines.isNotEmpty) {
@@ -146,7 +152,7 @@ class MaintenanceController extends GetxController {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
-      if(int.parse(clock2.text) > int.parse(clock1.text)){
+      if (int.parse(clock2.text) > int.parse(clock1.text)) {
         String clock1Aux = clock1.text;
         clock1.text = clock2.text;
         clock2.text = clock1Aux;
@@ -168,18 +174,18 @@ class MaintenanceController extends GetxController {
       _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
 
       double averageValue = 0;
-      if(clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0){
+      if (clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0) {
         averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       }
 
-      bool showAveragePopup = await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
+      bool showAveragePopup = offline ? false : await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
 
-      bool createdVisit = await _visitService.createVisit(_visit);
+      bool createdVisit = offline ? await VisitRepository().createVisit(_visit) : await _visitService.createVisit(_visit);
       if (createdVisit) {
-        List<VisitMedia> medias = [];
+        List<VisitMediaHViewController> medias = [];
         final bytesClockImage = await imageClock.picture?.readAsBytes();
         if (bytesClockImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesClockImage),
             type: MediaType.moneyWatch,
@@ -187,7 +193,7 @@ class MaintenanceController extends GetxController {
           ));
         final bytesBeforeImage = await beforeMaintenanceImageClock.picture?.readAsBytes();
         if (bytesBeforeImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesBeforeImage),
             type: MediaType.machineBefore,
@@ -195,30 +201,37 @@ class MaintenanceController extends GetxController {
           ));
         final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
         if (bytesAfterImage != null)
-          medias.add(VisitMedia(
+          medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
             base64: base64Encode(bytesAfterImage),
             type: MediaType.machineAfter,
             extension: MediaExtension.jpeg,
           ));
 
-        if (medias.isNotEmpty) createdVisit = await _visitMediaService.createVisitMedia(medias);
+        if (medias.isNotEmpty)
+          createdVisit =
+              offline ? await VisitRepository().createVisitMedia(medias) : await _visitMediaService.createVisitMedia(medias);
       }
       if (!createdVisit) throw Exception();
       for (var _incident in _incidents) {
-        final bool createdIncident = await _incidentService.createIncident(_incident.incident);
-        if (createdIncident) await _incidentService.createIncidentMedia(_incident.medias);
+        final bool createdIncident = offline
+            ? await IncidentRepository().createIncident(_incident.incident)
+            : await _incidentService.createIncident(_incident.incident);
+        if (createdIncident)
+          offline
+              ? await IncidentRepository().createIncidentMedia(_incident.medias)
+              : await _incidentService.createIncidentMedia(_incident.medias);
       }
       await loadingWithSuccessOrErrorWidget.stopAnimation();
 
-      if(showAveragePopup){
+      if (showAveragePopup) {
         await showDialog(
           context: Get.context!,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return InformationPopup(
-              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue
-                  .toStringAsFixed(2).replaceAll('.', ',')}",
+              warningMessage:
+                  "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
               fontSize: 18.sp,
               popupColor: AppColors.redColor,
               title: Row(
@@ -263,8 +276,10 @@ class MaintenanceController extends GetxController {
           );
         },
       );
-      await Future.microtask(
-          () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      if (!offline) {
+        await Future.microtask(
+            () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+      }
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);

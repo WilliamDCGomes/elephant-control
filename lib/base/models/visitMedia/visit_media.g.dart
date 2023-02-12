@@ -7,23 +7,21 @@ part of 'visit_media.dart';
 // **************************************************************************
 
 VisitMedia _$VisitMediaFromJson(Map<String, dynamic> json) => VisitMedia(
-      base64: json['base64'] as String?,
-      mediaId: json['mediaId'] as String?,
       type: $enumDecode(_$MediaTypeEnumMap, json['type']),
-      visitId: json['visitId'] as String?,
-      extension:
-          $enumDecodeNullable(_$MediaExtensionEnumMap, json['extension']),
+      visitId: json['visitId'] as String,
+      media: json['media'] as String,
+      extension: $enumDecode(_$MediaExtensionEnumMap, json['extension']),
+      id: json['id'] as String?,
+      inclusion: json['inclusion'] == null
+          ? null
+          : DateTime.parse(json['inclusion'] as String),
+      alteration: json['alteration'] == null
+          ? null
+          : DateTime.parse(json['alteration'] as String),
+      sent: json['sent'] == null ? true : VisitMedia.fromJsonSent(json['sent']),
     )
-      ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null
-          ? null
-          : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null
-          ? null
-          : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?
-      ..incidentId = json['incidentId'] as String?;
+      ..active = ElephantCore.fromJsonActive(json['active'])
+      ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$VisitMediaToJson(VisitMedia instance) =>
     <String, dynamic>{
@@ -32,12 +30,11 @@ Map<String, dynamic> _$VisitMediaToJson(VisitMedia instance) =>
       'alteration': instance.alteration?.toIso8601String(),
       'active': instance.active,
       'includeUserId': instance.includeUserId,
-      'base64': instance.base64,
-      'mediaId': instance.mediaId,
       'type': _$MediaTypeEnumMap[instance.type]!,
       'visitId': instance.visitId,
-      'incidentId': instance.incidentId,
-      'extension': _$MediaExtensionEnumMap[instance.extension],
+      'extension': _$MediaExtensionEnumMap[instance.extension]!,
+      'media': instance.media,
+      'sent': instance.sent,
     };
 
 const _$MediaTypeEnumMap = {

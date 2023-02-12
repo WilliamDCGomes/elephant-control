@@ -10,16 +10,18 @@ IncidentMedia _$IncidentMediaFromJson(Map<String, dynamic> json) =>
     IncidentMedia(
       incidentId: json['incidentId'] as String,
       type: $enumDecode(_$MediaTypeEnumMap, json['type']),
-      mediaId: json['mediaId'] as String,
+      media: json['media'] as String,
+      extension: $enumDecode(_$MediaExtensionEnumMap, json['extension']),
+      sent: IncidentMedia.fromJsonSent(json['sent']),
+      id: json['id'] as String?,
+      inclusion: json['inclusion'] == null
+          ? null
+          : DateTime.parse(json['inclusion'] as String),
+      alteration: json['alteration'] == null
+          ? null
+          : DateTime.parse(json['alteration'] as String),
     )
-      ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null
-          ? null
-          : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null
-          ? null
-          : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$IncidentMediaToJson(IncidentMedia instance) =>
@@ -31,7 +33,9 @@ Map<String, dynamic> _$IncidentMediaToJson(IncidentMedia instance) =>
       'includeUserId': instance.includeUserId,
       'incidentId': instance.incidentId,
       'type': _$MediaTypeEnumMap[instance.type]!,
-      'mediaId': instance.mediaId,
+      'extension': _$MediaExtensionEnumMap[instance.extension]!,
+      'media': instance.media,
+      'sent': instance.sent,
     };
 
 const _$MediaTypeEnumMap = {
@@ -39,4 +43,12 @@ const _$MediaTypeEnumMap = {
   MediaType.moneyWatch: 1,
   MediaType.machineBefore: 2,
   MediaType.machineAfter: 3,
+};
+
+const _$MediaExtensionEnumMap = {
+  MediaExtension.jpg: 0,
+  MediaExtension.jpeg: 1,
+  MediaExtension.png: 2,
+  MediaExtension.pdf: 3,
+  MediaExtension.mp4: 4,
 };
