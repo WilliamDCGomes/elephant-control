@@ -56,7 +56,7 @@ class _CameraWidgetState extends State<CameraWidget> with WidgetsBindingObserver
             ignoring: !controller.permiteAcao,
             child: Obx(() => Visibility(
                   visible: controller.estaCarregando.value,
-                  child: const CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                   replacement: Visibility(
                     visible: controller.tiraFoto.value,
                     child: CorpoCameraWidget(
@@ -78,7 +78,7 @@ class _CameraWidgetState extends State<CameraWidget> with WidgetsBindingObserver
                         onPressedFlash: () async => await controller.btnFlashCamera()),
                     replacement: Obx(
                       () => !controller.temFoto.value
-                          ? const CircularProgressIndicator()
+                          ? Center(child: CircularProgressIndicator())
                           : Column(
                               children: [
                                 Flexible(
