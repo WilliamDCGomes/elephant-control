@@ -25,7 +25,7 @@ class VisitViewController {
     required this.mediasList,
   });
 
-    VisitViewController.emptyConstructor();
+  VisitViewController.emptyConstructor();
 
   //NÃO USAR O PACKAGE DO JSON AQUI, CONVERSÃO MANUAL
   VisitViewController.fromJson(Map<String, dynamic> json) {
@@ -37,10 +37,13 @@ class VisitViewController {
     machineId = json["machineId"];
     observation = json["observation"];
     firstClock = json["firstClock"];
-    mediasList = (json["mediasList"] as List).isNotEmpty ?
-    (json["mediasList"] as List).map(
-          (media) => VisitMediaViewController.fromJson(media),
-    ).toList() : [];
+    mediasList = (json["mediasList"] as List).isNotEmpty
+        ? (json["mediasList"] as List)
+            .map(
+              (media) => VisitMediaViewController.fromJson(media),
+            )
+            .toList()
+        : [];
     inclusion = DateTime.parse(json['inclusion'] as String);
   }
 

@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
 import '../visit/visit.dart';
+import '../base/elephant_core.dart';
 
 part 'visit_log.g.dart';
 
@@ -28,7 +29,7 @@ class VisitLog extends ElephantUserCore {
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
        VisitId TEXT, Title TEXT, Description TEXT, OldStatus INTEGER,
-       NewStatus INTEGER, Inclusion TEXT, IncludeUserId TEXT, MoneyPouchId TEXT)""";
+       NewStatus INTEGER, IncludeUserId TEXT, MoneyPouchId TEXT)""";
 
   static String get migrationVersion2 => """
       ALTER TABLE $tableName ADD COLUMN MoneyPouchId TEXT""";

@@ -15,7 +15,7 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       longitude: json['longitude'] as String?,
       status: $enumDecode(_$VisitStatusEnumMap, json['status']),
       machineId: json['machineId'] as String,
-      moneyWithDrawal: json['moneyWithDrawal'] as bool,
+      moneyWithDrawal: ElephantCore.fromJsonActive(json['moneyWithDrawal']),
       code: json['code'] as int?,
       observation: json['observation'] as String?,
       moneyPouch: json['moneyPouch'] == null
@@ -31,6 +31,8 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       lastVisitMachineCurrentDay: json['lastVisitMachineCurrentDay'] == null
           ? null
           : DateTime.parse(json['lastVisitMachineCurrentDay'] as String),
+      offline: ElephantCore.fromJsonActive(json['offline']),
+      sent: json['sent'] == null ? true : Visit.fromJsonSent(json['sent']),
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -39,9 +41,10 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
-      ..monthClosure = json['monthClosure'] as bool
+      ..lastPrizeMachine = (json['lastPrizeMachine'] as num?)?.toDouble()
+      ..monthClosure = ElephantCore.fromJsonActive(json['monthClosure'])
       ..debit = (json['debit'] as num?)?.toDouble()
       ..credit = (json['credit'] as num?)?.toDouble();
 
@@ -57,18 +60,21 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'stuffedAnimalsReplaceQuantity': instance.stuffedAnimalsReplaceQuantity,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'status': _$VisitStatusEnumMap[instance.status]!,
-      'machineId': instance.machineId,
-      'moneyWithDrawal': instance.moneyWithDrawal,
-      'monthClosure': instance.monthClosure,
       'code': instance.code,
+      'status': _$VisitStatusEnumMap[instance.status]!,
       'observation': instance.observation,
-      'moneyPouchId': instance.moneyPouchId,
-      'moneyPouch': instance.moneyPouch,
-      'machine': instance.machine,
-      'responsibleUserId': instance.responsibleUserId,
       'lastVisitMachineCurrentDay':
           instance.lastVisitMachineCurrentDay?.toIso8601String(),
+      'responsibleUserId': instance.responsibleUserId,
+      'offline': instance.offline,
+      'lastPrizeMachine': instance.lastPrizeMachine,
+      'machineId': instance.machineId,
+      'machine': instance.machine,
+      'moneyPouchId': instance.moneyPouchId,
+      'moneyPouch': instance.moneyPouch,
+      'monthClosure': instance.monthClosure,
+      'moneyWithDrawal': instance.moneyWithDrawal,
+      'sent': Visit.toJsonNull(instance.sent),
       'debit': Visit.toJsonNull(instance.debit),
       'credit': Visit.toJsonNull(instance.credit),
     };

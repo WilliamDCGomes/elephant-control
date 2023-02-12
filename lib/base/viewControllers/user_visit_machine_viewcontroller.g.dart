@@ -16,9 +16,10 @@ UserVisitMachineViewController _$UserVisitMachineViewControllerFromJson(
       lastVisit: json['lastVisit'] == null
           ? null
           : DateTime.parse(json['lastVisit'] as String),
-      reminders: (json['reminders'] as List<dynamic>)
-          .map((e) => ReminderMachine.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      reminders: (json['reminders'] as List<dynamic>?)
+              ?.map((e) => ReminderMachine.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$UserVisitMachineViewControllerToJson(

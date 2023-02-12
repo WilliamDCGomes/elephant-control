@@ -11,16 +11,19 @@ UserVisitMachine _$UserVisitMachineFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String,
       machineId: json['machineId'] as String,
       visitDay: DateTime.parse(json['visitDay'] as String),
-    )
-      ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null
+      sent: json['sent'] == null
+          ? true
+          : UserVisitMachine.fromJsonSent(json['sent']),
+      visitId: json['visitId'] as String?,
+      id: json['id'] as String?,
+      inclusion: json['inclusion'] == null
           ? null
-          : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null
+          : DateTime.parse(json['inclusion'] as String),
+      active: ElephantCore.fromJsonActive(json['active']),
+      alteration: json['alteration'] == null
           ? null
-          : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?;
+          : DateTime.parse(json['alteration'] as String),
+    )..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$UserVisitMachineToJson(UserVisitMachine instance) =>
     <String, dynamic>{
@@ -32,4 +35,6 @@ Map<String, dynamic> _$UserVisitMachineToJson(UserVisitMachine instance) =>
       'userId': instance.userId,
       'machineId': instance.machineId,
       'visitDay': instance.visitDay.toIso8601String(),
+      'sent': instance.sent,
+      'visitId': instance.visitId,
     };

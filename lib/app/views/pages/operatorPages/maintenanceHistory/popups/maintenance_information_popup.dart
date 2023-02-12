@@ -1,7 +1,7 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../sharedPages/visitDetails/page/visit_details_page.dart';
@@ -12,8 +12,8 @@ import '../../../widgetsShared/text_widget.dart';
 import '../controller/maintenance_history_controller.dart';
 
 class MaintenanceInformationPopup {
-  static String getAverage(String clock1, String clock2){
-    if(clock1 != "" && clock2 != "" && double.parse(clock2) != 0.0){
+  static String getAverage(String clock1, String clock2) {
+    if (clock1 != "" && clock2 != "" && double.parse(clock2) != 0) {
       return (double.parse(clock1) / double.parse(clock2)).toStringAsFixed(2).replaceAll('.', ',');
     }
     return "0,00";
@@ -33,10 +33,8 @@ class MaintenanceInformationPopup {
       final String visitId,
       final DateTime visitDate,
       MaintenanceHistoryController? controller,
-      {
-        bool editPictures = true,
-      }
-      ){
+      {bool editPictures = true,
+      bool offline = false}) {
     return [
       Center(
         child: Container(
@@ -297,7 +295,7 @@ class MaintenanceInformationPopup {
               size: 4.h,
               checked: pouchCollected,
               justRead: true,
-              onChanged: () {  },
+              onChanged: () {},
             ),
           ),
           SizedBox(
@@ -310,29 +308,29 @@ class MaintenanceInformationPopup {
               spaceBetween: 1.w,
               checked: !pouchCollected,
               justRead: true,
-              onChanged: () { },
+              onChanged: () {},
             ),
           ),
         ],
       ),
-      Padding(
-        padding: EdgeInsets.only(top: 2.h),
-        child: ButtonWidget(
-          hintText: "VER DETALHES",
-          fontWeight: FontWeight.bold,
-          widthButton: 75.w,
-          onPressed: () async {
-            Get.back();
-            await Get.to(() => VisitDetailsPage(
-              visitId: visitId,
-              editPictures: editPictures,
-            ));
-            if(controller != null){
-              await controller.getVisitsOperatorByUserId(showLoad: false);
-            }
-          },
-        ),
-      ),
+      if (!offline)
+        Padding(
+            padding: EdgeInsets.only(top: 2.h),
+            child: ButtonWidget(
+              hintText: "VER DETALHES",
+              fontWeight: FontWeight.bold,
+              widthButton: 75.w,
+              onPressed: () async {
+                Get.back();
+                await Get.to(() => VisitDetailsPage(
+                      visitId: visitId,
+                      editPictures: editPictures,
+                    ));
+                if (controller != null) {
+                  await controller.getVisitsOperatorByUserId(showLoad: false);
+                }
+              },
+            )),
       Padding(
         padding: EdgeInsets.only(top: 2.h),
         child: ButtonWidget(

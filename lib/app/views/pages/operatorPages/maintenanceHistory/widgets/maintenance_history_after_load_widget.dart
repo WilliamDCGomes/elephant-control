@@ -117,7 +117,7 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             visitId: visit.id ?? "",
                                             visitDate: visit.inclusion ?? DateTime.now(),
                                             onTap: () async {
-                                              if((visit.active == true && visit.realizedVisit == true)){
+                                              if ((visit.active == true && visit.realizedVisit == true)) {
                                                 await BottomSheetPopup.showAlert(
                                                   context,
                                                   MaintenanceInformationPopup.getWidgetList(
@@ -133,7 +133,8 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                                     visit.responsibleName,
                                                     visit.id ?? "",
                                                     visit.inclusion ?? DateTime.now(),
-                                                    controller
+                                                    controller,
+                                                    offline: controller.offline,
                                                   ),
                                                 );
                                               }
@@ -145,7 +146,10 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Visibility(
-                                                  visible: visit.latitude != null && visit.latitude != "" && visit.longitude != null && visit.longitude != "",
+                                                  visible: visit.latitude != null &&
+                                                      visit.latitude != "" &&
+                                                      visit.longitude != null &&
+                                                      visit.longitude != "",
                                                   child: Align(
                                                     alignment: Alignment.centerRight,
                                                     child: InkWell(
@@ -166,7 +170,9 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                                 ),
                                                 Visibility(
                                                   visible: visit.realizedVisit == false && visit.active == true,
-                                                  replacement: SizedBox(width: .8.h,),
+                                                  replacement: SizedBox(
+                                                    width: .8.h,
+                                                  ),
                                                   child: Padding(
                                                     padding: EdgeInsets.all(1.h),
                                                     child: Align(
@@ -178,9 +184,11 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                                           builder: (BuildContext context) {
                                                             return ConfirmationPopup(
                                                               title: "Aviso",
-                                                              subTitle: "Tem certeza que deseja apagar essa máquina das suas visitas pendentes?",
+                                                              subTitle:
+                                                                  "Tem certeza que deseja apagar essa máquina das suas visitas pendentes?",
                                                               firstButton: () {},
-                                                              secondButton: () async => await controller.deleteOrUndeleteVisitDay(visit),
+                                                              secondButton: () async =>
+                                                                  await controller.deleteOrUndeleteVisitDay(visit),
                                                             );
                                                           },
                                                         ),

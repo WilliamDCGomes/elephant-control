@@ -15,7 +15,8 @@ import '../../../widgetsShared/title_with_back_button_widget.dart';
 import '../controller/maintenance_controller.dart';
 
 class MaintenancePage extends StatefulWidget {
-  const MaintenancePage({Key? key}) : super(key: key);
+  final bool offline;
+  const MaintenancePage({Key? key, required this.offline}) : super(key: key);
 
   @override
   State<MaintenancePage> createState() => _MaintenancePageState();
@@ -26,7 +27,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
 
   @override
   void initState() {
-    controller = Get.put(MaintenanceController());
+    controller = Get.put(MaintenanceController(widget.offline));
     super.initState();
   }
 
@@ -165,56 +166,71 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                     init: controller,
                                     builder: (value) => DropdownButtonWidget(
                                       itemSelected: controller.machineSelected?.id,
-                                      hintText: controller.machineSelected == null ? "Máquina Atendida" : controller.machineSelected?.name,
+                                      hintText: controller.machineSelected == null
+                                          ? "Máquina Atendida"
+                                          : controller.machineSelected?.name,
                                       height: 6.5.h,
                                       width: 85.w,
                                       listItems: controller.machines.map((e) => DropdownItem(item: e.name, value: e.id)),
-                                      onChanged: (selectedState) => setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
+                                      onChanged: (selectedState) =>
+                                          setState(() => controller.onDropdownButtonWidgetChanged(selectedState)),
                                     ),
                                   ),
-                                  if ((controller.machineSelected?.reminders ?? []).isNotEmpty)
-                                    Obx(
-                                      () => Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 1.h),
-                                          GestureDetector(
-                                            onTap: () => controller.setShowReminders(),
-                                            child: Row(
-                                              children: [
-                                                Icon(controller.showReminders ? Icons.visibility : Icons.visibility_off, color: AppColors.defaultColor, size: 3.h),
-                                                SizedBox(width: 1.w),
-                                                TextWidget("Visualizar lembretes", textColor: AppColors.defaultColor),
-                                              ],
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: controller.showReminders,
-                                            child: Container(
-                                              color: AppColors.defaultColor.withOpacity(0.6),
-                                              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 0.5.w),
-                                              child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: (controller.machineSelected?.reminders ?? []).length,
-                                                  itemBuilder: (context, index) {
-                                                    final reminder = (controller.machineSelected?.reminders ?? [])[index];
-                                                    return Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 0.5.w),
-                                                      child: TextWidget(
-                                                        "- " + reminder.description,
-                                                        textColor: AppColors.blackColor,
-                                                        maxLines: 3,
-                                                        textAlign: TextAlign.start,
-                                                        fontSize: 17.sp,
-                                                      ),
-                                                    );
-                                                  }),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                  GetBuilder(
+                                      id: "dropdown-button",
+                                      init: controller,
+                                      builder: (controller) => (controller.machineSelected?.reminders ?? []).isNotEmpty
+                                          ? Obx(
+                                              () => Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(height: 1.h),
+                                                  GestureDetector(
+                                                    onTap: () => controller.setShowReminders(),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                            controller.showReminders
+                                                                ? Icons.visibility
+                                                                : Icons.visibility_off,
+                                                            color: AppColors.defaultColor,
+                                                            size: 3.h),
+                                                        SizedBox(width: 1.w),
+                                                        TextWidget("Visualizar lembretes",
+                                                            textColor: AppColors.defaultColor),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Visibility(
+                                                    visible: controller.showReminders,
+                                                    child: Container(
+                                                      color: AppColors.defaultColor.withOpacity(0.6),
+                                                      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 0.5.w),
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          physics: NeverScrollableScrollPhysics(),
+                                                          itemCount: (controller.machineSelected?.reminders ?? []).length,
+                                                          itemBuilder: (context, index) {
+                                                            final reminder =
+                                                                (controller.machineSelected?.reminders ?? [])[index];
+                                                            return Padding(
+                                                              padding:
+                                                                  EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 0.5.w),
+                                                              child: TextWidget(
+                                                                "- " + reminder.description,
+                                                                textColor: AppColors.blackColor,
+                                                                maxLines: 3,
+                                                                textAlign: TextAlign.start,
+                                                                fontSize: 17.sp,
+                                                              ),
+                                                            );
+                                                          }),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : const SizedBox()),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 3.5.h,
@@ -374,7 +390,8 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               checked: controller.machineCloseYes.value,
                                               onChanged: () {
                                                 controller.machineCloseYes.value = !controller.machineCloseYes.value;
-                                                if (controller.machineCloseYes.value) controller.machineCloseNo.value = !controller.machineCloseYes.value;
+                                                if (controller.machineCloseYes.value)
+                                                  controller.machineCloseNo.value = !controller.machineCloseYes.value;
                                               },
                                             ),
                                           ),
@@ -391,7 +408,8 @@ class _MaintenancePageState extends State<MaintenancePage> {
                                               checked: controller.machineCloseNo.value,
                                               onChanged: () {
                                                 controller.machineCloseNo.value = !controller.machineCloseNo.value;
-                                                if (controller.machineCloseNo.value) controller.machineCloseYes.value = !controller.machineCloseNo.value;
+                                                if (controller.machineCloseNo.value)
+                                                  controller.machineCloseYes.value = !controller.machineCloseNo.value;
                                               },
                                             ),
                                           ),

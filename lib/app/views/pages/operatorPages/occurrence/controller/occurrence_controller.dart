@@ -68,55 +68,52 @@ class OccurrenceController extends GetxController {
   }
 
   getOccurrenceInformations() async {
-    try{
-      if(_incident != null){
+    try {
+      if (_incident != null) {
         observations.text = _incident!.incident.description ?? "";
 
-        for(var media in _incident!.medias){
-          if(media.base64 != null && media.base64 != ""){
-            switch(media.type){
-              case MediaType.firstOccurrencePicture:
-                machineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
-                  media.base64!,
-                );
-                break;
-              case MediaType.secondOccurrencePicture:
-                extraMachineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
-                  media.base64!,
-                );
-                break;
-              case MediaType.occurrenceVideo:
-                machineOccurrenceVideo.picture = await FilesHelper.createXFileFromBase64(
-                  media.base64!,
-                  name: DateTime.now().millisecondsSinceEpoch.toString() + ".mp4",
-                );
-                machineOccurrenceVideo.base64 = media.base64!;
-                break;
-              case MediaType.stuffedAnimals:
-                break;
-              case MediaType.moneyWatch:
-                break;
-              case MediaType.machineBefore:
-                break;
-              case MediaType.machineAfter:
-                break;
-            }
+        for (var media in _incident!.medias) {
+          switch (media.type) {
+            case MediaType.firstOccurrencePicture:
+              machineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
+                media.media,
+              );
+              break;
+            case MediaType.secondOccurrencePicture:
+              extraMachineOccurrencePicture.picture = await FilesHelper.createXFileFromBase64(
+                media.media,
+              );
+              break;
+            case MediaType.occurrenceVideo:
+              machineOccurrenceVideo.picture = await FilesHelper.createXFileFromBase64(
+                media.media,
+                name: DateTime.now().millisecondsSinceEpoch.toString() + ".mp4",
+              );
+              machineOccurrenceVideo.base64 = media.media;
+              break;
+            case MediaType.stuffedAnimals:
+              break;
+            case MediaType.moneyWatch:
+              break;
+            case MediaType.machineBefore:
+              break;
+            case MediaType.machineAfter:
+              break;
           }
         }
         update(["informations"]);
 
-        if(machineOccurrencePicture.picture != null){
+        if (machineOccurrencePicture.picture != null) {
           machineOccurrencePicture.imagesPictureWidgetState.refreshPage();
         }
-        if(extraMachineOccurrencePicture.picture != null){
+        if (extraMachineOccurrencePicture.picture != null) {
           extraMachineOccurrencePicture.imagesPictureWidgetState.refreshPage();
         }
-        if(machineOccurrenceVideo.picture != null){
+        if (machineOccurrenceVideo.picture != null) {
           machineOccurrenceVideo.videosPictureWidgetState.refreshPage();
         }
       }
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
@@ -132,7 +129,7 @@ class OccurrenceController extends GetxController {
   }
 
   Future<File?> getVideoFile(String base64String) async {
-    try{
+    try {
       Uint8List bytes = base64.decode(base64String);
       String dir = (await getApplicationDocumentsDirectory()).path;
       File file = File(
@@ -140,8 +137,7 @@ class OccurrenceController extends GetxController {
       );
       await file.writeAsBytes(bytes);
       return file;
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -163,7 +159,7 @@ class OccurrenceController extends GetxController {
     try {
       if (!fieldsValidate()) return;
       bool newIncident = _incident == null;
-      if(newIncident) {
+      if (newIncident) {
         _incident = IncidentObject(
           Incident(
             status: IncidentStatus.realized,
@@ -173,8 +169,7 @@ class OccurrenceController extends GetxController {
           ),
           [],
         );
-      }
-      else{
+      } else {
         _incident!.incident.description = observations.text;
       }
       List<VisitMedia> medias = [];
@@ -182,28 +177,33 @@ class OccurrenceController extends GetxController {
       if (bytesClockImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
-          base64: base64Encode(bytesClockImage),
+          media: base64Encode(bytesClockImage),
           type: MediaType.firstOccurrencePicture,
           extension: MediaExtension.jpeg,
-          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.firstOccurrencePicture).mediaId,
+          mediaId: newIncident
+              ? null
+              : _incident!.medias.firstWhere((media) => media.type == MediaType.firstOccurrencePicture).mediaId,
         ));
       final bytesBeforeImage = await extraMachineOccurrencePicture.picture?.readAsBytes();
       if (bytesBeforeImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
-          base64: base64Encode(bytesBeforeImage),
+          media: base64Encode(bytesBeforeImage),
           type: MediaType.secondOccurrencePicture,
           extension: MediaExtension.jpeg,
-          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.secondOccurrencePicture).mediaId,
+          mediaId: newIncident
+              ? null
+              : _incident!.medias.firstWhere((media) => media.type == MediaType.secondOccurrencePicture).mediaId,
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
       if (bytesAfterImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
-          base64: base64Encode(bytesAfterImage),
+          media: base64Encode(bytesAfterImage),
           type: MediaType.occurrenceVideo,
           extension: MediaExtension.mp4,
-          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.occurrenceVideo).mediaId,
+          mediaId:
+              newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.occurrenceVideo).mediaId,
         ));
       await showDialog(
         context: Get.context!,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../enums/enums.dart';
 import '../../../../utils/paths.dart';
 import '../../../stylePages/app_colors.dart';
+import '../../operatorPages/maintenance/page/camera_widget.dart';
 import 'information_popup.dart';
 import 'package:path/path.dart' as p;
 
@@ -19,7 +21,7 @@ class ImagesPictureWidget extends StatefulWidget {
   ImagesPictureWidget({
     Key? key,
     required this.origin,
-  }) : super(key: key){
+  }) : super(key: key) {
     picture = null;
   }
 
@@ -39,7 +41,7 @@ class ImagesPictureWidget extends StatefulWidget {
 
   Future<XFile?> compressFile(XFile? file) async {
     try {
-      if(file == null){
+      if (file == null) {
         return null;
       }
 
@@ -50,11 +52,10 @@ class ImagesPictureWidget extends StatefulWidget {
         targetPath[targetPath.length - 2] += "_compacted";
         String newPath = "";
 
-        for(int i = 0; i < targetPath.length; i++){
-          if(i != targetPath.length - 1){
+        for (int i = 0; i < targetPath.length; i++) {
+          if (i != targetPath.length - 1) {
             newPath += (targetPath[i] + ".");
-          }
-          else{
+          } else {
             newPath += targetPath[i];
           }
         }
@@ -87,33 +88,51 @@ class ImagesPictureWidget extends StatefulWidget {
 class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
 
-  refreshPage(){
+  refreshPage() {
     setState(() {
       widget.picture = widget.picture;
     });
   }
 
+  Future<XFile?> galleryChoice() async {
+    try {
+      FilePickerResult? image = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'jpeg', 'png'], allowMultiple: false);
+      if (image == null) throw Exception();
+
+      final file = File(image.files.single.path!);
+      return XFile(file.path);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<XFile?> cameraChoice({bool front = false}) async {
+    try {
+      File? file = await Get.to(() => CameraWidget(frontal: front));
+      if (file == null) throw Exception();
+      return XFile(file.path);
+    } catch (_) {
+      return null;
+    }
+  }
+
   _getImage() async {
-    try{
-      XFile? picture = await _picker.pickImage(
-        source: widget.origin == imageOrigin.camera ?
-        ImageSource.camera : ImageSource.gallery,
-        preferredCameraDevice: CameraDevice.rear,
-      );
+    try {
+      XFile? picture = widget.origin == imageOrigin.camera ? await cameraChoice() : await galleryChoice();
 
       XFile? pictureCompressed = await widget.compressFile(picture);
 
-      if(pictureCompressed != null){
+      if (pictureCompressed != null) {
         picture = pictureCompressed;
       }
 
-      if(picture != null){
+      if (picture != null) {
         setState(() {
           widget.picture = picture;
         });
       }
-    }
-    catch(e){
+    } catch (e) {
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -146,37 +165,39 @@ class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
           ),
           color: AppColors.defaultColor,
         ),
-        child: widget.picture == null ? Container(
-          padding: EdgeInsets.all(3.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.w),
-            ),
-            color: AppColors.backgroundColor,
-          ),
-          child: Image.asset(
-            Paths.Camera,
-            fit: BoxFit.contain,
-          ),
-        ) : Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.w),
-            ),
-            color: AppColors.backgroundColor,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: MemoryImage(File(widget.picture!.path).readAsBytesSync()),
-                fit: BoxFit.fill,
+        child: widget.picture == null
+            ? Container(
+                padding: EdgeInsets.all(3.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.w),
+                  ),
+                  color: AppColors.backgroundColor,
+                ),
+                child: Image.asset(
+                  Paths.Camera,
+                  fit: BoxFit.contain,
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.w),
+                  ),
+                  color: AppColors.backgroundColor,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(File(widget.picture!.path).readAsBytesSync()),
+                      fit: BoxFit.fill,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.w),
+                    ),
+                  ),
+                ),
               ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.w),
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

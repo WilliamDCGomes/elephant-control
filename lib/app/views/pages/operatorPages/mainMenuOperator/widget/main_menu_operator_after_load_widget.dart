@@ -200,7 +200,7 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                         Obx(
                                           () => TextWidget(
                                             "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(
-                                                controller.pouchLastChange.value,
+                                              controller.pouchLastChange.value,
                                             )}",
                                             maxLines: 1,
                                             textColor: AppColors.whiteColor,
@@ -337,7 +337,7 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () => Get.to(() => MaintenanceHistoryPage()),
+                        onPressed: () => controller.openMaintenancePage(context, ScreenOperator.maintenanceHistory),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -359,7 +359,7 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () => Get.to(() => MaintenancePage()),
+                          onPressed: () => controller.openMaintenancePage(context, ScreenOperator.maintenanceCreate),
                         ),
                       ),
                     ],

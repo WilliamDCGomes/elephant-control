@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 
 part 'store.g.dart';
 
@@ -18,7 +19,7 @@ class Store extends ElephantUserCore {
 
   static String get scriptCreateTable => """
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
-      Name TEXT, Description TEXT, Inclusion TEXT, IncludeUserId TEXT)""";
+      Name TEXT, Description TEXT, IncludeUserId TEXT)""";
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 

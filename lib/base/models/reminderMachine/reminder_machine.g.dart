@@ -19,8 +19,9 @@ ReminderMachine _$ReminderMachineFromJson(Map<String, dynamic> json) =>
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?;
+      ..active = ElephantCore.fromJsonActive(json['active'])
+      ..includeUserId = json['includeUserId'] as String?
+      ..sent = ReminderMachine.fromJsonSent(json['sent']);
 
 Map<String, dynamic> _$ReminderMachineToJson(ReminderMachine instance) =>
     <String, dynamic>{
@@ -32,4 +33,5 @@ Map<String, dynamic> _$ReminderMachineToJson(ReminderMachine instance) =>
       'description': instance.description,
       'realized': instance.realized,
       'machineId': instance.machineId,
+      'sent': instance.sent,
     };

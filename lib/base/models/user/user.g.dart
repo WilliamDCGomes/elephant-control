@@ -19,6 +19,8 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       stuffedAnimalsLastUpdate: json['stuffedAnimalsLastUpdate'] == null
           ? null
           : DateTime.parse(json['stuffedAnimalsLastUpdate'] as String),
+      userName: json['userName'] as String,
+      password: json['password'] as String?,
     )
       ..id = json['id'] as String?
       ..inclusion = json['inclusion'] == null
@@ -27,8 +29,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..birthdayDate = json['birthdayDate'] == null
           ? null
           : DateTime.parse(json['birthdayDate'] as String)
@@ -49,17 +50,10 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'inclusion': instance.inclusion?.toIso8601String(),
       'alteration': instance.alteration?.toIso8601String(),
       'active': instance.active,
-      'includeUserId': instance.includeUserId,
       'name': instance.name,
       'tellphone': instance.tellphone,
-      'document': instance.document,
-      'balanceMoney': instance.balanceMoney,
-      'pouchLastUpdate': instance.pouchLastUpdate?.toIso8601String(),
-      'balanceStuffedAnimals': instance.balanceStuffedAnimals,
-      'stuffedAnimalsLastUpdate':
-          instance.stuffedAnimalsLastUpdate?.toIso8601String(),
-      'type': _$UserTypeEnumMap[instance.type]!,
       'birthdayDate': instance.birthdayDate?.toIso8601String(),
+      'document': instance.document,
       'gender': _$TypeGenderEnumMap[instance.gender]!,
       'cep': instance.cep,
       'uf': instance.uf,
@@ -69,8 +63,16 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'district': instance.district,
       'complement': instance.complement,
       'cellphone': instance.cellphone,
+      'type': _$UserTypeEnumMap[instance.type]!,
       'email': instance.email,
       'code': instance.code,
+      'balanceStuffedAnimals': instance.balanceStuffedAnimals,
+      'stuffedAnimalsLastUpdate':
+          instance.stuffedAnimalsLastUpdate?.toIso8601String(),
+      'pouchLastUpdate': instance.pouchLastUpdate?.toIso8601String(),
+      'balanceMoney': instance.balanceMoney,
+      'userName': instance.userName,
+      'password': instance.password,
     };
 
 const _$UserTypeEnumMap = {

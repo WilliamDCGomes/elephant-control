@@ -16,7 +16,7 @@ StokistPlush _$StokistPlushFromJson(Map<String, dynamic> json) => StokistPlush(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$StokistPlushToJson(StokistPlush instance) =>

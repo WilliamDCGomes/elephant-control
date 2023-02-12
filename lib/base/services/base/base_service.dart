@@ -1,3 +1,4 @@
+import 'package:elephant_control/base/context/elephant_context.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,11 +7,13 @@ import '../../../flavors.dart';
 
 class BaseService extends GetConnect {
   SharedPreferences? sharedPreferences;
+  late final ElephantContext context;
   final String baseUrlApi = F.baseURL;
 
   BaseService() {
     httpClient.timeout = const Duration(seconds: 30);
     allowAutoSignedCert = true;
+    context = ElephantContext();
   }
   Future<String> getToken({bool getTokenForcado = false}) async {
     try {
@@ -34,7 +37,8 @@ class BaseService extends GetConnect {
   }
 
   @override
-  Future<Response<T>> get<T>(String url, {Map<String, String>? headers, String? contentType, Map<String, dynamic>? query, Decoder<T>? decoder}) async {
+  Future<Response<T>> get<T>(String url,
+      {Map<String, String>? headers, String? contentType, Map<String, dynamic>? query, Decoder<T>? decoder}) async {
     final response = await httpClient.get<T>(
       url,
       headers: headers,
@@ -54,7 +58,12 @@ class BaseService extends GetConnect {
   }
 
   @override
-  Future<Response<T>> post<T>(String? url, dynamic body, {String? contentType, Map<String, String>? headers, Map<String, dynamic>? query, Decoder<T>? decoder, Progress? uploadProgress}) async {
+  Future<Response<T>> post<T>(String? url, dynamic body,
+      {String? contentType,
+      Map<String, String>? headers,
+      Map<String, dynamic>? query,
+      Decoder<T>? decoder,
+      Progress? uploadProgress}) async {
     final response = await httpClient.post<T>(
       url,
       body: body,
