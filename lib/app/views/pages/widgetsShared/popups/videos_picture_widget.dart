@@ -7,6 +7,7 @@ import 'package:video_compress/video_compress.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../../../utils/paths.dart';
 import '../../../stylePages/app_colors.dart';
+import '../loading_with_success_or_error_widget.dart';
 import 'information_popup.dart';
 
 //ignore: must_be_immutable
@@ -14,11 +15,13 @@ class VideosPictureWidget extends StatefulWidget {
   late String base64;
   late XFile? picture;
   late bool showPlayIcon;
+  late LoadingWithSuccessOrErrorWidget? loadingWithSuccessOrErrorWidget;
   late VideosPictureWidgetState videosPictureWidgetState;
 
   VideosPictureWidget({
     Key? key,
     this.showPlayIcon = false,
+    this.loadingWithSuccessOrErrorWidget = null,
   }) : super(key: key){
     picture = null;
   }
@@ -40,6 +43,9 @@ class VideosPictureWidgetState extends State<VideosPictureWidget> {
   late final ImagePicker _picker;
   _getVideo() async {
     try{
+      if(widget.loadingWithSuccessOrErrorWidget != null){
+        await widget.loadingWithSuccessOrErrorWidget!.startAnimation();
+      }
       XFile? video = await _picker.pickVideo(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.rear,
@@ -57,14 +63,20 @@ class VideosPictureWidgetState extends State<VideosPictureWidget> {
           widget.picture = video;
         });
       }
+      if(widget.loadingWithSuccessOrErrorWidget != null){
+        await widget.loadingWithSuccessOrErrorWidget!.stopAnimation(justLoading: true);
+      }
     }
     catch(e){
+      if(widget.loadingWithSuccessOrErrorWidget != null){
+        await widget.loadingWithSuccessOrErrorWidget!.stopAnimation(fail: true);
+      }
       showDialog(
         context: Get.context!,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return InformationPopup(
-            warningMessage: "Erro ao tirar foto.",
+            warningMessage: "Erro ao salvar o vídeo.",
           );
         },
       );
@@ -94,7 +106,7 @@ class VideosPictureWidgetState extends State<VideosPictureWidget> {
     }
   }
 
-  Future<XFile?> genThumbnailFile() async {
+  Future<XFile?> getThumbnailFile() async {
     try{
       if(widget.picture != null){
         final fileName = await VideoThumbnail.thumbnailFile(
@@ -165,7 +177,7 @@ class VideosPictureWidgetState extends State<VideosPictureWidget> {
           child: Stack(
             children: [
               FutureBuilder<XFile?>(
-                future: genThumbnailFile(),
+                future: getThumbnailFile(),
                 initialData: null,
                 builder: (BuildContext context, AsyncSnapshot<XFile?> file) {
                   switch(file.connectionState){

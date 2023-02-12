@@ -307,13 +307,16 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
-                                child: ButtonWidget(
-                                  hintText: "SALVAR",
-                                  fontWeight: FontWeight.bold,
-                                  widthButton: 100.w,
-                                  onPressed: () => controller.saveOccurrence(),
+                              Visibility(
+                                visible: widget.edit,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
+                                  child: ButtonWidget(
+                                    hintText: "SALVAR",
+                                    fontWeight: FontWeight.bold,
+                                    widthButton: 100.w,
+                                    onPressed: () => controller.saveOccurrence(),
+                                  ),
                                 ),
                               ),
                             ],

@@ -23,6 +23,7 @@ import '../../../../../utils/valid_average.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../operatorPages/mainMenuOperator/controller/main_menu_operator_controller.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
+import '../../../widgetsShared/popups/confirmation_popup.dart';
 import '../../../widgetsShared/popups/images_picture_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/text_widget.dart';
@@ -229,6 +230,64 @@ class VisitDetailsController extends GetxController {
     ));
 
     if (newIncident is IncidentObject) incident = newIncident;
+  }
+
+  deleteVisit(BuildContext context) async {
+    try{
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ConfirmationPopup(
+            title: "Aviso",
+            subTitle: "Tem certeza que deseja apagar essa visita? Todas as informações e imagens serão excluidas permanentemente.",
+            firstButton: () {},
+            secondButton: () async => await _executeDeleteVisit(),
+          );
+        },
+      );
+    }
+    catch(_){
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao apagar a visita!",
+          );
+        },
+      );
+    }
+  }
+
+  _executeDeleteVisit() async {
+    try{
+      await loadingWithSuccessOrErrorWidget.startAnimation();
+      await _visitService.deleteVisit(visitId);
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Visita apagada com sucesso!",
+          );
+        },
+      );
+      Get.back();
+    }
+    catch(_){
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao apagar a visita!",
+          );
+        },
+      );
+    }
   }
 
   editMaintenance() async {

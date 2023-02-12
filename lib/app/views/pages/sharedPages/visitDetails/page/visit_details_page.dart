@@ -74,19 +74,33 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                 title: "Detalhes do Atendimento",
                               ),
                             ),
+                            Visibility(
+                              visible: !controller.editPictures,
+                              child: InkWell(
+                                onTap: () => controller.deleteVisit(context),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: AppColors.whiteColor,
+                                  size: 3.5.h,
+                                ),
+                              ),
+                            ),
                             GetBuilder(
                               id: "incident",
                               init: controller,
                               builder: (_) => Visibility(
                                 visible: controller.incident != null,
-                                child: InkWell(
-                                  onTap: () => controller.openIncident(context),
-                                  child: Image.asset(
-                                    Paths.Ocorrencia,
-                                    color: AppColors.whiteColor,
-                                    height: 3.h,
-                                    width: 3.h,
-                                    fit: BoxFit.contain,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5.w),
+                                  child: InkWell(
+                                    onTap: () => controller.openIncident(context),
+                                    child: Image.asset(
+                                      Paths.Ocorrencia,
+                                      color: AppColors.whiteColor,
+                                      height: 3.h,
+                                      width: 3.h,
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -429,13 +443,16 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
-                                child: ButtonWidget(
-                                  hintText: "SALVAR",
-                                  fontWeight: FontWeight.bold,
-                                  widthButton: 100.w,
-                                  onPressed: () => controller.editMaintenance(),
+                              Visibility(
+                                visible: widget.editPictures,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
+                                  child: ButtonWidget(
+                                    hintText: "SALVAR",
+                                    fontWeight: FontWeight.bold,
+                                    widthButton: 100.w,
+                                    onPressed: () => controller.editMaintenance(),
+                                  ),
                                 ),
                               ),
                             ],

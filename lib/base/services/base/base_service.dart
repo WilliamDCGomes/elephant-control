@@ -9,7 +9,7 @@ class BaseService extends GetConnect {
   final String baseUrlApi = F.baseURL;
 
   BaseService() {
-    httpClient.timeout = const Duration(minutes: 2);
+    httpClient.timeout = const Duration(seconds: 30);
     allowAutoSignedCert = true;
   }
   Future<String> getToken({bool getTokenForcado = false}) async {

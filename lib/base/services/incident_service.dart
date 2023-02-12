@@ -8,6 +8,7 @@ class IncidentService extends BaseService {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/CreateIncident';
       final data = incident.toJson();
+      httpClient.timeout = Duration(minutes: 2);
       final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
@@ -21,6 +22,7 @@ class IncidentService extends BaseService {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/UpdateIncident';
       final data = incident.toJson();
+      httpClient.timeout = Duration(minutes: 2);
       final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       return response.body;
@@ -33,9 +35,10 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/CreateIncidentMedia';
+      httpClient.timeout = Duration(minutes: 2);
       for (var element in incidentsMedia) {
         final data = element.toJson();
-        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
+        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
         if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       }
       return true;
@@ -48,6 +51,7 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/UpdateIncidentMedia';
+      httpClient.timeout = Duration(minutes: 2);
       for (var element in incidentsMedia) {
         final data = element.toJson();
         final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
@@ -64,6 +68,7 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/GetIncidentByVisitId';
+      httpClient.timeout = Duration(minutes: 2);
       final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
       if (hasErrorResponse(response)) throw Exception();
       return Incident.fromJson(response.body);

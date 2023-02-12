@@ -36,6 +36,18 @@ class VisitService extends BaseService implements IVisitService {
     }
   }
 
+  Future<bool> deleteVisit(String visitId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/DeleteVisit';
+      final response = await post(url, null, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<VisitViewController?> getResumeVisitById(String visitId) async {
     try {
       final token = await getToken();

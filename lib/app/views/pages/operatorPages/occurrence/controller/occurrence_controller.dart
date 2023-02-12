@@ -49,11 +49,19 @@ class OccurrenceController extends GetxController {
     operatorName = "";
     maintenanceDate = "";
     observations = TextEditingController();
-    machineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
-    extraMachineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
-    machineOccurrenceVideo = VideosPictureWidget(showPlayIcon: true,);
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
+
+    machineOccurrencePicture = ImagesPictureWidget(
+      origin: imageOrigin.camera,
+    );
+    extraMachineOccurrencePicture = ImagesPictureWidget(
+      origin: imageOrigin.camera,
+    );
+    machineOccurrenceVideo = VideosPictureWidget(
+      showPlayIcon: !edit,
+      loadingWithSuccessOrErrorWidget: loadingWithSuccessOrErrorWidget,
+    );
 
     operatorName = LoggedUser.name;
     maintenanceDate = DateFormatToBrazil.formatDate(DateTime.now());
