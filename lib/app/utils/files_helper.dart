@@ -8,7 +8,7 @@ class FilesHelper {
   static Future<XFile> createXFileFromBase64(String base64String, {String? name}) async {
     Uint8List bytes = base64.decode(base64String);
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File("$dir/" + (name ?? DateTime.now().millisecondsSinceEpoch.toString()) + ".jpg");
+    File file = File("$dir/" + (name ?? (DateTime.now().millisecondsSinceEpoch.toString()) + ".jpg"));
     await file.writeAsBytes(bytes);
     return XFile(file.path);
   }

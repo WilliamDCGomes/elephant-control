@@ -8,7 +8,7 @@ class VisitMediaService extends BaseService {
       final url = baseUrlApi + 'VisitMedia/CreateVisitMedia';
       for (var element in visitsMedia) {
         final data = element.toJson();
-        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
+        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
         if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       }
       return true;

@@ -15,6 +15,8 @@ class AppColors {
   static final Color grayTextColor = const Color(0XFFA9A9A9);
   static final Color yellowDarkColor = const Color(0XFFE2CE1C);
   static final Color defaultColor = const Color(0XFF1E4767);
+  static final Color bufferedColor = const Color(0XFFA5A29F);
+  static final Color backgroundPlayColor = const Color(0XFF86807B);
   static final Color shimmerColor = const Color(0XFFBDBDBD);
   static final Color grayColor = const Color(0XFFE1E1E1);
   static final Color backgroundColor = const Color(0XFFE7E3E3);

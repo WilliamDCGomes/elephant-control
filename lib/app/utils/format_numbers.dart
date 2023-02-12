@@ -20,6 +20,27 @@ class FormatNumbers {
     return "";
   }
 
+  static String formatVideoTime(int minutes, int seconds) {
+    String formatedMinutes = "";
+    String formatedSeconds = "";
+
+    if(minutes < 10){
+      formatedMinutes += "0" + minutes.toString();
+    }
+    else{
+      formatedMinutes += minutes.toString();
+    }
+
+    if(seconds < 10){
+      formatedSeconds += "0" + seconds.toString();
+    }
+    else{
+      formatedSeconds += seconds.toString();
+    }
+
+    return formatedMinutes + ":" + formatedSeconds;
+  }
+
   static String numbersToMoney(double? value) {
     if(value == null)
       return "";

@@ -11,11 +11,14 @@ import 'information_popup.dart';
 
 //ignore: must_be_immutable
 class VideosPictureWidget extends StatefulWidget {
+  late String base64;
   late XFile? picture;
+  late bool showPlayIcon;
   late VideosPictureWidgetState videosPictureWidgetState;
 
   VideosPictureWidget({
     Key? key,
+    this.showPlayIcon = false,
   }) : super(key: key){
     picture = null;
   }
@@ -159,42 +162,56 @@ class VideosPictureWidgetState extends State<VideosPictureWidget> {
             ),
             color: AppColors.backgroundColor,
           ),
-          child: FutureBuilder<XFile?>(
-            future: genThumbnailFile(),
-            initialData: null,
-            builder: (BuildContext context, AsyncSnapshot<XFile?> file) {
-              switch(file.connectionState){
-                case ConnectionState.none:
-                  return Container();
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.defaultColor,
-                    ),
-                  );
-                case ConnectionState.active:
-                  return Container();
-                case ConnectionState.done:
-                  if(file.data != null){
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: MemoryImage(
-                            File(
-                              file.data!.path,
-                            ).readAsBytesSync(),
+          child: Stack(
+            children: [
+              FutureBuilder<XFile?>(
+                future: genThumbnailFile(),
+                initialData: null,
+                builder: (BuildContext context, AsyncSnapshot<XFile?> file) {
+                  switch(file.connectionState){
+                    case ConnectionState.none:
+                      return Container();
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.defaultColor,
+                        ),
+                      );
+                    case ConnectionState.active:
+                      return Container();
+                    case ConnectionState.done:
+                      if(file.data != null){
+                        return Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: MemoryImage(
+                                File(
+                                  file.data!.path,
+                                ).readAsBytesSync(),
+                              ),
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.w),
+                            ),
                           ),
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.w),
-                        ),
-                      ),
-                    );
+                        );
+                      }
+                      return Container();
                   }
-                  return Container();
-              }
-            },
+                },
+              ),
+              Visibility(
+                visible: widget.showPlayIcon,
+                child: Center(
+                  child: Icon(
+                    Icons.play_arrow,
+                    color: AppColors.whiteColor,
+                    size: 10.h,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

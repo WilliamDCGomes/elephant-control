@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
+import '../../../../../utils/picture_util.dart';
+import '../../../../../utils/video_player_util.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
@@ -22,7 +26,7 @@ class OccurrencePage extends StatefulWidget {
     required this.machine,
     required this.visitId,
     required this.incident,
-    this.edit = false,
+    this.edit = true,
   }) : super(key: key);
 
   @override
@@ -158,7 +162,18 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                                   ),
                                                 ),
                                               ),
-                                              controller.machineOccurrencePicture,
+                                              Visibility(
+                                                visible: widget.edit,
+                                                child: controller.machineOccurrencePicture,
+                                                replacement: InkWell(
+                                                  onTap: () => PictureUtil.openImage(
+                                                    controller.machineOccurrencePicture.picture,
+                                                  ),
+                                                  child: IgnorePointer(
+                                                    child: controller.machineOccurrencePicture,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                           Column(
@@ -178,7 +193,18 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                                   ),
                                                 ),
                                               ),
-                                              controller.extraMachineOccurrencePicture,
+                                              Visibility(
+                                                visible: widget.edit,
+                                                child: controller.extraMachineOccurrencePicture,
+                                                replacement: InkWell(
+                                                  onTap: () => PictureUtil.openImage(
+                                                    controller.extraMachineOccurrencePicture.picture,
+                                                  ),
+                                                  child: IgnorePointer(
+                                                    child: controller.extraMachineOccurrencePicture,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -204,7 +230,33 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                               ),
                                             ),
                                           ),
-                                          controller.machineOccurrenceVideo,
+                                          Visibility(
+                                            visible: widget.edit,
+                                            child: controller.machineOccurrenceVideo,
+                                            replacement: InkWell(
+                                              onTap: () async {
+                                                if(controller.machineOccurrenceVideo.picture != null){
+                                                  File? file = await controller.getVideoFile(controller.machineOccurrenceVideo.base64);
+                                                  if(file != null){
+                                                    await SystemChrome.setEnabledSystemUIMode(
+                                                      SystemUiMode.manual,
+                                                      overlays: [],
+                                                    );
+                                                    await Get.to(() => VideoPlayerUtil(
+                                                      videoFile: file,
+                                                    ));
+                                                    await SystemChrome.setEnabledSystemUIMode(
+                                                      SystemUiMode.manual,
+                                                      overlays: SystemUiOverlay.values,
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                              child: IgnorePointer(
+                                                child: controller.machineOccurrenceVideo,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),

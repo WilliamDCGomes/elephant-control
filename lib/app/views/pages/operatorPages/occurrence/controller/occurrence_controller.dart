@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/base/models/incident/incident.dart';
 import 'package:elephant_control/base/models/machine/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../../../../base/models/media/media.dart';
 import '../../../../../../base/models/visitMedia/visit_media.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
@@ -48,7 +51,7 @@ class OccurrenceController extends GetxController {
     observations = TextEditingController();
     machineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
     extraMachineOccurrencePicture = ImagesPictureWidget(origin: imageOrigin.camera);
-    machineOccurrenceVideo = VideosPictureWidget();
+    machineOccurrenceVideo = VideosPictureWidget(showPlayIcon: true,);
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
 
@@ -77,7 +80,9 @@ class OccurrenceController extends GetxController {
               case MediaType.occurrenceVideo:
                 machineOccurrenceVideo.picture = await FilesHelper.createXFileFromBase64(
                   media.base64!,
+                  name: DateTime.now().millisecondsSinceEpoch.toString() + ".mp4",
                 );
+                machineOccurrenceVideo.base64 = media.base64!;
                 break;
               case MediaType.stuffedAnimals:
                 break;
@@ -118,6 +123,30 @@ class OccurrenceController extends GetxController {
     }
   }
 
+  Future<File?> getVideoFile(String base64String) async {
+    try{
+      Uint8List bytes = base64.decode(base64String);
+      String dir = (await getApplicationDocumentsDirectory()).path;
+      File file = File(
+        "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".mp4",
+      );
+      await file.writeAsBytes(bytes);
+      return file;
+    }
+    catch(_){
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao abrir o vídeo.",
+          );
+        },
+      );
+      return null;
+    }
+  }
+
   onDropdownButtonWidgetChanged(String? selectedState) {
     machineSelected.value = selectedState ?? "";
   }
@@ -136,6 +165,9 @@ class OccurrenceController extends GetxController {
           ),
           [],
         );
+      }
+      else{
+        _incident!.incident.description = observations.text;
       }
       List<VisitMedia> medias = [];
       final bytesClockImage = await machineOccurrencePicture.picture?.readAsBytes();

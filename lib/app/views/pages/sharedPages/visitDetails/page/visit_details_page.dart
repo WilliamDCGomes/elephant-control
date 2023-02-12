@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/paths.dart';
+import 'package:elephant_control/app/utils/picture_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,10 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
 
   @override
   void initState() {
-    controller = Get.put(VisitDetailsController(widget.visitId));
+    controller = Get.put(VisitDetailsController(
+      widget.visitId,
+      widget.editPictures,
+    ));
     super.initState();
   }
 
@@ -161,7 +165,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                             visible: widget.editPictures,
                                             child: controller.beforeMaintenanceImageClock,
                                             replacement: InkWell(
-                                              onTap: () => controller.openImage(
+                                              onTap: () => PictureUtil.openImage(
                                                 controller.beforeMaintenanceImageClock.picture,
                                               ),
                                               child: IgnorePointer(
@@ -196,7 +200,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                             visible: widget.editPictures,
                                             child: controller.imageClock,
                                             replacement: InkWell(
-                                              onTap: () => controller.openImage(
+                                              onTap: () => PictureUtil.openImage(
                                                 controller.imageClock.picture,
                                               ),
                                               child: IgnorePointer(
@@ -367,7 +371,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                             visible: widget.editPictures,
                                             child: controller.afterMaintenanceImageClock,
                                             replacement: InkWell(
-                                              onTap: () => controller.openImage(
+                                              onTap: () => PictureUtil.openImage(
                                                 controller.afterMaintenanceImageClock.picture,
                                               ),
                                               child: IgnorePointer(
@@ -428,7 +432,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.h),
                                 child: ButtonWidget(
-                                  hintText: "EDITAR",
+                                  hintText: "SALVAR",
                                   fontWeight: FontWeight.bold,
                                   widthButton: 100.w,
                                   onPressed: () => controller.editMaintenance(),

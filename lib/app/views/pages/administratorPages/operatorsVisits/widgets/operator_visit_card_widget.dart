@@ -70,6 +70,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               widget.visitOfOperatorsViewController.visitId,
               widget.visitOfOperatorsViewController.vInclusion,
               null,
+              editPictures: false,
             ),
           );
         },

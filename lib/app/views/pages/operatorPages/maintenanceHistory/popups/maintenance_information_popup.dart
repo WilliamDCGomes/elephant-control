@@ -33,6 +33,9 @@ class MaintenanceInformationPopup {
       final String visitId,
       final DateTime visitDate,
       MaintenanceHistoryController? controller,
+      {
+        bool editPictures = true,
+      }
       ){
     return [
       Center(
@@ -319,11 +322,14 @@ class MaintenanceInformationPopup {
           fontWeight: FontWeight.bold,
           widthButton: 75.w,
           onPressed: () async {
-            await Get.to(() => VisitDetailsPage(visitId: visitId,));
+            Get.back();
+            await Get.to(() => VisitDetailsPage(
+              visitId: visitId,
+              editPictures: editPictures,
+            ));
             if(controller != null){
               await controller.getVisitsOperatorByUserId(showLoad: false);
             }
-            Get.back();
           },
         ),
       ),

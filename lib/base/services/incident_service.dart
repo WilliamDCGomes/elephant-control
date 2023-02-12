@@ -64,7 +64,7 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/GetIncidentByVisitId';
-      final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
       if (hasErrorResponse(response)) throw Exception();
       return Incident.fromJson(response.body);
     } catch (_) {
@@ -77,7 +77,8 @@ class IncidentService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/GetIncidentMediaByIncidentId';
-      final response = await get(url, query: {"IncidentId": incidentId}, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
+      httpClient.timeout = Duration(minutes: 2);
+      final response = await get(url, query: {"IncidentId": incidentId}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visitMedia) => VisitMedia.fromJson(visitMedia)).toList();
     } catch (_) {

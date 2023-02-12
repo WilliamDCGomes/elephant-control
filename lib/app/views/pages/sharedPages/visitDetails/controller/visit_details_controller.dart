@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:elephant_control/app/enums/enums.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/utils/position_util.dart';
@@ -12,7 +10,6 @@ import 'package:elephant_control/base/services/visit_media_service.dart';
 import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/models/media/media.dart';
@@ -32,6 +29,7 @@ import '../../../widgetsShared/text_widget.dart';
 
 class VisitDetailsController extends GetxController {
   late int plushQuantity;
+  final bool editPictures;
   final String visitId;
   late String maintenanceDate;
   late RxInt priorityColor;
@@ -58,7 +56,7 @@ class VisitDetailsController extends GetxController {
   late Machine _machine;
   late IncidentObject? incident;
 
-  VisitDetailsController(this.visitId) {
+  VisitDetailsController(this.visitId, this.editPictures) {
     _initializeVariables();
   }
 
@@ -227,7 +225,7 @@ class VisitDetailsController extends GetxController {
       machine: _machine,
       visitId: visitId,
       incident: incident,
-      edit: true,
+      edit: editPictures,
     ));
 
     if (newIncident is IncidentObject) incident = newIncident;
@@ -506,27 +504,5 @@ class VisitDetailsController extends GetxController {
       return false;
     }
     return true;
-  }
-
-  openImage(XFile? xfile){
-    if(xfile != null){
-      showImageViewer(
-        Get.context!,
-        Image.memory(
-          File(xfile.path).readAsBytesSync(),
-        ).image,
-      );
-    }
-    else{
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return InformationPopup(
-            warningMessage: "Não é possível abrir a imagem.",
-          );
-        },
-      );
-    }
   }
 }
