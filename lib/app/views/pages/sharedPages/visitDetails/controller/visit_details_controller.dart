@@ -105,14 +105,14 @@ class VisitDetailsController extends GetxController {
   }
 
   _getVisitInformation() async {
-    try{
+    try {
       visitViewController = await _visitService.getResumeVisitById(visitId);
-      if(visitViewController == null){
+      if (visitViewController == null) {
         throw Exception();
       }
 
       var machineReturn = await _machineService.getMachineById(visitViewController!.machineId);
-      if(machineReturn != null){
+      if (machineReturn != null) {
         _machine = machineReturn;
       }
 
@@ -120,7 +120,7 @@ class VisitDetailsController extends GetxController {
       clock1.text = visitViewController!.firstClock.ceil().toString();
       clock2.text = (visitViewController!.secondClock ?? 0).toString();
       teddyAddMachine.text = visitViewController!.replacedPlush.toString();
-      if(teddyAddMachine.text != ""){
+      if (teddyAddMachine.text != "") {
         plushQuantity = int.parse(teddyAddMachine.text);
       }
       observations.text = visitViewController!.observation ?? "";
@@ -131,21 +131,20 @@ class VisitDetailsController extends GetxController {
 
       bool after = true;
 
-      for(var media in visitViewController!.mediasList){
-        switch(media.mediaType){
+      for (var media in visitViewController!.mediasList) {
+        switch (media.mediaType) {
           case MediaType.moneyWatch:
             imageClock.picture = await FilesHelper.createXFileFromBase64(
               media.image,
             );
             break;
           case MediaType.machineBefore:
-            if(after){
+            if (after) {
               after = false;
               beforeMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 media.image,
               );
-            }
-            else{
+            } else {
               afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 media.image,
               );
@@ -168,14 +167,13 @@ class VisitDetailsController extends GetxController {
       }
       update(["visit-details"]);
 
-      if(imageClock.picture != null){
+      if (imageClock.picture != null) {
         imageClock.imagesPictureWidgetState.refreshPage();
       }
-      if(beforeMaintenanceImageClock.picture != null){
+      if (beforeMaintenanceImageClock.picture != null) {
         beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
-    }
-    catch(e){
+    } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       await showDialog(
         context: Get.context!,
@@ -191,11 +189,11 @@ class VisitDetailsController extends GetxController {
   }
 
   _getIncidentInformation() async {
-    try{
+    try {
       var _incident = await _incidentService.getIncidentByVisitId(visitId);
-      if(_incident != null && _incident.id != null && _incident.id != ""){
+      if (_incident != null && _incident.id != null && _incident.id != "") {
         var _midias = await _incidentService.getIncidentMediaByIncidentId(_incident.id!);
-        if(_midias.isNotEmpty){
+        if (_midias.isNotEmpty) {
           var incidentObject = IncidentObject(
             _incident,
             _midias,
@@ -204,8 +202,7 @@ class VisitDetailsController extends GetxController {
           update(["incident"]);
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       await showDialog(
         context: Get.context!,
@@ -222,11 +219,11 @@ class VisitDetailsController extends GetxController {
 
   openIncident(BuildContext context) async {
     final newIncident = await Get.to(() => OccurrencePage(
-      machine: _machine,
-      visitId: visitId,
-      incident: incident,
-      edit: editPictures,
-    ));
+          machine: _machine,
+          visitId: visitId,
+          incident: incident,
+          edit: editPictures,
+        ));
 
     if (newIncident is IncidentObject) incident = newIncident;
   }
@@ -236,7 +233,7 @@ class VisitDetailsController extends GetxController {
       if (!fieldsValidate()) return;
       await loadingWithSuccessOrErrorWidget.startAnimation();
 
-      if(int.parse(clock2.text) > int.parse(clock1.text)){
+      if (int.parse(clock2.text) > int.parse(clock1.text)) {
         String clock1Aux = clock1.text;
         clock1.text = clock2.text;
         clock2.text = clock1Aux;
@@ -258,7 +255,7 @@ class VisitDetailsController extends GetxController {
       _visit.longitude = position?.longitude == null ? null : position?.longitude.toString();
 
       double averageValue = 0;
-      if(clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0){
+      if (clock1.text != "" && clock2.text != "" && int.parse(clock2.text) != 0) {
         averageValue = int.parse(clock1.text) / int.parse(clock2.text);
       }
 
@@ -272,25 +269,27 @@ class VisitDetailsController extends GetxController {
           medias.add(VisitMedia(
             mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.moneyWatch).mediaId,
             visitId: _visit.id!,
-            base64: base64Encode(bytesClockImage),
+            media: base64Encode(bytesClockImage),
             type: MediaType.moneyWatch,
             extension: MediaExtension.jpeg,
           ));
         final bytesBeforeImage = await beforeMaintenanceImageClock.picture?.readAsBytes();
         if (bytesBeforeImage != null)
           medias.add(VisitMedia(
-            mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineBefore).mediaId,
+            mediaId:
+                visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineBefore).mediaId,
             visitId: _visit.id!,
-            base64: base64Encode(bytesBeforeImage),
+            media: base64Encode(bytesBeforeImage),
             type: MediaType.machineBefore,
             extension: MediaExtension.jpeg,
           ));
         final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
         if (bytesAfterImage != null)
           medias.add(VisitMedia(
-            mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineAfter).mediaId,
+            mediaId:
+                visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineAfter).mediaId,
             visitId: _visit.id!,
-            base64: base64Encode(bytesAfterImage),
+            media: base64Encode(bytesAfterImage),
             type: MediaType.machineAfter,
             extension: MediaExtension.jpeg,
           ));
@@ -299,13 +298,13 @@ class VisitDetailsController extends GetxController {
       }
       if (!updateVisit) throw Exception();
 
-      if(incident != null){
+      if (incident != null) {
         await _incidentService.updateIncident(incident!.incident);
-        if(incident!.medias.isNotEmpty) await _incidentService.updateIncidentMedia(incident!.medias);
+        if (incident!.medias.isNotEmpty) await _incidentService.updateIncidentMedia(incident!.medias);
       }
 
       int quantity = plushQuantity - int.parse(teddyAddMachine.text);
-      if(quantity < 0){
+      if (quantity < 0) {
         quantity *= -1;
       }
 
@@ -316,7 +315,7 @@ class VisitDetailsController extends GetxController {
         plushQuantity - int.parse(teddyAddMachine.text) < 0,
       );
 
-      if(position != null){
+      if (position != null) {
         await _machineService.setMachineLocation(
           visitViewController!.machineId,
           position.latitude,
@@ -324,12 +323,11 @@ class VisitDetailsController extends GetxController {
         );
       }
 
-      if(LoggedUser.balanceStuffedAnimals == null){
+      if (LoggedUser.balanceStuffedAnimals == null) {
         LoggedUser.balanceStuffedAnimals = 0;
-      }
-      else{
+      } else {
         LoggedUser.balanceStuffedAnimals = LoggedUser.balanceStuffedAnimals! - int.parse(teddyAddMachine.text);
-        if(LoggedUser.balanceStuffedAnimals! < 0){
+        if (LoggedUser.balanceStuffedAnimals! < 0) {
           LoggedUser.balanceStuffedAnimals = 0;
         }
       }
@@ -337,14 +335,14 @@ class VisitDetailsController extends GetxController {
 
       await loadingWithSuccessOrErrorWidget.stopAnimation();
 
-      if(showAveragePopup){
+      if (showAveragePopup) {
         await showDialog(
           context: Get.context!,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return InformationPopup(
-              warningMessage: "A média dessa máquina está fora do programado!\nMédia: ${averageValue
-                  .toStringAsFixed(2).replaceAll('.', ',')}",
+              warningMessage:
+                  "A média dessa máquina está fora do programado!\nMédia: ${averageValue.toStringAsFixed(2).replaceAll('.', ',')}",
               fontSize: 18.sp,
               popupColor: AppColors.redColor,
               title: Row(
@@ -390,7 +388,7 @@ class VisitDetailsController extends GetxController {
         },
       );
       await Future.microtask(
-              () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
+          () => Get.find<MainMenuOperatorController>(tag: "main-menu-operator-controller").getOperatorInformation());
       Get.back();
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);

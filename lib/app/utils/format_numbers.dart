@@ -2,11 +2,11 @@ import 'package:intl/intl.dart';
 
 class FormatNumbers {
   static String getNumberAverage(double firstValue, double secondValue) {
-    return ((firstValue + secondValue)/2).toStringAsFixed(2).replaceAll('.', ',');
+    return ((firstValue + secondValue) / 2).toStringAsFixed(2).replaceAll('.', ',');
   }
 
   static String scoreIntNumber(int? value) {
-    if(value == null){
+    if (value == null) {
       return "0";
     }
     var formatter = NumberFormat.decimalPattern();
@@ -14,7 +14,7 @@ class FormatNumbers {
   }
 
   static String numbersToString(double? value) {
-    if(value != null) {
+    if (value != null) {
       return value.toStringAsFixed(2).replaceAll('.', ',');
     }
     return "";
@@ -42,8 +42,7 @@ class FormatNumbers {
   }
 
   static String numbersToMoney(double? value) {
-    if(value == null)
-      return "";
+    if (value == null) return "";
 
     return NumberFormat.currency(
       name: 'R\$',
@@ -53,8 +52,7 @@ class FormatNumbers {
   }
 
   static String intToMoney(int? value) {
-    if(value == null)
-      return "";
+    if (value == null) return "";
 
     return NumberFormat.currency(
       name: 'R\$',
@@ -64,9 +62,8 @@ class FormatNumbers {
   }
 
   static String stringToMoney(String? value) {
-    try{
-      if(value == null)
-        return "";
+    try {
+      if (value == null) return "";
 
       double doubleValue = double.parse(value.replaceAll(',', '.'));
 
@@ -75,18 +72,16 @@ class FormatNumbers {
         locale: 'pt_BR',
         decimalDigits: 2,
       ).format(doubleValue);
-    }
-    catch(_){
+    } catch (_) {
       return "";
     }
   }
 
   static double stringToNumber(String? value) {
-    if(value != null) {
-      try{
+    if (value != null) {
+      try {
         return double.tryParse(value.replaceAll('R\$', '').replaceAll(',', '.').trim()) ?? 0;
-      }
-      catch(_){
+      } catch (_) {
         return 0;
       }
     }
@@ -94,15 +89,30 @@ class FormatNumbers {
   }
 
   static String stringToCpf(String? value) {
-    if(value != null) {
-      try{
-        return value[0] + value[1] + value[2] + "." + value[3] + value[4] + value[5] +
-                     "." + value[6] + value[7] + value[8] + "-" + value[9] + value[10];
-      }
-      catch(_){
+    if (value != null) {
+      try {
+        return value[0] +
+            value[1] +
+            value[2] +
+            "." +
+            value[3] +
+            value[4] +
+            value[5] +
+            "." +
+            value[6] +
+            value[7] +
+            value[8] +
+            "-" +
+            value[9] +
+            value[10];
+      } catch (_) {
         return "";
       }
     }
     return "";
+  }
+
+  static String removeNumbersRegex(String value) {
+    return value.replaceAll(RegExp(r'[0-9]'), '');
   }
 }

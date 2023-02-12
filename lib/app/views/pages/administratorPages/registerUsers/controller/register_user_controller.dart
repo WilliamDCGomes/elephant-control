@@ -1,4 +1,5 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/registerUsers/popups/role_user_popup.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/snackbar_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
@@ -231,6 +232,8 @@ class RegisterUsersController extends GetxController {
           name: userNameTextController.text,
           tellphone: phoneTextController.text,
           document: documentTextController.text,
+          userName: FormatNumbers.removeNumbersRegex(documentTextController.text),
+          password: "Elephant@" + DateTime.now().year.toString(),
           balanceMoney: null,
           balanceStuffedAnimals: null,
           type: userType,

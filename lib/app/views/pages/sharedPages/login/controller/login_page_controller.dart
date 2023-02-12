@@ -1,8 +1,10 @@
 import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/utils/format_numbers.dart';
+import 'package:elephant_control/app/utils/internet_connection.dart';
 import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/mainMenuAdministrator/page/main_menu_administrator_page.dart';
 import 'package:elephant_control/app/views/pages/financialPages/mainMenuFinancial/page/main_menu_financial_page.dart';
+import 'package:elephant_control/base/context/elephant_context.dart';
 import 'package:elephant_control/base/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../base/models/user/user.dart';
+import '../../../../../../base/repositories/user_repository.dart';
 import '../../../../../../base/services/interfaces/iuser_service.dart';
 import '../../../../../../base/viewControllers/authenticate_response.dart';
 import '../../../operatorPages/mainMenuOperator/page/main_menu_operator_page.dart';
@@ -124,7 +127,7 @@ class LoginPageController extends GetxController {
       if (formKey.currentState!.validate()) {
         await loadingWidget.startAnimation();
 
-        if(!await _doLoginServer(false)){
+        if (!await _doLoginServer(false)) {
           return;
         }
         if (!await _getUserInformations()) {
@@ -268,25 +271,47 @@ class LoginPageController extends GetxController {
           return false;
         }
       }
-
-      userLogged = await _userService
-          .authenticate(
-            username: fromBiometric
-                ? username
-                : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
-            password: fromBiometric ? password : passwordInputController.text.trim(),
-          )
-          .timeout(Duration(seconds: 30));
-      if (!fromBiometric) {
-        await sharedPreferences.setString("password", passwordInputController.text);
+      if (await InternetConnection.checkConnection()) {
+        userLogged = await _userService
+            .authenticate(
+              username: fromBiometric
+                  ? username
+                  : userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim(),
+              password: fromBiometric ? password : passwordInputController.text.trim(),
+            )
+            .timeout(Duration(seconds: 30));
+        if (!fromBiometric) {
+          await sharedPreferences.setString("password", passwordInputController.text);
+        }
+        if (userLogged?.success == false) {
+          await _resetLogin("Usuário e/ou senha incorretos");
+          return false;
+        }
+        await sharedPreferences.setString('Token', userLogged!.token!);
+        await sharedPreferences.setString('ExpiracaoToken', userLogged!.expirationDate!.toIso8601String());
+        return true;
+      } else {
+        if (!fromBiometric) {
+          username = userInputController.text.replaceAll('.', '').replaceAll('-', '').toLowerCase().trim();
+          password = passwordInputController.text.trim();
+        }
+        final user = await UserRepositoy().getUser();
+        if (user == null) return false;
+        if (user.userName == username && user.password == password) {
+          userLogged = AuthenticateResponse(
+              id: user.id,
+              name: user.name,
+              login: user.userName,
+              expirationDate: DateTime.parse(sharedPreferences.getString("ExpiracaoToken")!),
+              token: sharedPreferences.getString("ExpiracaoToken"),
+              userType: user.type,
+              success: true);
+          return true;
+        } else {
+          await _resetLogin("Usuário e/ou senha incorretos");
+          return false;
+        }
       }
-      if (userLogged?.success == false) {
-        await _resetLogin("Usuário e/ou senha incorretos");
-        return false;
-      }
-      await sharedPreferences.setString('Token', userLogged!.token!);
-      await sharedPreferences.setString('ExpiracaoToken', userLogged!.expirationDate!.toIso8601String());
-      return true;
     } catch (e) {
       await _resetLogin("Erro ao se conectar com o servidor.");
       return false;
@@ -295,8 +320,13 @@ class LoginPageController extends GetxController {
 
   Future<bool> _getUserInformations() async {
     try {
-      _user = await _userService.getUserInformation();
-
+      final hasConnection = await InternetConnection.checkConnection();
+      _user = !hasConnection ? await UserRepositoy().getUser() : await _userService.getUserInformation();
+      if (hasConnection) {
+        await ElephantContext().removeAllTrully(User.tableName);
+        _user?.password = passwordInputController.text;
+        await ElephantContext().insert(User.tableName, _user!.toJsonRepository());
+      }
       return _user != null;
     } catch (_) {
       return false;

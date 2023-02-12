@@ -38,6 +38,7 @@ class MaintenanceCardWidget extends StatefulWidget {
   final List<Widget> childMaintenanceHeaderCardWidget;
   final Color? machineContainerColor;
   final int? maxLines;
+  final bool offline;
 
   const MaintenanceCardWidget({
     super.key,
@@ -69,6 +70,7 @@ class MaintenanceCardWidget extends StatefulWidget {
     this.childMaintenanceHeaderCardWidget = const [],
     this.onTap,
     this.maxLines,
+    this.offline = false,
   });
 
   @override
@@ -101,6 +103,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                         widget.visitId,
                         widget.visitDate,
                         null,
+                        offline: widget.offline,
                       ),
                     );
                   }),
@@ -141,7 +144,8 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                         padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                         child: Center(
                           child: RichTextTwoDifferentWidget(
-                            firstText: widget.pouchList ? "Malote retirado da máquina? " : "Pelúcias adicionadas à maquina: ",
+                            firstText:
+                                widget.pouchList ? "Malote retirado da máquina? " : "Pelúcias adicionadas à maquina: ",
                             firstTextColor: AppColors.blackColor,
                             firstTextFontWeight: FontWeight.bold,
                             firstTextSize: 14.5.sp,

@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../context/elephant_context.dart';
 import '../base/elephant_user_core.dart';
+import '../base/elephant_core.dart';
 
 part 'visit.g.dart';
 
@@ -15,28 +16,34 @@ class Visit extends ElephantUserCore {
   late int stuffedAnimalsReplaceQuantity;
   String? latitude;
   String? longitude;
-  late VisitStatus status;
-  late String machineId;
-  late bool moneyWithDrawal;
-  late bool monthClosure;
   int? code;
+  late VisitStatus status;
   String? observation;
+  DateTime? lastVisitMachineCurrentDay;
+  String? responsibleUserId;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
+  late bool offline;
+  double? lastPrizeMachine;
+  late String machineId;
+  Machine? machine;
   String? moneyPouchId;
   MoneyPouch? moneyPouch;
-  Machine? machine;
-  String? responsibleUserId;
-  DateTime? lastVisitMachineCurrentDay;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
+  late bool monthClosure;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
+  late bool moneyWithDrawal;
+  @JsonKey(fromJson: fromJsonSent, toJson: toJsonNull)
+  late bool sent;
   @JsonKey(toJson: toJsonNull)
   double? debit;
   @JsonKey(toJson: toJsonNull)
   double? credit;
-  @JsonKey(
-    includeFromJson: false,
-    includeToJson: false,
-  )
+  @JsonKey(ignore: true)
   bool checked = false;
 
   static String? toJsonNull(dynamic value) => null;
+
+  static bool fromJsonSent(dynamic value) => value is int ? value == 1 : value ?? true;
 
   Visit({
     required this.moneyQuantity,
@@ -55,6 +62,8 @@ class Visit extends ElephantUserCore {
     required this.stuffedAnimalsReplaceQuantity,
     required this.moneyPouchId,
     required this.lastVisitMachineCurrentDay,
+    required this.offline,
+    this.sent = true,
   });
 
   Visit.emptyConstructor() {
@@ -69,13 +78,26 @@ class Visit extends ElephantUserCore {
       CREATE TABLE IF NOT EXISTS $tableName (${ElephantContext.queryElephantModelBase},
       MoneyQuantity DECIMAL, StuffedAnimalsQuantity INTEGER, Latitude TEXT,
       Longitude TEXT, Status INTEGER, ResponsibleUserId TEXT, MachineId TEXT,
-      Inclusion TEXT, IncludeUserId TEXT, MoneyWithdrawalQuantity DECIMAL,
+      IncludeUserId TEXT, MoneyWithdrawalQuantity DECIMAL,
       MoneyPouchId TEXT, Code INTEGER, StuffedAnimalsReplaceQuantity INTEGER,
-      Observation TEXT, MoneyWithDrawal INTEGER, LastVisitMachineCurrentDay TEXT)""";
+      Observation TEXT, MoneyWithDrawal INTEGER, LastVisitMachineCurrentDay TEXT, Sent BOOLEAN,
+      LastPrizeMachine DECIMAL, Offline BOOLEAN, MonthClosure BOOLEAN)""";
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 
+  factory Visit.fromJsonRepository(Map<String, dynamic> json) => _$VisitFromJson(ElephantUserCore.fromJsonRepository(json));
+
   Map<String, dynamic> toJson() => _$VisitToJson(this);
+
+  Map<String, dynamic> toJsonRepository(bool sent) {
+    final json = _$VisitToJson(this);
+    json.remove("machine");
+    json.remove("moneyPouch");
+    json.remove("debit");
+    json.remove("credit");
+    json['sent'] = sent;
+    return ElephantUserCore.toJsonCapitalize(json);
+  }
 }
 
 enum VisitStatus {

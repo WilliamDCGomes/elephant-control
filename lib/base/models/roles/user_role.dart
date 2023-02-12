@@ -8,8 +8,7 @@ class UserRole {
   final String roleId;
   String? name;
   @JsonKey(
-    includeFromJson: false,
-    includeToJson: false,
+    ignore: true,
   )
   late bool checked;
 

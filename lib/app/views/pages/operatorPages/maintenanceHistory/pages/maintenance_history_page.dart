@@ -6,7 +6,8 @@ import '../controller/maintenance_history_controller.dart';
 import '../widgets/maintenance_history_after_load_widget.dart';
 
 class MaintenanceHistoryPage extends StatefulWidget {
-  const MaintenanceHistoryPage({Key? key}) : super(key: key);
+  final bool offline;
+  const MaintenanceHistoryPage({Key? key, required this.offline}) : super(key: key);
 
   @override
   State<MaintenanceHistoryPage> createState() => _MaintenanceHistoryPageState();
@@ -18,7 +19,7 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
   @override
   void initState() {
     Get.delete<MaintenanceHistoryController>();
-    controller = Get.put(MaintenanceHistoryController(), tag: "maintenance-history-controller");
+    controller = Get.put(MaintenanceHistoryController(widget.offline), tag: "maintenance-history-controller");
     super.initState();
   }
 
@@ -26,13 +27,13 @@ class _MaintenanceHistoryPageState extends State<MaintenanceHistoryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Obx(
-        () => controller.screenLoading.value ?
-        DefaultShimmer(
-          pageTitle: "Visitas",
-          showSearchField: false,
-          mainCardSize: 3.h,
-        ) :
-        MaintenanceHistoryAfterLoadWidget(),
+        () => controller.screenLoading.value
+            ? DefaultShimmer(
+                pageTitle: "Visitas",
+                showSearchField: false,
+                mainCardSize: 3.h,
+              )
+            : MaintenanceHistoryAfterLoadWidget(),
       ),
     );
   }

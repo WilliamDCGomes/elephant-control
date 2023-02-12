@@ -3,6 +3,7 @@ import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/utils/position_util.dart';
 import 'package:elephant_control/base/services/user_location_service.dart';
 import 'package:elephant_control/base/viewControllers/user_location_view_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -36,8 +37,10 @@ buildFlavor(Flavor flavor) async {
 }
 
 void sendLocation() async {
+  if (kDebugMode) return;
   final userLocationService = UserLocationService();
   Timer.periodic(Duration(seconds: 3), (timer) async {
+    if (kDebugMode) return;
     try {
       if (LoggedUser.userType != UserType.operator) return;
       final permission = await Geolocator.checkPermission();

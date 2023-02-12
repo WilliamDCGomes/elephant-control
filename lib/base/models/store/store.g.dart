@@ -17,7 +17,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) => Store(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{

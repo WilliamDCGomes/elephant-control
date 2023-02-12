@@ -10,16 +10,15 @@ VisitListViewController _$VisitListViewControllerFromJson(
         Map<String, dynamic> json) =>
     VisitListViewController(
       priority: json['priority'] as String,
-      responsibleName: json['responsibleName'] as String,
       status: $enumDecodeNullable(_$VisitStatusEnumMap, json['status']),
       moneyQuantity: (json['moneyQuantity'] as num).toDouble(),
       stuffedAnimalsReplaceQuantity:
           (json['stuffedAnimalsReplaceQuantity'] as num).toDouble(),
       stuffedAnimalsQuantity:
           (json['stuffedAnimalsQuantity'] as num).toDouble(),
-      moneyPouchRetired: json['moneyPouchRetired'] as bool,
+      moneyPouchRetired: ElephantCore.fromJsonActive(json['moneyPouchRetired']),
       machineName: json['machineName'] as String,
-      realizedVisit: json['realizedVisit'] as bool?,
+      realizedVisit: ElephantCore.fromJsonActive(json['realizedVisit']),
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
     )
@@ -30,8 +29,9 @@ VisitListViewController _$VisitListViewControllerFromJson(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?;
+      ..active = ElephantCore.fromJsonActive(json['active'])
+      ..includeUserId = json['includeUserId'] as String?
+      ..responsibleName = json['responsibleName'] as String?;
 
 Map<String, dynamic> _$VisitListViewControllerToJson(
         VisitListViewController instance) =>

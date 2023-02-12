@@ -17,8 +17,9 @@ UserMachine _$UserMachineFromJson(Map<String, dynamic> json) => UserMachine(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
-      ..includeUserId = json['includeUserId'] as String?;
+      ..active = ElephantCore.fromJsonActive(json['active'])
+      ..includeUserId = json['includeUserId'] as String?
+      ..sent = UserMachine.fromJsonSent(json['sent']);
 
 Map<String, dynamic> _$UserMachineToJson(UserMachine instance) =>
     <String, dynamic>{
@@ -29,4 +30,5 @@ Map<String, dynamic> _$UserMachineToJson(UserMachine instance) =>
       'includeUserId': instance.includeUserId,
       'userId': instance.userId,
       'machineId': instance.machineId,
+      'sent': instance.sent,
     };

@@ -18,7 +18,7 @@ Media _$MediaFromJson(Map<String, dynamic> json) => Media(
       ..alteration = json['alteration'] == null
           ? null
           : DateTime.parse(json['alteration'] as String)
-      ..active = json['active'] as bool?
+      ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?;
 
 Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
