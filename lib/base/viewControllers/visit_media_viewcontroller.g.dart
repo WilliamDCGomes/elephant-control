@@ -10,15 +10,16 @@ VisitMediaViewController _$VisitMediaViewControllerFromJson(
         Map<String, dynamic> json) =>
     VisitMediaViewController(
       image: json['image'] as String,
-      visitType: $enumDecode(_$MediaTypeEnumMap, json['visitType']),
+      mediaType: $enumDecode(_$MediaTypeEnumMap, json['mediaType']),
       inclusion: DateTime.parse(json['inclusion'] as String),
-    );
+    )..mediaId = json['mediaId'] as String;
 
 Map<String, dynamic> _$VisitMediaViewControllerToJson(
         VisitMediaViewController instance) =>
     <String, dynamic>{
       'image': instance.image,
-      'visitType': _$MediaTypeEnumMap[instance.visitType]!,
+      'mediaId': instance.mediaId,
+      'mediaType': _$MediaTypeEnumMap[instance.mediaType]!,
       'inclusion': instance.inclusion.toIso8601String(),
     };
 

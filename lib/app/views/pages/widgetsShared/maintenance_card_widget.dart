@@ -100,6 +100,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                         widget.responsibleName,
                         widget.visitId,
                         widget.visitDate,
+                        null,
                       ),
                     );
                   }),

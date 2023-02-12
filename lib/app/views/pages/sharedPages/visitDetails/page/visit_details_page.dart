@@ -15,10 +15,12 @@ import '../controller/visit_details_controller.dart';
 
 class VisitDetailsPage extends StatefulWidget {
   final String visitId;
+  final bool editPictures;
 
   const VisitDetailsPage({
     Key? key,
     required this.visitId,
+    this.editPictures = true,
   }) : super(key: key);
 
   @override
@@ -155,12 +157,16 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                               ),
                                             ),
                                           ),
-                                          InkWell(
-                                            onTap: () => controller.openImage(
-                                              controller.beforeMaintenanceImageClock.picture,
-                                            ),
-                                            child: IgnorePointer(
-                                              child: controller.beforeMaintenanceImageClock,
+                                          Visibility(
+                                            visible: widget.editPictures,
+                                            child: controller.beforeMaintenanceImageClock,
+                                            replacement: InkWell(
+                                              onTap: () => controller.openImage(
+                                                controller.beforeMaintenanceImageClock.picture,
+                                              ),
+                                              child: IgnorePointer(
+                                                child: controller.beforeMaintenanceImageClock,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -186,12 +192,16 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                               ),
                                             ),
                                           ),
-                                          InkWell(
-                                            onTap: () => controller.openImage(
-                                              controller.imageClock.picture,
-                                            ),
-                                            child: IgnorePointer(
-                                              child: controller.imageClock,
+                                          Visibility(
+                                            visible: widget.editPictures,
+                                            child: controller.imageClock,
+                                            replacement: InkWell(
+                                              onTap: () => controller.openImage(
+                                                controller.imageClock.picture,
+                                              ),
+                                              child: IgnorePointer(
+                                                child: controller.imageClock,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -271,7 +281,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                         ),
                                         Expanded(
                                           child: Obx(
-                                                () => CheckboxListTileWidget(
+                                            () => CheckboxListTileWidget(
                                               radioText: "Não",
                                               size: 4.h,
                                               spaceBetween: 1.w,
@@ -302,7 +312,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                           ),
                                           Expanded(
                                             child: Obx(
-                                                  () => CheckboxListTileWidget(
+                                              () => CheckboxListTileWidget(
                                                 radioText: "Sim",
                                                 size: 4.h,
                                                 checked: controller.machineCloseYes.value,
@@ -318,7 +328,7 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                           ),
                                           Expanded(
                                             child: Obx(
-                                                  () => CheckboxListTileWidget(
+                                              () => CheckboxListTileWidget(
                                                 radioText: "Não",
                                                 size: 4.h,
                                                 spaceBetween: 1.w,
@@ -353,12 +363,16 @@ class _VisitDetailsPageState extends State<VisitDetailsPage> {
                                               ),
                                             ),
                                           ),
-                                          InkWell(
-                                            onTap: () => controller.openImage(
-                                              controller.afterMaintenanceImageClock.picture,
-                                            ),
-                                            child: IgnorePointer(
-                                              child: controller.afterMaintenanceImageClock,
+                                          Visibility(
+                                            visible: widget.editPictures,
+                                            child: controller.afterMaintenanceImageClock,
+                                            replacement: InkWell(
+                                              onTap: () => controller.openImage(
+                                                controller.afterMaintenanceImageClock.picture,
+                                              ),
+                                              child: IgnorePointer(
+                                                child: controller.afterMaintenanceImageClock,
+                                              ),
                                             ),
                                           ),
                                         ],

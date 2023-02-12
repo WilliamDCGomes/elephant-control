@@ -133,9 +133,9 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                                     visit.responsibleName,
                                                     visit.id ?? "",
                                                     visit.inclusion ?? DateTime.now(),
+                                                    controller
                                                   ),
                                                 );
-                                                await controller.getVisitsOperatorByUserId(showLoad: false);
                                               }
                                             },
                                           ),

@@ -16,13 +16,41 @@ class IncidentService extends BaseService {
     }
   }
 
+  Future<bool> updateIncident(Incident incident) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Incident/UpdateIncident';
+      final data = incident.toJson();
+      final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      return response.body;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<bool> createIncidentMedia(List<VisitMedia> incidentsMedia) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Incident/CreateIncidentMedia';
       for (var element in incidentsMedia) {
         final data = element.toJson();
-        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'});
+        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
+        if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      }
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> updateIncidentMedia(List<VisitMedia> incidentsMedia) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Incident/UpdateIncidentMedia';
+      for (var element in incidentsMedia) {
+        final data = element.toJson();
+        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
         if (hasErrorResponse(response) || response.body is! bool) throw Exception();
       }
       return true;

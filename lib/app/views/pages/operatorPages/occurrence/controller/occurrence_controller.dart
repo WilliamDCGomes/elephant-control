@@ -15,6 +15,7 @@ import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/popups/videos_picture_widget.dart';
 
 class OccurrenceController extends GetxController {
+  final bool edit;
   late RxString machineSelected;
   late String operatorName;
   late String maintenanceDate;
@@ -27,7 +28,7 @@ class OccurrenceController extends GetxController {
   late final String _visitId;
   late IncidentObject? _incident;
 
-  OccurrenceController(this._machine, this._visitId, this._incident) {
+  OccurrenceController(this._machine, this._visitId, this._incident, this.edit) {
     _initializeVariables();
   }
 
@@ -124,31 +125,45 @@ class OccurrenceController extends GetxController {
   saveOccurrence() async {
     try {
       if (!fieldsValidate()) return;
-      final _incident = Incident(status: IncidentStatus.realized, machineId: _machine.id!, visitId: _visitId, description: observations.text);
+      bool newIncident = _incident == null;
+      if(newIncident) {
+        _incident = IncidentObject(
+          Incident(
+            status: IncidentStatus.realized,
+            machineId: _machine.id!,
+            visitId: _visitId,
+            description: observations.text,
+          ),
+          [],
+        );
+      }
       List<VisitMedia> medias = [];
       final bytesClockImage = await machineOccurrencePicture.picture?.readAsBytes();
       if (bytesClockImage != null)
         medias.add(VisitMedia(
-          visitId: _incident.id!,
+          visitId: _incident!.incident.id!,
           base64: base64Encode(bytesClockImage),
           type: MediaType.firstOccurrencePicture,
           extension: MediaExtension.jpeg,
+          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.firstOccurrencePicture).mediaId,
         ));
       final bytesBeforeImage = await extraMachineOccurrencePicture.picture?.readAsBytes();
       if (bytesBeforeImage != null)
         medias.add(VisitMedia(
-          visitId: _incident.id!,
+          visitId: _incident!.incident.id!,
           base64: base64Encode(bytesBeforeImage),
           type: MediaType.secondOccurrencePicture,
           extension: MediaExtension.jpeg,
+          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.secondOccurrencePicture).mediaId,
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
       if (bytesAfterImage != null)
         medias.add(VisitMedia(
-          visitId: _incident.id!,
+          visitId: _incident!.incident.id!,
           base64: base64Encode(bytesAfterImage),
           type: MediaType.occurrenceVideo,
           extension: MediaExtension.mp4,
+          mediaId: newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.occurrenceVideo).mediaId,
         ));
       await showDialog(
         context: Get.context!,
@@ -159,8 +174,9 @@ class OccurrenceController extends GetxController {
           );
         },
       );
-      //await Get.delete<OccurrenceController>(force: true);
-      Get.back(result: IncidentObject(_incident, medias));
+      _incident!.medias = medias;
+
+      Get.back(result: _incident);
     } catch (_) {
       showDialog(
         context: Get.context!,
@@ -204,8 +220,8 @@ class OccurrenceController extends GetxController {
 }
 
 class IncidentObject {
-  final Incident incident;
-  final List<VisitMedia> medias;
+  Incident incident;
+  List<VisitMedia> medias;
 
   IncidentObject(this.incident, this.medias);
 }

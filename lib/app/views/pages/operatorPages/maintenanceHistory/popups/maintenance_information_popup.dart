@@ -9,6 +9,7 @@ import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
+import '../controller/maintenance_history_controller.dart';
 
 class MaintenanceInformationPopup {
   static String getAverage(String clock1, String clock2){
@@ -31,6 +32,7 @@ class MaintenanceInformationPopup {
       final String? responsibleName,
       final String visitId,
       final DateTime visitDate,
+      MaintenanceHistoryController? controller,
       ){
     return [
       Center(
@@ -316,9 +318,12 @@ class MaintenanceInformationPopup {
           hintText: "VER DETALHES",
           fontWeight: FontWeight.bold,
           widthButton: 75.w,
-          onPressed: () {
+          onPressed: () async {
+            await Get.to(() => VisitDetailsPage(visitId: visitId,));
+            if(controller != null){
+              await controller.getVisitsOperatorByUserId(showLoad: false);
+            }
             Get.back();
-            Get.to(() => VisitDetailsPage(visitId: visitId,));
           },
         ),
       ),

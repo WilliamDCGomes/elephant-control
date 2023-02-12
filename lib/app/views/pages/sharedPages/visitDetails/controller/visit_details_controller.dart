@@ -134,7 +134,7 @@ class VisitDetailsController extends GetxController {
       bool after = true;
 
       for(var media in visitViewController!.mediasList){
-        switch(media.visitType){
+        switch(media.mediaType){
           case MediaType.moneyWatch:
             imageClock.picture = await FilesHelper.createXFileFromBase64(
               media.image,
@@ -227,6 +227,7 @@ class VisitDetailsController extends GetxController {
       machine: _machine,
       visitId: visitId,
       incident: incident,
+      edit: true,
     ));
 
     if (newIncident is IncidentObject) incident = newIncident;
@@ -265,12 +266,13 @@ class VisitDetailsController extends GetxController {
 
       bool showAveragePopup = await ValidAverage().valid(_visit.machineId, clock1.text, clock2.text);
 
-      bool createdVisit = await _visitService.updateVisit(_visit);
-      if (createdVisit) {
+      bool updateVisit = await _visitService.updateVisit(_visit);
+      if (updateVisit) {
         List<VisitMedia> medias = [];
         final bytesClockImage = await imageClock.picture?.readAsBytes();
         if (bytesClockImage != null)
           medias.add(VisitMedia(
+            mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.moneyWatch).mediaId,
             visitId: _visit.id!,
             base64: base64Encode(bytesClockImage),
             type: MediaType.moneyWatch,
@@ -279,6 +281,7 @@ class VisitDetailsController extends GetxController {
         final bytesBeforeImage = await beforeMaintenanceImageClock.picture?.readAsBytes();
         if (bytesBeforeImage != null)
           medias.add(VisitMedia(
+            mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineBefore).mediaId,
             visitId: _visit.id!,
             base64: base64Encode(bytesBeforeImage),
             type: MediaType.machineBefore,
@@ -287,21 +290,20 @@ class VisitDetailsController extends GetxController {
         final bytesAfterImage = await afterMaintenanceImageClock.picture?.readAsBytes();
         if (bytesAfterImage != null)
           medias.add(VisitMedia(
+            mediaId: visitViewController!.mediasList.firstWhere((media) => media.mediaType == MediaType.machineAfter).mediaId,
             visitId: _visit.id!,
             base64: base64Encode(bytesAfterImage),
             type: MediaType.machineAfter,
             extension: MediaExtension.jpeg,
           ));
 
-        if((await _visitMediaService.deleteVisitMedia(visitId)) && medias.isNotEmpty){
-          createdVisit = await _visitMediaService.createVisitMedia(medias);
-        }
+        if (medias.isNotEmpty) updateVisit = await _visitMediaService.updateVisitMedia(medias);
       }
-      if (!createdVisit) throw Exception();
+      if (!updateVisit) throw Exception();
 
       if(incident != null){
-        final bool createdIncident = await _incidentService.createIncident(incident!.incident);
-        if (createdIncident) await _incidentService.createIncidentMedia(incident!.medias);
+        await _incidentService.updateIncident(incident!.incident);
+        if(incident!.medias.isNotEmpty) await _incidentService.updateIncidentMedia(incident!.medias);
       }
 
       int quantity = plushQuantity - int.parse(teddyAddMachine.text);

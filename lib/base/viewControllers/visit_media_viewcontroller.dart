@@ -6,12 +6,13 @@ part 'visit_media_viewcontroller.g.dart';
 @JsonSerializable()
 class VisitMediaViewController {
   late String image;
-  late MediaType visitType;
+  late String mediaId;
+  late MediaType mediaType;
   late DateTime inclusion;
 
   VisitMediaViewController({
     required this.image,
-    required this.visitType,
+    required this.mediaType,
     required this.inclusion,
   });
 

@@ -15,12 +15,14 @@ class OccurrencePage extends StatefulWidget {
   final Machine machine;
   final String visitId;
   final IncidentObject? incident;
+  final bool edit;
 
   const OccurrencePage({
     Key? key,
     required this.machine,
     required this.visitId,
     required this.incident,
+    this.edit = false,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class _OccurrencePageState extends State<OccurrencePage> {
         widget.machine,
         widget.visitId,
         widget.incident,
+        widget.edit,
       ),
       //permanent: true,
     );

@@ -17,12 +17,15 @@ class VisitMediaService extends BaseService {
     }
   }
 
-  Future<bool> deleteVisitMedia(String visitId) async {
+  Future<bool> updateVisitMedia(List<VisitMedia> visitsMedia) async {
     try {
       final token = await getToken();
-      final url = baseUrlApi + 'VisitMedia/DeleteVisitMedia';
-      final response = await post(url, null, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
-      if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      final url = baseUrlApi + 'VisitMedia/UpdateVisitMedia';
+      for (var element in visitsMedia) {
+        final data = element.toJson();
+        final response = await post(url, data, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
+        if (hasErrorResponse(response) || response.body is! bool) throw Exception();
+      }
       return true;
     } catch (_) {
       return false;
@@ -33,7 +36,7 @@ class VisitMediaService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'VisitMedia/GetVisitMediaByVisitId';
-      final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {"VisitId": visitId}, headers: {'Authorization': 'Bearer ${token}'}).timeout(Duration(minutes: 2));
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visitMedia) => VisitMedia.fromJson(visitMedia)).toList();
     } catch (_) {
