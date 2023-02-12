@@ -99,7 +99,7 @@ class MaintenanceController extends GetxController {
     operatorName.text = LoggedUser.name;
     maintenanceDate.text = DateFormatToBrazil.formatDate(DateTime.now());
 
-    imageClock = ImagesPictureWidget(origin: imageOrigin.gallery);
+    imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
 

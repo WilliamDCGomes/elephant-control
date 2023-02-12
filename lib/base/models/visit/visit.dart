@@ -38,7 +38,7 @@ class Visit extends ElephantUserCore {
   double? debit;
   @JsonKey(toJson: toJsonNull)
   double? credit;
-  @JsonKey(ignore: true)
+  @JsonKey(fromJson: fromJsonSent, toJson: toJsonNull)
   bool checked = false;
 
   static String? toJsonNull(dynamic value) => null;
@@ -70,6 +70,8 @@ class Visit extends ElephantUserCore {
     id = const Uuid().v4();
     inclusion = DateTime.now();
     active = true;
+    offline = false;
+    sent = false;
   }
 
   static String get tableName => "VISIT";

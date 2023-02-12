@@ -174,6 +174,12 @@ class OccurrenceController extends GetxController {
       }
       List<VisitMedia> medias = [];
       final bytesClockImage = await machineOccurrencePicture.picture?.readAsBytes();
+      VisitMedia? mediaPicture = null;
+
+      if(_incident!.medias.any((media) => media.type == MediaType.firstOccurrencePicture)){
+        mediaPicture = _incident!.medias.firstWhere((media) => media.type == MediaType.firstOccurrencePicture);
+      }
+
       if (bytesClockImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
@@ -182,9 +188,15 @@ class OccurrenceController extends GetxController {
           extension: MediaExtension.jpeg,
           mediaId: newIncident
               ? null
-              : _incident!.medias.firstWhere((media) => media.type == MediaType.firstOccurrencePicture).mediaId,
+              : mediaPicture != null ? mediaPicture.mediaId : null,
         ));
       final bytesBeforeImage = await extraMachineOccurrencePicture.picture?.readAsBytes();
+      VisitMedia? mediaExtraPicture = null;
+
+      if(_incident!.medias.any((media) => media.type == MediaType.secondOccurrencePicture)){
+        mediaExtraPicture = _incident!.medias.firstWhere((media) => media.type == MediaType.secondOccurrencePicture);
+      }
+
       if (bytesBeforeImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
@@ -193,17 +205,22 @@ class OccurrenceController extends GetxController {
           extension: MediaExtension.jpeg,
           mediaId: newIncident
               ? null
-              : _incident!.medias.firstWhere((media) => media.type == MediaType.secondOccurrencePicture).mediaId,
+              : mediaExtraPicture != null ? mediaExtraPicture.mediaId : null,
         ));
       final bytesAfterImage = await machineOccurrenceVideo.picture?.readAsBytes();
+      VisitMedia? mediaVideo = null;
+
+      if(_incident!.medias.any((media) => media.type == MediaType.occurrenceVideo)){
+        mediaVideo = _incident!.medias.firstWhere((media) => media.type == MediaType.occurrenceVideo);
+      }
+
       if (bytesAfterImage != null)
         medias.add(VisitMedia(
           visitId: _incident!.incident.id!,
           media: base64Encode(bytesAfterImage),
           type: MediaType.occurrenceVideo,
           extension: MediaExtension.mp4,
-          mediaId:
-              newIncident ? null : _incident!.medias.firstWhere((media) => media.type == MediaType.occurrenceVideo).mediaId,
+          mediaId: newIncident ? null : mediaVideo != null ? mediaVideo.mediaId : null,
         ));
       await showDialog(
         context: Get.context!,
