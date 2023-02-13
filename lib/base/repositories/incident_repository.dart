@@ -28,7 +28,7 @@ class IncidentRepository extends BaseRepository {
           incidentId: incidentId,
           type: incidentMedia.type,
           extension: incidentMedia.extension!,
-          media: incidentMedia.base64!,
+          media: incidentMedia.media!,
           sent: false,
         );
         await context.insert(IncidentMedia.tableName, _incidentMedia.toJsonRepository());

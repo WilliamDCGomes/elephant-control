@@ -5,7 +5,7 @@ part 'visit_media_h_viewcontroller.g.dart';
 
 @JsonSerializable()
 class VisitMediaHViewController {
-  String? base64;
+  String? media;
   String? mediaId;
   late MediaType type;
   String? visitId;
@@ -13,7 +13,7 @@ class VisitMediaHViewController {
   MediaExtension? extension;
 
   VisitMediaHViewController({
-    this.base64,
+    this.media,
     this.mediaId,
     required this.type,
     required this.visitId,

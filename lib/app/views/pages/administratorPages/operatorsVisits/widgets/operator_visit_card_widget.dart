@@ -8,13 +8,16 @@ import '../../../../../../base/viewControllers/visits_of_operators_viewcontrolle
 import '../../../operatorPages/maintenanceHistory/popups/maintenance_information_popup.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
+import '../controller/operators_visits_controller.dart';
 
 class OperatorVisitCardWidget extends StatefulWidget {
+  final OperatorsVisitsController? operatorsVisitsController;
   final VisitOfOperatorsViewController visitOfOperatorsViewController;
 
   const OperatorVisitCardWidget({
     Key? key,
     required this.visitOfOperatorsViewController,
+    this.operatorsVisitsController,
   }) : super(key: key);
 
   @override
@@ -71,6 +74,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               widget.visitOfOperatorsViewController.vInclusion,
               null,
               editPictures: false,
+              operatorsVisitsController: widget.operatorsVisitsController,
             ),
           );
         },

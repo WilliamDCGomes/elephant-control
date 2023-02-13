@@ -67,7 +67,7 @@ class VisitMediaService extends BaseService with MixinService {
         final data = VisitMediaHViewController(
             type: itemConvertido.type,
             visitId: itemConvertido.visitId,
-            base64: itemConvertido.media,
+            media: itemConvertido.media,
             extension: itemConvertido.extension);
         final response = await post(url, data.toJson(), headers: {'Authorization': 'Bearer ${token}'});
         if (hasErrorResponse(response)) continue;

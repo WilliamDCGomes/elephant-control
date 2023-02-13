@@ -200,7 +200,7 @@ class MaintenanceController extends GetxController {
         if (bytesClockImage != null)
           medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
-            base64: base64Encode(bytesClockImage),
+            media: base64Encode(bytesClockImage),
             type: MediaType.moneyWatch,
             extension: MediaExtension.jpeg,
           ));
@@ -208,7 +208,7 @@ class MaintenanceController extends GetxController {
         if (bytesBeforeImage != null)
           medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
-            base64: base64Encode(bytesBeforeImage),
+            media: base64Encode(bytesBeforeImage),
             type: MediaType.machineBefore,
             extension: MediaExtension.jpeg,
           ));
@@ -216,7 +216,7 @@ class MaintenanceController extends GetxController {
         if (bytesAfterImage != null)
           medias.add(VisitMediaHViewController(
             visitId: _visit.id!,
-            base64: base64Encode(bytesAfterImage),
+            media: base64Encode(bytesAfterImage),
             type: MediaType.machineAfter,
             extension: MediaExtension.jpeg,
           ));
@@ -244,7 +244,7 @@ class MaintenanceController extends GetxController {
                             type: e.type,
                             visitId: e.visitId,
                             extension: e.extension,
-                            base64: e.media,
+                            media: e.media,
                           ))
                       .toList(),
                   _incident!.incident.id!)
@@ -253,7 +253,7 @@ class MaintenanceController extends GetxController {
                         type: e.type,
                         visitId: e.visitId,
                         extension: e.extension,
-                        base64: e.media,
+                        media: e.media,
                       ))
                   .toList());
         }

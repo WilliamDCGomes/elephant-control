@@ -9,7 +9,7 @@ part of 'visit_media_h_viewcontroller.dart';
 VisitMediaHViewController _$VisitMediaHViewControllerFromJson(
         Map<String, dynamic> json) =>
     VisitMediaHViewController(
-      base64: json['base64'] as String?,
+      media: json['media'] as String?,
       mediaId: json['mediaId'] as String?,
       type: $enumDecode(_$MediaTypeEnumMap, json['type']),
       visitId: json['visitId'] as String?,
@@ -20,7 +20,7 @@ VisitMediaHViewController _$VisitMediaHViewControllerFromJson(
 Map<String, dynamic> _$VisitMediaHViewControllerToJson(
         VisitMediaHViewController instance) =>
     <String, dynamic>{
-      'base64': instance.base64,
+      'media': instance.media,
       'mediaId': instance.mediaId,
       'type': _$MediaTypeEnumMap[instance.type]!,
       'visitId': instance.visitId,

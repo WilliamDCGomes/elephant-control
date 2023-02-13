@@ -46,7 +46,7 @@ class VisitRepository extends BaseRepository {
           visitId: visitMedia.visitId!,
           type: visitMedia.type,
           extension: visitMedia.extension!,
-          media: visitMedia.base64!,
+          media: visitMedia.media!,
           sent: false,
         );
         await context.insert(VisitMedia.tableName, _visitMedia.toJsonRepository());

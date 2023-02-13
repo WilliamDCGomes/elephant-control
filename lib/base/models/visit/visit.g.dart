@@ -46,7 +46,8 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       ..lastPrizeMachine = (json['lastPrizeMachine'] as num?)?.toDouble()
       ..monthClosure = ElephantCore.fromJsonActive(json['monthClosure'])
       ..debit = (json['debit'] as num?)?.toDouble()
-      ..credit = (json['credit'] as num?)?.toDouble();
+      ..credit = (json['credit'] as num?)?.toDouble()
+      ..checked = Visit.fromJsonSent(json['checked']);
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'id': instance.id,
@@ -77,6 +78,7 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'sent': Visit.toJsonNull(instance.sent),
       'debit': Visit.toJsonNull(instance.debit),
       'credit': Visit.toJsonNull(instance.credit),
+      'checked': Visit.toJsonNull(instance.checked),
     };
 
 const _$VisitStatusEnumMap = {

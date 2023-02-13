@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../administratorPages/operatorsVisits/controller/operators_visits_controller.dart';
 import '../../../sharedPages/visitDetails/page/visit_details_page.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
@@ -33,8 +34,11 @@ class MaintenanceInformationPopup {
       final String visitId,
       final DateTime visitDate,
       MaintenanceHistoryController? controller,
-      {bool editPictures = true,
-      bool offline = false}) {
+      {
+        OperatorsVisitsController? operatorsVisitsController,
+        bool editPictures = true,
+        bool offline = false,
+      }) {
     return [
       Center(
         child: Container(
@@ -328,6 +332,9 @@ class MaintenanceInformationPopup {
                     ));
                 if (controller != null) {
                   await controller.getVisitsOperatorByUserId(showLoad: false);
+                }
+                if(operatorsVisitsController != null){
+                  await operatorsVisitsController.getVisitsUser();
                 }
               },
             )),

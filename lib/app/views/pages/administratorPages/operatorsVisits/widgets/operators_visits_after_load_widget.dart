@@ -172,6 +172,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                               itemBuilder: (context, index) {
                                 return OperatorVisitCardWidget(
                                   visitOfOperatorsViewController: controller.operatorVisitList[index],
+                                  operatorsVisitsController: controller,
                                 );
                               },
                             ) :

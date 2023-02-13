@@ -1,9 +1,6 @@
-import 'package:elephant_control/base/models/incident/incident.dart';
 import 'package:elephant_control/base/models/incidentMedia/incident_media.dart';
-import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
 import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/services/base/iservice_post.dart';
-
 import '../viewControllers/visit_media_h_viewcontroller.dart';
 
 class IncidentMediaService extends BaseService with MixinService {
@@ -52,7 +49,7 @@ class IncidentMediaService extends BaseService with MixinService {
         final data = VisitMediaHViewController(
             type: itemConvertido.type,
             visitId: itemConvertido.incidentId,
-            base64: itemConvertido.media,
+            media: itemConvertido.media,
             extension: itemConvertido.extension);
         final response = await post(url, data.toJson(), headers: {'Authorization': 'Bearer ${token}'});
         if (hasErrorResponse(response)) continue;
