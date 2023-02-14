@@ -67,14 +67,21 @@ class _ReceivePouchPopupState extends State<ReceivePouchPopup> {
                   ),
                 ),
                 Obx(
-                  () => ListView.builder(
-                    itemCount: widget.controller.pouchList.length,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(2.h),
-                    itemBuilder: (context, index) {
-                      final moneyPouch = widget.controller.pouchList[index];
-                      return PouchWidget(moneyPouch: moneyPouch);
-                    },
+                  () => SizedBox(
+                    height: 60.h,
+                    child: Scrollbar(
+                      trackVisibility: true,
+                      thumbVisibility: true,
+                      child: ListView.builder(
+                        itemCount: widget.controller.pouchList.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(2.h),
+                        itemBuilder: (context, index) {
+                          final moneyPouch = widget.controller.pouchList[index];
+                          return PouchWidget(moneyPouch: moneyPouch);
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 Padding(

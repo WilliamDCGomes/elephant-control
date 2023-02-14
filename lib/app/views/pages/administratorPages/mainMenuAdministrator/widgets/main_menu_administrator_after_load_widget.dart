@@ -289,13 +289,13 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                             imagePath: Paths.Pelucia,
                             onTap: () => Get.to(() => StockControlPage()),
                           ),
-                        if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Solicitacoes")))
+                        /*if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("Solicitacoes")))
                           MenuOptionsWidget(
                             text: "Solicitações",
                             imagePath: Paths.Solicitacoes,
                             disable: true,
                             onTap: () {},
-                          ),
+                          ),*/
                       ],
                     ),
                   ),

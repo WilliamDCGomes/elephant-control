@@ -101,6 +101,9 @@ class VisitDetailsController extends GetxController {
     afterMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     imageClock = ImagesPictureWidget(origin: imageOrigin.camera);
     beforeMaintenanceImageClock = ImagesPictureWidget(origin: imageOrigin.camera);
+    afterMaintenanceImageClock.createState();
+    imageClock.createState();
+    beforeMaintenanceImageClock.createState();
 
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
   }
@@ -136,24 +139,29 @@ class VisitDetailsController extends GetxController {
         switch (media.mediaType) {
           case MediaType.moneyWatch:
             imageClock.picture = await FilesHelper.createXFileFromBase64(
-              media.image,
+              //media.image,
+              visitViewController!.mediasList.first.image,
             );
             break;
           case MediaType.machineBefore:
             if (after) {
               after = false;
               beforeMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
-                media.image,
+                //media.image,
+                visitViewController!.mediasList.first.image,
               );
-            } else {
+            }
+            else {
               afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
-                media.image,
+                //media.image,
+                visitViewController!.mediasList.first.image,
               );
             }
             break;
           case MediaType.machineAfter:
             afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
-              media.image,
+              //media.image,
+              visitViewController!.mediasList.first.image,
             );
             break;
           case MediaType.stuffedAnimals:
@@ -174,6 +182,11 @@ class VisitDetailsController extends GetxController {
       if (beforeMaintenanceImageClock.picture != null) {
         beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
+      //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
+      /*if (afterMaintenanceImageClock.picture != null) {
+        afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
+      }*/
+      //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
     } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       await showDialog(

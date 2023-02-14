@@ -79,12 +79,13 @@ class RecallMoneyController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       final finished = await _visitService.recallMoneyVisitsByUserId(recallMoneyViewController.id);
       if (!finished) throw Exception();
+      await loadingWithSuccessOrErrorWidget.stopAnimation();
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Dinheiro recolhido com sucesso"));
     } catch (_) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(context: Get.context!, builder: (context) => InformationPopup(warningMessage: "Não foi possível recolher o dinheiro"));
     } finally {
       if (confirm == true) await _getTreasuryUsersWithMoneyPouchLaunched();
-      await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
   }
 }

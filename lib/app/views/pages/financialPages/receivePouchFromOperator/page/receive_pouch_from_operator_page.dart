@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/text_field_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -74,7 +73,7 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    "Adicionar novo Malote",
+                                    "]Adicionar novo Malote",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,
