@@ -27,8 +27,8 @@ class ImagesPictureWidget extends StatefulWidget {
 
   bool checkFileType(String fileName) => fileName.contains('jpg') || fileName.contains('png') || fileName.contains('jpeg');
 
-  CompressFormat _getFormat(String format){
-    switch(format){
+  CompressFormat _getFormat(String format) {
+    switch (format) {
       case "png":
         return CompressFormat.png;
       case "jpeg":
@@ -89,9 +89,10 @@ class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
   late final ImagePicker _picker;
 
   refreshPage() {
-    setState(() {
-      widget.picture = widget.picture;
-    });
+    if (mounted)
+      setState(() {
+        widget.picture = widget.picture;
+      });
   }
 
   Future<XFile?> galleryChoice() async {

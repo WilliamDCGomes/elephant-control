@@ -64,10 +64,10 @@ class VisitDetailsController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(Duration(milliseconds: 200));
-    await loadingWithSuccessOrErrorWidget.startAnimation();
+    // await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getVisitInformation();
     await _getIncidentInformation();
-    await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    // await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     super.onInit();
   }
 
@@ -140,7 +140,7 @@ class VisitDetailsController extends GetxController {
           case MediaType.moneyWatch:
             imageClock.picture = await FilesHelper.createXFileFromBase64(
               //media.image,
-              visitViewController!.mediasList.first.image,
+              media.image,
             );
             break;
           case MediaType.machineBefore:
@@ -148,20 +148,19 @@ class VisitDetailsController extends GetxController {
               after = false;
               beforeMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 //media.image,
-                visitViewController!.mediasList.first.image,
+                media.image,
               );
-            }
-            else {
+            } else {
               afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
                 //media.image,
-                visitViewController!.mediasList.first.image,
+                media.image,
               );
             }
             break;
           case MediaType.machineAfter:
             afterMaintenanceImageClock.picture = await FilesHelper.createXFileFromBase64(
               //media.image,
-              visitViewController!.mediasList.first.image,
+              media.image,
             );
             break;
           case MediaType.stuffedAnimals:
@@ -182,11 +181,9 @@ class VisitDetailsController extends GetxController {
       if (beforeMaintenanceImageClock.picture != null) {
         beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
-      //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
-      if (!editPictures && afterMaintenanceImageClock.picture != null) {
+      if (afterMaintenanceImageClock.picture != null) {
         afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
-      //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
     } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       await showDialog(
@@ -243,21 +240,21 @@ class VisitDetailsController extends GetxController {
   }
 
   deleteVisit(BuildContext context) async {
-    try{
+    try {
       await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return ConfirmationPopup(
             title: "Aviso",
-            subTitle: "Tem certeza que deseja apagar essa visita? Todas as informações e imagens serão excluidas permanentemente.",
+            subTitle:
+                "Tem certeza que deseja apagar essa visita? Todas as informações e imagens serão excluidas permanentemente.",
             firstButton: () {},
             secondButton: () async => await _executeDeleteVisit(),
           );
         },
       );
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -271,7 +268,7 @@ class VisitDetailsController extends GetxController {
   }
 
   _executeDeleteVisit() async {
-    try{
+    try {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       await _visitService.deleteVisit(visitId);
       await loadingWithSuccessOrErrorWidget.stopAnimation();
@@ -285,8 +282,7 @@ class VisitDetailsController extends GetxController {
         },
       );
       Get.back();
-    }
-    catch(_){
+    } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
