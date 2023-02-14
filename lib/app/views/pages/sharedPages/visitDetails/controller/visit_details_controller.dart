@@ -183,9 +183,9 @@ class VisitDetailsController extends GetxController {
         beforeMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
       //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
-      /*if (afterMaintenanceImageClock.picture != null) {
+      if (!editPictures && afterMaintenanceImageClock.picture != null) {
         afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
-      }*/
+      }
       //ESSA PORRA AQUI QUE ESTÁ CRASHANDO HUGO
     } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
