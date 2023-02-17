@@ -26,6 +26,7 @@ class ReceivePouchFromOperatorController extends GetxController {
   late final GlobalKey<FormState> _formKey;
   late SharedPreferences sharedPreferences;
   late final LocalAuthentication fingerPrintAuth;
+  late RxString pouchWithOperators;
 
   ReceivePouchFromOperatorController() {
     _inicializeList();
@@ -56,6 +57,7 @@ class ReceivePouchFromOperatorController extends GetxController {
     observations = TextEditingController();
     _formKey = GlobalKey<FormState>();
     fingerPrintAuth = LocalAuthentication();
+    pouchWithOperators = "0".obs;
   }
 
   Future<void> _getData() async {
@@ -83,27 +85,39 @@ class ReceivePouchFromOperatorController extends GetxController {
       operators.addAll(await VisitService().getOperatorUsersWithVisitStatusMoneyWithdrawal());
     } catch (_) {
       operators.clear();
+    } finally {
+      if (operators.isNotEmpty) {
+        final user = User.emptyConstructor();
+        user.name = "Todos";
+        user.id = null;
+        operators.insertAll(0, [user]);
+        if (operatorSelected == null) {
+          await _getMoneyPouchMoneyWithdrawal(null);
+        }
+      }
     }
   }
 
-  Future<void> _getMoneyPouchMoneyWithdrawal(String operatorUserId) async {
+  Future<void> _getMoneyPouchMoneyWithdrawal(String? operatorUserId) async {
     try {
       pouchList.clear();
       pouchList.addAll(await MoneyPouchService().getMoneyPouchMoneyWithdrawal(operatorUserId));
     } catch (_) {
       pouchList.clear();
+    } finally {
+      pouchWithOperators.value = pouchList.length.toString();
     }
   }
 
   openPouchList() {
-    if (operatorSelected == null) {
-      SnackbarWidget(
-        warningText: "Operador não selecionado",
-        informationText: "Por favor, selecione um operador",
-        backgrondColor: AppColors.defaultColor,
-      );
-      return;
-    }
+    // if (operatorSelected == null) {
+    //   SnackbarWidget(
+    //     warningText: "Operador não selecionado",
+    //     informationText: "Por favor, selecione um operador",
+    //     backgrondColor: AppColors.defaultColor,
+    //   );
+    //   return;
+    // }
     /*if (!formKey.currentState!.validate()) return;
     if (int.parse(operatorCode.text) != operatorSelected?.code) {
       SnackbarWidget(
@@ -113,28 +127,32 @@ class ReceivePouchFromOperatorController extends GetxController {
       );
     }
     else {*/
-      showDialog(
-        context: Get.context!,
-        builder: (BuildContext context) {
-          return ReceivePouchPopup(
-            controller: this,
-          );
-        },
-      );
+    showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return ReceivePouchPopup(
+          controller: this,
+        );
+      },
+    );
     //}
   }
 
   void onDropdownButtonWidgetChanged(String? selectedState) async {
     try {
-      operatorSelected = operators.firstWhereOrNull((element) => element.id == selectedState);
+      operatorSelected = selectedState == null
+          ? operators.firstWhereOrNull((element) => element.name == "Todos")
+          : operators.firstWhereOrNull((element) => element.id == selectedState);
       if (operatorSelected != null) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
-        await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id!);
+        await _getMoneyPouchMoneyWithdrawal(operatorSelected!.id);
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       }
     } catch (_) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       operatorSelected = null;
+    } finally {
+      update(['dropdown']);
     }
   }
 
@@ -206,7 +224,8 @@ class ReceivePouchFromOperatorController extends GetxController {
       await loadingWithSuccessOrErrorWidget.stopAnimation();
       Get.back();
       if (pouchsWithErrors.isNotEmpty) throw Exception();
-      Future.microtask(() async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
+      Future.microtask(
+          () async => await Get.find<MainMenuFinancialController>(tag: 'main_menu_financial_controller').getQuantityData());
 
       showDialog(
         context: Get.context!,

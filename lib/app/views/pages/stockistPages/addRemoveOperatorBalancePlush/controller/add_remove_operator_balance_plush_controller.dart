@@ -54,6 +54,7 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
     } catch (_) {
       operators.clear();
     } finally {
+      operators.sort((a, b) => a.name.compareTo(b.name));
       operators.refresh();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     }
@@ -84,15 +85,17 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
         );
       }
       await loadingWithSuccessOrErrorWidget.startAnimation();
-      if(!addPluch){
+      if (!addPluch) {
         var operator = await userService.getUserById(operatorSelected!.id!);
-        if(operator != null && operator.balanceStuffedAnimals != null && operator.balanceStuffedAnimals! < int.parse(plushQuantity.text)){
+        if (operator != null &&
+            operator.balanceStuffedAnimals != null &&
+            operator.balanceStuffedAnimals! < int.parse(plushQuantity.text)) {
           loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
           return showDialog(
             context: Get.context!,
             builder: (context) => InformationPopup(
               warningMessage: "Saldo do operador é menor do que o você está "
-                  "tentando remover!\nSaldo atual do operador: " +
+                      "tentando remover!\nSaldo atual do operador: " +
                   FormatNumbers.scoreIntNumber(operator.balanceStuffedAnimals),
             ),
           );
@@ -106,7 +109,7 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
         addPluch,
       );
 
-      if(addOrRemoveStuffedAnimals){
+      if (addOrRemoveStuffedAnimals) {
         await _stokistPlushService.insertOrRemovePlushies(
           addPluch ? (-1 * int.parse(plushQuantity.text)) : int.parse(plushQuantity.text),
         );
@@ -117,10 +120,9 @@ class AddRemoveOperatorBalancePlushController extends GetxController {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: false);
       await showDialog(
         context: Get.context!,
-        builder: (context) =>
-          InformationPopup(
-            warningMessage: "Pelúcias ${addPluch ? "adicionadas" : "removidas"} com sucesso",
-          ),
+        builder: (context) => InformationPopup(
+          warningMessage: "Pelúcias ${addPluch ? "adicionadas" : "removidas"} com sucesso",
+        ),
       );
 
       await Future.microtask(() async {

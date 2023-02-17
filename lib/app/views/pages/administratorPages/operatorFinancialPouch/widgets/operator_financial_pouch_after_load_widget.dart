@@ -18,7 +18,7 @@ class OperatorFinancialPouchAfterLoadWidget extends StatefulWidget {
 
   const OperatorFinancialPouchAfterLoadWidget({
     Key? key,
-    required this. withOperator,
+    required this.withOperator,
   }) : super(key: key);
 
   @override
@@ -61,77 +61,85 @@ class _OperatorFinancialPouchAfterLoadWidgetState extends State<OperatorFinancia
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Malotes com " + (widget.withOperator ? "Operadores" : "Tesouraria"),
-                        ),
-                      ),
-                      InformationContainerWidget(
-                        iconPath: widget. withOperator ?
-                        Paths.Malote : Paths.Malote_Com_Tesouraria,
-                        textColor: AppColors.whiteColor,
-                        backgroundColor: AppColors.defaultColor,
-                        informationText: "",
-                        customContainer: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextWidget(
-                              "Todos os Malotes na posse " + (widget.withOperator ? "dos Operadores" : "da Tesouraria"),
-                              textColor: AppColors.whiteColor,
-                              fontSize: 18.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            TextWidget(
-                              "Selecione um usuário para visualizar os malotes",
-                              textColor: AppColors.whiteColor,
-                              fontSize: 16.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Obx(
-                                  () => RichTextTwoDifferentWidget(
-                                firstText: "Quantidade de Malotes: ",
-                                firstTextColor: AppColors.whiteColor,
-                                firstTextFontWeight: FontWeight.normal,
-                                firstTextSize: 18.sp,
-                                secondText: controller.pouchQuantity.value.toString(),
-                                secondTextColor: AppColors.whiteColor,
-                                secondTextFontWeight: FontWeight.bold,
-                                secondTextSize: 18.sp,
-                                secondTextDecoration: TextDecoration.none,
-                                maxLines: 2,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Obx(
-                                  () => RichTextTwoDifferentWidget(
-                                firstText: "Valor Total: ",
-                                firstTextColor: AppColors.whiteColor,
-                                firstTextFontWeight: FontWeight.normal,
-                                firstTextSize: 18.sp,
-                                secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
-                                secondTextColor: AppColors.whiteColor,
-                                secondTextFontWeight: FontWeight.bold,
-                                secondTextSize: 18.sp,
-                                secondTextDecoration: TextDecoration.none,
-                                maxLines: 2,
-                              ),
-                            ),
-                          ],
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: "Malotes com " + (widget.withOperator ? "Operadores" : "Tesouraria"),
+                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                          ),
                         ),
                       ),
                       Obx(
-                            () => Padding(
+                        () => Visibility(
+                          visible: controller.showInfos.value,
+                          child: InformationContainerWidget(
+                            iconPath: widget.withOperator ? Paths.Malote : Paths.Malote_Com_Tesouraria,
+                            textColor: AppColors.whiteColor,
+                            backgroundColor: AppColors.defaultColor,
+                            informationText: "",
+                            customContainer: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextWidget(
+                                  "Todos os Malotes na posse " + (widget.withOperator ? "dos Operadores" : "da Tesouraria"),
+                                  textColor: AppColors.whiteColor,
+                                  fontSize: 18.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                TextWidget(
+                                  "Selecione um usuário para visualizar os malotes",
+                                  textColor: AppColors.whiteColor,
+                                  fontSize: 16.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                Obx(
+                                  () => RichTextTwoDifferentWidget(
+                                    firstText: "Quantidade de Malotes: ",
+                                    firstTextColor: AppColors.whiteColor,
+                                    firstTextFontWeight: FontWeight.normal,
+                                    firstTextSize: 18.sp,
+                                    secondText: controller.pouchQuantity.value.toString(),
+                                    secondTextColor: AppColors.whiteColor,
+                                    secondTextFontWeight: FontWeight.bold,
+                                    secondTextSize: 18.sp,
+                                    secondTextDecoration: TextDecoration.none,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                Obx(
+                                  () => RichTextTwoDifferentWidget(
+                                    firstText: "Valor Total: ",
+                                    firstTextColor: AppColors.whiteColor,
+                                    firstTextFontWeight: FontWeight.normal,
+                                    firstTextSize: 18.sp,
+                                    secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
+                                    secondTextColor: AppColors.whiteColor,
+                                    secondTextFontWeight: FontWeight.bold,
+                                    secondTextSize: 18.sp,
+                                    secondTextDecoration: TextDecoration.none,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Obx(
+                        () => Padding(
                           padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
                           child: DropdownButtonRxListWidget(
                             itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
@@ -140,7 +148,7 @@ class _OperatorFinancialPouchAfterLoadWidgetState extends State<OperatorFinancia
                             width: 90.w,
                             rxListItems: controller.usersName,
                             onChanged: (selectedState) {
-                              if(selectedState != null) {
+                              if (selectedState != null) {
                                 controller.userSelected.value = selectedState;
                                 controller.getPouchUser();
                               }
@@ -152,26 +160,31 @@ class _OperatorFinancialPouchAfterLoadWidgetState extends State<OperatorFinancia
                         child: GetBuilder(
                           id: "list-pouch",
                           init: controller,
-                          builder: (_) => controller.moneyPouchGetViewController != null && controller.moneyPouchGetViewController!.moneyPouchValueList.isNotEmpty ?
-                          ListView.builder(
-                            itemCount: controller.moneyPouchGetViewController!.moneyPouchValueList.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.symmetric(horizontal: 2.h),
-                            itemBuilder: (context, index){
-                              return PouchCardWidget(
-                                moneyPouchValueList: controller.moneyPouchGetViewController!.moneyPouchValueList[index],
-                              );
-                            },
-                          ) : Center(
-                            child: TextWidget(
-                              controller.userSelected.value.isNotEmpty ? "Não existem malotes no saldo desse usuário" : "",
-                              textColor: AppColors.grayTextColor,
-                              fontSize: 14.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          builder: (_) => controller.moneyPouchGetViewController != null &&
+                                  controller.moneyPouchGetViewController!.moneyPouchValueList.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: controller.moneyPouchGetViewController!.moneyPouchValueList.length,
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                  itemBuilder: (context, index) {
+                                    return PouchCardWidget(
+                                      moneyPouchValueList:
+                                          controller.moneyPouchGetViewController!.moneyPouchValueList[index],
+                                    );
+                                  },
+                                )
+                              : Center(
+                                  child: TextWidget(
+                                    controller.userSelected.value.isNotEmpty
+                                        ? "Não existem malotes no saldo desse usuário"
+                                        : "",
+                                    textColor: AppColors.grayTextColor,
+                                    fontSize: 14.sp,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ],

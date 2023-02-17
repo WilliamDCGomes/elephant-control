@@ -57,55 +57,64 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Visitas dos Operadores",
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: "Visitas dos Operadores",
+                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                          ),
                         ),
                       ),
-                      InformationContainerWidget(
-                        iconPath: Paths.Manutencao,
-                        textColor: AppColors.whiteColor,
-                        backgroundColor: AppColors.defaultColor,
-                        informationText: "",
-                        customContainer: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextWidget(
-                              "Visitas dos Operadores nas Máquinas",
-                              textColor: AppColors.whiteColor,
-                              fontSize: 18.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
+                      Obx(
+                        () => Visibility(
+                          visible: controller.showInfos.value,
+                          child: InformationContainerWidget(
+                            iconPath: Paths.Manutencao,
+                            textColor: AppColors.whiteColor,
+                            backgroundColor: AppColors.defaultColor,
+                            informationText: "",
+                            customContainer: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextWidget(
+                                  "Visitas dos Operadores nas Máquinas",
+                                  textColor: AppColors.whiteColor,
+                                  fontSize: 18.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                TextWidget(
+                                  "Selecione um usuário para visualizar as visitas e a data, para filtrar pelo dia",
+                                  textColor: AppColors.whiteColor,
+                                  fontSize: 16.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                Obx(
+                                  () => RichTextTwoDifferentWidget(
+                                    firstText: "Quantidade de Visitas: ",
+                                    firstTextColor: AppColors.whiteColor,
+                                    firstTextFontWeight: FontWeight.normal,
+                                    firstTextSize: 18.sp,
+                                    secondText: controller.visitsQuantity.value.toString(),
+                                    secondTextColor: AppColors.whiteColor,
+                                    secondTextFontWeight: FontWeight.bold,
+                                    secondTextSize: 18.sp,
+                                    secondTextDecoration: TextDecoration.none,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            TextWidget(
-                              "Selecione um usuário para visualizar as visitas e a data, para filtrar pelo dia",
-                              textColor: AppColors.whiteColor,
-                              fontSize: 16.sp,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Obx(
-                              () => RichTextTwoDifferentWidget(
-                                firstText: "Quantidade de Visitas: ",
-                                firstTextColor: AppColors.whiteColor,
-                                firstTextFontWeight: FontWeight.normal,
-                                firstTextSize: 18.sp,
-                                secondText: controller.visitsQuantity.value.toString(),
-                                secondTextColor: AppColors.whiteColor,
-                                secondTextFontWeight: FontWeight.bold,
-                                secondTextSize: 18.sp,
-                                secondTextDecoration: TextDecoration.none,
-                                maxLines: 2,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                       Obx(
@@ -164,28 +173,30 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                           init: controller,
                           builder: (_) => Padding(
                             padding: EdgeInsets.only(bottom: 2.h),
-                            child: controller.operatorVisitList.isNotEmpty ?
-                            ListView.builder(
-                              itemCount: controller.operatorVisitList.length,
-                              shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(horizontal: 2.h),
-                              itemBuilder: (context, index) {
-                                return OperatorVisitCardWidget(
-                                  visitOfOperatorsViewController: controller.operatorVisitList[index],
-                                  operatorsVisitsController: controller,
-                                );
-                              },
-                            ) :
-                            Center(
-                              child: TextWidget(
-                                controller.userSelected.value.isNotEmpty ? "Não existe visitas para esse usuário nesta data" : "",
-                                textColor: AppColors.grayTextColor,
-                                fontSize: 14.sp,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: controller.operatorVisitList.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: controller.operatorVisitList.length,
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                    itemBuilder: (context, index) {
+                                      return OperatorVisitCardWidget(
+                                        visitOfOperatorsViewController: controller.operatorVisitList[index],
+                                        operatorsVisitsController: controller,
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: TextWidget(
+                                      controller.userSelected.value.isNotEmpty
+                                          ? "Não existe visitas para esse usuário nesta data"
+                                          : "",
+                                      textColor: AppColors.grayTextColor,
+                                      fontSize: 14.sp,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),

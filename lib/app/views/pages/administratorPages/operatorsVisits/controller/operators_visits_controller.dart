@@ -20,6 +20,7 @@ class OperatorsVisitsController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late IUserService _userService;
   late IVisitService _visitService;
+  late RxBool showInfos;
 
   OperatorsVisitsController() {
     _initializeVariables();
@@ -42,10 +43,11 @@ class OperatorsVisitsController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _visitService = VisitService();
+    showInfos = true.obs;
   }
 
   _getUsers() async {
-    try{
+    try {
       users.value = await _userService.getAllUserByType(UserType.operator);
 
       users.sort((a, b) => a.name.compareTo(b.name));
@@ -73,8 +75,7 @@ class OperatorsVisitsController extends GetxController {
       await getVisitsUser(loadingEnabled: false);
 
       screenLoading.value = false;
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -89,14 +90,14 @@ class OperatorsVisitsController extends GetxController {
   }
 
   getVisitsUser({bool loadingEnabled = true}) async {
-    try{
+    try {
       visitsQuantity.value = 0;
-      if(loadingEnabled){
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
 
       User? user = null;
-      if(userSelected.value != "Todos"){
+      if (userSelected.value != "Todos") {
         user = users.firstWhere((element) => element.name == userSelected.value);
       }
 
@@ -106,12 +107,11 @@ class OperatorsVisitsController extends GetxController {
       );
       visitsQuantity.value = operatorVisitList.length;
       update(["visit-list"]);
-      if(loadingEnabled){
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       }
-    }
-    catch(_){
-      if(loadingEnabled){
+    } catch (_) {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       }
       await showDialog(

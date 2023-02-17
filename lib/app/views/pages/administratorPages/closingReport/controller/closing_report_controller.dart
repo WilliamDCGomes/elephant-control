@@ -20,6 +20,7 @@ class ClosingReportController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late MachineService _machineService;
   late ReportService _reportService;
+  late RxBool showInfos;
 
   ClosingReportController() {
     _initializeVariables();
@@ -44,10 +45,11 @@ class ClosingReportController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _machineService = MachineService();
     _reportService = ReportService();
+    showInfos = true.obs;
   }
 
   _getMachines() async {
-    try{
+    try {
       machinesList.value = await _machineService.getAll();
 
       machinesList.sort((a, b) => a.name.compareTo(b.name));
@@ -58,7 +60,7 @@ class ClosingReportController extends GetxController {
         if (i + 1 < machinesList.length && machinesList[i].name.startsWith(machinesList[i + 1].name)) {
           machinesList[i + 1].name += " - rep";
         }
-        if(!machinesList[i].name.contains(" - rep")) {
+        if (!machinesList[i].name.contains(" - rep")) {
           machinesNameList.add(machinesList[i].name);
         }
       }
@@ -67,8 +69,7 @@ class ClosingReportController extends GetxController {
       await getReport(loadingEnabled: false);
 
       screenLoading.value = false;
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -83,25 +84,24 @@ class ClosingReportController extends GetxController {
   }
 
   getReport({bool loadingEnabled = true}) async {
-    try{
-      if(loadingEnabled){
+    try {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
 
       reportViewController = await _reportService.getClosingReport(
         closingReportDateFilter,
-        machineSelected.value != "" && machineSelected.value != "Todas" ?
-        machinesList.firstWhere((element) => element.name == machineSelected.value).id :
-        null,
+        machineSelected.value != "" && machineSelected.value != "Todas"
+            ? machinesList.firstWhere((element) => element.name == machineSelected.value).id
+            : null,
       );
 
       update(["report-information"]);
-      if(loadingEnabled){
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       }
-    }
-    catch(_){
-      if(loadingEnabled){
+    } catch (_) {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       }
       await showDialog(
@@ -123,8 +123,7 @@ class ClosingReportController extends GetxController {
       builder: (BuildContext context) {
         return MonthYearPickerPopup(
           initialDate: closingReportDateFilter,
-          returnFunction: (int returnMonth, int returnYear) =>
-              returnFunction(returnMonth, returnYear),
+          returnFunction: (int returnMonth, int returnYear) => returnFunction(returnMonth, returnYear),
         );
       },
     );

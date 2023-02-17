@@ -1,5 +1,3 @@
-import 'package:elephant_control/base/models/adminSolicitation/admin_solicitation.dart';
-import 'package:elephant_control/base/models/visitLog/visit_log.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/incident/incident.dart';
 import '../models/incidentMedia/incident_media.dart';

@@ -133,7 +133,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                     ),
                                     child: TextFieldWidget(
                                       controller: controller.plushQuantity,
-                                      hintText: "Quantidade de Pelúcias",
+                                      hintText: widget.addPluch ? "Quantidade de Pelúcias" : "Devolução de Pelúcias",
                                       height: 9.h,
                                       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                                       keyboardType: TextInputType.number,

@@ -1,14 +1,11 @@
 import 'dart:ui';
-import 'package:elephant_control/app/views/pages/financialPages/receivePouchFromOperator/widget/pouch_widget.dart';
 import 'package:elephant_control/base/models/roles/role.dart';
-import 'package:elephant_control/base/models/roles/user_role.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
-import '../controller/register_user_controller.dart';
 
 class RoleUserPopup extends StatefulWidget {
   final List<Role> roles;

@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:elephant_control/app/utils/internet_connection.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/information_popup.dart';
-import 'package:elephant_control/base/context/elephant_context.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/services/machine_service.dart';

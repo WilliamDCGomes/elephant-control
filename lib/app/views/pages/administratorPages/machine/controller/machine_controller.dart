@@ -96,7 +96,7 @@ class MachineController extends GetxController {
     final _machine = await Get.to(() => RegisterMachinePage(
           machine: machine,
           edit: machine != null,
-          externalIds: machines.where((element) => element.externalId != null).map((e) => e.externalId!).toList(),
+          externalIds: [], //machines.where((element) => element.externalId != null).map((e) => e.externalId!).toList(),
         ));
     if (_machine is! Machine) return;
     try {
