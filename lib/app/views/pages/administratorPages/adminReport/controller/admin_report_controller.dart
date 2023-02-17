@@ -11,6 +11,8 @@ import '../../../widgetsShared/popups/information_popup.dart';
 class AdminReportController extends GetxController {
   late DateTime initialDateFilter;
   late DateTime finalDateFilter;
+  late TimeOfDay initialHourFilter;
+  late TimeOfDay finalHourFilter;
   late RxBool screenLoading;
   late RxString machineSelected;
   late RxList<String> machinesNameList;
@@ -34,6 +36,9 @@ class AdminReportController extends GetxController {
   _initializeVariables() {
     initialDateFilter = DateFormatToBrazil.firstDateOfMonth();
     finalDateFilter = DateTime.now();
+    initialHourFilter = TimeOfDay(hour: 0, minute: 0);
+    finalHourFilter = TimeOfDay(hour: 23, minute: 59);
+
     screenLoading = true.obs;
     machineSelected = "".obs;
     machinesNameList = <String>[].obs;
@@ -85,6 +90,21 @@ class AdminReportController extends GetxController {
       if(loadingEnabled){
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
+
+      initialDateFilter = DateTime(
+        initialDateFilter.year,
+        initialDateFilter.month,
+        initialDateFilter.day,
+        initialHourFilter.hour,
+        initialHourFilter.minute,
+      );
+      finalDateFilter = DateTime(
+        finalDateFilter.year,
+        finalDateFilter.month,
+        finalDateFilter.day,
+        finalHourFilter.hour,
+        finalHourFilter.minute,
+      );
 
       reportViewController = await _reportService.getDefaultReport(
         initialDateFilter,
@@ -148,6 +168,36 @@ class AdminReportController extends GetxController {
     if (picked != null && picked != finalDateFilter) {
       finalDateFilter = picked;
       update(["final-date-filter"]);
+    }
+  }
+
+  filterPerInitialHour() async {
+    var picked = await showTimePicker(
+      context: Get.context!,
+      helpText: "SELECIONE UMA HORA",
+      confirmText: "Selecionar",
+      cancelText: "Cancelar",
+      initialTime: initialHourFilter,
+    );
+
+    if (picked != null && picked != initialDateFilter) {
+      initialHourFilter = picked;
+      update(["initial-hour-filter"]);
+    }
+  }
+
+  filterPerFinalHour() async {
+    var picked = await showTimePicker(
+      context: Get.context!,
+      helpText: "SELECIONE UMA HORA",
+      confirmText: "Selecionar",
+      cancelText: "Cancelar",
+      initialTime: finalHourFilter,
+    );
+
+    if (picked != null && picked != finalHourFilter) {
+      finalHourFilter = picked;
+      update(["final-hour-filter"]);
     }
   }
 }

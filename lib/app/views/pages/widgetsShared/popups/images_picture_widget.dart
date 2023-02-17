@@ -86,8 +86,6 @@ class ImagesPictureWidget extends StatefulWidget {
 }
 
 class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
-  late final ImagePicker _picker;
-
   refreshPage() {
     if (mounted)
       setState(() {
@@ -144,12 +142,6 @@ class ImagesPictureWidgetState extends State<ImagesPictureWidget> {
         },
       );
     }
-  }
-
-  @override
-  void initState() {
-    _picker = ImagePicker();
-    super.initState();
   }
 
   @override

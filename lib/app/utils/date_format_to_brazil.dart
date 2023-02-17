@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -5,6 +6,15 @@ class DateFormatToBrazil {
   static String formatDate(DateTime? date) {
     if(date != null)
       return DateFormat('dd-MM-yyyy').format(date).replaceAll('-', '/');
+    return "";
+  }
+
+  static String formatHour(TimeOfDay? time) {
+    if(time != null){
+      String hour = (time.hour < 10 ? "0" : "") + time.hour.toString();
+      String minute = (time.minute < 10 ? "0" : "") + time.minute.toString();
+      return  hour + ":" + minute;
+    }
     return "";
   }
 

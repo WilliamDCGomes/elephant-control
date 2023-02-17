@@ -3,7 +3,6 @@ import 'package:elephant_control/app/views/pages/widgetsShared/rich_text_two_dif
 import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../utils/format_numbers.dart';
 import '../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
@@ -65,7 +64,7 @@ class SafeBoxCardWidget extends StatelessWidget {
                   firstTextColor: AppColors.blackColor,
                   firstTextFontWeight: FontWeight.normal,
                   firstTextSize: 16.sp,
-                  secondText: pouchHistory ? DateFormatToBrazil.formatDate(deliveryDate) : FormatNumbers.numbersToMoney(amount),
+                  secondText: pouchHistory ? DateFormatToBrazil.formatDateAndHour(deliveryDate) : FormatNumbers.numbersToMoney(amount),
                   secondTextColor: AppColors.blackColor,
                   secondTextFontWeight: FontWeight.bold,
                   secondTextSize: 16.sp,

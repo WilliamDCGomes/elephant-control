@@ -103,67 +103,154 @@ class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () async => await controller.filterPerInitialDate(),
-                              child: Container(
-                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: AppColors.defaultColor,
-                                    width: .25.h,
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async => await controller.filterPerInitialDate(),
+                                child: Container(
+                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.defaultColor,
+                                      width: .25.h,
+                                    ),
                                   ),
-                                ),
-                                padding: EdgeInsets.all(.5.h),
-                                margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GetBuilder(
-                                    id: "initial-date-filter",
-                                    init: controller,
-                                    builder: (_) => RichTextTwoDifferentWidget(
-                                      firstText: "Data Inicial: ",
-                                      firstTextColor: AppColors.blackColor,
-                                      firstTextFontWeight: FontWeight.normal,
-                                      firstTextSize: 16.sp,
-                                      secondText: DateFormatToBrazil.formatDate(controller.initialDateFilter),
-                                      secondTextColor: AppColors.blackColor,
-                                      secondTextFontWeight: FontWeight.bold,
-                                      secondTextSize: 16.sp,
-                                      secondTextDecoration: TextDecoration.none,
+                                  padding: EdgeInsets.all(.5.h),
+                                  margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GetBuilder(
+                                      id: "initial-date-filter",
+                                      init: controller,
+                                      builder: (_) => RichTextTwoDifferentWidget(
+                                        firstText: "Data Inicial: ",
+                                        firstTextColor: AppColors.blackColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 16.sp,
+                                        secondText: DateFormatToBrazil.formatDate(controller.initialDateFilter),
+                                        secondTextColor: AppColors.blackColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 16.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () async => await controller.filterPerFinalDate(),
-                              child: Container(
-                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: AppColors.defaultColor,
-                                    width: .25.h,
+                            SizedBox(
+                              width: 3.w,
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async => await controller.filterPerFinalDate(),
+                                child: Container(
+                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.defaultColor,
+                                      width: .25.h,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.all(.5.h),
+                                  margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GetBuilder(
+                                      id: "final-date-filter",
+                                      init: controller,
+                                      builder: (_) => RichTextTwoDifferentWidget(
+                                        firstText: "Data Final: ",
+                                        firstTextColor: AppColors.blackColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 16.sp,
+                                        secondText: DateFormatToBrazil.formatDate(controller.finalDateFilter),
+                                        secondTextColor: AppColors.blackColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 16.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                padding: EdgeInsets.all(.5.h),
-                                margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GetBuilder(
-                                    id: "final-date-filter",
-                                    init: controller,
-                                    builder: (_) => RichTextTwoDifferentWidget(
-                                      firstText: "Data Final: ",
-                                      firstTextColor: AppColors.blackColor,
-                                      firstTextFontWeight: FontWeight.normal,
-                                      firstTextSize: 16.sp,
-                                      secondText: DateFormatToBrazil.formatDate(controller.finalDateFilter),
-                                      secondTextColor: AppColors.blackColor,
-                                      secondTextFontWeight: FontWeight.bold,
-                                      secondTextSize: 16.sp,
-                                      secondTextDecoration: TextDecoration.none,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 2.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async => await controller.filterPerInitialHour(),
+                                child: Container(
+                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.defaultColor,
+                                      width: .25.h,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.all(.5.h),
+                                  margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GetBuilder(
+                                      id: "initial-hour-filter",
+                                      init: controller,
+                                      builder: (_) => RichTextTwoDifferentWidget(
+                                        firstText: "Hora Inicial: ",
+                                        firstTextColor: AppColors.blackColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 16.sp,
+                                        secondText: DateFormatToBrazil.formatHour(controller.initialHourFilter),
+                                        secondTextColor: AppColors.blackColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 16.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 3.w,
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async => await controller.filterPerFinalHour(),
+                                child: Container(
+                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.defaultColor,
+                                      width: .25.h,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.all(.5.h),
+                                  margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GetBuilder(
+                                      id: "final-hour-filter",
+                                      init: controller,
+                                      builder: (_) => RichTextTwoDifferentWidget(
+                                        firstText: "Hora Final: ",
+                                        firstTextColor: AppColors.blackColor,
+                                        firstTextFontWeight: FontWeight.normal,
+                                        firstTextSize: 16.sp,
+                                        secondText: DateFormatToBrazil.formatHour(controller.finalHourFilter),
+                                        secondTextColor: AppColors.blackColor,
+                                        secondTextFontWeight: FontWeight.bold,
+                                        secondTextSize: 16.sp,
+                                        secondTextDecoration: TextDecoration.none,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/format_numbers.dart';
 import 'package:elephant_control/app/views/pages/administratorPages/userMachine/page/user_machine_page.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/maintenance_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,21 @@ class _MachineAfterLoadWidgetState extends State<MachineAfterLoadWidget> {
                               maxLines: 2,
                               fontWeight: FontWeight.bold,
                             ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Obx(
+                              () => TextWidget(
+                                "Total de máquinas: " + FormatNumbers.scoreIntNumber(
+                                  controller.machines.length,
+                                ),
+                                textColor: AppColors.whiteColor,
+                                fontSize: 16.sp,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -109,7 +125,7 @@ class _MachineAfterLoadWidgetState extends State<MachineAfterLoadWidget> {
                       ),
                       Expanded(
                           child: Obx(
-                                () => Padding(
+                            () => Padding(
                               padding: EdgeInsets.fromLTRB(2.h, 0, 2.h, 1.h),
                               child: ListView.builder(
                                 itemCount: controller.machines.length,

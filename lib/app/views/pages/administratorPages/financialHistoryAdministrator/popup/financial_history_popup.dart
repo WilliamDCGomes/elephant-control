@@ -64,7 +64,7 @@ class FinancialHistoryPopup {
           firstTextColor: AppColors.blackColor,
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
-          secondText: DateFormatToBrazil.formatDate(safeBoxFinancialViewController.receiveDate),
+          secondText: DateFormatToBrazil.formatDateAndHour(safeBoxFinancialViewController.receiveDate),
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,

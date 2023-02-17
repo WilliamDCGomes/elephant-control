@@ -59,7 +59,7 @@ class _PouchCardWidgetState extends State<PouchCardWidget> {
                   firstTextColor: AppColors.blackColor,
                   firstTextFontWeight: FontWeight.bold,
                   firstTextSize: 14.5.sp,
-                  secondText: DateFormatToBrazil.formatDate(widget.moneyPouchValueList.alteration),
+                  secondText: DateFormatToBrazil.formatDateAndHour(widget.moneyPouchValueList.alteration),
                   secondTextColor: AppColors.greenColor,
                   secondTextFontWeight: FontWeight.bold,
                   secondTextSize: 14.5.sp,

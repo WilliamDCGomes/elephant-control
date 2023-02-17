@@ -66,7 +66,7 @@ class PouchInformationPopup {
           firstTextColor: AppColors.blackColor,
           firstTextFontWeight: FontWeight.normal,
           firstTextSize: 16.sp,
-          secondText: DateFormatToBrazil.formatDate(lastChange),
+          secondText: DateFormatToBrazil.formatDateAndHour(lastChange),
           secondTextColor: AppColors.blackColor,
           secondTextFontWeight: FontWeight.bold,
           secondTextSize: 16.sp,

@@ -114,7 +114,7 @@ class MaintenanceController extends GetxController {
   onDropdownButtonWidgetChanged(String? machineId) {
     machineSelected = _machines.firstWhere((element) => element.id == machineId);
     machineSelectedListener.value = machineSelected?.name ?? "";
-    lastMaintenance.value = DateFormatToBrazil.formatDate(machineSelected?.lastVisit);
+    lastMaintenance.value = DateFormatToBrazil.formatDateAndHour(machineSelected?.lastVisit);
   }
 
   Future<void> _initializeMethods() async {
