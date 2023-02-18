@@ -29,9 +29,10 @@ class _MainMenuStokistPageState extends State<MainMenuStokistPage> {
             ? DefaultMenuShimmer(
                 pageTitle: "CENTRAL ESTOQUISTA",
                 firstCardIconPath: Paths.Money,
-                firstCardText: "Quantidade no Cofre: ",
-                secondCardIconPath: Paths.Malote,
-                secondCardText: "Quantidade de Malotes: ",
+                firstCardText: "Quantidade de Pèlúcias: ",
+                secondCardIconPath: "",
+                secondCardText: "",
+                showSecondCard: false,
               )
             : MainMenuStokistAfterLoadWidget(),
       ),

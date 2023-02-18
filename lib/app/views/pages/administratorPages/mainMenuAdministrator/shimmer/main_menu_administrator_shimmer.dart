@@ -11,7 +11,14 @@ import '../../../widgetsShared/text_widget.dart';
 import '../controller/main_menu_administrator_controller.dart';
 
 class MainMenuAdministratorShimmer extends StatefulWidget {
-  const MainMenuAdministratorShimmer({Key? key}) : super(key: key);
+  final String? pageTitle;
+  final bool showJust3Itens;
+
+  const MainMenuAdministratorShimmer({
+    Key? key,
+    this.pageTitle,
+    this.showJust3Itens = false,
+  }) : super(key: key);
 
   @override
   State<MainMenuAdministratorShimmer> createState() => _MainMenuAdministratorShimmerState();
@@ -22,7 +29,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
 
   @override
   void initState() {
-    controller = Get.find(tag: "main_menu_administrator_controller");
+    controller = widget.pageTitle == null ? Get.find(tag: "main_menu_administrator_controller") : Get.put(MainMenuAdministratorController());
     super.initState();
   }
 
@@ -187,60 +194,66 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                 borderRadius: BorderRadius.circular(2.5.h),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                              height: 12.h,
-                              width: 12.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.blackColor,
-                                borderRadius: BorderRadius.circular(2.5.h),
+                            if(!widget.showJust3Itens)
+                              Container(
+                                margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                                height: 12.h,
+                                width: 12.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackColor,
+                                  borderRadius: BorderRadius.circular(2.5.h),
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -252,7 +265,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: TextWidget(
-                      "CENTRAL ADMINISTRATIVA",
+                      widget.pageTitle ?? "CENTRAL ADMINISTRATIVA",
                       textColor: AppColors.backgroundColor,
                       fontSize: 22.sp,
                       textAlign: TextAlign.center,

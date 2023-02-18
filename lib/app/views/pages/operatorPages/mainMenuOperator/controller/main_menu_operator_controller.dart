@@ -49,20 +49,8 @@ class MainMenuOperatorController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    _sincronizeData();
-    _sincronizePostData();
-    await GetProfilePictureController.loadProfilePicture(
-      loadingPicture,
-      hasPicture,
-      profileImagePath,
-      sharedPreferences,
-    );
+    await loadScreen();
     await _checkFingerPrintUser();
-    await getOperatorInformation();
-    screenLoading.value = false;
-    // if(kDebugMode) {
-    //   await PositionUtil.determinePosition();
-    // }
     super.onInit();
   }
 
@@ -80,6 +68,21 @@ class MainMenuOperatorController extends GetxController {
     pouchLastChange = (LoggedUser.pouchLastUpdate ?? DateTime.now()).obs;
     teddyLastChange = (LoggedUser.stuffedAnimalsLastUpdate ?? DateTime.now()).obs;
     _offlineCompleter = Completer<bool>();
+  }
+
+  loadScreen() async {
+    loadingPicture.value = true;
+    screenLoading.value = true;
+    _sincronizeData();
+    _sincronizePostData();
+    await GetProfilePictureController.loadProfilePicture(
+      loadingPicture,
+      hasPicture,
+      profileImagePath,
+      sharedPreferences,
+    );
+    await getOperatorInformation();
+    screenLoading.value = false;
   }
 
   bool get sincronismCompleted => _offlineCompleter.isCompleted;

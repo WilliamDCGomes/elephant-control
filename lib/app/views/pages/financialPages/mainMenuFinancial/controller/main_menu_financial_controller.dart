@@ -1,14 +1,22 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:elephant_control/base/models/user/user.dart';
 import 'package:elephant_control/base/services/money_pouch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../../base/services/interfaces/imoney_pouch_service.dart';
+import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
+import '../../../../../utils/paths.dart';
+import '../../../administratorPages/mainMenuAdministrator/widgets/card_main_menu_administrator_widget.dart';
 import '../../../widgetsShared/popups/confirmation_popup.dart';
 
 class MainMenuFinancialController extends GetxController {
+  late int activeStep;
+  late int pouchQuantityWithOperators;
   late RxBool hasPicture;
   late RxBool loadingPicture;
   late RxBool screenLoading;
@@ -22,6 +30,9 @@ class MainMenuFinancialController extends GetxController {
   late DateTime valueLastUpdate;
   late SharedPreferences sharedPreferences;
   late RxBool _isLoadingQuantity;
+  late CarouselController carouselController;
+  late IMoneyPouchService _moneyPouchService;
+  late RxList<CardMainMenuAdministratorWidget> cardMainMenuAdministratorList;
 
   MainMenuFinancialController() {
     _initializeVariables();
@@ -32,21 +43,14 @@ class MainMenuFinancialController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    _getNameUser();
-    _getWelcomePhrase();
-    await getQuantityData();
-    await GetProfilePictureController.loadProfilePicture(
-      loadingPicture,
-      hasPicture,
-      profileImagePath,
-      sharedPreferences,
-    );
-    screenLoading.value = false;
+    await loadScreen();
     await _checkFingerPrintUser();
     super.onInit();
   }
 
   _initializeVariables() {
+    activeStep = 0;
+    pouchQuantityWithOperators = 0;
     hasPicture = false.obs;
     loadingPicture = true.obs;
     screenLoading = true.obs;
@@ -58,6 +62,84 @@ class MainMenuFinancialController extends GetxController {
     quantityLastUpdate = DateTime.now();
     valueLastUpdate = DateTime.now();
     _isLoadingQuantity = false.obs;
+    carouselController = CarouselController();
+    _moneyPouchService = MoneyPouchService();
+    cardMainMenuAdministratorList = [
+      CardMainMenuAdministratorWidget(
+        firstText: "Quantidade no Cofre: ",
+        secondText: "R\$ 0,00",
+        thirdText: "Última Atualização: ",
+        fourthText: DateFormatToBrazil.formatDateAndHour(DateTime.now()),
+        imagePath: Paths.Money,
+      ),
+      CardMainMenuAdministratorWidget(
+        firstText: "Quantidade de Malotes: ",
+        secondText: "0",
+        thirdText: "Última Atualização: ",
+        fourthText: DateFormatToBrazil.formatDateAndHour(DateTime.now()),
+        imagePath: Paths.Malote_Com_Tesouraria,
+      ),
+      CardMainMenuAdministratorWidget(
+        firstText: "Total Malotes com os Operadores: ",
+        secondText: "0",
+        imagePath: Paths.Malote,
+      ),
+    ].obs;
+  }
+
+  _getPouchUser() async {
+    try {
+      pouchQuantityWithOperators = 0;
+
+      var moneyPouchOperator = await _moneyPouchService.getAllPouchInformation(UserType.operator);
+
+      if (moneyPouchOperator != null) {
+        pouchQuantityWithOperators = moneyPouchOperator.moneyPouchValueList.length;
+      }
+    } catch (_) {
+      pouchQuantityWithOperators = 0;
+    }
+  }
+
+  loadScreen() async {
+    loadingPicture.value = true;
+    screenLoading.value = true;
+    _getNameUser();
+    _getWelcomePhrase();
+    await getQuantityData();
+    await _getPouchUser();
+    await _loadCards();
+    await GetProfilePictureController.loadProfilePicture(
+      loadingPicture,
+      hasPicture,
+      profileImagePath,
+      sharedPreferences,
+    );
+    screenLoading.value = false;
+  }
+
+  _loadCards() {
+    cardMainMenuAdministratorList.value = [
+      CardMainMenuAdministratorWidget(
+        firstText: "Quantidade no Cofre: ",
+        secondText: FormatNumbers.numbersToMoney(safeBoxAmount.value),
+        thirdText: "Última Atualização: ",
+        fourthText: DateFormatToBrazil.formatDateAndHour(valueLastUpdate),
+        imagePath: Paths.Money,
+      ),
+      CardMainMenuAdministratorWidget(
+        firstText: "Quantidade de Malotes: ",
+        secondText: FormatNumbers.scoreIntNumber(pouchQuantity.value),
+        thirdText: "Última Atualização: ",
+        fourthText: DateFormatToBrazil.formatDateAndHour(quantityLastUpdate),
+        imagePath: Paths.Malote_Com_Tesouraria,
+      ),
+      CardMainMenuAdministratorWidget(
+        firstText: "Total Malotes com os Operadores: ",
+        secondText: FormatNumbers.scoreIntNumber(pouchQuantityWithOperators),
+        imagePath: Paths.Malote,
+      ),
+    ];
   }
 
   _getNameUser() {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../utils/paths.dart';
-import '../../../widgetsShared/shimmer/default_menu_shimmer.dart';
+import '../../../administratorPages/mainMenuAdministrator/shimmer/main_menu_administrator_shimmer.dart';
 import '../controller/main_menu_financial_controller.dart';
 import '../widget/main_menu_financial_after_load_widget.dart';
 
@@ -26,12 +25,9 @@ class _MainMenuFinancialPageState extends State<MainMenuFinancialPage> {
     return SafeArea(
       child: Obx(
         () => controller.screenLoading.value ?
-        DefaultMenuShimmer(
+        MainMenuAdministratorShimmer(
           pageTitle: "CENTRAL TESOURARIA",
-          firstCardIconPath: Paths.Money,
-          firstCardText: "Quantidade no Cofre: ",
-          secondCardIconPath: Paths.Malote,
-          secondCardText: "Quantidade de Malotes: ",
+          showJust3Itens: true,
         ) :
         MainMenuFinancialAfterLoadWidget(),
       ),

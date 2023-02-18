@@ -10,6 +10,7 @@ class DefaultMenuShimmer extends StatelessWidget {
   final String pageTitle;
   final String firstCardIconPath;
   final String firstCardText;
+  final bool showSecondCard;
   final String secondCardIconPath;
   final String secondCardText;
 
@@ -20,6 +21,7 @@ class DefaultMenuShimmer extends StatelessWidget {
     required this.firstCardText,
     required this.secondCardIconPath,
     required this.secondCardText,
+    this.showSecondCard = true,
   }) : super(key: key);
 
   @override
@@ -167,7 +169,7 @@ class DefaultMenuShimmer extends StatelessWidget {
                               ),
                             ),
                           ),
-                          InformationContainerWidget(
+                          showSecondCard ? InformationContainerWidget(
                             iconPath: secondCardIconPath,
                             textColor: AppColors.whiteColor,
                             backgroundColor: AppColors.defaultColor,
@@ -230,7 +232,7 @@ class DefaultMenuShimmer extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ),
+                          ) : Container(),
                         ],
                       ),
                     ),

@@ -33,16 +33,7 @@ class MainMenuStokistController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    _getNameUser();
-    _getWelcomePhrase();
-    await getQuantityData();
-    await GetProfilePictureController.loadProfilePicture(
-      loadingPicture,
-      hasPicture,
-      profileImagePath,
-      sharedPreferences,
-    );
-    screenLoading.value = false;
+    await loadScreen();
     await _checkFingerPrintUser();
     super.onInit();
   }
@@ -59,6 +50,21 @@ class MainMenuStokistController extends GetxController {
     _isLoadingQuantity = false.obs;
     stokistPlush = null;
     _stokistPlushService = StokistPlushService();
+  }
+
+  loadScreen() async {
+    loadingPicture.value = true;
+    screenLoading.value = true;
+    _getNameUser();
+    _getWelcomePhrase();
+    await getQuantityData();
+    await GetProfilePictureController.loadProfilePicture(
+      loadingPicture,
+      hasPicture,
+      profileImagePath,
+      sharedPreferences,
+    );
+    screenLoading.value = false;
   }
 
   _getNameUser() {

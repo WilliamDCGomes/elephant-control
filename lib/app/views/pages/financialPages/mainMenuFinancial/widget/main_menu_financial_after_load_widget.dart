@@ -1,16 +1,15 @@
-import 'package:elephant_control/app/utils/format_numbers.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:im_stepper/stepper.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
-import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../administratorPages/financialHistoryAdministrator/page/financial_history_administrator_page.dart';
+import '../../../administratorPages/mainMenuAdministrator/widgets/menu_options_widget.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
-import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
-import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../receivePouchFromOperator/page/receive_pouch_from_operator_page.dart';
@@ -30,6 +29,11 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
   @override
   void initState() {
     controller = Get.find(tag: "main_menu_financial_controller");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        controller.activeStep = 0;
+      });
+    });
     super.initState();
   }
 
@@ -59,295 +63,185 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
                     color: AppColors.defaultColor,
                   ),
                 ),
-                Scaffold(
-                  backgroundColor: AppColors.transparentColor,
-                  body: Padding(
-                    padding: EdgeInsets.only(
-                      top: 2.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 8.h,
-                          margin: EdgeInsets.symmetric(horizontal: 2.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButtonWidget(
-                                onTap: () => Get.to(() => UserProfilePage(
-                                  mainMenuFinancialController: controller,
-                                )),
-                                borderRadius: 1.h,
-                                componentPadding: EdgeInsets.zero,
-                                widgetCustom: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 3.w),
-                                      child: Container(
-                                        height: 6.5.h,
-                                        width: 6.5.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(3.25.h),
-                                        ),
-                                        child: Center(
-                                          child: ProfilePictureWidget(
-                                            fontSize: 18.sp,
-                                            hasPicture: controller.hasPicture,
-                                            loadingPicture: controller.loadingPicture,
-                                            profileImagePath: controller.profileImagePath,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(
-                                          () => Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          TextWidget(
-                                            "Olá, ${controller.nameProfile}",
-                                            textColor: AppColors.backgroundColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.sp,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          TextWidget(
-                                            controller.welcomePhrase.value,
-                                            textColor: AppColors.backgroundColor,
-                                            fontSize: 17.sp,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Image.asset(
-                                Paths.Logo_Cor_Background,
-                                width: 35.w,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 6.h),
-                          child: Center(
-                            child: TextWidget(
-                              "CENTRAL TESOURARIA",
-                              textColor: AppColors.backgroundColor,
-                              fontSize: 22.sp,
-                              textAlign: TextAlign.center,
-                              fontWeight: FontWeight.bold,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: 8.h,
-                            ),
-                            child: ListView(
-                              shrinkWrap: true,
+                RefreshIndicator(
+                  onRefresh: () async => await controller.loadScreen(),
+                  child: Scaffold(
+                    backgroundColor: AppColors.transparentColor,
+                    body: Padding(
+                      padding: EdgeInsets.only(
+                        top: 2.h,
+                      ),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Container(
+                            height: 8.h,
+                            margin: EdgeInsets.symmetric(horizontal: 2.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Obx(
-                                  () => InformationContainerWidget(
-                                    iconPath: Paths.Money,
-                                    textColor: AppColors.whiteColor,
-                                    backgroundColor: AppColors.defaultColor,
-                                    informationText: "",
-                                    iconInLeft: true,
-                                    isLoading: controller.isLoadingQuantity,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w,
-                                      vertical: 4.h,
-                                    ),
-                                    customContainer: SizedBox(
-                                      width: 73.w,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                            child: Obx(
-                                              () => RichTextTwoDifferentWidget(
-                                                firstText: "Quantidade no Cofre: ",
-                                                firstTextColor: AppColors.whiteColor,
-                                                firstTextFontWeight: FontWeight.normal,
-                                                firstTextSize: 18.sp,
-                                                secondText: FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
-                                                secondTextColor: AppColors.whiteColor,
-                                                secondTextFontWeight: FontWeight.bold,
-                                                secondTextSize: 20.sp,
-                                                secondTextDecoration: TextDecoration.none,
-                                                maxLines: 2,
-                                                textAlign: TextAlign.center,
-                                              ),
+                                TextButtonWidget(
+                                  onTap: () => Get.to(() => UserProfilePage(
+                                    mainMenuFinancialController: controller,
+                                  )),
+                                  borderRadius: 1.h,
+                                  componentPadding: EdgeInsets.zero,
+                                  widgetCustom: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 3.w),
+                                        child: Container(
+                                          height: 6.5.h,
+                                          width: 6.5.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(3.25.h),
+                                          ),
+                                          child: Center(
+                                            child: ProfilePictureWidget(
+                                              fontSize: 18.sp,
+                                              hasPicture: controller.hasPicture,
+                                              loadingPicture: controller.loadingPicture,
+                                              profileImagePath: controller.profileImagePath,
                                             ),
                                           ),
-                                          TextWidget(
-                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.valueLastUpdate)}",
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.sp,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(
-                                            height: 2.h,
-                                          ),
-                                          InkWell(
-                                            onTap: () => Get.to(() => FinancialHistoryAdministratorPage(
-                                              disableSearch: true,
-                                            )),
-                                            child: TextWidget(
-                                              "Clique aqui para ver o histórico do cofre!",
-                                              maxLines: 1,
-                                              textColor: AppColors.whiteColor,
-                                              fontSize: 16.sp,
-                                              textAlign: TextAlign.center,
-                                              textDecoration: TextDecoration.underline,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Obx(
+                                        () => Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                              "Olá, ${controller.nameProfile}",
+                                              textColor: AppColors.backgroundColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.sp,
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            TextWidget(
+                                              controller.welcomePhrase.value,
+                                              textColor: AppColors.backgroundColor,
+                                              fontSize: 17.sp,
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Obx(
-                                  () => InformationContainerWidget(
-                                    iconPath: Paths.Malote,
-                                    textColor: AppColors.whiteColor,
-                                    backgroundColor: AppColors.defaultColor,
-                                    informationText: "",
-                                    isLoading: controller.isLoadingQuantity,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w,
-                                      vertical: 3.h,
-                                    ),
-                                    customContainer: SizedBox(
-                                      width: 73.w,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                TextWidget(
-                                                  "Quantidade de Malotes: ",
-                                                  textColor: AppColors.whiteColor,
-                                                  fontSize: 18.sp,
-                                                  textAlign: TextAlign.start,
-                                                  maxLines: 1,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(left: 1.w),
-                                                  child: Obx(
-                                                        () => TextWidget(
-                                                      controller.pouchQuantity.value.toString(),
-                                                      fontWeight: FontWeight.bold,
-                                                      maxLines: 2,
-                                                      textColor: AppColors.whiteColor,
-                                                      fontSize: 20.sp,
-                                                      textAlign: TextAlign.start,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          TextWidget(
-                                            "Última Atualização: ${DateFormatToBrazil.formatDateAndHour(controller.quantityLastUpdate)}",
-                                            maxLines: 1,
-                                            textColor: AppColors.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.sp,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(
-                                            height: 2.h,
-                                          ),
-                                          // InkWell(
-                                          //   onTap: () => Get.to(() => FinancialHistoryPage(
-                                          //         title: "Histórico de Malotes",
-                                          //         pageTitle: "Malotes",
-                                          //         pouchHistory: true,
-                                          //       )),
-                                          //   child: TextWidget(
-                                          //     "Clique aqui para ver o histórico de malotes!",
-                                          //     maxLines: 1,
-                                          //     textColor: AppColors.whiteColor,
-                                          //     fontSize: 16.sp,
-                                          //     textAlign: TextAlign.center,
-                                          //     textDecoration: TextDecoration.underline,
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                Image.asset(
+                                  Paths.Logo_Cor_Background,
+                                  width: 35.w,
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                          Stack(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 6.h),
+                                child: Center(
+                                  child: TextWidget(
+                                    "CENTRAL TESOURARIA",
+                                    textColor: AppColors.backgroundColor,
+                                    fontSize: 22.sp,
+                                    textAlign: TextAlign.center,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Obx(
+                                  () => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 8.h, bottom: 1.h),
+                                        child: CarouselSlider.builder(
+                                          carouselController: controller.carouselController,
+                                          itemCount: controller.cardMainMenuAdministratorList.length,
+                                          options: CarouselOptions(
+                                              viewportFraction: 1,
+                                              height: 31.h,
+                                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                              enlargeCenterPage: true,
+                                              enableInfiniteScroll: false,
+                                              onPageChanged: (itemIndex, reason) {
+                                                setState(() {
+                                                  controller.activeStep = itemIndex;
+                                                });
+                                              }),
+                                          itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+                                            return controller.cardMainMenuAdministratorList[itemIndex];
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(bottom: 1.h),
+                                        child: DotStepper(
+                                          dotCount: controller.cardMainMenuAdministratorList.length > 1
+                                              ? controller.cardMainMenuAdministratorList.length
+                                              : 2,
+                                          dotRadius: 1.h,
+                                          activeStep: controller.activeStep,
+                                          shape: Shape.stadium,
+                                          spacing: 3.w,
+                                          indicator: Indicator.magnify,
+                                          fixedDotDecoration: FixedDotDecoration(
+                                            color: AppColors.grayStepColor,
+                                          ),
+                                          indicatorDecoration: IndicatorDecoration(
+                                            color: AppColors.defaultColor,
+                                          ),
+                                          onDotTapped: (tappedDotIndex) {
+                                            setState(() {
+                                              controller.activeStep = tappedDotIndex;
+                                              controller.carouselController.jumpToPage(tappedDotIndex);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                            child: GridView(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 1.h,
+                              ),
+                              padding: EdgeInsets.all(2.h),
+                              children: [
+                                MenuOptionsWidget(
+                                  text: "Receber Malotes",
+                                  imagePath: Paths.Malote,
+                                  onTap: () => Get.to(() => ReceivePouchFromOperator()),
+                                ),
+                                MenuOptionsWidget(
+                                  text: "Lançar Malotes",
+                                  imagePath: Paths.Money,
+                                  onTap: () => Get.to(() => RegisterPouchPage()),
+                                ),
+                                MenuOptionsWidget(
+                                  text: "Histórico do Cofre",
+                                  imagePath: Paths.Cofre,
+                                  onTap: () => Get.to(() => FinancialHistoryAdministratorPage(
+                                    disableSearch: true,
+                                  )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-                  floatingActionButton: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FloatingActionButton.extended(
-                        heroTag: "firstFloatingActionButton",
-                        backgroundColor: AppColors.defaultColor,
-                        foregroundColor: AppColors.backgroundColor,
-                        elevation: 3,
-                        icon: Image.asset(
-                          Paths.Malote,
-                          height: 3.h,
-                          color: AppColors.whiteColor,
-                        ),
-                        label: TextWidget(
-                          "Receber Malotes do Operador",
-                          maxLines: 1,
-                          textColor: AppColors.whiteColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          textAlign: TextAlign.center,
-                        ),
-                        onPressed: () => Get.to(() => ReceivePouchFromOperator()),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.h),
-                        child: FloatingActionButton.extended(
-                          heroTag: "secondFloatingActionButton",
-                          backgroundColor: AppColors.defaultColor,
-                          foregroundColor: AppColors.backgroundColor,
-                          elevation: 3,
-                          icon: Image.asset(
-                            Paths.Cofre,
-                            height: 3.h,
-                            color: AppColors.whiteColor,
-                          ),
-                          label: TextWidget(
-                            "Lançar Malotes no Sistema",
-                            maxLines: 1,
-                            textColor: AppColors.whiteColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () => Get.to(() => RegisterPouchPage()),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],

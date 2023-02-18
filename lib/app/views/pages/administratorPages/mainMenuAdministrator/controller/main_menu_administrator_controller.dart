@@ -52,18 +52,7 @@ class MainMenuAdministratorController extends GetxController {
   @override
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    screenLoading.value = true;
-    await GetProfilePictureController.loadProfilePicture(
-      loadingPicture,
-      hasPicture,
-      profileImagePath,
-      sharedPreferences,
-    );
-    await _getVisitsUser();
-    await _getPouchUser();
-    await _getSafeBoxValue();
-    _loadCards();
-    screenLoading.value = false;
+    await loadScreen();
     await _checkFingerPrintUser();
     super.onInit();
   }
@@ -118,6 +107,22 @@ class MainMenuAdministratorController extends GetxController {
     ].obs;
     _visitService = VisitService();
     _moneyPouchService = MoneyPouchService();
+  }
+
+  loadScreen() async {
+    loadingPicture.value = true;
+    screenLoading.value = true;
+    await GetProfilePictureController.loadProfilePicture(
+      loadingPicture,
+      hasPicture,
+      profileImagePath,
+      sharedPreferences,
+    );
+    await _getVisitsUser();
+    await _getPouchUser();
+    await _getSafeBoxValue();
+    _loadCards();
+    screenLoading.value = false;
   }
 
   _loadCards() {

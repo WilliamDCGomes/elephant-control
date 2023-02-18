@@ -110,6 +110,7 @@ class VisitDetailsController extends GetxController {
 
   _getVisitInformation() async {
     try {
+      await loadingWithSuccessOrErrorWidget.startAnimation();
       visitViewController = await _visitService.getResumeVisitById(visitId);
       if (visitViewController == null) {
         throw Exception();
@@ -184,8 +185,9 @@ class VisitDetailsController extends GetxController {
       if (afterMaintenanceImageClock.picture != null) {
         afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
-    } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+    } catch (e) {
+      await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
