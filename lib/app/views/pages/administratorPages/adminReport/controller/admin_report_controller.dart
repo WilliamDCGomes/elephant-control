@@ -6,6 +6,7 @@ import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/services/machine_service.dart';
 import '../../../../../../base/services/report_service.dart';
 import '../../../../../../base/viewControllers/report_viewcontroller.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -223,12 +224,32 @@ class AdminReportController extends GetxController {
 
       var machines = machinesList.where((element) => element.selected);
 
-      List<String> machineIdsSelected = <String>[];
+      List<String>? machineIdsSelected = <String>[];
 
       for(var machine in machines){
         if(machine.id != null){
           machineIdsSelected.add(machine.id!);
         }
+      }
+
+      //Para pegar tds os ids. Passar todos eles quebra o json
+      if(machineIdsSelected.length == machinesList.length){
+        machineIdsSelected = null;
+      }
+      else if(machineIdsSelected.length > 20){
+        if (loadingEnabled) {
+          await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
+        }
+        await showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InformationPopup(
+              warningMessage: "Não é possível passar mais de 20 máquinas ao mesmo tempo para filtrar.\nQuantidade adicionada: " + (machineIdsSelected != null ? FormatNumbers.scoreIntNumber(machineIdsSelected.length) : "0"),
+            );
+          },
+        );
+        return;
       }
 
       reportViewController = await _reportService.getDefaultReport(
