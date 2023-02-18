@@ -71,7 +71,7 @@ class MoneyPouchService extends BaseService implements IMoneyPouchService {
   }
 
   ///Dentro da visita terá o malote
-  Future<List<Visit>> getMoneyPouchMoneyWithdrawal(String operatorUserId) async {
+  Future<List<Visit>> getMoneyPouchMoneyWithdrawal(String? operatorUserId) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'MoneyPouch/GetMoneyPouchMoneyWithdrawal';

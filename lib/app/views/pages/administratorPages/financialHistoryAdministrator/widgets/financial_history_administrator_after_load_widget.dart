@@ -60,63 +60,72 @@ class _FinancialHistoryAdministratorAfterLoadWidgetState extends State<Financial
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Histórico Cofre da Tesouraria",
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: "Histórico Cofre da Tesouraria",
+                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                          ),
                         ),
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            InformationContainerWidget(
-                              iconPath: Paths.Cofre,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "",
-                              customContainer: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextWidget(
-                                    "Histórico do Cofre",
-                                    textColor: AppColors.whiteColor,
-                                    fontSize: 18.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Obx(
-                                    () => TextWidget(
-                                      "Valor do Cofre: " + FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
-                                      textColor: AppColors.whiteColor,
-                                      fontSize: 18.sp,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !widget.disableSearch,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                          height: 2.h,
-                                        ),
-                                        TextWidget(
-                                          "Selecione um usuário para visualizar o Histórico do Cofre",
+                            Obx(
+                              () => Visibility(
+                                visible: controller.showInfos.value,
+                                child: InformationContainerWidget(
+                                  iconPath: Paths.Cofre,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  customContainer: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextWidget(
+                                        "Histórico do Cofre",
+                                        textColor: AppColors.whiteColor,
+                                        fontSize: 18.sp,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      SizedBox(
+                                        height: 2.h,
+                                      ),
+                                      Obx(
+                                        () => TextWidget(
+                                          "Valor do Cofre: " + FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
                                           textColor: AppColors.whiteColor,
-                                          fontSize: 16.sp,
+                                          fontSize: 18.sp,
                                           textAlign: TextAlign.center,
                                           maxLines: 2,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Visibility(
+                                        visible: !widget.disableSearch,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                              height: 2.h,
+                                            ),
+                                            TextWidget(
+                                              "Selecione um usuário para visualizar o Histórico do Cofre",
+                                              textColor: AppColors.whiteColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                             Visibility(
@@ -144,25 +153,29 @@ class _FinancialHistoryAdministratorAfterLoadWidgetState extends State<Financial
                               child: GetBuilder(
                                 id: "safebox-list",
                                 init: controller,
-                                builder: (_) => controller.safeBoxHistoryList.isNotEmpty ? ListView.builder(
-                                  itemCount: controller.safeBoxHistoryList.length,
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                  itemBuilder: (context, index){
-                                    return FinancialHistoryCardWidget(
-                                      safeBoxFinancialViewController: controller.safeBoxHistoryList[index],
-                                    );
-                                  },
-                                ) : Center(
-                                  child: TextWidget(
-                                    controller.userSelected.value.isNotEmpty ? "Não existe valores no histórico do cofre desse usuário" : "",
-                                    textColor: AppColors.grayTextColor,
-                                    fontSize: 14.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                builder: (_) => controller.safeBoxHistoryList.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: controller.safeBoxHistoryList.length,
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                        itemBuilder: (context, index) {
+                                          return FinancialHistoryCardWidget(
+                                            safeBoxFinancialViewController: controller.safeBoxHistoryList[index],
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: TextWidget(
+                                          controller.userSelected.value.isNotEmpty
+                                              ? "Não existe valores no histórico do cofre desse usuário"
+                                              : "",
+                                          textColor: AppColors.grayTextColor,
+                                          fontSize: 14.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                               ),
                             ),
                           ],

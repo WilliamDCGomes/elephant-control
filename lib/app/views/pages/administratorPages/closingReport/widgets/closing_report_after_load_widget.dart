@@ -58,16 +58,25 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Relatório de Fechamento",
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: "Relatório de Fechamento",
+                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                          ),
                         ),
                       ),
-                      InformationContainerWidget(
-                        iconPath: Paths.Relatorio,
-                        textColor: AppColors.whiteColor,
-                        backgroundColor: AppColors.defaultColor,
-                        informationText: "Selecione uma máquina para visualizar um relatório sobre ela em específico.",
-                        fontText: 16.sp,
+                      Obx(
+                        () => Visibility(
+                          visible: controller.showInfos.value,
+                          child: InformationContainerWidget(
+                            iconPath: Paths.Relatorio,
+                            textColor: AppColors.whiteColor,
+                            backgroundColor: AppColors.defaultColor,
+                            informationText: "Selecione uma máquina para visualizar um relatório sobre ela em específico.",
+                            fontText: 16.sp,
+                          ),
+                        ),
                       ),
                       Obx(
                         () => Padding(
@@ -130,29 +139,29 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                           init: controller,
                           builder: (_) => Padding(
                             padding: EdgeInsets.only(bottom: 2.h),
-                            child: controller.reportViewController != null ?
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2.h),
-                              child: Visibility(
-                                visible: controller.machineSelected.value == "Todas",
-                                child: AllMachinesClosingReportInformationWidget(
-                                  reportViewController: controller.reportViewController!,
-                                ),
-                                replacement: MachineClosingReportInformationWidget(
-                                  reportViewController: controller.reportViewController!,
-                                ),
-                              ),
-                            ) :
-                            Center(
-                              child: TextWidget(
-                                "Não existe informações nesse período",
-                                textColor: AppColors.grayTextColor,
-                                fontSize: 14.sp,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: controller.reportViewController != null
+                                ? Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 2.h),
+                                    child: Visibility(
+                                      visible: controller.machineSelected.value == "Todas",
+                                      child: AllMachinesClosingReportInformationWidget(
+                                        reportViewController: controller.reportViewController!,
+                                      ),
+                                      replacement: MachineClosingReportInformationWidget(
+                                        reportViewController: controller.reportViewController!,
+                                      ),
+                                    ),
+                                  )
+                                : Center(
+                                    child: TextWidget(
+                                      "Não existe informações nesse período",
+                                      textColor: AppColors.grayTextColor,
+                                      fontSize: 14.sp,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),

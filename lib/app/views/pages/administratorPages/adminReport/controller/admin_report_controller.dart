@@ -21,6 +21,7 @@ class AdminReportController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late MachineService _machineService;
   late ReportService _reportService;
+  late RxBool showInfos;
 
   AdminReportController() {
     _initializeVariables();
@@ -47,10 +48,11 @@ class AdminReportController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _machineService = MachineService();
     _reportService = ReportService();
+    showInfos = true.obs;
   }
 
   _getMachines() async {
-    try{
+    try {
       machinesList.value = await _machineService.getAll();
 
       machinesList.sort((a, b) => a.name.compareTo(b.name));
@@ -61,7 +63,7 @@ class AdminReportController extends GetxController {
         if (i + 1 < machinesList.length && machinesList[i].name.startsWith(machinesList[i + 1].name)) {
           machinesList[i + 1].name += " - rep";
         }
-        if(!machinesList[i].name.contains(" - rep")) {
+        if (!machinesList[i].name.contains(" - rep")) {
           machinesNameList.add(machinesList[i].name);
         }
       }
@@ -70,8 +72,7 @@ class AdminReportController extends GetxController {
       await getReport(loadingEnabled: false);
 
       screenLoading.value = false;
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -86,8 +87,8 @@ class AdminReportController extends GetxController {
   }
 
   getReport({bool loadingEnabled = true}) async {
-    try{
-      if(loadingEnabled){
+    try {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
 
@@ -109,18 +110,17 @@ class AdminReportController extends GetxController {
       reportViewController = await _reportService.getDefaultReport(
         initialDateFilter,
         finalDateFilter,
-        machineSelected.value != "" && machineSelected.value != "Todas" ?
-        machinesList.firstWhere((element) => element.name == machineSelected.value).id :
-        null,
+        machineSelected.value != "" && machineSelected.value != "Todas"
+            ? machinesList.firstWhere((element) => element.name == machineSelected.value).id
+            : null,
       );
 
       update(["report-information"]);
-      if(loadingEnabled){
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       }
-    }
-    catch(_){
-      if(loadingEnabled){
+    } catch (_) {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       }
       await showDialog(

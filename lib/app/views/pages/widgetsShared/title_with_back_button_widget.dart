@@ -7,14 +7,18 @@ import '../../stylePages/app_colors.dart';
 class TitleWithBackButtonWidget extends StatelessWidget {
   final String title;
   final Color? titleColor;
+  final IconData? rightIcon;
+  final Function()? onTapRightIcon;
   final Function()? backButtonPressedFuctionOverride;
 
-  const TitleWithBackButtonWidget(
-      { Key? key,
-        required this.title,
-        this.titleColor,
-        this.backButtonPressedFuctionOverride,
-      }) : super(key: key);
+  const TitleWithBackButtonWidget({
+    Key? key,
+    required this.title,
+    this.titleColor,
+    this.backButtonPressedFuctionOverride,
+    this.rightIcon,
+    this.onTapRightIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +41,29 @@ class TitleWithBackButtonWidget extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: backButtonPressedFuctionOverride != null ? backButtonPressedFuctionOverride : () => Get.back(),
-                    child: TextWidget(
-                      title,
-                      textColor: titleColor ?? AppColors.backgroundColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
-                      textAlign: TextAlign.start,
-                    ),
+              child: Row(children: [
+                InkWell(
+                  onTap: backButtonPressedFuctionOverride != null ? backButtonPressedFuctionOverride : () => Get.back(),
+                  child: TextWidget(
+                    title,
+                    textColor: titleColor ?? AppColors.backgroundColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                    textAlign: TextAlign.start,
                   ),
-                  Expanded(child: Container()),
-                ]
-              ),
+                ),
+                Expanded(child: Container()),
+              ]),
             ),
+            if (rightIcon != null)
+              InkWell(
+                onTap: onTapRightIcon,
+                child: Icon(
+                  rightIcon,
+                  color: titleColor ?? AppColors.backgroundColor,
+                  size: 3.h,
+                ),
+              ),
           ],
         ),
       ),

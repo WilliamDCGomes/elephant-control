@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/paths.dart';
@@ -73,12 +72,22 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextWidget(
-                                    "]Adicionar novo Malote",
+                                    "Adicionar novo Malote",
                                     textColor: AppColors.whiteColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     fontWeight: FontWeight.bold,
+                                  ),
+                                  Obx(
+                                    () => TextWidget(
+                                      "Malotes com o operador: ${controller.pouchWithOperators.value}",
+                                      textColor: AppColors.whiteColor,
+                                      fontSize: 18.sp,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -112,30 +121,37 @@ class _ReceivePouchFromOperatorState extends State<ReceivePouchFromOperator> {
                                       ),
                                     ),
                                   ),
-                                  DropdownButtonWidget(
-                                    itemSelected: controller.operatorSelected?.id,
-                                    hintText: "Operadores",
-                                    height: 6.5.h,
-                                    width: 85.w,
-                                    listItems: controller.operators.map((element) => DropdownItem(item: element.name, value: element.id)),
-                                    onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 3.5.h,
-                                    ),
-                                    child: Form(
-                                      //key: controller.formKey,
-                                      child: TextFieldWidget(
-                                        //validator: (value) => TextFieldValidators.defaultValidator(value, errorMessage: "Preencha o código do operador"),
-                                        controller: controller.operatorCode,
-                                        hintText: "Código do Operador",
-                                        height: 9.h,
-                                        maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ),
-                                  ),
+                                  GetBuilder(
+                                      id: "dropdown",
+                                      init: controller,
+                                      builder: (context) {
+                                        return DropdownButtonWidget(
+                                          itemSelected: controller.operatorSelected?.id,
+                                          hintText: "Operadores",
+                                          height: 6.5.h,
+                                          width: 85.w,
+                                          listItems: controller.operators
+                                              .map((element) => DropdownItem(item: element.name, value: element.id)),
+                                          onChanged: (selectedState) =>
+                                              controller.onDropdownButtonWidgetChanged(selectedState),
+                                        );
+                                      }),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(
+                                  //     top: 3.5.h,
+                                  //   ),
+                                  //   child: Form(
+                                  //     //key: controller.formKey,
+                                  //     child: TextFieldWidget(
+                                  //       //validator: (value) => TextFieldValidators.defaultValidator(value, errorMessage: "Preencha o código do operador"),
+                                  //       controller: controller.operatorCode,
+                                  //       hintText: "Código do Operador",
+                                  //       height: 9.h,
+                                  //       maskTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                                  //       keyboardType: TextInputType.number,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: 1.5.h,

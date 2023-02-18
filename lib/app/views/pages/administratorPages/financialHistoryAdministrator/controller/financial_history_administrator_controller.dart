@@ -21,6 +21,7 @@ class FinancialHistoryAdministratorController extends GetxController {
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late IUserService _userService;
   late IVisitService _visitService;
+  late RxBool showInfos;
 
   FinancialHistoryAdministratorController({this.disableSearch = false}){
     _initializeVariables();
@@ -38,7 +39,7 @@ class FinancialHistoryAdministratorController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     screenLoading = true.obs;
     userSelected = "".obs;
     safeBoxAmount = 0.0.obs;
@@ -48,10 +49,11 @@ class FinancialHistoryAdministratorController extends GetxController {
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _userService = UserService();
     _visitService = VisitService();
+    showInfos = true.obs;
   }
 
   _getUsers() async {
-    try{
+    try {
       users.value = await _userService.getAllUserByType(UserType.treasury);
 
       users.sort((a, b) => a.name.compareTo(b.name));
@@ -78,8 +80,7 @@ class FinancialHistoryAdministratorController extends GetxController {
       userSelected.value = usersName.first;
       await getVisitsUser(loadingEnabled: false);
       screenLoading.value = false;
-    }
-    catch(_){
+    } catch (_) {
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -94,14 +95,14 @@ class FinancialHistoryAdministratorController extends GetxController {
   }
 
   getVisitsUser({bool loadingEnabled = true}) async {
-    try{
-      if(loadingEnabled){
+    try {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.startAnimation();
       }
 
       safeBoxAmount.value = 0;
       User? user = null;
-      if(userSelected.value != "Todos"){
+      if (userSelected.value != "Todos") {
         user = users.firstWhere((element) => element.name == userSelected.value);
       }
       safeBoxHistoryList.value = await _visitService.getVisitsOfFinancialByUserId(
@@ -112,12 +113,11 @@ class FinancialHistoryAdministratorController extends GetxController {
       });
       update(["safebox-list"]);
 
-      if(loadingEnabled){
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       }
-    }
-    catch(_){
-      if(loadingEnabled){
+    } catch (_) {
+      if (loadingEnabled) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       }
       await showDialog(

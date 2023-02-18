@@ -103,7 +103,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     () => Visibility(
                                       visible: controller.lastVisit.value.isNotEmpty,
                                       child: RichTextTwoDifferentWidget(
-                                        firstText: "Última Visita: ",
+                                        firstText: "Visita Atual: ",
                                         firstTextColor: AppColors.whiteColor,
                                         firstTextFontWeight: FontWeight.normal,
                                         firstTextSize: 18.sp,
@@ -122,7 +122,7 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       child: Padding(
                                         padding: EdgeInsets.only(top: 2.h),
                                         child: RichTextTwoDifferentWidget(
-                                          firstText: "Visita Atual: ",
+                                          firstText: "Última Visita: ",
                                           firstTextColor: AppColors.whiteColor,
                                           firstTextFontWeight: FontWeight.normal,
                                           firstTextSize: 18.sp,
@@ -138,7 +138,9 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                   ),
                                   Obx(
                                     () => Visibility(
-                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20 || controller.estimateValue.value - controller.fullValue.value < -20) && controller.fullValue.value != 0,
+                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20 ||
+                                              controller.estimateValue.value - controller.fullValue.value < -20) &&
+                                          controller.fullValue.value != 0,
                                       child: Padding(
                                         padding: EdgeInsets.only(top: 2.h),
                                         child: RichTextTwoDifferentWidget(
@@ -193,7 +195,8 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     hintText: "Malotes",
                                     height: 6.5.h,
                                     width: 85.w,
-                                    listItems: controller.pouchs.map((element) => DropdownItem(item: element.machine!.name, value: element.id)),
+                                    listItems: controller.pouchs
+                                        .map((element) => DropdownItem(item: element.machine!.name, value: element.id)),
                                     onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                   ),
                                   Padding(

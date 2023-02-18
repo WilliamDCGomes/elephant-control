@@ -143,9 +143,14 @@ class RegisterMachineController extends GetxController {
   getMachinesVmPay() async {
     try {
       returnMachineViewControllers.insertAll(1, await _machineService.getMachinesReturn(_externalIds));
+      if (_machine != null) {
+        returnMachineViewControllerSelected =
+            returnMachineViewControllers.firstWhereOrNull((element) => element.id == _machine!.externalId);
+      }
     } catch (_) {
       returnMachineViewControllers.clear();
     } finally {
+      update(['returnMachineViewControllerSelected']);
       returnMachineViewControllers.refresh();
     }
   }

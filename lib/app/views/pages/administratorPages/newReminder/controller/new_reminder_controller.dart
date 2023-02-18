@@ -22,7 +22,7 @@ class NewReminderController extends GetxController {
     super.onInit();
   }
 
-  _initializeVariables(){
+  _initializeVariables() {
     screenLoading = true.obs;
     _machines = RxList<Machine>([]);
     _machineService = MachineService();
@@ -30,7 +30,12 @@ class NewReminderController extends GetxController {
     _searchMachines = TextEditingController();
   }
 
-  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty ? _machines.where((p0) => p0.active == true).toList() : _machines.where((p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true).toList();
+  List<Machine> get machines => searchMachines.text.toLowerCase().trim().isEmpty
+      ? _machines.where((p0) => p0.active == true).toList()
+      : _machines
+          .where(
+              (p0) => p0.name.toLowerCase().trim().contains(searchMachines.text.toLowerCase().trim()) && p0.active == true)
+          .toList();
   TextEditingController get searchMachines => _searchMachines;
 
   void updateList() => update(['machines']);
