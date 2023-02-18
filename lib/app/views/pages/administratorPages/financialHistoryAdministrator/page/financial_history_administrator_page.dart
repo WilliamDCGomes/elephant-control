@@ -5,7 +5,12 @@ import '../controller/financial_history_administrator_controller.dart';
 import '../widgets/financial_history_administrator_after_load_widget.dart';
 
 class FinancialHistoryAdministratorPage extends StatefulWidget {
-  const FinancialHistoryAdministratorPage({Key? key}) : super(key: key);
+  final bool disableSearch;
+
+  const FinancialHistoryAdministratorPage({
+    Key? key,
+    this.disableSearch = false,
+  }) : super(key: key);
 
   @override
   State<FinancialHistoryAdministratorPage> createState() => _FinancialHistoryAdministratorPageState();
@@ -16,7 +21,12 @@ class _FinancialHistoryAdministratorPageState extends State<FinancialHistoryAdmi
 
   @override
   void initState() {
-    controller = Get.put(FinancialHistoryAdministratorController(), tag: "financial-history-administrator-controller");
+    controller = Get.put(
+      FinancialHistoryAdministratorController(
+        disableSearch: widget.disableSearch,
+      ),
+      tag: "financial-history-administrator-controller",
+    );
     super.initState();
   }
 
@@ -26,7 +36,9 @@ class _FinancialHistoryAdministratorPageState extends State<FinancialHistoryAdmi
       child: Obx(
         () => controller.screenLoading.value ?
         DefaultShimmer(pageTitle: "Histórico Cofre da Tesouraria") :
-        FinancialHistoryAdministratorAfterLoadWidget(),
+        FinancialHistoryAdministratorAfterLoadWidget(
+          disableSearch: widget.disableSearch,
+        ),
       ),
     );
   }

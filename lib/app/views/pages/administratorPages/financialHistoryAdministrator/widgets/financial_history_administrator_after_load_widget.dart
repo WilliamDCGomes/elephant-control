@@ -13,7 +13,12 @@ import '../controller/financial_history_administrator_controller.dart';
 import '../widgets/financial_history_card__widget.dart';
 
 class FinancialHistoryAdministratorAfterLoadWidget extends StatefulWidget {
-  const FinancialHistoryAdministratorAfterLoadWidget({Key? key}) : super(key: key);
+  final bool disableSearch;
+
+  const FinancialHistoryAdministratorAfterLoadWidget({
+    Key? key,
+    this.disableSearch = false,
+  }) : super(key: key);
 
   @override
   State<FinancialHistoryAdministratorAfterLoadWidget> createState() => _FinancialHistoryAdministratorAfterLoadWidgetState();
@@ -83,7 +88,7 @@ class _FinancialHistoryAdministratorAfterLoadWidgetState extends State<Financial
                                     height: 2.h,
                                   ),
                                   Obx(
-                                        () => TextWidget(
+                                    () => TextWidget(
                                       "Valor do Cofre: " + FormatNumbers.numbersToMoney(controller.safeBoxAmount.value),
                                       textColor: AppColors.whiteColor,
                                       fontSize: 18.sp,
@@ -92,35 +97,46 @@ class _FinancialHistoryAdministratorAfterLoadWidgetState extends State<Financial
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  TextWidget(
-                                    "Selecione um usuário para visualizar o Histórico do Cofre",
-                                    textColor: AppColors.whiteColor,
-                                    fontSize: 16.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
+                                  Visibility(
+                                    visible: !widget.disableSearch,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        TextWidget(
+                                          "Selecione um usuário para visualizar o Histórico do Cofre",
+                                          textColor: AppColors.whiteColor,
+                                          fontSize: 16.sp,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Obx(
-                                  () => Padding(
-                                padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
-                                child: DropdownButtonRxListWidget(
-                                  itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
-                                  hintText: "Usuário",
-                                  height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                                  width: 90.w,
-                                  rxListItems: controller.usersName,
-                                  onChanged: (selectedState) {
-                                    if(selectedState != null) {
-                                      controller.userSelected.value = selectedState;
-                                      controller.getVisitsUser();
-                                    }
-                                  },
+                            Visibility(
+                              visible: !widget.disableSearch,
+                              child: Obx(
+                                () => Padding(
+                                  padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
+                                  child: DropdownButtonRxListWidget(
+                                    itemSelected: controller.userSelected.value == "" ? null : controller.userSelected.value,
+                                    hintText: "Usuário",
+                                    height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                    width: 90.w,
+                                    rxListItems: controller.usersName,
+                                    onChanged: (selectedState) {
+                                      if(selectedState != null) {
+                                        controller.userSelected.value = selectedState;
+                                        controller.getVisitsUser();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                             ),

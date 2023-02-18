@@ -6,6 +6,7 @@ import '../../../../../utils/app_close_controller.dart';
 import '../../../../../utils/date_format_to_brazil.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
+import '../../../administratorPages/financialHistoryAdministrator/page/financial_history_administrator_page.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/profile_picture_widget.dart';
@@ -172,7 +173,7 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
                                           Padding(
                                             padding: EdgeInsets.only(top: .5.h, bottom: 1.h),
                                             child: Obx(
-                                                  () => RichTextTwoDifferentWidget(
+                                              () => RichTextTwoDifferentWidget(
                                                 firstText: "Quantidade no Cofre: ",
                                                 firstTextColor: AppColors.whiteColor,
                                                 firstTextFontWeight: FontWeight.normal,
@@ -198,29 +199,26 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
                                           SizedBox(
                                             height: 2.h,
                                           ),
-                                          // InkWell(
-                                          //   onTap: () => Get.to(() => FinancialHistoryPage(
-                                          //         title: "Histórico do Cofre",
-                                          //         pageTitle: "Cofre",
-                                          //         pouchHistory: false,
-                                          //         safeBoxAmount: controller.safeBoxAmount.value,
-                                          //       )),
-                                          //   child: TextWidget(
-                                          //     "Clique aqui para ver o histórico do cofre!",
-                                          //     maxLines: 1,
-                                          //     textColor: AppColors.whiteColor,
-                                          //     fontSize: 16.sp,
-                                          //     textAlign: TextAlign.center,
-                                          //     textDecoration: TextDecoration.underline,
-                                          //   ),
-                                          // ),
+                                          InkWell(
+                                            onTap: () => Get.to(() => FinancialHistoryAdministratorPage(
+                                              disableSearch: true,
+                                            )),
+                                            child: TextWidget(
+                                              "Clique aqui para ver o histórico do cofre!",
+                                              maxLines: 1,
+                                              textColor: AppColors.whiteColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.center,
+                                              textDecoration: TextDecoration.underline,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
                                 Obx(
-                                      () => InformationContainerWidget(
+                                  () => InformationContainerWidget(
                                     iconPath: Paths.Malote,
                                     textColor: AppColors.whiteColor,
                                     backgroundColor: AppColors.defaultColor,
@@ -228,7 +226,7 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
                                     isLoading: controller.isLoadingQuantity,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 5.w,
-                                      vertical: 4.h,
+                                      vertical: 3.h,
                                     ),
                                     customContainer: SizedBox(
                                       width: 73.w,

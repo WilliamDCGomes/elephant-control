@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../base/models/user/user.dart';
@@ -10,6 +11,7 @@ import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 
 class FinancialHistoryAdministratorController extends GetxController {
+  final bool disableSearch;
   late RxDouble safeBoxAmount;
   late RxBool screenLoading;
   late RxString userSelected;
@@ -20,13 +22,19 @@ class FinancialHistoryAdministratorController extends GetxController {
   late IUserService _userService;
   late IVisitService _visitService;
 
-  FinancialHistoryAdministratorController(){
+  FinancialHistoryAdministratorController({this.disableSearch = false}){
     _initializeVariables();
   }
 
   @override
   void onInit() async {
-    await _getUsers();
+    if(!disableSearch) {
+      await _getUsers();
+    }
+    else{
+      await getVisitsByUserId();
+      screenLoading.value = false;
+    }
     super.onInit();
   }
 
@@ -112,6 +120,30 @@ class FinancialHistoryAdministratorController extends GetxController {
       if(loadingEnabled){
         await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
       }
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro buscar o histórico do cofre! Tente novamente mais tarde.",
+          );
+        },
+      );
+    }
+  }
+
+  getVisitsByUserId() async {
+    try{
+      safeBoxAmount.value = 0;
+      safeBoxHistoryList.value = await _visitService.getVisitsByUserIdFinancial(
+        LoggedUser.id,
+      );
+      safeBoxHistoryList.forEach((element) {
+        safeBoxAmount.value += element.moneyWithDrawalQuantity ?? 0;
+      });
+      update(["safebox-list"]);
+    }
+    catch(_){
       await showDialog(
         context: Get.context!,
         barrierDismissible: false,

@@ -43,7 +43,7 @@ class InformationContainerWidget extends StatelessWidget {
           margin: marginContainer ??
           EdgeInsets.only(
             left: 2.h,
-            top: PlatformType.isTablet(context) ? 9.h : 7.h,
+            top: PlatformType.isTablet(context) ? 9.h : 8.h,
             right: 2.h,
             bottom: 1.h,
           ),

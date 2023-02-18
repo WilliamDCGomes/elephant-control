@@ -1,7 +1,6 @@
 import 'package:elephant_control/base/models/visit/visit.dart';
 import 'package:elephant_control/base/models/visitMedia/visit_media.dart';
 import 'package:elephant_control/base/repositories/base/base_repository.dart';
-
 import '../models/machine/machine.dart';
 import '../models/userVisitMachine/user_visit_machine.dart';
 import '../viewControllers/visit_list_viewcontroller.dart';

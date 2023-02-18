@@ -105,6 +105,18 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     }
   }
 
+  Future<List<SafeBoxFinancialViewController>> getVisitsByUserIdFinancial(String userId) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetVisitsByUserIdFinancial';
+      final response = await get(url, query: {"UserId": userId}, headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return (response.body as List).map((visit) => SafeBoxFinancialViewController.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<List<VisitListViewController>> getVisitsOperatorByUserId() async {
     try {
       final token = await getToken();
