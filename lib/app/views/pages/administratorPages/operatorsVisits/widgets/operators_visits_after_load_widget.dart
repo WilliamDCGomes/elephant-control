@@ -157,7 +157,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                                 firstTextColor: AppColors.blackColor,
                                 firstTextFontWeight: FontWeight.normal,
                                 firstTextSize: 16.sp,
-                                secondText: DateFormatToBrazil.formatDateAndHour(controller.dateFilter),
+                                secondText: DateFormatToBrazil.formatDate(controller.dateFilter),
                                 secondTextColor: AppColors.blackColor,
                                 secondTextFontWeight: FontWeight.bold,
                                 secondTextSize: 16.sp,

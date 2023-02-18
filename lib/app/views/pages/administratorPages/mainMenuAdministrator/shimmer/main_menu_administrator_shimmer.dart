@@ -29,7 +29,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
 
   @override
   void initState() {
-    controller = widget.pageTitle == null ? Get.find(tag: "main_menu_administrator_controller") : Get.put(MainMenuAdministratorController());
+    controller = widget.pageTitle == null ? Get.find(tag: "main_menu_administrator_controller") : Get.put(MainMenuAdministratorController(disableControllerLoad: true));
     super.initState();
   }
 

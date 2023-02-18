@@ -22,6 +22,7 @@ class MainMenuAdministratorController extends GetxController {
   late int visitsQuantity;
   late int pouchQuantityWithOperators;
   late int pouchQuantityWithFinancial;
+  late bool disableControllerLoad;
   late double fullValuePouchOperators;
   late double fullValuePouchFinancial;
   late double allSafeBoxAmount;
@@ -43,7 +44,7 @@ class MainMenuAdministratorController extends GetxController {
   late IVisitService _visitService;
   late IMoneyPouchService _moneyPouchService;
 
-  MainMenuAdministratorController() {
+  MainMenuAdministratorController({this.disableControllerLoad = false}) {
     _initializeVariables();
     _getNameUser();
     _getWelcomePhrase();
@@ -53,7 +54,9 @@ class MainMenuAdministratorController extends GetxController {
   void onInit() async {
     sharedPreferences = await SharedPreferences.getInstance();
     await loadScreen();
-    await _checkFingerPrintUser();
+    if(!disableControllerLoad){
+      await _checkFingerPrintUser();
+    }
     super.onInit();
   }
 
