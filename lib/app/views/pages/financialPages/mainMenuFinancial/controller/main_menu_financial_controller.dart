@@ -185,7 +185,7 @@ class MainMenuFinancialController extends GetxController {
   _checkFingerPrintUser() async {
     bool? useFingerPrint = await sharedPreferences.getBool("user_finger_print");
     if (useFingerPrint == null && await LocalAuthentication().canCheckBiometrics) {
-      showDialog(
+      await showDialog(
         context: Get.context!,
         barrierDismissible: false,
         builder: (BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../../base/models/visit/visit.dart';
@@ -34,7 +35,7 @@ class _PouchWidgetState extends State<PouchWidget> {
           child: Row(
             children: [
               Container(
-                width: 5.w,
+                width: 3.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(1.5.h),
@@ -47,9 +48,9 @@ class _PouchWidgetState extends State<PouchWidget> {
                 child: Padding(
                   padding: EdgeInsets.all(1.h),
                   child: TextWidget(
-                    widget.moneyPouch.machine!.name,
+                    widget.moneyPouch.machine!.name + " - " + DateFormatToBrazil.formatDateAndHour(widget.moneyPouch.inclusion),
                     textColor: AppColors.blackColor,
-                    fontSize: 18.sp,
+                    fontSize: 16.sp,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     fontWeight: FontWeight.bold,

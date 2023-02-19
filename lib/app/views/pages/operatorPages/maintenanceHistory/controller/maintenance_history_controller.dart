@@ -40,7 +40,7 @@ class MaintenanceHistoryController extends GetxController {
   List<VisitListViewController> get visits => _visits;
   List<Machine> get machines {
     if (searchMachines.text.isNotEmpty) {
-      return _machines.where((p0) => p0.name.toLowerCase().startsWith(searchMachines.text.toLowerCase())).toList();
+      return _machines.where((p0) => p0.name.toLowerCase().contains(searchMachines.text.toLowerCase())).toList();
     } else {
       return _machines;
     }

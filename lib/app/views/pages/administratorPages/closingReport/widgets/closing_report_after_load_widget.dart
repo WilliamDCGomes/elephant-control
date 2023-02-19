@@ -6,7 +6,6 @@ import '../../../../../utils/paths.dart';
 import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
-import '../../../widgetsShared/dropdown_button_rxlist_wdiget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
@@ -78,20 +77,33 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                           ),
                         ),
                       ),
-                      Obx(
-                        () => Padding(
-                          padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
-                          child: DropdownButtonRxListWidget(
-                            itemSelected: controller.machineSelected.value == "" ? null : controller.machineSelected.value,
-                            hintText: "Máquinas",
+                      Padding(
+                        padding: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
+                        child: InkWell(
+                          onTap: () async => controller.selectedMachines(),
+                          child: Container(
                             height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                            width: 90.w,
-                            rxListItems: controller.machinesNameList,
-                            onChanged: (selectedState) {
-                              if (selectedState != null) {
-                                controller.machineSelected.value = selectedState;
-                              }
-                            },
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: AppColors.defaultColor,
+                                width: .25.h,
+                              ),
+                            ),
+                            padding: EdgeInsets.all(.5.h),
+                            margin: EdgeInsets.only(top: 1.h),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Obx(
+                                    () => TextWidget(
+                                  controller.machineSelected.value,
+                                  textColor: AppColors.blackColor,
+                                  fontSize: 16.sp,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -143,11 +155,11 @@ class _ClosingReportAfterLoadWidgetState extends State<ClosingReportAfterLoadWid
                                 ? Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 2.h),
                                     child: Visibility(
-                                      visible: controller.machineSelected.value == "Todas",
-                                      child: AllMachinesClosingReportInformationWidget(
+                                      visible: controller.showOneReport.value,
+                                      child: MachineClosingReportInformationWidget(
                                         reportViewController: controller.reportViewController!,
                                       ),
-                                      replacement: MachineClosingReportInformationWidget(
+                                      replacement: AllMachinesClosingReportInformationWidget(
                                         reportViewController: controller.reportViewController!,
                                       ),
                                     ),
