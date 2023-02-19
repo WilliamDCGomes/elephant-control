@@ -9,7 +9,7 @@ part of 'reminder_machine.dart';
 ReminderMachine _$ReminderMachineFromJson(Map<String, dynamic> json) =>
     ReminderMachine(
       description: json['description'] as String,
-      realized: json['realized'] as bool,
+      realized: ElephantCore.fromJsonActive(json['realized']),
       machineId: json['machineId'] as String,
       id: json['id'] as String?,
     )
@@ -21,7 +21,7 @@ ReminderMachine _$ReminderMachineFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['alteration'] as String)
       ..active = ElephantCore.fromJsonActive(json['active'])
       ..includeUserId = json['includeUserId'] as String?
-      ..sent = ReminderMachine.fromJsonSent(json['sent']);
+      ..sent = ElephantCore.fromJsonActive(json['sent']);
 
 Map<String, dynamic> _$ReminderMachineToJson(ReminderMachine instance) =>
     <String, dynamic>{

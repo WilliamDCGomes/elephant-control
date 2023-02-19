@@ -119,7 +119,9 @@ class RegisterPouchController extends GetxController {
       final moneyPouchViewController = MoneyPouchViewController(
           pouchValue: fullValue.value,
           differenceValue: estimateValue.value - fullValue.value <= 0 ? null : estimateValue.value - fullValue.value,
-          cardValue: 0,
+          creditValue: FormatNumbers.stringToNumber(credCardValue.text),
+          debitValue: FormatNumbers.stringToNumber(debtCardValue.text),
+          pixValue: FormatNumbers.stringToNumber(pixValue.text),
           observation: observations.text,
           visitId: pouchSelected!.id!);
       moneyPouchViewController.valueMatch = false;

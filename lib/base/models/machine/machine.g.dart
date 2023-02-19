@@ -15,6 +15,9 @@ Machine _$MachineFromJson(Map<String, dynamic> json) => Machine(
       reminders: (json['reminders'] as List<dynamic>?)
           ?.map((e) => ReminderMachine.fromJson(e as Map<String, dynamic>))
           .toList(),
+      monthClosure: json['monthClosure'] == null
+          ? false
+          : ElephantCore.fromJsonActive(json['monthClosure']),
     )
       ..inclusion = json['inclusion'] == null
           ? null
@@ -77,6 +80,7 @@ Map<String, dynamic> _$MachineToJson(Machine instance) => <String, dynamic>{
       'complement': instance.complement,
       'minimumAverageValue': instance.minimumAverageValue,
       'maximumAverageValue': instance.maximumAverageValue,
+      'monthClosure': instance.monthClosure,
       'externalId': instance.externalId,
       'machineAddOtherList': instance.machineAddOtherList,
       'reminders': instance.reminders,

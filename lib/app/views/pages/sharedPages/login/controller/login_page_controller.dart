@@ -335,16 +335,16 @@ class LoginPageController extends GetxController {
 
   _goToNextPage() async {
     if (userLogged!.userType == UserType.operator) {
-      Get.offAll(() => MainMenuOperatorPage());
+      return Get.offAll(() => MainMenuOperatorPage());
     } else if (userLogged!.userType == UserType.treasury) {
-      Get.offAll(() => MainMenuFinancialPage());
+      return Get.offAll(() => MainMenuFinancialPage());
     } else if (userLogged!.userType == UserType.admin) {
-      Get.offAll(() => MainMenuAdministratorPage(accessValidate: false));
+      return Get.offAll(() => MainMenuAdministratorPage(accessValidate: false));
     } else if (userLogged!.userType == UserType.stockist) {
-      Get.offAll(() => MainMenuStokistPage());
+      return Get.offAll(() => MainMenuStokistPage());
     } else if (userLogged!.userType == UserType.adminPrivileges) {
       LoggedUser.roles.addAll(await _userService.getUserRoles(LoggedUser.id));
-      Get.offAll(() => MainMenuAdministratorPage(accessValidate: true));
+      return Get.offAll(() => MainMenuAdministratorPage(accessValidate: true));
     }
   }
 

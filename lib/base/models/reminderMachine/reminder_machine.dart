@@ -7,9 +7,10 @@ part 'reminder_machine.g.dart';
 @JsonSerializable()
 class ReminderMachine extends ElephantUserCore {
   late String description;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
   late bool realized;
   late String machineId;
-  @JsonKey(fromJson: fromJsonSent)
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
   late bool sent;
 
   static dynamic toJsonNull(dynamic value) => null;
@@ -30,6 +31,8 @@ class ReminderMachine extends ElephantUserCore {
       IncludeUserId TEXT)""";
 
   factory ReminderMachine.fromJson(Map<String, dynamic> json) => _$ReminderMachineFromJson(json);
+  factory ReminderMachine.fromJsonRepository(Map<String, dynamic> json) =>
+      _$ReminderMachineFromJson(ElephantUserCore.fromJsonRepository(json));
 
   Map<String, dynamic> toJson() => _$ReminderMachineToJson(this);
   Map<String, dynamic> toJsonRepository() => ElephantUserCore.toJsonCapitalize(_$ReminderMachineToJson(this));

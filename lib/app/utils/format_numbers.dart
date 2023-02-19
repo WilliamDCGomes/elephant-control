@@ -24,17 +24,15 @@ class FormatNumbers {
     String formatedMinutes = "";
     String formatedSeconds = "";
 
-    if(minutes < 10){
+    if (minutes < 10) {
       formatedMinutes += "0" + minutes.toString();
-    }
-    else{
+    } else {
       formatedMinutes += minutes.toString();
     }
 
-    if(seconds < 10){
+    if (seconds < 10) {
       formatedSeconds += "0" + seconds.toString();
-    }
-    else{
+    } else {
       formatedSeconds += seconds.toString();
     }
 
@@ -80,7 +78,7 @@ class FormatNumbers {
   static double stringToNumber(String? value) {
     if (value != null) {
       try {
-        return double.tryParse(value.replaceAll('R\$', '').replaceAll(',', '.').trim()) ?? 0;
+        return double.tryParse(value.replaceAll('R\$', '').replaceAll(".", "").replaceAll(",", ".").trim()) ?? 0;
       } catch (_) {
         return 0;
       }

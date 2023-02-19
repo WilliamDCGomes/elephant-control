@@ -38,9 +38,9 @@ class F {
       case Flavor.PROD:
         //return 'https://elephantapi.azurewebsites.net/api/';
         return 'http://192.168.1.5:5002/api/';
-        //return 'http://192.168.15.25:5002/api/';
+      //return 'http://192.168.15.25:5002/api/';
       default:
-        //return 'http://10.10.10.36:5002/api/';
+        return 'http://10.10.10.36:5002/api/';
         return 'https://elephantapi.azurewebsites.net/api/';
     }
   }

@@ -7,7 +7,9 @@ class MoneyPouchViewController {
   final String? observation;
   final String visitId;
   final double pouchValue;
-  final double cardValue;
+  final double creditValue;
+  final double debitValue;
+  final double pixValue;
   int? code;
   String? moneyPouchId;
   bool? valueMatch;
@@ -16,7 +18,9 @@ class MoneyPouchViewController {
 
   MoneyPouchViewController({
     required this.pouchValue,
-    required this.cardValue,
+    required this.creditValue,
+    required this.debitValue,
+    required this.pixValue,
     this.observation,
     this.differenceValue,
     required this.visitId,

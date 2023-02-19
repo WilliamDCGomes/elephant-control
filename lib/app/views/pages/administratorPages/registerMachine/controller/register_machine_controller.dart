@@ -18,6 +18,8 @@ class RegisterMachineController extends GetxController {
   late RxList<ReturnMachineViewController> returnMachineViewControllers;
   ReturnMachineViewController? returnMachineViewControllerSelected;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
+  late RxBool machineCloseYes;
+  late RxBool machineCloseNo;
   late TextEditingController machineNameTextController;
   late TextEditingController machineTypeTextController;
   late TextEditingController minAverageTextController;
@@ -61,6 +63,8 @@ class RegisterMachineController extends GetxController {
     returnMachineViewControllers =
         <ReturnMachineViewController>[ReturnMachineViewController(asset_number: "Não encontrado", id: -1)].obs;
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
+    machineCloseYes = _machine == null ? false.obs : (_machine!.monthClosure == true).obs;
+    machineCloseNo = _machine == null ? false.obs : (_machine!.monthClosure == false).obs;
     machineNameTextController = TextEditingController(text: _machine?.name);
     machineTypeTextController = TextEditingController(text: _machine?.machineType ?? "");
     externalCodeMachineController = TextEditingController(text: _machine?.externalId?.toString());
@@ -203,7 +207,7 @@ class RegisterMachineController extends GetxController {
               ? null
               : int.parse(externalCodeMachineController.text)
           : returnMachineViewControllerSelected?.id;
-
+      _machine!.monthClosure = machineCloseYes.isTrue;
       Get.back(result: _machine);
       /*if (await _machineService.createOrUpdateMachine(_machine!)) {
         await loadingWithSuccessOrErrorWidget.stopAnimation();

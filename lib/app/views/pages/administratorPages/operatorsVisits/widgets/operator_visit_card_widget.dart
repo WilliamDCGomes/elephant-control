@@ -48,7 +48,10 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
   }
 
   String getStatus() {
-    return widget.visitOfOperatorsViewController.visitedMachine.isNotEmpty && !widget.visitOfOperatorsViewController.visitedMachine.contains("00000000-0000-0000-0000-000000000000") ? "Finalizado" : "Pendente";
+    return widget.visitOfOperatorsViewController.visitedMachine.isNotEmpty &&
+            !widget.visitOfOperatorsViewController.visitedMachine.contains("00000000-0000-0000-0000-000000000000")
+        ? "Finalizado"
+        : "Pendente";
   }
 
   @override
@@ -86,6 +89,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               machineName: widget.visitOfOperatorsViewController.machineName,
               done: getStatus() == "Finalizado",
               operatorDeletedMachine: false,
+              hasIncident: widget.visitOfOperatorsViewController.hasIncident,
               // TODO widget.operatorDeletedMachine,
             ),
             MaintenanceBodyCardWidget(

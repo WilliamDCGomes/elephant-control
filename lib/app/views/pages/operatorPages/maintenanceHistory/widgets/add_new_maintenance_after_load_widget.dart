@@ -109,7 +109,7 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 2.h),
                                 child: Obx(
-                                      () => Visibility(
+                                  () => Visibility(
                                     visible: controller.machines.isNotEmpty,
                                     replacement: Center(
                                       child: TextWidget(
@@ -118,7 +118,8 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                       ),
                                     ),
                                     child: ListView.builder(
-                                      itemCount: controller.machines.length, //TODO widget.controller.allMaintenanceCardWidgetFilteredList.length,
+                                      itemCount: controller.machines
+                                          .length, //TODO widget.controller.allMaintenanceCardWidgetFilteredList.length,
                                       shrinkWrap: true,
                                       padding: EdgeInsets.symmetric(horizontal: 2.h),
                                       itemBuilder: (context, index) {
@@ -130,7 +131,35 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                               builder: (BuildContext context) {
                                                 return ConfirmationPopup(
                                                   title: "Aviso",
-                                                  subTitle: "Deseja realmente adicionar a máquina ${widget.controller.machines[index].name} na sua lista de atendimentos?",
+                                                  subTitle:
+                                                      "Deseja realmente adicionar a máquina ${widget.controller.machines[index].name} na sua lista de atendimentos?",
+                                                  child: machine.reminders == null || (machine.reminders?.isEmpty ?? true)
+                                                      ? null
+                                                      : Column(
+                                                          children: [
+                                                            SizedBox(height: 1.h),
+                                                            TextWidget(
+                                                              "Lista de Lembretes:",
+                                                              textColor: AppColors.blackColor,
+                                                              fontSize: 17.sp,
+                                                              maxLines: 5,
+                                                              textDecoration: TextDecoration.underline,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                            Expanded(
+                                                              child: ListView.builder(
+                                                                  shrinkWrap: true,
+                                                                  itemCount: machine.reminders!.length,
+                                                                  itemBuilder: (context, index) => TextWidget(
+                                                                        machine.reminders![index].description,
+                                                                        textColor: AppColors.blackColor,
+                                                                        fontSize: 16.sp,
+                                                                        maxLines: 2,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      )),
+                                                            ),
+                                                          ],
+                                                        ),
                                                   firstButton: () {},
                                                   secondButton: () async => await controller.createuserMachine(machine.id!),
                                                 );

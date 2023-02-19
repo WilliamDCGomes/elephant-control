@@ -1,4 +1,3 @@
-import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/app/views/pages/operatorPages/history/page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -260,15 +259,17 @@ class _MainMenuOperatorAfterLoadWidgetState extends State<MainMenuOperatorAfterL
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(left: 1.w),
-                                                  child: TextWidget(
-                                                    FormatNumbers.scoreIntNumber(
-                                                      LoggedUser.balanceStuffedAnimals,
+                                                  child: Obx(
+                                                    () => TextWidget(
+                                                      FormatNumbers.scoreIntNumber(
+                                                        controller.amountTeddy.value,
+                                                      ),
+                                                      fontWeight: FontWeight.bold,
+                                                      maxLines: 1,
+                                                      textColor: AppColors.whiteColor,
+                                                      fontSize: 20.sp,
+                                                      textAlign: TextAlign.start,
                                                     ),
-                                                    fontWeight: FontWeight.bold,
-                                                    maxLines: 1,
-                                                    textColor: AppColors.whiteColor,
-                                                    fontSize: 20.sp,
-                                                    textAlign: TextAlign.start,
                                                   ),
                                                 ),
                                               ],

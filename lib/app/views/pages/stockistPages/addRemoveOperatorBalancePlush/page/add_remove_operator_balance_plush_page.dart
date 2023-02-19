@@ -157,7 +157,7 @@ class _AddRemoveOperatorBalancePlushPageState extends State<AddRemoveOperatorBal
                                     child: TextFieldWidget(
                                       controller: controller.observations,
                                       height: 19.h,
-                                      keyboardType: TextInputType.text,
+                                      keyboardType: TextInputType.multiline,
                                       textCapitalization: TextCapitalization.sentences,
                                       textAlignVertical: TextAlignVertical.top,
                                       maxLines: 6,

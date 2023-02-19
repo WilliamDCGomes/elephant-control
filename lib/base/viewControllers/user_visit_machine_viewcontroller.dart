@@ -1,6 +1,7 @@
 import 'package:elephant_control/base/models/reminderMachine/reminder_machine.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../models/base/elephant_core.dart';
 import '../models/base/elephant_user_core.dart';
 part 'user_visit_machine_viewcontroller.g.dart';
 
@@ -10,6 +11,8 @@ class UserVisitMachineViewController {
   late String machineName;
   late String id;
   late DateTime visitDay;
+  @JsonKey(fromJson: ElephantCore.fromJsonActive)
+  late bool monthClosure;
   DateTime? lastVisit;
   @JsonKey(defaultValue: <ReminderMachine>[])
   late List<ReminderMachine> reminders;
@@ -21,6 +24,7 @@ class UserVisitMachineViewController {
     required this.visitDay,
     required this.lastVisit,
     required this.reminders,
+    required this.monthClosure,
   });
 
   factory UserVisitMachineViewController.fromJson(Map<String, dynamic> json) =>

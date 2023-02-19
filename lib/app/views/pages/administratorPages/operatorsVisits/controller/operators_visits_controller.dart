@@ -101,10 +101,25 @@ class OperatorsVisitsController extends GetxController {
         user = users.firstWhere((element) => element.name == userSelected.value);
       }
 
-      operatorVisitList.value = await _visitService.getVisitsOfOperatorsByUserId(
+      operatorVisitList.value = (await _visitService.getVisitsOfOperatorsByUserId(
         user != null ? user.id ?? null : null,
         dateFilter,
-      );
+      ))
+        ..sort((a, b) => (a.machineName).compareTo(b.machineName))
+        ..sort((a, b) {
+          if (a.hasIncident || b.hasIncident) {
+            if (a.hasIncident && b.hasIncident) {
+              return 0;
+            } else if (a.hasIncident) {
+              return -1;
+            } else {
+              return 1;
+            }
+          } else {
+            return 0;
+          }
+        })
+        ..sort((a, b) => (a.status?.index ?? 10).compareTo(b.status?.index ?? 10));
       visitsQuantity.value = operatorVisitList.length;
       update(["visit-list"]);
       if (loadingEnabled) {

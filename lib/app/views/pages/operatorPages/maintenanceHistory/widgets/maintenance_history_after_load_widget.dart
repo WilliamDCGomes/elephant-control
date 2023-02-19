@@ -107,6 +107,11 @@ class _MaintenanceHistoryAfterLoadWidgetState extends State<MaintenanceHistoryAf
                                             status: visit.status?.description ?? "Pendente",
                                             workPriority: "NORMAL",
                                             priorityColor: AppColors.greenColor.value,
+                                            machineContainerColor: visit.active == false
+                                                ? AppColors.redColor
+                                                : visit.status == null
+                                                    ? AppColors.pendentVisit
+                                                    : null,
                                             clock1: visit.moneyQuantity.toString(),
                                             clock2: visit.stuffedAnimalsQuantity.toString(),
                                             teddy: visit.stuffedAnimalsReplaceQuantity.toString(),

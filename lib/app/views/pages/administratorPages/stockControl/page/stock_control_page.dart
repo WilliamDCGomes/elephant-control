@@ -24,13 +24,13 @@ class _StockControlPageState extends State<StockControlPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Obx(
-        () => controller.screenLoading.value ?
-        DefaultShimmer(
-          pageTitle: "Controle de Estoque",
-          mainCardSize: 3.h,
-          cardsSize: 10.h,
-        ) :
-        StockControlAfterLoadWidget(),
+        () => controller.screenLoading.value
+            ? DefaultShimmer(
+                pageTitle: "Controle de Estoque",
+                mainCardSize: 3.h,
+                cardsSize: 10.h,
+              )
+            : StockControlAfterLoadWidget(),
       ),
     );
   }

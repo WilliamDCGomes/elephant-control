@@ -35,6 +35,7 @@ class MachineRepository extends BaseRepository {
                     LEFT JOIN ${UserVisitMachine.tableName} UVM ON M.Id = UVM.MachineId AND UVM.VisitId IS NULL AND UVM.Active = 1
                     INNER JOIN ${UserMachine.tableName} UM ON M.Id = UM.MachineId
                     WHERE M.Active = 1 AND UVM.Id IS NULL
+                    ORDER BY M.Name
                     """;
       final _database = await database;
       final result = await _database.rawQuery(query);

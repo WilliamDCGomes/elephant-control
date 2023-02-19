@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/text_widget.dart';
 
@@ -14,6 +15,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
   final int? maxLines;
   final double? latitude;
   final double? longitude;
+  final bool hasIncident;
 
   const MaintenanceHeaderCardWidget({
     Key? key,
@@ -27,6 +29,7 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
     this.maxLines,
     this.latitude,
     this.longitude,
+    this.hasIncident = false,
   }) : super(key: key);
 
   @override
@@ -41,25 +44,40 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
                       ? AppColors.greenColor
                       : AppColors.redColor),
       decoration: decoration,
-      height: 5.h,
+      // height: 5.h,
       width: 100.w,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-        child: Row(
-          mainAxisAlignment: children.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+        child: Stack(
           children: [
-            Expanded(
-              child: TextWidget(
-                machineName,
-                textColor: operatorDeletedMachine ? AppColors.blackColor : AppColors.whiteColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 16.sp,
-                textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
-                textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
-                maxLines: maxLines ?? 1,
-              ),
+            Row(
+              mainAxisAlignment: children.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: TextWidget(
+                    machineName,
+                    textColor: operatorDeletedMachine ? AppColors.blackColor : AppColors.whiteColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
+                    textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
+                    textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
+                    maxLines: maxLines ?? 1,
+                  ),
+                ),
+                ...children,
+              ],
             ),
-            ...children,
+            if (hasIncident)
+              Positioned(
+                right: 0,
+                child: Image.asset(
+                  Paths.Ocorrencia,
+                  color: AppColors.whiteColor,
+                  height: 2.5.h,
+                  width: 2.h,
+                  fit: BoxFit.contain,
+                ),
+              ),
           ],
         ),
       ),

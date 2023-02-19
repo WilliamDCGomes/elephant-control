@@ -10,6 +10,7 @@ import '../../../../../utils/paths.dart';
 import '../../../../../utils/platform_type.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/button_widget.dart';
+import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/dropdown_button_rxlist_wdiget.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_field_widget.dart';
@@ -124,6 +125,53 @@ class _RegisterMachinePageState extends State<RegisterMachinePage> {
                                         textCapitalization: TextCapitalization.words,
                                         textInputAction: TextInputAction.next,
                                       ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextWidget(
+                                            "Fechamento de máquina aparece para operador?",
+                                            textColor: AppColors.defaultColor,
+                                            fontSize: 16.sp,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Obx(
+                                              () => CheckboxListTileWidget(
+                                                radioText: "Sim",
+                                                size: 4.h,
+                                                checked: controller.machineCloseYes.value,
+                                                onChanged: () {
+                                                  controller.machineCloseYes.value = !controller.machineCloseYes.value;
+                                                  if (controller.machineCloseYes.value)
+                                                    controller.machineCloseNo.value = !controller.machineCloseYes.value;
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: .5.w,
+                                            ),
+                                            Obx(
+                                              () => CheckboxListTileWidget(
+                                                radioText: "Não",
+                                                size: 4.h,
+                                                spaceBetween: 1.w,
+                                                checked: controller.machineCloseNo.value,
+                                                onChanged: () {
+                                                  controller.machineCloseNo.value = !controller.machineCloseNo.value;
+                                                  if (controller.machineCloseNo.value)
+                                                    controller.machineCloseYes.value = !controller.machineCloseNo.value;
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(

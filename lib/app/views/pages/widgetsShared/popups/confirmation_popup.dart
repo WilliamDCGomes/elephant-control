@@ -10,6 +10,7 @@ class ConfirmationPopup extends StatefulWidget {
   final bool? showSecondButton;
   final String title;
   final String? subTitle;
+  final Widget? child;
   final String? firstButtonText;
   final String? secondButtonText;
   final Function firstButton;
@@ -24,6 +25,7 @@ class ConfirmationPopup extends StatefulWidget {
     this.secondButtonText,
     required this.firstButton,
     required this.secondButton,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -57,6 +59,7 @@ class _ConfirmationPopupState extends State<ConfirmationPopup> {
           ),
           child: Container(
             width: 75.w,
+            height: widget.child == null ? null : 35.h,
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
               borderRadius: BorderRadius.circular(1.h),
@@ -81,58 +84,11 @@ class _ConfirmationPopupState extends State<ConfirmationPopup> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(2.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      TextWidget(
-                        widget.subTitle ?? "",
-                        textColor: AppColors.blackColor,
-                        fontSize: 16.sp,
-                        maxLines: 5,
-                        fontWeight: FontWeight.bold,
+                widget.child == null
+                    ? _popUp()
+                    : Expanded(
+                        child: _popUp(),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.h),
-                        child: Row(
-                          mainAxisAlignment: (widget.showSecondButton ?? true) ?
-                          MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: widget.showSecondButton ?? true,
-                              child: ButtonWidget(
-                                hintText: widget.firstButtonText ?? "NÃO",
-                                heightButton: 5.h,
-                                widthButton: 32.w,
-                                fontWeight: FontWeight.bold,
-                                backgroundColor: AppColors.whiteColor,
-                                borderColor: AppColors.defaultColor,
-                                textColor: AppColors.defaultColor,
-                                onPressed: () {
-                                  widget.firstButton();
-                                  Get.back();
-                                },
-                              ),
-                            ),
-                            ButtonWidget(
-                              hintText: widget.secondButtonText ?? "SIM",
-                              heightButton: 5.h,
-                              widthButton: 32.w,
-                              fontWeight: FontWeight.bold,
-                              onPressed: () {
-                                widget.secondButton();
-                                Get.back();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -140,4 +96,58 @@ class _ConfirmationPopupState extends State<ConfirmationPopup> {
       ),
     );
   }
+
+  Widget _popUp() => Padding(
+        padding: EdgeInsets.all(2.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextWidget(
+              widget.subTitle ?? "",
+              textColor: AppColors.blackColor,
+              fontSize: 16.sp,
+              maxLines: 5,
+              fontWeight: FontWeight.bold,
+            ),
+            if (widget.child != null) Expanded(child: widget.child!),
+            Padding(
+              padding: EdgeInsets.only(top: 2.h),
+              child: Row(
+                mainAxisAlignment:
+                    (widget.showSecondButton ?? true) ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                children: [
+                  Visibility(
+                    visible: widget.showSecondButton ?? true,
+                    child: ButtonWidget(
+                      hintText: widget.firstButtonText ?? "NÃO",
+                      heightButton: 5.h,
+                      widthButton: 32.w,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: AppColors.whiteColor,
+                      borderColor: AppColors.defaultColor,
+                      textColor: AppColors.defaultColor,
+                      onPressed: () {
+                        widget.firstButton();
+                        Get.back();
+                      },
+                    ),
+                  ),
+                  ButtonWidget(
+                    hintText: widget.secondButtonText ?? "SIM",
+                    heightButton: 5.h,
+                    widthButton: 32.w,
+                    fontWeight: FontWeight.bold,
+                    onPressed: () {
+                      widget.secondButton();
+                      Get.back();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
 }

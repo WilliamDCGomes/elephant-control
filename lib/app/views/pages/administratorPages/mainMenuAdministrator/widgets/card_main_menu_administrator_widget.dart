@@ -10,16 +10,20 @@ class CardMainMenuAdministratorWidget extends StatefulWidget {
   final String secondText;
   final String thirdText;
   final String fourthText;
+  final String? complementFirstText;
+  final String? complementSecondText;
   final String? imagePath;
 
-  const CardMainMenuAdministratorWidget(
-      { Key? key,
-        required this.firstText,
-        required this.secondText,
-        this.thirdText = "",
-        this.fourthText = "",
-        this.imagePath,
-      }) : super(key: key);
+  const CardMainMenuAdministratorWidget({
+    Key? key,
+    required this.firstText,
+    required this.secondText,
+    this.thirdText = "",
+    this.fourthText = "",
+    this.imagePath,
+    this.complementFirstText,
+    this.complementSecondText,
+  }) : super(key: key);
 
   @override
   State<CardMainMenuAdministratorWidget> createState() => _CardMainMenuAdministratorWidgetState();
@@ -61,6 +65,20 @@ class _CardMainMenuAdministratorWidgetState extends State<CardMainMenuAdministra
                 textAlign: TextAlign.start,
                 maxLines: 2,
               ),
+              if (widget.complementFirstText != null && widget.complementSecondText != null)
+                RichTextTwoDifferentWidget(
+                  firstText: widget.complementFirstText,
+                  firstTextColor: AppColors.whiteColor,
+                  firstTextFontWeight: FontWeight.bold,
+                  firstTextSize: 20.sp,
+                  secondText: widget.complementSecondText,
+                  secondTextColor: AppColors.whiteColor,
+                  secondTextFontWeight: FontWeight.normal,
+                  secondTextSize: 18.sp,
+                  secondTextDecoration: TextDecoration.none,
+                  textAlign: TextAlign.start,
+                  maxLines: 2,
+                ),
               Visibility(
                 visible: widget.thirdText != "" && widget.fourthText != "",
                 child: Divider(

@@ -21,8 +21,10 @@ VisitOfOperatorsViewController _$VisitOfOperatorsViewControllerFromJson(
       ..lastMachineVisit = json['lastMachineVisit'] == null
           ? null
           : DateTime.parse(json['lastMachineVisit'] as String)
+      ..status = $enumDecodeNullable(_$VisitStatusEnumMap, json['status'])
       ..visitedMachine = json['visitedMachine'] as String
-      ..vInclusion = DateTime.parse(json['vInclusion'] as String);
+      ..vInclusion = DateTime.parse(json['vInclusion'] as String)
+      ..hasIncident = json['hasIncident'] as bool? ?? false;
 
 Map<String, dynamic> _$VisitOfOperatorsViewControllerToJson(
         VisitOfOperatorsViewController instance) =>
@@ -37,8 +39,10 @@ Map<String, dynamic> _$VisitOfOperatorsViewControllerToJson(
       'visitStatus': _$VisitStatusEnumMap[instance.visitStatus]!,
       'periodDaysToVisit': instance.periodDaysToVisit,
       'lastMachineVisit': instance.lastMachineVisit?.toIso8601String(),
+      'status': _$VisitStatusEnumMap[instance.status],
       'visitedMachine': instance.visitedMachine,
       'vInclusion': instance.vInclusion.toIso8601String(),
+      'hasIncident': instance.hasIncident,
     };
 
 const _$VisitStatusEnumMap = {

@@ -15,12 +15,16 @@ class VisitOfOperatorsViewController {
   late VisitStatus visitStatus;
   late int? periodDaysToVisit;
   late DateTime? lastMachineVisit;
+  late VisitStatus? status;
   late String visitedMachine;
   late DateTime vInclusion;
+  @JsonKey(defaultValue: false)
+  late bool hasIncident;
 
   VisitOfOperatorsViewController();
 
-  factory VisitOfOperatorsViewController.fromJson(Map<String, dynamic> json) => _$VisitOfOperatorsViewControllerFromJson(json);
+  factory VisitOfOperatorsViewController.fromJson(Map<String, dynamic> json) =>
+      _$VisitOfOperatorsViewControllerFromJson(json);
 
   Map<String, dynamic> toJson() => _$VisitOfOperatorsViewControllerToJson(this);
 }

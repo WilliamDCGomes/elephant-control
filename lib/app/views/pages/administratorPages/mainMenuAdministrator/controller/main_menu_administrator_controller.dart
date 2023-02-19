@@ -9,8 +9,7 @@ import '../../../../../../base/services/interfaces/ivisit_service.dart';
 import '../../../../../../base/services/money_pouch_service.dart';
 import '../../../../../../base/services/visit_service.dart';
 import '../../../../../../base/viewControllers/safe_box_financial_viewcontroller.dart';
-import '../../../../../../base/viewControllers/visits_of_operators_viewcontroller.dart';
-import '../../../../../utils/format_numbers.dart';
+import '../../../../../../base/viewControllers/total_main_menu_operator_view_controller.dart';
 import '../../../../../utils/get_profile_picture_controller.dart';
 import '../../../../../utils/logged_user.dart';
 import '../../../../../utils/paths.dart';
@@ -19,7 +18,8 @@ import '../widgets/card_main_menu_administrator_widget.dart';
 
 class MainMenuAdministratorController extends GetxController {
   late int activeStep;
-  late int visitsQuantity;
+  late RxInt visitsQuantity;
+  late RxInt incidentQuantity;
   late int pouchQuantityWithOperators;
   late int pouchQuantityWithFinancial;
   late double fullValuePouchOperators;
@@ -37,7 +37,7 @@ class MainMenuAdministratorController extends GetxController {
   late DateTime pouchLastChange;
   late DateTime teddyLastChange;
   late SharedPreferences sharedPreferences;
-  late List<VisitOfOperatorsViewController> operatorVisitList;
+  late List<TotalMainMenuOperatorViewcontroller> operatorVisitList;
   late RxList<CardMainMenuAdministratorWidget> cardMainMenuAdministratorList;
   late CarouselController carouselController;
   late IVisitService _visitService;
@@ -59,7 +59,8 @@ class MainMenuAdministratorController extends GetxController {
 
   _initializeVariables() {
     activeStep = 0;
-    visitsQuantity = 0;
+    visitsQuantity = 0.obs;
+    incidentQuantity = 0.obs;
     pouchQuantityWithOperators = 0;
     pouchQuantityWithFinancial = 0;
     fullValuePouchOperators = 0.0;
@@ -76,11 +77,13 @@ class MainMenuAdministratorController extends GetxController {
     pouchLastChange = DateTime.now();
     teddyLastChange = DateTime.now();
     carouselController = CarouselController();
-    operatorVisitList = <VisitOfOperatorsViewController>[];
+    operatorVisitList = <TotalMainMenuOperatorViewcontroller>[];
     cardMainMenuAdministratorList = [
       CardMainMenuAdministratorWidget(
         firstText: "Total Visitas no dia: ",
         secondText: "0",
+        complementFirstText: "Ocorrências no dia: ",
+        complementSecondText: "0",
         thirdText: "Última Máquina Visitada: ",
         fourthText: "Sem Registro",
         imagePath: Paths.Manutencao,
@@ -118,58 +121,25 @@ class MainMenuAdministratorController extends GetxController {
       profileImagePath,
       sharedPreferences,
     );
-    await _getVisitsUser();
+    await getVisitsUser();
     await _getPouchUser();
     await _getSafeBoxValue();
-    _loadCards();
     screenLoading.value = false;
   }
 
-  _loadCards() {
-    cardMainMenuAdministratorList.value = [
-      CardMainMenuAdministratorWidget(
-        firstText: "Total Visitas no dia: ",
-        secondText: visitsQuantity.toString(),
-        thirdText: "Última Máquina Visitada: ",
-        fourthText: operatorVisitList.isNotEmpty ? operatorVisitList.last.machineName : "Sem Registro",
-        imagePath: Paths.Manutencao,
-      ),
-      CardMainMenuAdministratorWidget(
-        firstText: "Total Malotes com Operadores: ",
-        secondText: pouchQuantityWithOperators.toString(),
-        thirdText: "Valor Total: ",
-        fourthText: FormatNumbers.numbersToMoney(fullValuePouchOperators),
-        imagePath: Paths.Malote,
-      ),
-      CardMainMenuAdministratorWidget(
-        firstText: "Total Malotes com Tesouraria: ",
-        secondText: pouchQuantityWithFinancial.toString(),
-        thirdText: "Valor Total: ",
-        fourthText: FormatNumbers.numbersToMoney(fullValuePouchFinancial),
-        imagePath: Paths.Malote_Com_Tesouraria,
-      ),
-      CardMainMenuAdministratorWidget(
-        firstText: "Valor Total dos Cofres: ",
-        secondText: FormatNumbers.numbersToMoney(allSafeBoxAmount),
-        imagePath: Paths.Cofre,
-      ),
-    ];
-  }
-
-  _getVisitsUser() async {
+  getVisitsUser() async {
     try {
-      visitsQuantity = 0;
+      visitsQuantity.value = 0;
+      incidentQuantity.value = 0;
+      operatorVisitList = (await _visitService.getTotalMainMenuAdmin());
 
-      operatorVisitList = await _visitService.getVisitsOfOperatorsByUserId(
-        null,
-        DateTime.now(),
-      );
+      operatorVisitList.sort((a, b) => a.inclusion.compareTo(b.inclusion));
 
-      operatorVisitList.sort((a, b) => a.vInclusion.compareTo(b.vInclusion));
-
-      visitsQuantity = operatorVisitList.length;
+      visitsQuantity.value = operatorVisitList.length;
+      incidentQuantity.value = operatorVisitList.where((element) => element.hasIncident).length;
     } catch (_) {
-      visitsQuantity = 0;
+      incidentQuantity.value = 0;
+      visitsQuantity.value = 0;
     }
   }
 

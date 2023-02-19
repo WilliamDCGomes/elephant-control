@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../../utils/app_close_controller.dart';
+import '../../../../../utils/format_numbers.dart';
 import '../../../../../utils/paths.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../sharedPages/userProfile/page/user_profile_page.dart';
@@ -22,6 +23,7 @@ import '../../stockControl/page/stock_control_page.dart';
 import '../../users/page/user_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widgets/menu_options_widget.dart';
+import 'card_main_menu_administrator_widget.dart';
 
 class MainMenuAdministratorAfterLoadWidget extends StatefulWidget {
   final bool accessValidate;
@@ -167,9 +169,9 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(top: 5.h, bottom: 1.h),
-                                  child: CarouselSlider.builder(
+                                  child: CarouselSlider(
                                     carouselController: controller.carouselController,
-                                    itemCount: controller.cardMainMenuAdministratorList.length,
+                                    // itemCount: controller.cardMainMenuAdministratorList.length,
                                     options: CarouselOptions(
                                         viewportFraction: 1,
                                         height: 31.h,
@@ -181,9 +183,43 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                                             controller.activeStep = itemIndex;
                                           });
                                         }),
-                                    itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-                                      return controller.cardMainMenuAdministratorList[itemIndex];
-                                    },
+                                    items: [
+                                      Obx(
+                                        () => CardMainMenuAdministratorWidget(
+                                          firstText: "Total Visitas no dia: ",
+                                          secondText: controller.visitsQuantity.value.toString(),
+                                          complementFirstText: "Ocorrências no dia: ",
+                                          complementSecondText: controller.incidentQuantity.value.toString(),
+                                          thirdText: "Última Máquina Visitada: ",
+                                          fourthText: controller.operatorVisitList.isNotEmpty
+                                              ? controller.operatorVisitList.last.machineName
+                                              : "Sem Registro",
+                                          imagePath: Paths.Manutencao,
+                                        ),
+                                      ),
+                                      CardMainMenuAdministratorWidget(
+                                        firstText: "Total Malotes com Operadores: ",
+                                        secondText: controller.pouchQuantityWithOperators.toString(),
+                                        thirdText: "Valor Total: ",
+                                        fourthText: FormatNumbers.numbersToMoney(controller.fullValuePouchOperators),
+                                        imagePath: Paths.Malote,
+                                      ),
+                                      CardMainMenuAdministratorWidget(
+                                        firstText: "Total Malotes com Tesouraria: ",
+                                        secondText: controller.pouchQuantityWithFinancial.toString(),
+                                        thirdText: "Valor Total: ",
+                                        fourthText: FormatNumbers.numbersToMoney(controller.fullValuePouchFinancial),
+                                        imagePath: Paths.Malote_Com_Tesouraria,
+                                      ),
+                                      CardMainMenuAdministratorWidget(
+                                        firstText: "Valor Total dos Cofres: ",
+                                        secondText: FormatNumbers.numbersToMoney(controller.allSafeBoxAmount),
+                                        imagePath: Paths.Cofre,
+                                      ),
+                                    ],
+                                    // itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+                                    //   return Obx(() => controller.cardMainMenuAdministratorList[itemIndex]);
+                                    // },
                                   ),
                                 ),
                                 Padding(
@@ -244,7 +280,8 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                                 imagePath: Paths.Manutencao,
                                 onTap: () => Get.to(() => OperatorsVisitsPage()),
                               ),
-                            if (!accessValidate || (accessValidate && LoggedUser.nameRoles.contains("HistoricoCofreTesouraria")))
+                            if (!accessValidate ||
+                                (accessValidate && LoggedUser.nameRoles.contains("HistoricoCofreTesouraria")))
                               MenuOptionsWidget(
                                 text: "Histórico Cofre da Tesouraria",
                                 imagePath: Paths.Cofre,

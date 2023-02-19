@@ -42,6 +42,7 @@ class MaintenanceController extends GetxController {
   late RxBool no;
   late RxBool machineCloseYes;
   late RxBool machineCloseNo;
+  late RxBool machineClose;
   late RxBool _showReminders;
   late TextEditingController operatorName;
   late TextEditingController maintenanceDate;
@@ -88,6 +89,7 @@ class MaintenanceController extends GetxController {
     no = false.obs;
     machineCloseYes = false.obs;
     machineCloseNo = false.obs;
+    machineClose = false.obs;
 
     operatorName = TextEditingController();
     maintenanceDate = TextEditingController();
@@ -113,6 +115,7 @@ class MaintenanceController extends GetxController {
 
   onDropdownButtonWidgetChanged(String? machineId) {
     machineSelected = _machines.firstWhere((element) => element.id == machineId);
+    machineClose.value = machineSelected?.monthClosure ?? false;
     machineSelectedListener.value = machineSelected?.name ?? "";
     lastMaintenance.value = DateFormatToBrazil.formatDateAndHour(machineSelected?.lastVisit);
   }
@@ -129,8 +132,12 @@ class MaintenanceController extends GetxController {
       final listTodayMachine = offline
           ? await UserVisitMachineRepository().getUserVisitMachineByUserIdAndVisitDay(DateTime.now())
           : await UserVisitMachineService().getUserVisitMachineByUserIdAndVisitDay(DateTime.now());
-      _machines.addAll(listTodayMachine
-          .map((e) => Machine(name: e.machineName, id: e.machineId, lastVisit: e.lastVisit, reminders: e.reminders)));
+      _machines.addAll(listTodayMachine.map((e) => Machine(
+          name: e.machineName,
+          id: e.machineId,
+          lastVisit: e.lastVisit,
+          reminders: e.reminders,
+          monthClosure: e.monthClosure)));
       if (_machines.isNotEmpty) {
         _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
         onDropdownButtonWidgetChanged(_machines.first.id);
@@ -176,7 +183,7 @@ class MaintenanceController extends GetxController {
       _visit.machineId = machineSelected!.id!;
       _visit.moneyQuantity = double.parse(clock1.text);
       _visit.moneyWithDrawal = yes.isTrue;
-      _visit.monthClosure = machineCloseYes.isTrue;
+      _visit.monthClosure = machineClose.value ? machineCloseYes.isTrue : false;
       if (_visit.moneyWithDrawal) _visit.moneyWithdrawalQuantity = double.parse(clock2.text);
       _visit.status = _visit.moneyWithDrawal ? VisitStatus.moneyWithdrawal : VisitStatus.realized;
       _visit.stuffedAnimalsReplaceQuantity = int.parse(teddyAddMachine.text);

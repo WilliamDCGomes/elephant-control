@@ -29,7 +29,9 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
 
   @override
   void initState() {
-    controller = widget.pageTitle == null ? Get.find(tag: "main_menu_administrator_controller") : Get.put(MainMenuAdministratorController());
+    controller = widget.pageTitle == null
+        ? Get.find(tag: "main_menu_administrator_controller")
+        : Get.put(MainMenuAdministratorController());
     super.initState();
   }
 
@@ -134,7 +136,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                         enableInfiniteScroll: false,
                                       ),
                                       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-                                        return controller.cardMainMenuAdministratorList[itemIndex];
+                                        return Obx(() => controller.cardMainMenuAdministratorList[itemIndex]);
                                       },
                                     ),
                                   ),
@@ -194,7 +196,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                 borderRadius: BorderRadius.circular(2.5.h),
                               ),
                             ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,
@@ -204,7 +206,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                   borderRadius: BorderRadius.circular(2.5.h),
                                 ),
                               ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,
@@ -214,7 +216,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                   borderRadius: BorderRadius.circular(2.5.h),
                                 ),
                               ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,
@@ -224,7 +226,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                   borderRadius: BorderRadius.circular(2.5.h),
                                 ),
                               ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,
@@ -234,7 +236,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                   borderRadius: BorderRadius.circular(2.5.h),
                                 ),
                               ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,
@@ -244,7 +246,7 @@ class _MainMenuAdministratorShimmerState extends State<MainMenuAdministratorShim
                                   borderRadius: BorderRadius.circular(2.5.h),
                                 ),
                               ),
-                            if(!widget.showJust3Itens)
+                            if (!widget.showJust3Itens)
                               Container(
                                 margin: EdgeInsets.only(left: 2.w, bottom: 1.h),
                                 height: 12.h,

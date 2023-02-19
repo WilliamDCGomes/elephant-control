@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../flavors.dart';
 import '../migrations/migration_1.dart';
+import '../migrations/migration_3.dart';
 import '../models/incident/incident.dart';
 import '../models/incidentMedia/incident_media.dart';
 import '../models/machine/machine.dart';
@@ -19,7 +20,7 @@ import '../models/visitMedia/visit_media.dart';
 
 class ElephantContext {
   static Database? _database;
-  static const int _databaseVersion = 4;
+  static const int _databaseVersion = 5;
   static const String queryElephantModelBase =
       "Id TEXT PRIMARY KEY NOT NULL, Alteration TEXT, Inclusion TEXT, Active BOOLEAN";
 
@@ -112,6 +113,9 @@ class ElephantContext {
           case 2:
           case 3:
             await Migration1(db).executeMigrations();
+            break;
+          case 4:
+            await Migration3(db).executeMigrations();
             break;
           default:
             log("Sem migrations");

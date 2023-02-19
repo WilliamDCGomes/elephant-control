@@ -71,10 +71,22 @@ class MaintenanceHistoryController extends GetxController {
       }
       _visits.clear();
       _visits.addAll(
-          offline ? await VisitRepository().getVisitsOperatorByUserId() : await _visitService.getVisitsOperatorByUserId());
+          (offline ? await VisitRepository().getVisitsOperatorByUserId() : await _visitService.getVisitsOperatorByUserId())
+              .toList()
+            ..sort((a, b) => (a.machineName).compareTo(b.machineName))
+            ..sort((a, b) => (a.status?.index ?? -1).compareTo(b.status?.index ?? -1))
+            ..sort((a, b) => (a.active == true ? -1 : 0).compareTo(b.active == true ? -1 : 0)));
     } catch (_) {
       _visits.clear();
     } finally {
+      // _visits.sort((a, b) => (a.status?.index ?? -1).compareTo(b.status?.index ?? -1));
+      // _visits.sort((a, b) {
+      //   if (a.status == null || b.status == null) {
+      //     return -1;
+      //   }
+      //   return 0;
+      // });
+      _visits.refresh();
       if (showLoad) {
         await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
       } else {
@@ -106,7 +118,7 @@ class MaintenanceHistoryController extends GetxController {
       await loadingWithSuccessOrErrorWidget.startAnimation();
       if (visit.active == true) {
         final visitDeletedOrUndelete = offline
-            ? await UserVisitMachineRepository().deleteUserVisitMachine(visit.id!)
+            ? await UserVisitMachineRepository().deleteUserVisitMachine(visit.id!, visit.realizedVisit == true)
             : await UserVisitMachineService().deleteUserVisitMachine(visit.id!);
         if (visitDeletedOrUndelete) visit.active = false;
       } else {

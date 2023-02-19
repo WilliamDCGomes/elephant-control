@@ -29,6 +29,8 @@ class Machine extends ElephantUserCore {
   late String complement;
   late double minimumAverageValue;
   late double maximumAverageValue;
+  @JsonKey(defaultValue: false, fromJson: ElephantCore.fromJsonActive)
+  late bool monthClosure;
   int? externalId;
   @JsonKey(fromJson: ElephantCore.fromJsonActive)
   bool? machineAddOtherList;
@@ -46,6 +48,7 @@ class Machine extends ElephantUserCore {
     super.id,
     this.lastVisit,
     this.reminders,
+    this.monthClosure = false,
   });
 
   Machine.emptyConstructor() {
@@ -65,7 +68,11 @@ class Machine extends ElephantUserCore {
       Localization TEXT, Longitude TEXT, Number TEXT,
       Uf TEXT, MaximumAverageValue DECIMAL, MinimumAverageValue DECIMAL, Sent BOOLEAN,
       LastPrize DECIMAL, BalanceStuffedAnimals DECIMAL, ExternalId INTEGER,
-      MachineAddOtherList BOOLEAN, MachineType TEXT)""";
+      MachineAddOtherList BOOLEAN, MachineType TEXT, MonthClosure BOOLEAN)""";
+
+  static String get migration4 => """
+      ALTER TABLE $tableName ADD COLUMN MonthClosure BOOLEAN;
+      """;
 
   factory Machine.fromJson(Map<String, dynamic> json) => _$MachineFromJson(json);
 

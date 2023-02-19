@@ -20,6 +20,7 @@ UserVisitMachineViewController _$UserVisitMachineViewControllerFromJson(
               ?.map((e) => ReminderMachine.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      monthClosure: ElephantCore.fromJsonActive(json['monthClosure']),
     );
 
 Map<String, dynamic> _$UserVisitMachineViewControllerToJson(
@@ -29,6 +30,7 @@ Map<String, dynamic> _$UserVisitMachineViewControllerToJson(
       'machineName': instance.machineName,
       'id': instance.id,
       'visitDay': instance.visitDay.toIso8601String(),
+      'monthClosure': instance.monthClosure,
       'lastVisit': instance.lastVisit?.toIso8601String(),
       'reminders': instance.reminders,
     };

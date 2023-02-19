@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:elephant_control/app/utils/logged_user.dart';
 import 'package:elephant_control/base/models/machine/machine.dart';
+import 'package:elephant_control/base/models/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -78,15 +80,21 @@ class _OccurrencePageState extends State<OccurrencePage> {
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Abrir Ocorrência",
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: LoggedUser.userType == UserType.admin ? "Visualizar Ocorrência" : "Abrir Ocorrência",
+                            rightIcon: LoggedUser.userType == UserType.admin && controller.showFinalizeIncident.value
+                                ? Icons.check
+                                : null,
+                            onTapRightIcon: controller.finalizeIncident,
+                          ),
                         ),
                       ),
                       Expanded(
                         child: GetBuilder(
                           id: "informations",
                           init: controller,
-                          builder:(_) => Column(
+                          builder: (_) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InformationContainerWidget(
@@ -235,16 +243,17 @@ class _OccurrencePageState extends State<OccurrencePage> {
                                             child: controller.machineOccurrenceVideo,
                                             replacement: InkWell(
                                               onTap: () async {
-                                                if(controller.machineOccurrenceVideo.picture != null){
-                                                  File? file = await controller.getVideoFile(controller.machineOccurrenceVideo.base64);
-                                                  if(file != null){
+                                                if (controller.machineOccurrenceVideo.picture != null) {
+                                                  File? file = await controller
+                                                      .getVideoFile(controller.machineOccurrenceVideo.base64);
+                                                  if (file != null) {
                                                     await SystemChrome.setEnabledSystemUIMode(
                                                       SystemUiMode.manual,
                                                       overlays: [],
                                                     );
                                                     await Get.to(() => VideoPlayerUtil(
-                                                      videoFile: file,
-                                                    ));
+                                                          videoFile: file,
+                                                        ));
                                                     await SystemChrome.setEnabledSystemUIMode(
                                                       SystemUiMode.manual,
                                                       overlays: SystemUiOverlay.values,

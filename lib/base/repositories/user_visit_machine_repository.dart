@@ -12,7 +12,7 @@ class UserVisitMachineRepository extends BaseRepository {
     try {
       final _database = await database;
       final query = """
-                    SELECT M.Name as MachineName, M.Id as MachineId, 
+                    SELECT M.Name as MachineName, M.MonthClosure, M.Id as MachineId, 
                            UVM.Id, UVM.VisitDay, M.LastVisit FROM ${Machine.tableName} M
                     INNER JOIN ${UserVisitMachine.tableName} UVM ON M.Id = UVM.MachineId AND UVM.Active = 1 
                                                                 AND DATE(UVM.VisitDay) = DATE('${visitDay.toIso8601String()}')
@@ -40,7 +40,7 @@ class UserVisitMachineRepository extends BaseRepository {
                     """;
       final result = await _database.rawQuery(query);
       if (result.isEmpty) throw Exception();
-      return result.map((e) => ReminderMachine.fromJson(e)).toList();
+      return result.map((e) => ReminderMachine.fromJsonRepository(e)).toList();
     } catch (_) {
       return <ReminderMachine>[];
     }
@@ -83,9 +83,9 @@ class UserVisitMachineRepository extends BaseRepository {
     }
   }
 
-  Future<bool> deleteUserVisitMachine(String id) async {
+  Future<bool> deleteUserVisitMachine(String id, bool realizedVisit) async {
     try {
-      final query = "DELETE FROM ${UserVisitMachine.tableName} WHERE VisitId = '$id'";
+      final query = "DELETE FROM ${UserVisitMachine.tableName} WHERE ${realizedVisit ? "VisitId = " : "Id = "}'$id'";
       final _database = await database;
       final result = await _database.rawUpdate(query);
       return result == 1;
