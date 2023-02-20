@@ -154,7 +154,8 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.visitDays != null && reportViewController.visitDays!.isNotEmpty &&
+            if (reportViewController.visitDays != null &&
+                reportViewController.visitDays!.isNotEmpty &&
                 reportViewController.operatorsWhoVisitMachines != null &&
                 reportViewController.visitDays!.length == reportViewController.operatorsWhoVisitMachines!.length)
               Padding(
@@ -165,9 +166,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                       width: 1,
                       color: AppColors.blackColor,
                     ),
-                    borderRadius: BorderRadius.circular(
-                        1.h
-                    ),
+                    borderRadius: BorderRadius.circular(1.h),
                   ),
                   child: ExpansionTile(
                     title: TextWidget(
@@ -181,7 +180,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: reportViewController.visitDays!.length,
-                        itemBuilder: (context, index){
+                        itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
                             child: Column(
@@ -203,8 +202,10 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                                     Expanded(
                                       child: TextWidget(
                                         DateFormatToBrazil.formatDateAndHour(
-                                          reportViewController.visitDays![index],
-                                        ) + " - Operador: " + reportViewController.operatorsWhoVisitMachines![index],
+                                              reportViewController.visitDays![index],
+                                            ) +
+                                            " - Operador: " +
+                                            reportViewController.operatorsWhoVisitMachines![index],
                                         textColor: AppColors.blackColor,
                                         fontSize: 18.sp,
                                         textAlign: TextAlign.start,
@@ -247,9 +248,71 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.pouchCollectedDates != null && reportViewController.pouchCollectedDates!.isNotEmpty &&
+            Padding(
+              padding: EdgeInsets.only(top: 1.5.h),
+              child: RichTextTwoDifferentWidget(
+                firstText: "Valor total cartão de crédito dos malotes: ",
+                firstTextColor: AppColors.blackColor,
+                firstTextFontWeight: FontWeight.normal,
+                firstTextSize: 18.sp,
+                secondText: FormatNumbers.numbersToMoney(reportViewController.creditValue),
+                secondTextColor: AppColors.blackColor,
+                secondTextFontWeight: FontWeight.bold,
+                secondTextSize: 18.sp,
+                secondTextDecoration: TextDecoration.none,
+                maxLines: 2,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 1.5.h),
+              child: RichTextTwoDifferentWidget(
+                firstText: "Valor total cartão de débito dos malotes: ",
+                firstTextColor: AppColors.blackColor,
+                firstTextFontWeight: FontWeight.normal,
+                firstTextSize: 18.sp,
+                secondText: FormatNumbers.numbersToMoney(reportViewController.debitValue),
+                secondTextColor: AppColors.blackColor,
+                secondTextFontWeight: FontWeight.bold,
+                secondTextSize: 18.sp,
+                secondTextDecoration: TextDecoration.none,
+                maxLines: 2,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 1.5.h),
+              child: RichTextTwoDifferentWidget(
+                firstText: "Valor total PIX dos malotes: ",
+                firstTextColor: AppColors.blackColor,
+                firstTextFontWeight: FontWeight.normal,
+                firstTextSize: 18.sp,
+                secondText: FormatNumbers.numbersToMoney(reportViewController.pixValue),
+                secondTextColor: AppColors.blackColor,
+                secondTextFontWeight: FontWeight.bold,
+                secondTextSize: 18.sp,
+                secondTextDecoration: TextDecoration.none,
+                maxLines: 2,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 1.5.h),
+              child: RichTextTwoDifferentWidget(
+                firstText: "Valor total dos malotes: ",
+                firstTextColor: AppColors.blackColor,
+                firstTextFontWeight: FontWeight.normal,
+                firstTextSize: 18.sp,
+                secondText: FormatNumbers.numbersToMoney(reportViewController.totalPouchValue),
+                secondTextColor: AppColors.blackColor,
+                secondTextFontWeight: FontWeight.bold,
+                secondTextSize: 18.sp,
+                secondTextDecoration: TextDecoration.none,
+                maxLines: 2,
+              ),
+            ),
+            if (reportViewController.pouchCollectedDates != null &&
+                reportViewController.pouchCollectedDates!.isNotEmpty &&
                 reportViewController.operatorsWhoCollectedPouchsList != null &&
-                reportViewController.operatorsWhoCollectedPouchsList!.length == reportViewController.pouchCollectedDates!.length)
+                reportViewController.operatorsWhoCollectedPouchsList!.length ==
+                    reportViewController.pouchCollectedDates!.length)
               Padding(
                 padding: EdgeInsets.only(top: 1.5.h),
                 child: Container(
@@ -258,9 +321,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                       width: 1,
                       color: AppColors.blackColor,
                     ),
-                    borderRadius: BorderRadius.circular(
-                        1.h
-                    ),
+                    borderRadius: BorderRadius.circular(1.h),
                   ),
                   child: ExpansionTile(
                     title: TextWidget(
@@ -274,7 +335,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: reportViewController.pouchCollectedDates!.length,
-                        itemBuilder: (context, index){
+                        itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
                             child: Column(
@@ -296,8 +357,10 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                                     Expanded(
                                       child: TextWidget(
                                         DateFormatToBrazil.formatDateAndHour(
-                                          reportViewController.pouchCollectedDates![index],
-                                        ) + " - Operador: " + reportViewController.operatorsWhoCollectedPouchsList![index],
+                                              reportViewController.pouchCollectedDates![index],
+                                            ) +
+                                            " - Operador: " +
+                                            reportViewController.operatorsWhoCollectedPouchsList![index],
                                         textColor: AppColors.blackColor,
                                         fontSize: 18.sp,
                                         textAlign: TextAlign.start,
@@ -340,7 +403,8 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
-            if(reportViewController.outOffAverageDates != null && reportViewController.outOffAverageDates!.isNotEmpty &&
+            if (reportViewController.outOffAverageDates != null &&
+                reportViewController.outOffAverageDates!.isNotEmpty &&
                 reportViewController.outOffAverageValues != null &&
                 reportViewController.outOffAverageValues!.length == reportViewController.outOffAverageDates!.length)
               Padding(
@@ -351,9 +415,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                       width: 1,
                       color: AppColors.blackColor,
                     ),
-                    borderRadius: BorderRadius.circular(
-                        1.h
-                    ),
+                    borderRadius: BorderRadius.circular(1.h),
                   ),
                   child: ExpansionTile(
                     title: TextWidget(
@@ -367,7 +429,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: reportViewController.outOffAverageDates!.length,
-                        itemBuilder: (context, index){
+                        itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
                             child: Column(
@@ -389,8 +451,9 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                                     Expanded(
                                       child: TextWidget(
                                         DateFormatToBrazil.formatDateAndHour(
-                                          reportViewController.outOffAverageDates![index],
-                                        ) + " - Valor: " +
+                                              reportViewController.outOffAverageDates![index],
+                                            ) +
+                                            " - Valor: " +
                                             FormatNumbers.numbersToString(
                                               reportViewController.outOffAverageValues![index],
                                             ),
