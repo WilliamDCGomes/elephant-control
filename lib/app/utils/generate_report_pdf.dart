@@ -71,9 +71,7 @@ class GenerateReportPdf {
 
       final documentoPdfGerado = await doc.save();
       final diretorioTemporario = await getTemporaryDirectory();
-      File file = await File(
-              '${diretorioTemporario.path}/Proposta_Intencao_Compra_ZIncorporacoes_${DateTime.now().millisecondsSinceEpoch}.pdf')
-          .create();
+      File file = await File('${diretorioTemporario.path}/PDF_${DateTime.now().millisecondsSinceEpoch}.pdf').create();
       file.writeAsBytesSync(documentoPdfGerado);
       return file;
     } catch (e) {
