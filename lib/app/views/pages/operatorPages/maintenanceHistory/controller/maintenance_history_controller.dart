@@ -9,8 +9,13 @@ import 'package:elephant_control/base/services/visit_service.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../widgetsShared/button_widget.dart';
+import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
+import '../../../widgetsShared/popups/default_popup_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
+import '../../../widgetsShared/text_button_widget.dart';
 
 class MaintenanceHistoryController extends GetxController {
   late RxBool screenLoading;
@@ -18,12 +23,15 @@ class MaintenanceHistoryController extends GetxController {
   late TextEditingController searchMachines;
   late final RxList<VisitListViewController> _visits;
   late final RxList<Machine> _machines;
+  late RxList<Machine> machinesScreen;
+  late List<Machine> _machinesCities;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidgetTwo;
   late final VisitService _visitService;
   late final MachineService _machineService;
   late final UserVisitMachineService _userVisitMachineService;
   late final bool offline;
+  late bool firstGetMachineCities;
 
   MaintenanceHistoryController(this.offline) {
     _initializeVariables();
@@ -38,20 +46,16 @@ class MaintenanceHistoryController extends GetxController {
 
   //Getters
   List<VisitListViewController> get visits => _visits;
-  List<Machine> get machines {
-    if (searchMachines.text.isNotEmpty) {
-      return _machines.where((p0) => p0.name.toLowerCase().contains(searchMachines.text.toLowerCase())).toList();
-    } else {
-      return _machines;
-    }
-  }
 
   _initializeVariables() {
+    firstGetMachineCities = true;
     screenLoading = true.obs;
     nextScreenLoading = true.obs;
     searchMachines = TextEditingController();
     _visits = <VisitListViewController>[].obs;
     _machines = <Machine>[].obs;
+    machinesScreen = <Machine>[].obs;
+    _machinesCities = <Machine>[].obs;
     _visitService = VisitService();
     _userVisitMachineService = UserVisitMachineService();
     _machineService = MachineService();
@@ -60,7 +64,18 @@ class MaintenanceHistoryController extends GetxController {
     loadingWithSuccessOrErrorWidgetTwo = LoadingWithSuccessOrErrorWidget();
   }
 
-  void updateList() => _machines.refresh();
+  void updateList() {
+    if (searchMachines.text.isNotEmpty) {
+      machinesScreen.clear();
+      machinesScreen.addAll(_machines.where((p0) => p0.name.toLowerCase().contains(searchMachines.text.toLowerCase())).toList());
+      _getMachineCities(machinesScreen);
+    }
+    else {
+      machinesScreen.addAll(_machines);
+      _getMachineCities(machinesScreen);
+    }
+    machinesScreen.refresh();
+  }
 
   Future<void> getVisitsOperatorByUserId({bool showLoad = true}) async {
     try {
@@ -76,6 +91,8 @@ class MaintenanceHistoryController extends GetxController {
             ..sort((a, b) => (a.machineName).compareTo(b.machineName))
             ..sort((a, b) => (a.status?.index ?? -1).compareTo(b.status?.index ?? -1))
             ..sort((a, b) => (a.active == true ? -1 : 0).compareTo(b.active == true ? -1 : 0)));
+
+
     } catch (_) {
       _visits.clear();
     } finally {
@@ -101,15 +118,141 @@ class MaintenanceHistoryController extends GetxController {
         await loadingWithSuccessOrErrorWidgetTwo.startAnimation();
       }
       _machines.clear();
+      machinesScreen.clear();
       _machines.addAll(
           offline ? await MachineRepository().getMachineVisitByUserId() : await _machineService.getMachineVisitByUserId());
       if (_machines.isNotEmpty) _machines.sort((a, b) => a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()));
+      machinesScreen.addAll(_machines);
+      _getMachineCities(machinesScreen);
     } catch (_) {
       _machines.clear();
+      machinesScreen.clear();
     } finally {
       if (showLoad) {
         await loadingWithSuccessOrErrorWidgetTwo.stopAnimation(justLoading: true);
       }
+    }
+  }
+
+  _getMachineCities(List<Machine> allMachines){
+    _machinesCities.clear();
+    for(var machine in allMachines){
+      if(!_machinesCities.any((element) => element.city.trim() == machine.city.trim()) && machine.city.trim() != ""){
+        if(firstGetMachineCities){
+          machine.selected = true;
+        }
+        _machinesCities.add(machine);
+      }
+    }
+    firstGetMachineCities = false;
+  }
+
+  selectedCities() async {
+    bool allCitiesSelected = true;
+    await showDialog(
+      context: Get.context!,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => DefaultPopupWidget(
+          title: "Selecione as cidades das máquinas que deseja filtrar",
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButtonWidget(
+              widgetCustom: Align(
+                alignment: Alignment.centerLeft,
+                child: CheckboxListTileWidget(
+                  radioText: "Selecionar todas",
+                  size: 4.h,
+                  checked: allCitiesSelected,
+                  justRead: true,
+                  onChanged: () {},
+                ),
+              ),
+              onTap: () async {
+                setState(() {
+                  allCitiesSelected = !allCitiesSelected;
+                  _machinesCities.forEach((user) {
+                    user.selected = allCitiesSelected;
+                  });
+                });
+              },
+            ),
+            SizedBox(
+              height: 40.h,
+              child: ListView.builder(
+                itemCount: _machinesCities.length,
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) => TextButtonWidget(
+                  widgetCustom: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CheckboxListTileWidget(
+                      radioText: _machinesCities[index].city,
+                      size: 4.h,
+                      checked: _machinesCities[index].selected,
+                      justRead: true,
+                      onChanged: () {},
+                    ),
+                  ),
+                  onTap: () async {
+                    setState(() {
+                      _machinesCities[index].selected = !_machinesCities[index].selected;
+                      if(allCitiesSelected && !_machinesCities[index].selected){
+                        allCitiesSelected = _machinesCities[index].selected;
+                      }
+                      else if(!allCitiesSelected && _machinesCities[index].selected && _machinesCities.length == 1){
+                        allCitiesSelected = true;
+                      }
+                    });
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(2.h),
+              child: ButtonWidget(
+                hintText: "SELECIONAR",
+                textSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                widthButton: double.infinity,
+                onPressed: () {
+                  Get.back();
+
+                  setState(() {
+                    _machinesCities.sort((a, b) => a.name.compareTo(b.name));
+                    _machinesCities.sort((a, b) => b.selected.toString().compareTo(a.selected.toString()));
+                  });
+
+                  if(_machinesCities.where((element) => element.selected).length == _machinesCities.length){
+                    updateList();
+                  }
+                  else{
+                    _filterListPerCities();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _filterListPerCities(){
+    try{
+      var selectedMachines = _machinesCities.where((element) => element.selected).toList();
+      machinesScreen.clear();
+      machinesScreen.addAll(_machines.where((machine) => selectedMachines.any((element) => element.city.trim() == machine.city.trim())));
+      machinesScreen.refresh();
+    }
+    catch(_){
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao filtrar a lista.",
+          );
+        },
+      );
     }
   }
 

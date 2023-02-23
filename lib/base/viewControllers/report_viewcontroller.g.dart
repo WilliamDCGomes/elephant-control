@@ -16,6 +16,10 @@ ReportViewController _$ReportViewControllerFromJson(
       ..minimumAverageValue = (json['minimumAverageValue'] as num?)?.toDouble()
       ..maximumAverageValue = (json['maximumAverageValue'] as num?)?.toDouble()
       ..averageValue = (json['averageValue'] as num?)?.toDouble()
+      ..creditValue = (json['creditValue'] as num?)?.toDouble()
+      ..debitValue = (json['debitValue'] as num?)?.toDouble()
+      ..pixValue = (json['pixValue'] as num?)?.toDouble()
+      ..totalPouchValue = (json['totalPouchValue'] as num?)?.toDouble()
       ..numbersOfPouchRemoved = json['numbersOfPouchRemoved'] as int
       ..pouchCollectedDates = (json['pouchCollectedDates'] as List<dynamic>?)
           ?.map((e) => DateTime.parse(e as String))
@@ -50,6 +54,10 @@ Map<String, dynamic> _$ReportViewControllerToJson(
       'minimumAverageValue': instance.minimumAverageValue,
       'maximumAverageValue': instance.maximumAverageValue,
       'averageValue': instance.averageValue,
+      'creditValue': instance.creditValue,
+      'debitValue': instance.debitValue,
+      'pixValue': instance.pixValue,
+      'totalPouchValue': instance.totalPouchValue,
       'numbersOfPouchRemoved': instance.numbersOfPouchRemoved,
       'pouchCollectedDates': instance.pouchCollectedDates
           ?.map((e) => e.toIso8601String())

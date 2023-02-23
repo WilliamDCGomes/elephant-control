@@ -80,12 +80,30 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     }
   }
 
-  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(String? userId, DateTime? filterDate) async {
+  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(List<String>? userId, DateTime? filterDate) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetVisitsOfOperatorsByUserId';
       final response = await get(url,
-          query: {"UserId": userId, "filterDate": filterDate != null ? filterDate.toString() : ""},
+          query: {"UserId": userId, "filterDate": filterDate != null ? filterDate.toIso8601String() : ""},
+          headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserIdAndPeriod(List<String>? userId, DateTime? initialFilterDate, DateTime? finalFilterDate) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/getVisitsOfOperatorsByUserIdAndPeriod';
+      final response = await get(url,
+          query: {
+            "UserId": userId,
+            "initialDateFilter": initialFilterDate != null ? initialFilterDate.toIso8601String() : "",
+            "finalDateFilter": finalFilterDate != null ? finalFilterDate.toIso8601String() : "",
+          },
           headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();

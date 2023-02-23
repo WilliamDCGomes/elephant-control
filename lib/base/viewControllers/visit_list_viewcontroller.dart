@@ -16,6 +16,7 @@ class VisitListViewController extends ElephantUserCore {
   @JsonKey(fromJson: ElephantCore.fromJsonActive)
   final bool moneyPouchRetired;
   final String machineName;
+  final String? machineCity;
   @JsonKey(fromJson: ElephantCore.fromJsonActive)
   bool? realizedVisit;
   String? latitude;
@@ -30,6 +31,7 @@ class VisitListViewController extends ElephantUserCore {
     required this.moneyPouchRetired,
     required this.machineName,
     this.realizedVisit,
+    this.machineCity,
     this.latitude,
     this.longitude,
   });

@@ -96,7 +96,7 @@ class AdminReportController extends GetxController {
   }
 
   selectedMachines() async {
-    bool allUsersSelected = true;
+    bool allMachinesSelected = true;
     await showDialog(
       context: Get.context!,
       builder: (context) => StatefulBuilder(
@@ -110,16 +110,16 @@ class AdminReportController extends GetxController {
                 child: CheckboxListTileWidget(
                   radioText: "Selecionar todas",
                   size: 4.h,
-                  checked: allUsersSelected,
+                  checked: allMachinesSelected,
                   justRead: true,
                   onChanged: () {},
                 ),
               ),
               onTap: () async {
                 setState(() {
-                  allUsersSelected = !allUsersSelected;
+                  allMachinesSelected = !allMachinesSelected;
                   machinesList.forEach((user) {
-                    user.selected = allUsersSelected;
+                    user.selected = allMachinesSelected;
                   });
                 });
               },
@@ -143,11 +143,11 @@ class AdminReportController extends GetxController {
                   onTap: () async {
                     setState(() {
                       machinesList[index].selected = !machinesList[index].selected;
-                      if(allUsersSelected && !machinesList[index].selected){
-                        allUsersSelected = machinesList[index].selected;
+                      if(allMachinesSelected && !machinesList[index].selected){
+                        allMachinesSelected = machinesList[index].selected;
                       }
-                      else if(!allUsersSelected && machinesList[index].selected && machinesList.length == 1){
-                        allUsersSelected = true;
+                      else if(!allMachinesSelected && machinesList[index].selected && machinesList.length == 1){
+                        allMachinesSelected = true;
                       }
                     });
                   },

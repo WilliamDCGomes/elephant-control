@@ -76,6 +76,7 @@ class _DefaultPopupWidgetState extends State<DefaultPopupWidget> {
                       textColor: AppColors.whiteColor,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
+                      maxLines: 2,
                     ),
                   ),
                   ...?widget.children,

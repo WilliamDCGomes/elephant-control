@@ -15,8 +15,9 @@ import '../../../widgetsShared/popups/default_popup_widget.dart';
 import '../../../widgetsShared/popups/information_popup.dart';
 import '../../../widgetsShared/text_button_widget.dart';
 
-class OperatorsVisitsController extends GetxController {
-  late DateTime dateFilter;
+class OperatorsVisitsPeriodFilterController extends GetxController {
+  late DateTime initialDateFilter;
+  late DateTime finalDateFilter;
   late RxInt visitsQuantity;
   late RxBool screenLoading;
   late RxString userSelected;
@@ -28,7 +29,7 @@ class OperatorsVisitsController extends GetxController {
   late IVisitService _visitService;
   late RxBool showInfos;
 
-  OperatorsVisitsController() {
+  OperatorsVisitsPeriodFilterController() {
     _initializeVariables();
   }
 
@@ -39,7 +40,8 @@ class OperatorsVisitsController extends GetxController {
   }
 
   _initializeVariables() {
-    dateFilter = DateTime.now();
+    initialDateFilter = DateTime.now();
+    finalDateFilter = DateTime.now();
     screenLoading = true.obs;
     visitsQuantity = 0.obs;
     userSelected = "".obs;
@@ -238,9 +240,10 @@ class OperatorsVisitsController extends GetxController {
         return;
       }
 
-      operatorVisitList.value = (await _visitService.getVisitsOfOperatorsByUserId(
+      operatorVisitList.value = (await _visitService.getVisitsOfOperatorsByUserIdAndPeriod(
         usersIdsSelected,
-        dateFilter,
+        initialDateFilter,
+        finalDateFilter,
       ))
         ..sort((a, b) => (a.machineName).compareTo(b.machineName))
         ..sort((a, b) {
@@ -278,7 +281,7 @@ class OperatorsVisitsController extends GetxController {
     }
   }
 
-  filterPerDate() async {
+  initialFilterPerDate() async {
     DateTime auxDate = DateTime.now();
 
     final DateTime? picked = await showDatePicker(
@@ -286,14 +289,33 @@ class OperatorsVisitsController extends GetxController {
       helpText: "SELECIONE UMA DATA",
       confirmText: "Selecionar",
       cancelText: "Cancelar",
-      initialDate: dateFilter,
+      initialDate: initialDateFilter,
       firstDate: DateTime(auxDate.year - 2, auxDate.month, auxDate.day),
       lastDate: auxDate,
     );
 
-    if (picked != null && picked != dateFilter) {
-      dateFilter = picked;
-      update(["date-filter"]);
+    if (picked != null && picked != initialDateFilter) {
+      initialDateFilter = picked;
+      update(["initial-date-filter"]);
+    }
+  }
+
+  finalFilterPerDate() async {
+    DateTime auxDate = DateTime.now();
+
+    final DateTime? picked = await showDatePicker(
+      context: Get.context!,
+      helpText: "SELECIONE UMA DATA",
+      confirmText: "Selecionar",
+      cancelText: "Cancelar",
+      initialDate: finalDateFilter,
+      firstDate: DateTime(auxDate.year - 2, auxDate.month, auxDate.day),
+      lastDate: auxDate,
+    );
+
+    if (picked != null && picked != finalDateFilter) {
+      finalDateFilter = picked;
+      update(["final-date-filter"]);
     }
   }
 }

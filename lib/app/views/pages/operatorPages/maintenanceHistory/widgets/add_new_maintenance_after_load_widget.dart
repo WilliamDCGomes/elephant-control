@@ -61,8 +61,22 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Visitas Pendentes",
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TitleWithBackButtonWidget(
+                                title: "Visitas Pendentes",
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => controller.selectedCities(),
+                              child: Icon(
+                                Icons.filter_alt,
+                                color: AppColors.whiteColor,
+                                size: 3.h,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -110,7 +124,7 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                 padding: EdgeInsets.symmetric(vertical: 2.h),
                                 child: Obx(
                                   () => Visibility(
-                                    visible: controller.machines.isNotEmpty,
+                                    visible: controller.machinesScreen.isNotEmpty,
                                     replacement: Center(
                                       child: TextWidget(
                                         "Nenhuma máquina encontrada",
@@ -118,12 +132,12 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                       ),
                                     ),
                                     child: ListView.builder(
-                                      itemCount: controller.machines
+                                      itemCount: controller.machinesScreen
                                           .length, //TODO widget.controller.allMaintenanceCardWidgetFilteredList.length,
                                       shrinkWrap: true,
                                       padding: EdgeInsets.symmetric(horizontal: 2.h),
                                       itemBuilder: (context, index) {
-                                        final machine = controller.machines[index];
+                                        final machine = controller.machinesScreen[index];
                                         return InkWell(
                                           onTap: () async {
                                             await showDialog(
@@ -132,7 +146,7 @@ class _AppNewMaintenanceAfterLoadWidgetState extends State<AppNewMaintenanceAfte
                                                 return ConfirmationPopup(
                                                   title: "Aviso",
                                                   subTitle:
-                                                      "Deseja realmente adicionar a máquina ${widget.controller.machines[index].name} na sua lista de atendimentos?",
+                                                      "Deseja realmente adicionar a máquina ${widget.controller.machinesScreen[index].name} na sua lista de atendimentos?",
                                                   child: machine.reminders == null || (machine.reminders?.isEmpty ?? true)
                                                       ? null
                                                       : Column(

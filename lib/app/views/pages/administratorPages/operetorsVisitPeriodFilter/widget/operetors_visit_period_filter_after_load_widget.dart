@@ -10,22 +10,22 @@ import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/rich_text_two_different_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../controller/operators_visits_controller.dart';
-import '../widgets/operator_visit_card_widget.dart';
+import '../../operatorsVisits/widgets/operator_visit_card_widget.dart';
+import '../controller/operetors_visit_period_filter_controller.dart';
 
-class OperatorsVisitsAfterLoadWidget extends StatefulWidget {
-  const OperatorsVisitsAfterLoadWidget({Key? key}) : super(key: key);
+class OperatorsVisitsPeriodFilterAfterLoadWidget extends StatefulWidget {
+  const OperatorsVisitsPeriodFilterAfterLoadWidget({Key? key}) : super(key: key);
 
   @override
-  State<OperatorsVisitsAfterLoadWidget> createState() => _OperatorsVisitsAfterLoadWidgetState();
+  State<OperatorsVisitsPeriodFilterAfterLoadWidget> createState() => _OperatorsVisitsPeriodFilterAfterLoadWidgetState();
 }
 
-class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoadWidget> {
-  late OperatorsVisitsController controller;
+class _OperatorsVisitsPeriodFilterAfterLoadWidgetState extends State<OperatorsVisitsPeriodFilterAfterLoadWidget> {
+  late OperatorsVisitsPeriodFilterController controller;
 
   @override
   void initState() {
-    controller = Get.find(tag: "operators-visits-controller");
+    controller = Get.find(tag: "operators-visits-period-filter-controller");
     super.initState();
   }
 
@@ -57,7 +57,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
                         child: Obx(
-                          () => TitleWithBackButtonWidget(
+                              () => TitleWithBackButtonWidget(
                             title: "Visitas dos Operadores",
                             rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
                             onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
@@ -98,7 +98,7 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                                   height: 2.h,
                                 ),
                                 Obx(
-                                  () => RichTextTwoDifferentWidget(
+                                      () => RichTextTwoDifferentWidget(
                                     firstText: "Quantidade de Visitas: ",
                                     firstTextColor: AppColors.whiteColor,
                                     firstTextFontWeight: FontWeight.normal,
@@ -146,38 +146,85 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () async => await controller.filterPerDate(),
-                        child: Container(
-                          height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: AppColors.defaultColor,
-                              width: .25.h,
-                            ),
-                          ),
-                          padding: EdgeInsets.all(1.h),
-                          margin: EdgeInsets.only(left: 2.h, top: 1.h, right: 2.h, bottom: 2.h),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: GetBuilder(
-                              id: "date-filter",
-                              init: controller,
-                              builder: (_) => RichTextTwoDifferentWidget(
-                                firstText: "Data da Visita: ",
-                                firstTextColor: AppColors.blackColor,
-                                firstTextFontWeight: FontWeight.normal,
-                                firstTextSize: 16.sp,
-                                secondText: DateFormatToBrazil.formatDate(controller.dateFilter),
-                                secondTextColor: AppColors.blackColor,
-                                secondTextFontWeight: FontWeight.bold,
-                                secondTextSize: 16.sp,
-                                secondTextDecoration: TextDecoration.none,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async => await controller.initialFilterPerDate(),
+                              child: Container(
+                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: AppColors.defaultColor,
+                                    width: .25.h,
+                                  ),
+                                ),
+                                padding: EdgeInsets.all(1.h),
+                                margin: EdgeInsets.only(left: 2.h, top: 1.h, right: .5.h, bottom: 2.h),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: GetBuilder(
+                                    id: "initial-date-filter",
+                                    init: controller,
+                                    builder: (_) => RichTextTwoDifferentWidget(
+                                      firstText: "Início: ",
+                                      firstTextColor: AppColors.blackColor,
+                                      firstTextFontWeight: FontWeight.normal,
+                                      firstTextSize: 16.sp,
+                                      secondText: DateFormatToBrazil.formatDate(controller.initialDateFilter),
+                                      secondTextColor: AppColors.blackColor,
+                                      secondTextFontWeight: FontWeight.bold,
+                                      secondTextSize: 16.sp,
+                                      secondTextDecoration: TextDecoration.none,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async => await controller.finalFilterPerDate(),
+                              child: Container(
+                                height: PlatformType.isTablet(context) ? 5.6.h : 6.5.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: AppColors.defaultColor,
+                                    width: .25.h,
+                                  ),
+                                ),
+                                padding: EdgeInsets.all(1.h),
+                                margin: EdgeInsets.only(left: .5.h, top: 1.h, right: 2.h, bottom: 2.h),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: GetBuilder(
+                                    id: "final-date-filter",
+                                    init: controller,
+                                    builder: (_) => RichTextTwoDifferentWidget(
+                                      firstText: "Fim: ",
+                                      firstTextColor: AppColors.blackColor,
+                                      firstTextFontWeight: FontWeight.normal,
+                                      firstTextSize: 16.sp,
+                                      secondText: DateFormatToBrazil.formatDate(controller.finalDateFilter),
+                                      secondTextColor: AppColors.blackColor,
+                                      secondTextFontWeight: FontWeight.bold,
+                                      secondTextSize: 16.sp,
+                                      secondTextDecoration: TextDecoration.none,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Expanded(
                         child: GetBuilder(
@@ -187,29 +234,29 @@ class _OperatorsVisitsAfterLoadWidgetState extends State<OperatorsVisitsAfterLoa
                             padding: EdgeInsets.only(bottom: 2.h),
                             child: controller.operatorVisitList.isNotEmpty
                                 ? ListView.builder(
-                                    itemCount: controller.operatorVisitList.length,
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.symmetric(horizontal: 2.h),
-                                    itemBuilder: (context, index) {
-                                      return OperatorVisitCardWidget(
-                                        visitOfOperatorsViewController: controller.operatorVisitList[index],
-                                        operatorsVisitsController: controller,
-                                        showBody: false,
-                                      );
-                                    },
-                                  )
+                              itemCount: controller.operatorVisitList.length,
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(horizontal: 2.h),
+                              itemBuilder: (context, index) {
+                                return OperatorVisitCardWidget(
+                                  visitOfOperatorsViewController: controller.operatorVisitList[index],
+                                  operatorsVisitsPeriodFilterController: controller,
+                                  showBody: false,
+                                );
+                              },
+                            )
                                 : Center(
-                                    child: TextWidget(
-                                      controller.userSelected.value.isNotEmpty
-                                          ? "Não existe visitas para esse usuário nesta data"
-                                          : "",
-                                      textColor: AppColors.grayTextColor,
-                                      fontSize: 14.sp,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                              child: TextWidget(
+                                controller.userSelected.value.isNotEmpty
+                                    ? "Não existe visitas para esse usuário nesta data"
+                                    : "",
+                                textColor: AppColors.grayTextColor,
+                                fontSize: 14.sp,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),

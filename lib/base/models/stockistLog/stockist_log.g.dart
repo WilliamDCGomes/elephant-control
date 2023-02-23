@@ -15,11 +15,16 @@ StockistLog _$StockistLogFromJson(Map<String, dynamic> json) => StockistLog(
       operatorUserId: json['operatorUserId'] as String,
     )
       ..id = json['id'] as String?
-      ..inclusion = json['inclusion'] == null ? null : DateTime.parse(json['inclusion'] as String)
-      ..alteration = json['alteration'] == null ? null : DateTime.parse(json['alteration'] as String)
+      ..inclusion = json['inclusion'] == null
+          ? null
+          : DateTime.parse(json['inclusion'] as String)
+      ..alteration = json['alteration'] == null
+          ? null
+          : DateTime.parse(json['alteration'] as String)
       ..active = ElephantCore.fromJsonActive(json['active']);
 
-Map<String, dynamic> _$StockistLogToJson(StockistLog instance) => <String, dynamic>{
+Map<String, dynamic> _$StockistLogToJson(StockistLog instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'inclusion': instance.inclusion?.toIso8601String(),
       'alteration': instance.alteration?.toIso8601String(),

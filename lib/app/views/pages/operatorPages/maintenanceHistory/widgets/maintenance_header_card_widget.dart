@@ -50,22 +50,24 @@ class MaintenanceHeaderCardWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
         child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: children.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: TextWidget(
-                    machineName,
-                    textColor: operatorDeletedMachine ? AppColors.blackColor : AppColors.whiteColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.sp,
-                    textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
-                    textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
-                    maxLines: maxLines ?? 1,
+            Center(
+              child: Row(
+                mainAxisAlignment: children.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: TextWidget(
+                      machineName,
+                      textColor: operatorDeletedMachine ? AppColors.blackColor : AppColors.whiteColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                      textDecoration: decoratorLine ? TextDecoration.lineThrough : TextDecoration.none,
+                      textAlign: children.isEmpty ? TextAlign.center : TextAlign.start,
+                      maxLines: maxLines ?? 1,
+                    ),
                   ),
-                ),
-                ...children,
-              ],
+                  ...children,
+                ],
+              ),
             ),
             if (hasIncident)
               Positioned(

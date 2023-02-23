@@ -82,7 +82,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
-      child: TextButtonWidget(
+      child: InkWell(
         onTap: widget.onTap ??
             (!widget.onTapDesabilitate
                 ? null
@@ -107,8 +107,7 @@ class _MaintenanceCardWidgetState extends State<MaintenanceCardWidget> {
                       ),
                     );
                   }),
-        componentPadding: EdgeInsets.zero,
-        widgetCustom: Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(

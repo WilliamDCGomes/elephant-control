@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/popups/bottom_sheet_popup.dart';
 import 'package:elephant_control/app/views/pages/widgetsShared/text_button_widget.dart';
 import 'package:elephant_control/app/views/stylePages/app_colors.dart';
@@ -8,16 +9,21 @@ import '../../../../../../base/viewControllers/visits_of_operators_viewcontrolle
 import '../../../operatorPages/maintenanceHistory/popups/maintenance_information_popup.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_body_card_widget.dart';
 import '../../../operatorPages/maintenanceHistory/widgets/maintenance_header_card_widget.dart';
+import '../../operetorsVisitPeriodFilter/controller/operetors_visit_period_filter_controller.dart';
 import '../controller/operators_visits_controller.dart';
 
 class OperatorVisitCardWidget extends StatefulWidget {
+  final bool showBody;
   final OperatorsVisitsController? operatorsVisitsController;
+  final OperatorsVisitsPeriodFilterController? operatorsVisitsPeriodFilterController;
   final VisitOfOperatorsViewController visitOfOperatorsViewController;
 
   const OperatorVisitCardWidget({
     Key? key,
     required this.visitOfOperatorsViewController,
     this.operatorsVisitsController,
+    this.showBody = true,
+    this.operatorsVisitsPeriodFilterController,
   }) : super(key: key);
 
   @override
@@ -78,6 +84,7 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
               null,
               editPictures: false,
               operatorsVisitsController: widget.operatorsVisitsController,
+              operatorsVisitsPeriodFilterController: widget.operatorsVisitsPeriodFilterController,
             ),
           );
         },
@@ -86,16 +93,19 @@ class _OperatorVisitCardWidgetState extends State<OperatorVisitCardWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             MaintenanceHeaderCardWidget(
-              machineName: widget.visitOfOperatorsViewController.machineName,
+              machineName: widget.visitOfOperatorsViewController.machineName + (widget.showBody ? "" : " - ${DateFormatToBrazil.formatDateAndHour(widget.visitOfOperatorsViewController.vInclusion)}"),
               done: getStatus() == "Finalizado",
               operatorDeletedMachine: false,
               hasIncident: widget.visitOfOperatorsViewController.hasIncident,
-              // TODO widget.operatorDeletedMachine,
+              maxLines: 2,
             ),
-            MaintenanceBodyCardWidget(
-              status: getStatus(),
-              workPriority: _getVisitPriority(),
-              priorityColor: _getColorPriority(),
+            Visibility(
+              visible: widget.showBody,
+              child: MaintenanceBodyCardWidget(
+                status: getStatus(),
+                workPriority: _getVisitPriority(),
+                priorityColor: _getColorPriority(),
+              ),
             ),
           ],
         ),

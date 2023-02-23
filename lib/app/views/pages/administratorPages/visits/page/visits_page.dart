@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/views/pages/administratorPages/operatorsVisits/page/operators_visits_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -6,17 +7,16 @@ import '../../../../stylePages/app_colors.dart';
 import '../../../widgetsShared/information_container_widget.dart';
 import '../../../widgetsShared/text_widget.dart';
 import '../../../widgetsShared/title_with_back_button_widget.dart';
-import '../../adminReport/page/admin_report_page.dart';
-import '../../closingReport/page/closing_report_page.dart';
+import '../../operetorsVisitPeriodFilter/page/operetors_visit_period_filter_page.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({Key? key}) : super(key: key);
+class VisitsPage extends StatefulWidget {
+  const VisitsPage({Key? key}) : super(key: key);
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  State<VisitsPage> createState() => _VisitsPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _VisitsPageState extends State<VisitsPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,7 +49,7 @@ class _ReportPageState extends State<ReportPage> {
                           children: [
                             Expanded(
                               child: TitleWithBackButtonWidget(
-                                title: "Relatórios",
+                                title: "Visitas",
                               ),
                             ),
                           ],
@@ -59,7 +59,7 @@ class _ReportPageState extends State<ReportPage> {
                         iconPath: Paths.Relatorio,
                         textColor: AppColors.whiteColor,
                         backgroundColor: AppColors.defaultColor,
-                        informationText: "Selecione uma das opções para visualizar os relatórios",
+                        informationText: "Selecione uma das opções para visualizar as visitas",
                       ),
                     ],
                   ),
@@ -73,19 +73,19 @@ class _ReportPageState extends State<ReportPage> {
                         foregroundColor: AppColors.backgroundColor,
                         elevation: 3,
                         icon: Image.asset(
-                          Paths.Pelucia_Add,
+                          Paths.Manutencao,
                           height: 3.h,
                           color: AppColors.whiteColor,
                         ),
                         label: TextWidget(
-                          "Relatório Geral",
+                          "Visitas por Data",
                           maxLines: 1,
                           textColor: AppColors.whiteColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () => Get.to(() => AdminReportPage()),
+                        onPressed: () => Get.to(() => OperatorsVisitsPage()),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
@@ -95,19 +95,19 @@ class _ReportPageState extends State<ReportPage> {
                           foregroundColor: AppColors.backgroundColor,
                           elevation: 3,
                           icon: Image.asset(
-                            Paths.Pelucia_Remove,
+                            Paths.Manutencao,
                             height: 3.h,
                             color: AppColors.whiteColor,
                           ),
                           label: TextWidget(
-                            "Relatório de Fechamento",
+                            "Visitas por Períodos",
                             maxLines: 1,
                             textColor: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.sp,
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () => Get.to(() => ClosingReportPage()),
+                          onPressed: () => Get.to(() => OperatorsVisitsPeriodFilterPage()),
                         ),
                       ),
                     ],

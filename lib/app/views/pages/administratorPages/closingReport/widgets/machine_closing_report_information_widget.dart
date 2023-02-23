@@ -82,6 +82,162 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                 maxLines: 2,
               ),
             ),
+            if (reportViewController.creditValue != null && reportViewController.debitValue != null && reportViewController.pixValue != null && reportViewController.totalPouchValue != null)
+              Padding(
+                padding: EdgeInsets.only(top: 1.5.h),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: AppColors.blackColor,
+                    ),
+                    borderRadius: BorderRadius.circular(1.h),
+                  ),
+                  child: ExpansionTile(
+                    title: TextWidget(
+                      "Valores da máquina",
+                      textColor: AppColors.blackColor,
+                      fontSize: 16.sp,
+                      textAlign: TextAlign.start,
+                    ),
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 2.h,
+                                  width: 2.h,
+                                  margin: EdgeInsets.only(right: 2.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.defaultColor,
+                                    borderRadius: BorderRadius.circular(
+                                      1.h,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextWidget(
+                                    "Dinheiro: " +
+                                        FormatNumbers.numbersToMoney(reportViewController.totalPouchValue),
+                                    textColor: AppColors.blackColor,
+                                    fontSize: 18.sp,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: .5.h),
+                              child: Divider(
+                                color: AppColors.defaultColor,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 2.h,
+                                  width: 2.h,
+                                  margin: EdgeInsets.only(right: 2.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.defaultColor,
+                                    borderRadius: BorderRadius.circular(
+                                      1.h,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextWidget(
+                                    "Cartão de Crédito: " +
+                                        FormatNumbers.numbersToMoney(reportViewController.creditValue),
+                                    textColor: AppColors.blackColor,
+                                    fontSize: 18.sp,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: .5.h),
+                              child: Divider(
+                                color: AppColors.defaultColor,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 2.h,
+                                  width: 2.h,
+                                  margin: EdgeInsets.only(right: 2.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.defaultColor,
+                                    borderRadius: BorderRadius.circular(
+                                      1.h,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextWidget(
+                                    "Cartão de Débito: " +
+                                        FormatNumbers.numbersToMoney(reportViewController.debitValue),
+                                    textColor: AppColors.blackColor,
+                                    fontSize: 18.sp,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: .5.h),
+                              child: Divider(
+                                color: AppColors.defaultColor,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 2.h,
+                                  width: 2.h,
+                                  margin: EdgeInsets.only(right: 2.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.defaultColor,
+                                    borderRadius: BorderRadius.circular(
+                                      1.h,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextWidget(
+                                    "Valor no Pix: " +
+                                        FormatNumbers.numbersToMoney(reportViewController.pixValue),
+                                    textColor: AppColors.blackColor,
+                                    fontSize: 18.sp,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             Padding(
               padding: EdgeInsets.only(top: 1.5.h),
               child: TextWidget(

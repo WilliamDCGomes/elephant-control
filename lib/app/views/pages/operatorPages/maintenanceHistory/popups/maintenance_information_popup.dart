@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../stylePages/app_colors.dart';
 import '../../../administratorPages/operatorsVisits/controller/operators_visits_controller.dart';
+import '../../../administratorPages/operetorsVisitPeriodFilter/controller/operetors_visit_period_filter_controller.dart';
 import '../../../sharedPages/visitDetails/page/visit_details_page.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
@@ -36,6 +37,7 @@ class MaintenanceInformationPopup {
       MaintenanceHistoryController? controller,
       {
         OperatorsVisitsController? operatorsVisitsController,
+        OperatorsVisitsPeriodFilterController? operatorsVisitsPeriodFilterController,
         bool editPictures = true,
         bool offline = false,
       }) {
@@ -335,6 +337,9 @@ class MaintenanceInformationPopup {
                 }
                 if(operatorsVisitsController != null){
                   await operatorsVisitsController.getVisitsUser();
+                }
+                if(operatorsVisitsPeriodFilterController != null){
+                  await operatorsVisitsPeriodFilterController.getVisitsUser();
                 }
               },
             )),

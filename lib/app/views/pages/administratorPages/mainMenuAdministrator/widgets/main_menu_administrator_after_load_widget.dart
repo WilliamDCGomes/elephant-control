@@ -16,11 +16,11 @@ import '../../financialHistoryAdministrator/page/financial_history_administrator
 import '../../machine/page/machine_page.dart';
 import '../../newReminder/page/new_reminder_page.dart';
 import '../../operatorFinancialPouch/page/operator_financial_pouch_page.dart';
-import '../../operatorsVisits/page/operators_visits_page.dart';
 import '../../recallMoney/page/recall_money_page.dart';
 import '../../report/page/report_page.dart';
 import '../../stockControl/page/stock_control_page.dart';
 import '../../users/page/user_page.dart';
+import '../../visits/page/visits_page.dart';
 import '../controller/main_menu_administrator_controller.dart';
 import '../widgets/menu_options_widget.dart';
 import 'card_main_menu_administrator_widget.dart';
@@ -278,7 +278,7 @@ class _MainMenuAdministratorAfterLoadWidgetState extends State<MainMenuAdministr
                               MenuOptionsWidget(
                                 text: "Visitas dos Operadores",
                                 imagePath: Paths.Manutencao,
-                                onTap: () => Get.to(() => OperatorsVisitsPage()),
+                                onTap: () => Get.to(() => VisitsPage()),
                               ),
                             if (!accessValidate ||
                                 (accessValidate && LoggedUser.nameRoles.contains("HistoricoCofreTesouraria")))

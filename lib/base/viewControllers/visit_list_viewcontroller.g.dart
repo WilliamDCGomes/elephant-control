@@ -19,6 +19,7 @@ VisitListViewController _$VisitListViewControllerFromJson(
       moneyPouchRetired: ElephantCore.fromJsonActive(json['moneyPouchRetired']),
       machineName: json['machineName'] as String,
       realizedVisit: ElephantCore.fromJsonActive(json['realizedVisit']),
+      machineCity: json['machineCity'] as String?,
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
     )
@@ -49,6 +50,7 @@ Map<String, dynamic> _$VisitListViewControllerToJson(
       'stuffedAnimalsQuantity': instance.stuffedAnimalsQuantity,
       'moneyPouchRetired': instance.moneyPouchRetired,
       'machineName': instance.machineName,
+      'machineCity': instance.machineCity,
       'realizedVisit': instance.realizedVisit,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
