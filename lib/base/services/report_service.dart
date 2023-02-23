@@ -6,7 +6,9 @@ class ReportService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Report/GetDefaultReport';
-      final response = await get(url, query: {"BeginDate": beginDate.toString(), "EndDate": endDate.toString(), "MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url,
+          query: {"BeginDate": beginDate.toString(), "EndDate": endDate.toString(), "MachineId": machineId},
+          headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return ReportViewController.fromJson(response.body);
     } catch (_) {
@@ -18,7 +20,9 @@ class ReportService extends BaseService {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Report/GetClosingReport';
-      final response = await get(url, query: {"ClosingReportDateFilter": closingReportDateFilter.toString(), "MachineId": machineId}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url,
+          query: {"ClosingReportDateFilter": closingReportDateFilter.toString(), "MachineId": machineId},
+          headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return ReportViewController.fromJson(response.body);
     } catch (_) {
