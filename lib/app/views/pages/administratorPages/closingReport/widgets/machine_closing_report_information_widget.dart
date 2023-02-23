@@ -74,7 +74,10 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                 firstTextColor: AppColors.blackColor,
                 firstTextFontWeight: FontWeight.normal,
                 firstTextSize: 18.sp,
-                secondText: FormatNumbers.intToMoney(reportViewController.machineValue),
+                secondText: (reportViewController.creditValue != null && reportViewController.debitValue != null && reportViewController.pixValue != null && reportViewController.totalPouchValue != null &&
+                    (reportViewController.creditValue! + reportViewController.debitValue! + reportViewController.pixValue! + reportViewController.totalPouchValue!) != 0) ?
+                FormatNumbers.numbersToMoney(reportViewController.creditValue! + reportViewController.debitValue! + reportViewController.pixValue! + reportViewController.totalPouchValue!) :
+                FormatNumbers.intToMoney(reportViewController.machineValue),
                 secondTextColor: AppColors.blackColor,
                 secondTextFontWeight: FontWeight.bold,
                 secondTextSize: 18.sp,
