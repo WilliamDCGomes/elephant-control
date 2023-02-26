@@ -57,12 +57,29 @@ class _AdminReportAfterLoadWidgetState extends State<AdminReportAfterLoadWidget>
                         height: 8.h,
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: Obx(
-                          () => TitleWithBackButtonWidget(
-                            title: "Relatório Geral",
-                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
-                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
-                          ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Obx(
+                                () => TitleWithBackButtonWidget(
+                                  title: "Relatório Geral",
+                                  rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                                  onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => controller.generateReportPdf(),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 4.w),
+                                child: Icon(
+                                  Icons.print_outlined,
+                                  color: AppColors.backgroundColor,
+                                  size: 3.h,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Obx(

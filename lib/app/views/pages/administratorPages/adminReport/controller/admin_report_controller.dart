@@ -2,11 +2,13 @@ import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../../../base/models/machine/machine.dart';
 import '../../../../../../base/services/machine_service.dart';
 import '../../../../../../base/services/report_service.dart';
 import '../../../../../../base/viewControllers/report_viewcontroller.dart';
 import '../../../../../utils/format_numbers.dart';
+import '../../../../../utils/generate_report_pdf.dart';
 import '../../../widgetsShared/button_widget.dart';
 import '../../../widgetsShared/checkbox_list_tile_widget.dart';
 import '../../../widgetsShared/loading_with_success_or_error_widget.dart';
@@ -273,6 +275,54 @@ class AdminReportController extends GetxController {
         builder: (BuildContext context) {
           return InformationPopup(
             warningMessage: "Erro gerar relatório! Tente novamente mais tarde.",
+          );
+        },
+      );
+    }
+  }
+
+  generateReportPdf() async {
+    try{
+      if(reportViewController != null){
+
+        var machines = machinesList.where((element) => element.selected);
+
+        if(machines.isEmpty){
+          await showDialog(
+            context: Get.context!,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return InformationPopup(
+                warningMessage: "Selecione pelo menos uma máquina para gerar o relatório.",
+              );
+            },
+          );
+          return;
+        }
+
+        List<String> machineNames = <String>[];
+        machines.forEach((element) => machineNames.add(element.name));
+
+        var reportFile = machineNames.length > 1 ? await GenerateReportPdf.generateGeneralPdf(machineNames, reportViewController!, DateFormatToBrazil.formatDateAndHour(initialDateFilter) + " até " + DateFormatToBrazil.formatDateAndHour(finalDateFilter)) :
+        await GenerateReportPdf.generateSpecificPdf(machineNames.first, reportViewController!, DateFormatToBrazil.formatDateAndHour(initialDateFilter) + " até " + DateFormatToBrazil.formatDateAndHour(finalDateFilter));
+        if(reportFile != null){
+          await Share.shareXFiles(
+            [XFile(reportFile.path)],
+            text: "Relatório " + DateFormatToBrazil.formatDateAndHour(DateTime.now()),
+          );
+        }
+        else{
+          throw Exception();
+        }
+      }
+    }
+    catch(_){
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao exportar o relatório! Tente diminuir a quantidade de máquinas selecionadas para exportar o relatório.",
           );
         },
       );
