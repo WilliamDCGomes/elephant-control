@@ -5,6 +5,7 @@ import 'package:elephant_control/base/services/base/base_service.dart';
 import 'package:elephant_control/base/viewControllers/add_money_pouch_viewcontroller.dart';
 import 'package:elephant_control/base/viewControllers/visit_list_viewcontroller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../viewControllers/last_machines_visit_viewcontroller.dart';
 import '../viewControllers/money_pouch_viewcontroller.dart';
 import '../viewControllers/safe_box_financial_viewcontroller.dart';
 import '../viewControllers/total_main_menu_operator_view_controller.dart';
@@ -89,6 +90,20 @@ class VisitService extends BaseService with MixinService implements IVisitServic
           headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<List<LastMachinesVisitViewController>> getLastMachinesVisits(List<String>? machinesIds) async {
+    try {
+      final token = await getToken();
+      final url = baseUrlApi + 'Visit/GetLastMachinesVisits';
+      final response = await get(url,
+          query: {"MachinesIds": machinesIds},
+          headers: {'Authorization': 'Bearer ${token}'});
+      if (hasErrorResponse(response)) throw Exception();
+      return (response.body as List).map((visit) => LastMachinesVisitViewController.fromJson(visit)).toList();
     } catch (_) {
       return [];
     }

@@ -4,7 +4,12 @@ import 'package:elephant_control/base/services/machine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../../../base/models/machine/machine.dart';
+import '../../../../../../base/services/interfaces/ivisit_service.dart';
+import '../../../../../../base/services/visit_service.dart';
+import '../../../../../utils/date_format_to_brazil.dart';
+import '../../../../../utils/generate_report_pdf.dart';
 import '../../registerMachine/page/register_machine_page.dart';
 
 class MachineController extends GetxController {
@@ -12,6 +17,7 @@ class MachineController extends GetxController {
   late TextEditingController searchMachines;
   late LoadingWithSuccessOrErrorWidget loadingWithSuccessOrErrorWidget;
   late final MachineService _machineService;
+  late final IVisitService _visitService;
   late final RxList<Machine> _machines;
 
   MachineController() {
@@ -29,6 +35,7 @@ class MachineController extends GetxController {
     searchMachines = TextEditingController();
     loadingWithSuccessOrErrorWidget = LoadingWithSuccessOrErrorWidget();
     _machineService = MachineService();
+    _visitService = VisitService();
     _machines = <Machine>[].obs;
   }
 
@@ -58,6 +65,43 @@ class MachineController extends GetxController {
         },
       );
       Get.back();
+    }
+  }
+
+  generateReportPdf() async {
+    try{
+      List<String>? machineIds = <String>[];
+
+      for(var machine in machines){
+        if(machine.id != null){
+          machineIds.add(machine.id!);
+        }
+      }
+
+      var machinesVisits = await _visitService.getLastMachinesVisits(machineIds);
+
+      var reportFile = await GenerateReportPdf.generateMachinePdf(machinesVisits);
+
+      if(reportFile != null){
+        await Share.shareXFiles(
+          [XFile(reportFile.path)],
+          text: "Relatório " + DateFormatToBrazil.formatDateAndHour(DateTime.now()),
+        );
+      }
+      else{
+        throw Exception();
+      }
+    }
+    catch(_){
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InformationPopup(
+            warningMessage: "Erro ao exportar o relatório! Tente diminuir a quantidade de máquinas selecionadas para exportar o relatório.",
+          );
+        },
+      );
     }
   }
 
