@@ -44,6 +44,7 @@ class DropdownButtonWidget extends StatelessWidget {
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
               elevation: 8,
+              isExpanded: true,
               dropdownColor: AppColors.whiteColor,
               value: itemSelected,
               onChanged: onChanged,
@@ -60,21 +61,17 @@ class DropdownButtonWidget extends StatelessWidget {
                   size: 2.5.h,
                 ),
               ),
-              items: //(listItems as List<DropdownMenuItem<String>>).toList(),
-                  (listItems).map((e) {
+              items: (listItems).map((e) {
                 return DropdownMenuItem<String>(
                   value: e.value,
                   alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    // width: (width ?? 200) - 6.h,
-                    child: TextWidget(
-                      e.item,
-                      fontSize: 16.sp,
-                      textAlign: TextAlign.start,
-                      textColor: AppColors.defaultColor,
-                      textOverflow: TextOverflow.ellipsis,
-                      maxLines: maxLines ?? 1,
-                    ),
+                  child: TextWidget(
+                    e.item,
+                    fontSize: 16.sp,
+                    textAlign: TextAlign.start,
+                    textColor: AppColors.defaultColor,
+                    textOverflow: TextOverflow.ellipsis,
+                    maxLines: maxLines ?? 1,
                   ),
                 );
               }).toList(),
