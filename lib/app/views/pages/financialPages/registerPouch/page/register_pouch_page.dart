@@ -1,3 +1,4 @@
+import 'package:elephant_control/app/utils/date_format_to_brazil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -194,9 +195,14 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                     itemSelected: controller.pouchSelected?.id,
                                     hintText: "Malotes",
                                     height: 6.5.h,
-                                    width: 85.w,
+                                    width: 100.w,
+                                    maxLines: 2,
                                     listItems: controller.pouchs
-                                        .map((element) => DropdownItem(item: element.machine!.name, value: element.id)),
+                                        .map((element) => DropdownItem(
+                                        item: element.machine!.name + (element.moneyPouch != null && element.moneyPouch!.inclusion != null ? (" - " + DateFormatToBrazil.formatDateAndHour(element.moneyPouch!.inclusion)) : ""),
+                                        value: element.id,
+                                      ),
+                                    ),
                                     onChanged: (selectedState) => controller.onDropdownButtonWidgetChanged(selectedState),
                                   ),
                                   Padding(
