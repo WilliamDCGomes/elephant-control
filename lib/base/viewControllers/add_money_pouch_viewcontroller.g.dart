@@ -9,7 +9,7 @@ part of 'add_money_pouch_viewcontroller.dart';
 AddMoneyPouchViewController _$AddMoneyPouchViewControllerFromJson(
         Map<String, dynamic> json) =>
     AddMoneyPouchViewController(
-      userOperatorId: json['userOperatorId'] as String,
+      userOperatorId: json['userOperatorId'] as String?,
       code: json['code'] as int,
       observation: json['observation'] as String?,
       visitId: json['visitId'] as String,

@@ -81,7 +81,8 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     }
   }
 
-  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(List<String>? userId, DateTime? filterDate) async {
+  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserId(
+      List<String>? userId, DateTime? filterDate) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetVisitsOfOperatorsByUserId';
@@ -99,9 +100,7 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetLastMachinesVisits';
-      final response = await get(url,
-          query: {"MachinesIds": machinesIds},
-          headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {"MachinesIds": machinesIds}, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => LastMachinesVisitViewController.fromJson(visit)).toList();
     } catch (_) {
@@ -109,17 +108,18 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     }
   }
 
-  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserIdAndPeriod(List<String>? userId, DateTime? initialFilterDate, DateTime? finalFilterDate) async {
+  Future<List<VisitOfOperatorsViewController>> getVisitsOfOperatorsByUserIdAndPeriod(
+      List<String>? userId, DateTime? initialFilterDate, DateTime? finalFilterDate) async {
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/getVisitsOfOperatorsByUserIdAndPeriod';
-      final response = await get(url,
-          query: {
-            "UserId": userId,
-            "initialDateFilter": initialFilterDate != null ? initialFilterDate.toIso8601String() : "",
-            "finalDateFilter": finalFilterDate != null ? finalFilterDate.toIso8601String() : "",
-          },
-          headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, query: {
+        "UserId": userId,
+        "initialDateFilter": initialFilterDate != null ? initialFilterDate.toIso8601String() : "",
+        "finalDateFilter": finalFilterDate != null ? finalFilterDate.toIso8601String() : "",
+      }, headers: {
+        'Authorization': 'Bearer ${token}'
+      });
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => VisitOfOperatorsViewController.fromJson(visit)).toList();
     } catch (_) {

@@ -209,7 +209,7 @@ class ReceivePouchFromOperatorController extends GetxController {
       for (var moneyPouch in pouchsSelectedList) {
         //TODO buscar localização aqui
         final addMoneyPouchViewController = AddMoneyPouchViewController(
-          userOperatorId: operatorSelected!.id!,
+          userOperatorId: operatorSelected?.id,
           code: int.parse(operatorCode.text == "" ? "0" : operatorCode.text),
           visitId: moneyPouch.id!,
           observation: observations.text,
