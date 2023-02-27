@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../base/viewControllers/last_machines_visit_viewcontroller.dart';
 import '../../base/viewControllers/report_viewcontroller.dart';
 import 'date_format_to_brazil.dart';
 import 'format_numbers.dart';
@@ -370,6 +371,85 @@ class GenerateReportPdf {
       final documentoPdfGerado = await doc.save();
       final diretorioTemporario = await getTemporaryDirectory();
       File file = await File('${diretorioTemporario.path}/RELATORIO_${closing ? "DE_FECHAMENTO" : "GERAL"}_ESPECIFICO_${DateFormatToBrazil.formatDateAndTimePdf(DateTime.now())}.pdf').create();
+      file.writeAsBytesSync(documentoPdfGerado);
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<File?> generateMachinePdf(List<LastMachinesVisitViewController> lastMachinesVisitList) async {
+    try {
+      final doc = Document(pageMode: PdfPageMode.outlines);
+
+      doc.addPage(
+        MultiPage(
+          pageTheme: const PageTheme(
+            pageFormat: PdfPageFormat.a4,
+            margin: EdgeInsets.zero,
+            orientation: PageOrientation.portrait,
+          ),
+          build: (context) {
+            return [
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: height * 0.025, horizontal: width * 0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 4.h),
+                        child: Column(
+                          children: [
+                            TitlePdf(
+                              title: "RELATÓRIO DE MÁQUINAS",
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            TitlePdf(
+                              title: "Data do relatório: " + DateFormatToBrazil.formatDateAndHour(DateTime.now()),
+                              fontSize: 10,
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            TitlePdf(
+                              title: "Total de Máquinas: ${FormatNumbers.scoreIntNumber(lastMachinesVisitList.length)}",
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    for(var machinesVisit in lastMachinesVisitList)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TitlePdf(
+                            title: machinesVisit.machineName,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4.w),
+                            child: TitleDescriptionWidget(
+                              title: "Última Visita: ",
+                              description: machinesVisit.inclusion.year < 2000 ? "Sem registro" : DateFormatToBrazil.formatDateAndHour(machinesVisit.inclusion),
+                            ),
+                          ),
+                        ]
+                      ),
+                  ],
+                ),
+              ),
+            ];
+          },
+        ),
+      );
+
+      final documentoPdfGerado = await doc.save();
+      final diretorioTemporario = await getTemporaryDirectory();
+      File file = await File('${diretorioTemporario.path}/RELATORIO_MAQUINAS_${DateFormatToBrazil.formatDateAndTimePdf(DateTime.now())}.pdf').create();
       file.writeAsBytesSync(documentoPdfGerado);
       return file;
     } catch (e) {

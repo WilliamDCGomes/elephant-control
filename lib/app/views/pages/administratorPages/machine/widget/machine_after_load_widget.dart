@@ -63,10 +63,21 @@ class _MachineAfterLoadWidgetState extends State<MachineAfterLoadWidget> {
                               ),
                             ),
                             InkWell(
+                              onTap: () => controller.generateReportPdf(),
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 4.w),
+                                child: Icon(
+                                  Icons.print_outlined,
+                                  color: AppColors.backgroundColor,
+                                  size: 3.h,
+                                ),
+                              ),
+                            ),
+                            InkWell(
                               onTap: () => controller.editMachine(null),
                               child: Icon(
                                 Icons.add_circle,
-                                color: AppColors.whiteColor,
+                                color: AppColors.backgroundColor,
                                 size: 3.h,
                               ),
                             ),
