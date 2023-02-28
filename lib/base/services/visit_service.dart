@@ -100,7 +100,7 @@ class VisitService extends BaseService with MixinService implements IVisitServic
     try {
       final token = await getToken();
       final url = baseUrlApi + 'Visit/GetLastMachinesVisits';
-      final response = await get(url, query: {"MachinesIds": machinesIds}, headers: {'Authorization': 'Bearer ${token}'});
+      final response = await get(url, headers: {'Authorization': 'Bearer ${token}'});
       if (hasErrorResponse(response)) throw Exception();
       return (response.body as List).map((visit) => LastMachinesVisitViewController.fromJson(visit)).toList();
     } catch (_) {
