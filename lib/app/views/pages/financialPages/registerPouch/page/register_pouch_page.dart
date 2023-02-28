@@ -58,108 +58,135 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                       Container(
                         color: AppColors.defaultColor,
                         padding: EdgeInsets.symmetric(horizontal: 2.h),
-                        child: TitleWithBackButtonWidget(
-                          title: "Lançar Malote",
+                        child: Obx(
+                          () => TitleWithBackButtonWidget(
+                            title: "Lançar Malote",
+                            rightIcon: controller.showInfos.value ? Icons.visibility_off : Icons.visibility,
+                            onTapRightIcon: () => controller.showInfos.value = !controller.showInfos.value,
+                          ),
                         ),
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InformationContainerWidget(
-                              iconPath: Paths.Money,
-                              textColor: AppColors.whiteColor,
-                              backgroundColor: AppColors.defaultColor,
-                              informationText: "",
-                              customContainer: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  TextWidget(
-                                    "Adicionar Saldo do Malote",
-                                    textColor: AppColors.whiteColor,
-                                    fontSize: 18.sp,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  Obx(
-                                    () => Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 2.h),
-                                      child: RichTextTwoDifferentWidget(
-                                        firstText: "Valor total: ",
-                                        firstTextColor: AppColors.whiteColor,
-                                        firstTextFontWeight: FontWeight.normal,
-                                        firstTextSize: 18.sp,
-                                        secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
-                                        secondTextColor: AppColors.whiteColor,
-                                        secondTextFontWeight: FontWeight.bold,
-                                        secondTextSize: 18.sp,
-                                        secondTextDecoration: TextDecoration.none,
+                            Obx(
+                              () => Visibility(
+                                visible: controller.showInfos.value,
+                                child: InformationContainerWidget(
+                                  iconPath: Paths.Money,
+                                  textColor: AppColors.whiteColor,
+                                  backgroundColor: AppColors.defaultColor,
+                                  informationText: "",
+                                  padding: EdgeInsets.fromLTRB(5.w, 3.h, 5.w, 2.h),
+                                  customContainer: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      TextWidget(
+                                        "Adicionar Saldo do Malote",
+                                        textColor: AppColors.whiteColor,
+                                        fontSize: 16.sp,
+                                        textAlign: TextAlign.center,
                                         maxLines: 2,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ),
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: controller.lastVisit.value.isNotEmpty,
-                                      child: RichTextTwoDifferentWidget(
-                                        firstText: "Visita Atual: ",
-                                        firstTextColor: AppColors.whiteColor,
-                                        firstTextFontWeight: FontWeight.normal,
-                                        firstTextSize: 18.sp,
-                                        secondText: controller.lastVisit.value,
-                                        secondTextColor: AppColors.whiteColor,
-                                        secondTextFontWeight: FontWeight.bold,
-                                        secondTextSize: 18.sp,
-                                        secondTextDecoration: TextDecoration.none,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: controller.inclusionVisit.value.isNotEmpty,
-                                      child: Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(top: 2.h),
-                                        child: RichTextTwoDifferentWidget(
-                                          firstText: "Última Visita: ",
-                                          firstTextColor: AppColors.whiteColor,
-                                          firstTextFontWeight: FontWeight.normal,
-                                          firstTextSize: 18.sp,
-                                          secondText: controller.inclusionVisit.value,
-                                          secondTextColor: AppColors.whiteColor,
-                                          secondTextFontWeight: FontWeight.bold,
-                                          secondTextSize: 18.sp,
-                                          secondTextDecoration: TextDecoration.none,
-                                          maxLines: 2,
+                                        child: Obx(
+                                          () => RichTextTwoDifferentWidget(
+                                            firstText: "Malotes Para Lançar: ",
+                                            firstTextColor: AppColors.whiteColor,
+                                            firstTextFontWeight: FontWeight.normal,
+                                            firstTextSize: 16.sp,
+                                            secondText: FormatNumbers.scoreIntNumber(controller.pouchs.length),
+                                            secondTextColor: AppColors.whiteColor,
+                                            secondTextFontWeight: FontWeight.bold,
+                                            secondTextSize: 16.sp,
+                                            secondTextDecoration: TextDecoration.none,
+                                            maxLines: 2,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: (controller.estimateValue.value - controller.fullValue.value > 20 ||
-                                              controller.estimateValue.value - controller.fullValue.value < -20) &&
-                                          controller.fullValue.value != 0,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(top: 2.h),
-                                        child: RichTextTwoDifferentWidget(
-                                          firstText: "Diferença: ",
-                                          firstTextColor: AppColors.whiteColor,
-                                          firstTextFontWeight: FontWeight.normal,
-                                          firstTextSize: 18.sp,
-                                          secondText: FormatNumbers.stringToMoney(controller.getDifference()),
-                                          secondTextColor: AppColors.whiteColor,
-                                          secondTextFontWeight: FontWeight.bold,
-                                          secondTextSize: 18.sp,
-                                          secondTextDecoration: TextDecoration.none,
-                                          maxLines: 2,
+                                      Obx(
+                                        () => Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 2.h),
+                                          child: RichTextTwoDifferentWidget(
+                                            firstText: "Valor total: ",
+                                            firstTextColor: AppColors.whiteColor,
+                                            firstTextFontWeight: FontWeight.normal,
+                                            firstTextSize: 16.sp,
+                                            secondText: FormatNumbers.numbersToMoney(controller.fullValue.value),
+                                            secondTextColor: AppColors.whiteColor,
+                                            secondTextFontWeight: FontWeight.bold,
+                                            secondTextSize: 16.sp,
+                                            secondTextDecoration: TextDecoration.none,
+                                            maxLines: 2,
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                      Obx(
+                                        () => Visibility(
+                                          visible: controller.lastVisit.value.isNotEmpty,
+                                          child: RichTextTwoDifferentWidget(
+                                            firstText: "Visita Atual: ",
+                                            firstTextColor: AppColors.whiteColor,
+                                            firstTextFontWeight: FontWeight.normal,
+                                            firstTextSize: 16.sp,
+                                            secondText: controller.lastVisit.value,
+                                            secondTextColor: AppColors.whiteColor,
+                                            secondTextFontWeight: FontWeight.bold,
+                                            secondTextSize: 16.sp,
+                                            secondTextDecoration: TextDecoration.none,
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => Visibility(
+                                          visible: controller.inclusionVisit.value.isNotEmpty,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 2.h),
+                                            child: RichTextTwoDifferentWidget(
+                                              firstText: "Última Visita: ",
+                                              firstTextColor: AppColors.whiteColor,
+                                              firstTextFontWeight: FontWeight.normal,
+                                              firstTextSize: 16.sp,
+                                              secondText: controller.inclusionVisit.value,
+                                              secondTextColor: AppColors.whiteColor,
+                                              secondTextFontWeight: FontWeight.bold,
+                                              secondTextSize: 16.sp,
+                                              secondTextDecoration: TextDecoration.none,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => Visibility(
+                                          visible: (controller.estimateValue.value - controller.fullValue.value > 20 ||
+                                                  controller.estimateValue.value - controller.fullValue.value < -20) &&
+                                              controller.fullValue.value != 0,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 2.h),
+                                            child: RichTextTwoDifferentWidget(
+                                              firstText: "Diferença: ",
+                                              firstTextColor: AppColors.whiteColor,
+                                              firstTextFontWeight: FontWeight.normal,
+                                              firstTextSize: 16.sp,
+                                              secondText: FormatNumbers.stringToMoney(controller.getDifference()),
+                                              secondTextColor: AppColors.whiteColor,
+                                              secondTextFontWeight: FontWeight.bold,
+                                              secondTextSize: 16.sp,
+                                              secondTextDecoration: TextDecoration.none,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                             Expanded(

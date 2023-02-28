@@ -13,6 +13,7 @@ import '../../mainMenuFinancial/controller/main_menu_financial_controller.dart';
 class RegisterPouchController extends GetxController {
   Visit? pouchSelected;
   late RxList<Visit> pouchs;
+  late RxBool showInfos;
   late RxDouble fullValue;
   late RxDouble estimateValue;
   late RxString lastVisit;
@@ -41,6 +42,7 @@ class RegisterPouchController extends GetxController {
   }
 
   _initializeVariables() {
+    showInfos = true.obs;
     lastVisit = "".obs;
     inclusionVisit = "".obs;
     fullValue = 0.0.obs;
