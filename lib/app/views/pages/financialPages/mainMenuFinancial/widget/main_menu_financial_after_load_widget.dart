@@ -222,12 +222,18 @@ class _MainMenuFinancialAfterLoadWidgetState extends State<MainMenuFinancialAfte
                                 MenuOptionsWidget(
                                   text: "Receber Malotes",
                                   imagePath: Paths.Malote,
-                                  onTap: () => Get.to(() => ReceivePouchFromOperator()),
+                                  onTap: () async {
+                                    await Get.to(() => ReceivePouchFromOperator());
+                                    await controller.loadScreen();
+                                  },
                                 ),
                                 MenuOptionsWidget(
                                   text: "Lançar Malotes",
                                   imagePath: Paths.Money,
-                                  onTap: () => Get.to(() => RegisterPouchPage()),
+                                  onTap: () async {
+                                    await Get.to(() => RegisterPouchPage());
+                                    await controller.loadScreen();
+                                  }
                                 ),
                                 MenuOptionsWidget(
                                   text: "Histórico do Cofre",
