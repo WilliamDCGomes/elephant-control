@@ -127,13 +127,13 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                       ),
                                       Obx(
                                         () => Visibility(
-                                          visible: controller.lastVisit.value.isNotEmpty,
+                                          visible: controller.inclusionVisit.value.isNotEmpty,
                                           child: RichTextTwoDifferentWidget(
                                             firstText: "Visita Atual: ",
                                             firstTextColor: AppColors.whiteColor,
                                             firstTextFontWeight: FontWeight.normal,
                                             firstTextSize: 16.sp,
-                                            secondText: controller.lastVisit.value,
+                                            secondText: controller.inclusionVisit.value,
                                             secondTextColor: AppColors.whiteColor,
                                             secondTextFontWeight: FontWeight.bold,
                                             secondTextSize: 16.sp,
@@ -143,22 +143,19 @@ class _RegisterPouchPageState extends State<RegisterPouchPage> {
                                         ),
                                       ),
                                       Obx(
-                                        () => Visibility(
-                                          visible: controller.inclusionVisit.value.isNotEmpty,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: 2.h),
-                                            child: RichTextTwoDifferentWidget(
-                                              firstText: "Última Visita: ",
-                                              firstTextColor: AppColors.whiteColor,
-                                              firstTextFontWeight: FontWeight.normal,
-                                              firstTextSize: 16.sp,
-                                              secondText: controller.inclusionVisit.value,
-                                              secondTextColor: AppColors.whiteColor,
-                                              secondTextFontWeight: FontWeight.bold,
-                                              secondTextSize: 16.sp,
-                                              secondTextDecoration: TextDecoration.none,
-                                              maxLines: 2,
-                                            ),
+                                        () => Padding(
+                                          padding: EdgeInsets.only(top: 2.h),
+                                          child: RichTextTwoDifferentWidget(
+                                            firstText: "Última Visita: ",
+                                            firstTextColor: AppColors.whiteColor,
+                                            firstTextFontWeight: FontWeight.normal,
+                                            firstTextSize: 16.sp,
+                                            secondText: controller.lastVisit.value.isNotEmpty ? controller.lastVisit.value : "Sem Registro",
+                                            secondTextColor: AppColors.whiteColor,
+                                            secondTextFontWeight: FontWeight.bold,
+                                            secondTextSize: 16.sp,
+                                            secondTextDecoration: TextDecoration.none,
+                                            maxLines: 2,
                                           ),
                                         ),
                                       ),

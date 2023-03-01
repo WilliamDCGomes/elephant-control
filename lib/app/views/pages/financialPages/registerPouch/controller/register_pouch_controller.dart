@@ -79,8 +79,8 @@ class RegisterPouchController extends GetxController {
     pouchSelected = pouchs.firstWhereOrNull((element) => element.id == visitId);
     if (pouchSelected != null) {
       estimateValue.value = pouchSelected!.moneyQuantity;
-      lastVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.machine?.lastVisit);
-      inclusionVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.inclusion);
+      lastVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.lastVisitMachineCurrentDay);
+      inclusionVisit.value = DateFormatToBrazil.formatDateAndHour(pouchSelected?.moneyPouch?.inclusion);
       debtCardValue.text = pouchSelected?.debit == null ? "" : FormatNumbers.numbersToMoney(pouchSelected!.debit);
       credCardValue.text = pouchSelected?.credit == null ? "" : FormatNumbers.numbersToMoney(pouchSelected!.credit);
     }
