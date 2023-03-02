@@ -137,6 +137,107 @@ class GenerateReportPdf {
                           description: FormatNumbers.numbersToMoney(reportViewController.debitValue),
                         ),
                       ),
+                      if(reportViewController.getMachineName.isNotEmpty)
+                        TitlePdf(
+                          title: "Valores nas datas iniciais e finais de cada máquina:",
+                          fontSize: 14,
+                        ),
+                      for(int index = 0; index < reportViewController.getMachineName.length; index++)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 2.h,
+                                    width: 2.h,
+                                    margin: EdgeInsets.only(right: 2.w),
+                                    decoration: BoxDecoration(
+                                      color: PdfColors.black,
+                                      borderRadius: BorderRadius.circular(
+                                        1.h,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        TitlePdf(
+                                          title: (reportViewController.getMachineName[index]["machineName"] ?? ""),
+                                          fontSize: 12,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w, top: .5.h),
+                                          child: TitlePdf(
+                                            title: "Primeira Visita:",
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor: ",
+                                            description: FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Data: ",
+                                            description: DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["firstMachineDate"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w, top: .5.h),
+                                          child: TitlePdf(
+                                            title: "Última Visita:",
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor: ",
+                                            description: FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Data: ",
+                                            description: DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["secondMachineDate"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor do Período: ",
+                                            description: FormatNumbers.numbersToMoney(FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? "") - FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? "")),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: .5.h),
+                                child: Divider(
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                     TitleDescriptionWidget(
                       title: "Quantidade de visitas nas máquinas",
                       description: FormatNumbers.scoreIntNumber(reportViewController.numbersOfVisits),
@@ -144,21 +245,6 @@ class GenerateReportPdf {
                     TitleDescriptionWidget(
                       title: "Quantidade de vezes que os malotes foram coletados",
                       description: FormatNumbers.scoreIntNumber(reportViewController.numbersOfPouchRemoved),
-                    ),
-                    TitleDescriptionWidget(
-                      title: "Valor total cartão de crédito dos malotes",
-                      description: FormatNumbers.numbersToMoney(reportViewController.creditValue),
-                    ),
-                    TitleDescriptionWidget(
-                      title: "Valor total cartão de débito dos malotes",
-                      description: FormatNumbers.numbersToMoney(reportViewController.debitValue),
-                    ),
-                    TitleDescriptionWidget(
-                      title: "Valor total PIX dos malotes",
-                      description: FormatNumbers.numbersToMoney(reportViewController.pixValue),),
-                    TitleDescriptionWidget(
-                      title: "Valor total dos malotes",
-                      description: FormatNumbers.numbersToMoney(reportViewController.totalPouchValue),
                     ),
                     TitleDescriptionWidget(
                       title: "Quantidade de vezes em que as máquinas estiveram fora da média",
@@ -312,6 +398,103 @@ class GenerateReportPdf {
                         description: FormatNumbers.numbersToMoney(reportViewController.debitValue),
                       ),
                     ),
+                      if(reportViewController.getMachineName.isNotEmpty)
+                        TitlePdf(
+                          title: "Valores nas datas iniciais e finais de cada máquina:",
+                          fontSize: 14,
+                        ),
+                      for(int index = 0; index < reportViewController.getMachineName.length; index++)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 2.h,
+                                    width: 2.h,
+                                    margin: EdgeInsets.only(right: 2.w),
+                                    decoration: BoxDecoration(
+                                      color: PdfColors.black,
+                                      borderRadius: BorderRadius.circular(
+                                        1.h,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w, top: .5.h),
+                                          child: TitlePdf(
+                                            title: "Primeira Visita:",
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor: ",
+                                            description: FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Data: ",
+                                            description: DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["firstMachineDate"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w, top: .5.h),
+                                          child: TitlePdf(
+                                            title: "Última Visita:",
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor: ",
+                                            description: FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Data: ",
+                                            description: DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["secondMachineDate"] ?? ""),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: .5.h),
+                                          child: TitleDescriptionWidget(
+                                            title: "Valor do Período: ",
+                                            description: FormatNumbers.numbersToMoney(FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? "") - FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? "")),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: .5.h),
+                                child: Divider(
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                     TitleAndDescriptionWidget(
                       title: "Médias programada para a máquina",
                       reportViewController: reportViewController,
@@ -485,6 +668,7 @@ class TitlePdf extends StatelessWidget {
 class TitleDescriptionWidget extends StatelessWidget {
   final String title;
   final String? description;
+  final double? fontSize;
   final bool showTwoDots;
   final bool defaultSession;
   final bool boldBoth;
@@ -493,6 +677,7 @@ class TitleDescriptionWidget extends StatelessWidget {
     required this.title,
     required this.description,
     this.showTwoDots = true,
+    this.fontSize,
     this.defaultSession = false,
     this.boldBoth = false,
   });
@@ -510,7 +695,7 @@ class TitleDescriptionWidget extends StatelessWidget {
                     text: title + (showTwoDots ? ": " : " "),
                     style: TextStyle(
                       color: PdfColors.black,
-                      fontSize: 14,
+                      fontSize: fontSize ?? 14,
                       fontWeight: !defaultSession || boldBoth ? FontWeight.bold : null,
                     ),
                   ),
@@ -518,7 +703,7 @@ class TitleDescriptionWidget extends StatelessWidget {
                     text: description,
                     style: TextStyle(
                       color: PdfColors.black,
-                      fontSize: 14,
+                      fontSize: fontSize ?? 14,
                       fontWeight: defaultSession || boldBoth ? FontWeight.bold : null,
                     ),
                   ),

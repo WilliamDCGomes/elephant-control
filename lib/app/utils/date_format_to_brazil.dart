@@ -37,6 +37,29 @@ class DateFormatToBrazil {
     return null;
   }
 
+  static String formatDateFromReport(String? date) {
+    try{
+      if(date != null) {
+        var dates = date.split(' ');
+        var justdate = dates[0].split('/');
+        var justHour = dates[1].split(':');
+        DateTime newDate = DateTime(
+          int.parse(justdate[2]),
+          int.parse(justdate[1]),
+          int.parse(justdate[0]),
+          int.parse(justHour[0]),
+          int.parse(justHour[1]),
+        );
+
+        return "${DateFormat('dd-MM-yyyy').format(newDate).replaceAll('-', '/')} às ${DateFormat('HH:mm').format(newDate)}";
+      }
+      return "";
+    }
+    catch(_){
+      return "";
+    }
+  }
+
   static String formatDateAndHour(DateTime? date) {
     if(date != null)
       return "${DateFormat('dd-MM-yyyy').format(date).replaceAll('-', '/')} às ${DateFormat('HH:mm').format(date)}";

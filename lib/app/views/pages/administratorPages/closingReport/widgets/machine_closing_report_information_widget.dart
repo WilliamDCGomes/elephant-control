@@ -221,7 +221,7 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                                 Expanded(
                                   child: TextWidget(
                                     "Valor no Pix: " +
-                                        FormatNumbers.numbersToMoney(reportViewController.pixValue),
+                                    FormatNumbers.numbersToMoney(reportViewController.pixValue),
                                     textColor: AppColors.blackColor,
                                     fontSize: 18.sp,
                                     textAlign: TextAlign.start,
@@ -233,6 +233,152 @@ class MachineClosingReportInformationWidget extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            if (reportViewController.getMachineName.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 1.5.h),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: AppColors.blackColor,
+                    ),
+                    borderRadius: BorderRadius.circular(1.h),
+                  ),
+                  child: ExpansionTile(
+                    title: TextWidget(
+                      "Valores nas datas iniciais e finais de cada máquina",
+                      textColor: AppColors.blackColor,
+                      fontSize: 16.sp,
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                    ),
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: reportViewController.getMachineName.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: .5.h),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 2.h,
+                                      width: 2.h,
+                                      margin: EdgeInsets.only(right: 2.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.defaultColor,
+                                        borderRadius: BorderRadius.circular(
+                                          1.h,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4.w),
+                                            child: TextWidget(
+                                              "Primeira Visita:",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                            child: TextWidget(
+                                              "Valor: ${FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? "")}",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                            child: TextWidget(
+                                              "Data: ${DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["firstMachineDate"] ?? "")}",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4.w, top: .5.h),
+                                            child: TextWidget(
+                                              "Última Visita:",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                            child: TextWidget(
+                                              "Valor: ${FormatNumbers.stringToMoney(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? "")}",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.w, top: .5.h),
+                                            child: TextWidget(
+                                              "Data: ${DateFormatToBrazil.formatDateFromReport(reportViewController.getMachineName[index]["secondMachineDate"] ?? "")}",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 16.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: .5.h),
+                                            child: TextWidget(
+                                              "Valor do Período: ${FormatNumbers.numbersToMoney(FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["secondMoneyQuantity"] ?? "") - FormatNumbers.stringToNumber(reportViewController.getMachineName[index]["firstMoneyQuantity"] ?? ""))}",
+                                              textColor: AppColors.blackColor,
+                                              fontSize: 18.sp,
+                                              textAlign: TextAlign.start,
+                                              fontWeight: FontWeight.bold,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: .5.h),
+                                  child: Divider(
+                                    color: AppColors.defaultColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(
                         height: 1.h,

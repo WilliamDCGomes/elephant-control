@@ -42,6 +42,10 @@ ReportViewController _$ReportViewControllerFromJson(
       ..operatorsWhoCollectedPouchsList =
           (json['operatorsWhoCollectedPouchsList'] as List<dynamic>?)
               ?.map((e) => e as String)
+              .toList()
+      ..machineReportInformation =
+          (json['machineReportInformation'] as List<dynamic>?)
+              ?.map((e) => e as String)
               .toList();
 
 Map<String, dynamic> _$ReportViewControllerToJson(
@@ -71,4 +75,5 @@ Map<String, dynamic> _$ReportViewControllerToJson(
       'operatorsWhoVisitMachines': instance.operatorsWhoVisitMachines,
       'operatorsWhoCollectedPouchsList':
           instance.operatorsWhoCollectedPouchsList,
+      'machineReportInformation': instance.machineReportInformation,
     };

@@ -24,6 +24,28 @@ class ReportViewController {
   late List<DateTime>? visitDays;
   late List<String>? operatorsWhoVisitMachines;
   late List<String>? operatorsWhoCollectedPouchsList;
+  late List<String>? machineReportInformation;
+
+  List<Map<String, String>> get getMachineName {
+    List<Map<String, String>> tempList = <Map<String, String>>[];
+    if(machineReportInformation != null && machineReportInformation!.isNotEmpty){
+      for(var machineReport in machineReportInformation!){
+        var value = machineReport.split(';');
+        if(value.length == 5){
+          tempList.add(
+            {
+              "machineName": value[0],
+              "firstMoneyQuantity": value[1],
+              "firstMachineDate": value[2],
+              "secondMoneyQuantity": value[3],
+              "secondMachineDate": value[4],
+            },
+          );
+        }
+      }
+    }
+    return tempList;
+  }
 
   ReportViewController();
 
