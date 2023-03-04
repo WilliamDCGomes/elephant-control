@@ -66,7 +66,6 @@ class VisitDetailsController extends GetxController {
     await Future.delayed(Duration(milliseconds: 200));
     // await loadingWithSuccessOrErrorWidget.startAnimation();
     await _getVisitInformation();
-    await _getIncidentInformation();
     // await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     super.onInit();
   }
@@ -185,6 +184,7 @@ class VisitDetailsController extends GetxController {
       if (afterMaintenanceImageClock.picture != null) {
         afterMaintenanceImageClock.imagesPictureWidgetState.refreshPage();
       }
+      await _getIncidentInformation();
       await loadingWithSuccessOrErrorWidget.stopAnimation(justLoading: true);
     } catch (e) {
       await loadingWithSuccessOrErrorWidget.stopAnimation(fail: true);
