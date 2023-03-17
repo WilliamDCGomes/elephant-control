@@ -49,6 +49,7 @@ class Machine extends ElephantUserCore {
     this.lastVisit,
     this.reminders,
     this.monthClosure = false,
+    this.sent = false,
   });
 
   Machine.emptyConstructor() {
