@@ -63,11 +63,11 @@
         <string>É necessário a permissão para Carregar imagens da sua Galeria</string>
 		<key>NSCameraUsageDescription</key>
         <string>É necessário a permissão para tirar fotos e gravar vídeos com a Câmera do seu aparelho</string>
-		<key>NSMicrophoneUsageDescription</key>
-        <string>É necessário a permissão para gravar áudios nos vídeos</string>
         <key>LSApplicationQueriesSchemes</key>
         <array>
           <string>É necessário a permissão para verificar se existe algum aplicativo compatível com mapas</string>
         </array>
+		<key>NSMicrophoneUsageDescription</key>
+        <string>É necessário a permissão para gravar áudios nos vídeos</string>
 	</dict>
 </plist>

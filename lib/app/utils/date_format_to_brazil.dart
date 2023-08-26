@@ -45,8 +45,8 @@ class DateFormatToBrazil {
         var justHour = dates[1].split(':');
         DateTime newDate = DateTime(
           int.parse(justdate[2]),
-          int.parse(justdate[1]),
           int.parse(justdate[0]),
+          int.parse(justdate[1]),
           int.parse(justHour[0]),
           int.parse(justHour[1]),
         );
