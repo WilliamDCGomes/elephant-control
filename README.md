@@ -1,4 +1,4 @@
-# Zi Partner
+# Elephant Control
 
 ## Este aplicativo foi desenvolvido com o objetivo de gerenciar o controle de máquinas de prêmios de pelúcia. Nele existe 4 tipos de usuários diferentes, com cada um tendo acessos exclusivos para aquela conta.
 
